@@ -1,0 +1,157 @@
+---
+import { formatDate, readingLabel, slugifyTag } from "../lib/posts";
+import { withBase } from "../lib/paths";
+
+interface Props {
+  href: string;
+  title: string;
+  description: string;
+  pubDate: Date;
+  category: string;
+  tags?: string[];
+  readingMinutes: number;
+}
+
+const { href, title, description, pubDate, category, tags = [], readingMinutes } =
+  Astro.props;
+---
+
+<article class="featured panel-strong">
+  <div class="copy">
+    <p class="eyebrow">精选</p>
+    <div class="meta">
+      <span class="category">{category}</span>
+      <time datetime={pubDate.toISOString()}>{formatDate(pubDate, "long")}</time>
+      <span>{readingLabel(readingMinutes)}</span>
+    </div>
+    <h2><a href={href}>{title}</a></h2>
+    <p class="desc">{description}</p>
+    {
+      tags.length > 0 && (
+        <div class="tags">
+          {tags.map((tag) => (
+            <a href={withBase(`/tags/${slugifyTag(tag)}/`)}>{tag}</a>
+          ))}
+        </div>
+      )
+    }
+    <a class="cta" href={href}>阅读全文</a>
+  </div>
+  <div class="visual" aria-hidden="true">
+    <div class="orb"></div>
+  </div>
+</article>
+
+<style>
+  .featured {
+    display: grid;
+    gap: 1.5rem;
+    padding: clamp(1.75rem, 4vw, 2.75rem);
+    overflow: hidden;
+    position: relative;
+  }
+
+  @media (min-width: 880px) {
+    .featured {
+      grid-template-columns: 1.35fr 0.9fr;
+      align-items: center;
+    }
+  }
+
+  .eyebrow {
+    margin: 0 0 0.75rem;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 0.85rem;
+    margin-bottom: 0.85rem;
+    color: var(--ink-faint);
+    font-size: 12px;
+  }
+
+  .category {
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  h2 {
+    margin: 0 0 0.85rem;
+    font-size: clamp(28px, 3.5vw, 40px);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.15;
+  }
+
+  h2 a:hover {
+    color: var(--accent);
+  }
+
+  .desc {
+    margin: 0 0 1.1rem;
+    color: var(--ink-soft);
+    font-size: 17px;
+    line-height: 1.47;
+    max-width: 36ch;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 1.4rem;
+  }
+
+  .tags a {
+    padding: 0.25rem 0.65rem;
+    border-radius: var(--radius-pill);
+    background: var(--bg);
+    color: var(--ink-soft);
+    font-size: 12px;
+  }
+
+  .tags a:hover {
+    color: var(--accent);
+  }
+
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0.65rem 1.25rem;
+    border-radius: var(--radius-pill);
+    color: #fff;
+    font-size: 17px;
+    background: var(--accent);
+  }
+
+  .cta:hover {
+    background: var(--accent-hover);
+  }
+
+  .cta::after {
+    content: " ›";
+  }
+
+  .visual {
+    min-height: 200px;
+    display: grid;
+    place-items: center;
+  }
+
+  .orb {
+    width: min(100%, 240px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 32% 28%, #fff 0%, rgba(255, 255, 255, 0.35) 18%, transparent 42%),
+      radial-gradient(circle at 50% 50%, #5ac8fa 0%, #0071e3 42%, #1d1d1f 78%);
+    box-shadow: 0 24px 60px rgba(0, 113, 227, 0.28);
+  }
+</style>

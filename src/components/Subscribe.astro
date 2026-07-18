@@ -1,0 +1,75 @@
+---
+import { site } from "../consts";
+import { withBase } from "../lib/paths";
+---
+
+<section class="subscribe panel-strong">
+  <div>
+    <h2>保持联系</h2>
+    <p>通过 RSS 获取更新，或直接邮件交流。</p>
+  </div>
+  <div class="actions">
+    <a class="btn primary" href={withBase("/rss.xml")}>订阅 RSS</a>
+    <a class="btn" href={`mailto:${site.email}?subject=Lumen 博客交流`}>发送邮件</a>
+  </div>
+</section>
+
+<style>
+  .subscribe {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
+    padding: 2rem 1.75rem;
+    text-align: left;
+  }
+
+  h2 {
+    margin: 0 0 0.35rem;
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  p {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: 15px;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0.6rem 1.15rem;
+    border-radius: var(--radius-pill);
+    font-size: 15px;
+    background: var(--bg);
+    color: var(--accent);
+  }
+
+  .btn.primary {
+    color: #fff;
+    background: var(--accent);
+  }
+
+  .btn.primary:hover {
+    background: var(--accent-hover);
+  }
+
+  .btn:hover {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .btn.primary:hover {
+    text-decoration: none;
+  }
+</style>

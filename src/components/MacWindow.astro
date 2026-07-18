@@ -1,0 +1,91 @@
+---
+/**
+ * macOS 风格代码窗口（带 Shiki 高亮）
+ *
+ * <MacWindow title="demo.ts" lang="ts" code={`const a = 1;`} />
+ * <MacWindow title="note.txt">...</MacWindow>
+ */
+import { codeToHtml } from "shiki";
+import "../styles/mac-window.css";
+
+interface Props {
+  title?: string;
+  code?: string;
+  lang?: string;
+}
+
+const { title = "", code, lang = "text" } = Astro.props;
+
+const highlighted =
+  code !== undefined
+    ? await codeToHtml(code.replace(/\n$/, ""), {
+        lang: lang || "text",
+        theme: "github-dark",
+      })
+    : null;
+
+const displayTitle = title || lang || "code";
+---
+
+<figure class="mac-window" data-mac-window>
+  <div class="mac-titlebar">
+    <div class="mac-dots" aria-hidden="true">
+      <span class="dot red"></span>
+      <span class="dot yellow"></span>
+      <span class="dot green"></span>
+    </div>
+    <span class="mac-title">{displayTitle}</span>
+    <button type="button" class="mac-copy" data-mac-copy aria-label="复制代码">
+      复制
+    </button>
+  </div>
+  <div class="mac-body">
+    {highlighted ? <Fragment set:html={highlighted} /> : <slot />}
+  </div>
+</figure>
+
+<script>
+  async function copyText(text: string) {
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(text);
+      return;
+    }
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand("copy");
+    ta.remove();
+  }
+
+  function bindCopyButtons(root: ParentNode = document) {
+    root.querySelectorAll<HTMLButtonElement>("[data-mac-copy]").forEach((btn) => {
+      if (btn.dataset.bound === "1") return;
+      btn.dataset.bound = "1";
+      btn.addEventListener("click", async () => {
+        const win = btn.closest("[data-mac-window]");
+        if (!win) return;
+        try {
+          await copyText(win.querySelector("pre")?.textContent ?? "");
+          const prev = btn.textContent;
+          btn.textContent = "已复制";
+          btn.classList.add("is-copied");
+          window.setTimeout(() => {
+            btn.textContent = prev || "复制";
+            btn.classList.remove("is-copied");
+          }, 1600);
+        } catch {
+          btn.textContent = "失败";
+          window.setTimeout(() => {
+            btn.textContent = "复制";
+          }, 1600);
+        }
+      });
+    });
+  }
+
+  bindCopyButtons();
+  document.addEventListener("astro:page-load", () => bindCopyButtons());
+</script>

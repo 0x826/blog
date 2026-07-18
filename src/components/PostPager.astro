@@ -1,0 +1,91 @@
+---
+import type { Post } from "../lib/posts";
+import { postHref } from "../lib/paths";
+
+interface Props {
+  prev?: Post;
+  next?: Post;
+}
+
+const { prev, next } = Astro.props;
+---
+
+{
+  (prev || next) && (
+    <nav class="pager" aria-label="上下篇文章">
+      {prev ? (
+        <a class="item panel" href={postHref(prev.id)}>
+          <span>上一篇</span>
+          <strong>{prev.data.title}</strong>
+        </a>
+      ) : (
+        <span class="item placeholder" />
+      )}
+      {next ? (
+        <a class="item panel next" href={postHref(next.id)}>
+          <span>下一篇</span>
+          <strong>{next.data.title}</strong>
+        </a>
+      ) : (
+        <span class="item placeholder" />
+      )}
+    </nav>
+  )
+}
+
+<style>
+  .pager {
+    display: grid;
+    gap: 0.85rem;
+    margin-top: 1.75rem;
+  }
+
+  @media (min-width: 760px) {
+    .pager {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .item {
+    display: grid;
+    gap: 0.3rem;
+    padding: 1.15rem 1.2rem;
+    transition:
+      transform 0.25s var(--ease),
+      box-shadow 0.25s var(--ease);
+  }
+
+  a.item:hover {
+    transform: scale(1.01);
+    box-shadow: var(--shadow-hover);
+  }
+
+  .next {
+    text-align: right;
+  }
+
+  .item span {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .item strong {
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    line-height: 1.3;
+  }
+
+  .placeholder {
+    display: none;
+  }
+
+  @media (min-width: 760px) {
+    .placeholder {
+      display: block;
+      visibility: hidden;
+      box-shadow: none;
+    }
+  }
+</style>

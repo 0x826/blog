@@ -1,0 +1,130 @@
+---
+import { formatDate, readingLabel } from "../lib/posts";
+
+interface Props {
+  href: string;
+  title: string;
+  description: string;
+  pubDate: Date;
+  category: string;
+  tags?: string[];
+  readingMinutes?: number;
+  index?: number;
+  compact?: boolean;
+}
+
+const {
+  href,
+  title,
+  description,
+  pubDate,
+  category,
+  tags = [],
+  readingMinutes,
+  index = 0,
+  compact = false,
+} = Astro.props;
+---
+
+<a
+  class:list={["post-link", "panel", { compact }]}
+  href={href}
+  style={`--delay: ${0.04 + index * 0.04}s`}
+>
+  <div class="meta">
+    <span class="category">{category}</span>
+    <time datetime={pubDate.toISOString()}>{formatDate(pubDate)}</time>
+    {readingMinutes && <span>{readingLabel(readingMinutes)}</span>}
+  </div>
+  <h3>{title}</h3>
+  {!compact && <p>{description}</p>}
+  {
+    tags.length > 0 && (
+      <div class="tags">
+        {tags.slice(0, 3).map((tag) => (
+          <span>{tag}</span>
+        ))}
+      </div>
+    )
+  }
+  <span class="more">进一步了解</span>
+</a>
+
+<style>
+  .post-link {
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem 1.4rem 1.35rem;
+    transition:
+      transform 0.28s var(--ease),
+      box-shadow 0.28s var(--ease);
+    animation: fade-up 0.7s var(--ease) both;
+    animation-delay: var(--delay);
+    min-height: 100%;
+  }
+
+  .post-link:hover {
+    transform: scale(1.015);
+    box-shadow: var(--shadow-hover);
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.45rem 0.75rem;
+    margin-bottom: 0.75rem;
+    color: var(--ink-faint);
+    font-size: 12px;
+  }
+
+  .category {
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  h3 {
+    margin: 0 0 0.55rem;
+    font-size: 21px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+  }
+
+  .compact h3 {
+    font-size: 19px;
+  }
+
+  p {
+    margin: 0 0 1rem;
+    color: var(--ink-soft);
+    font-size: 15px;
+    line-height: 1.47;
+    flex: 1;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-bottom: 1rem;
+  }
+
+  .tags span {
+    padding: 0.2rem 0.55rem;
+    border-radius: var(--radius-pill);
+    background: var(--bg);
+    color: var(--ink-faint);
+    font-size: 12px;
+  }
+
+  .more {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--accent);
+  }
+
+  .more::after {
+    content: " ›";
+  }
+</style>

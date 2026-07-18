@@ -1,0 +1,36 @@
+---
+import { site } from "../consts";
+import { withBase } from "../lib/paths";
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer wrap">
+  <p>
+    <a href={withBase("/rss.xml")}>RSS</a>
+    {" · "}
+    <a href={withBase("/about/")}>关于</a>
+    {" · "}
+    <a href={withBase("/archive/")}>归档</a>
+    {" · "}
+    <a href={withBase("/tags/")}>标签</a>
+  </p>
+  <p class="copy">© {year} {site.author}</p>
+</footer>
+
+<style>
+  .site-footer {
+    padding: 3rem 0 2.5rem;
+    margin-top: 1rem;
+    border-top: 1px solid var(--line);
+    font-size: 0.95rem;
+    color: var(--ink-faint);
+  }
+
+  .site-footer p {
+    margin: 0;
+  }
+
+  .copy {
+    margin-top: 0.5rem !important;
+  }
+</style>

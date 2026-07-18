@@ -1,0 +1,22 @@
+---
+import PageLayout from "../layouts/PageLayout.astro";
+import { withBase } from "../lib/paths";
+---
+
+<PageLayout title="页面不存在" description="页面不存在">
+  <h1>找不到这个页面</h1>
+  <p>
+    <a href={withBase("/")}>回首页</a>
+    {" · "}
+    <a href={withBase("/about/")}>关于</a>
+  </p>
+</PageLayout>
+
+<style>
+  h1 {
+    margin: 0 0 1rem;
+    font-family: var(--font-sans);
+    font-size: 1.8rem;
+    font-weight: 900;
+  }
+</style>

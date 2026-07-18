@@ -1,0 +1,106 @@
+---
+import { pageHref } from "../lib/posts";
+
+interface Props {
+  page: number;
+  totalPages: number;
+}
+
+const { page, totalPages } = Astro.props;
+const show = totalPages > 1;
+const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+---
+
+{
+  show && (
+    <nav class="pagination" aria-label="文章分页">
+      {page > 1 ? (
+        <a class="nav-link" href={pageHref(page - 1)}>
+          ← 上一页
+        </a>
+      ) : (
+        <span class="nav-link disabled">← 上一页</span>
+      )}
+
+      <ol class="pages">
+        {pages.map((n) => (
+          <li>
+            {n === page ? (
+              <span class="page current" aria-current="page">
+                {n}
+              </span>
+            ) : (
+              <a class="page" href={pageHref(n)}>
+                {n}
+              </a>
+            )}
+          </li>
+        ))}
+      </ol>
+
+      {page < totalPages ? (
+        <a class="nav-link" href={pageHref(page + 1)}>
+          下一页 →
+        </a>
+      ) : (
+        <span class="nav-link disabled">下一页 →</span>
+      )}
+    </nav>
+  )
+}
+
+<style>
+  .pagination {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem 1rem;
+    margin: 0.5rem 0 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line);
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+  }
+
+  .nav-link {
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .nav-link.disabled {
+    color: var(--ink-faint);
+    font-weight: 500;
+  }
+
+  .pages {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .page {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2rem;
+    height: 2rem;
+    padding: 0 0.45rem;
+    border-radius: 6px;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .page.current {
+    background: var(--accent);
+    color: #fff;
+  }
+
+  .page:hover:not(.current) {
+    background: rgba(210, 54, 105, 0.08);
+    text-decoration: none;
+  }
+</style>

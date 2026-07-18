@@ -1,0 +1,72 @@
+---
+import { site } from "../consts";
+import { stripBase, withBase } from "../lib/paths";
+
+const pathname = stripBase(Astro.url.pathname);
+
+const isPostList =
+  pathname === "/" ||
+  pathname === "/posts" ||
+  pathname === "/posts/" ||
+  /^\/page\/\d+\/?$/.test(pathname);
+---
+
+<header class:list={["site-header", "wrap", { home: isPostList }]}>
+  <h1 class="brand">
+    <a href={withBase("/")}>{site.name}</a>
+  </h1>
+  <p class="byline">
+    {
+      !isPostList && (
+        <>
+          {" · "}
+          <a href={withBase("/")}>全部文章</a>
+        </>
+      )
+    }
+  </p>
+</header>
+
+<style>
+  .site-header {
+    padding: 2.5rem 0 1.5rem;
+  }
+
+  .site-header.home {
+    padding-bottom: 120px;
+  }
+
+  .brand {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: clamp(2.4rem, 8vw, 3.2rem);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+  }
+
+  .brand a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .brand a:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .byline {
+    margin: 0.35rem 0 0;
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    color: var(--ink-soft);
+  }
+
+  .byline a {
+    color: var(--ink-soft);
+  }
+
+  .byline a:hover {
+    color: var(--accent);
+  }
+</style>

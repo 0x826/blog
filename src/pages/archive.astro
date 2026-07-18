@@ -1,0 +1,85 @@
+---
+import {
+  formatDate,
+  getPublishedPosts,
+  groupPostsByYear,
+} from "../lib/posts";
+import { postHref } from "../lib/paths";
+import PageLayout from "../layouts/PageLayout.astro";
+
+const posts = await getPublishedPosts();
+const groups = groupPostsByYear(posts);
+---
+
+<PageLayout title="归档" description="按年份浏览全部文章">
+  <h1>归档</h1>
+  {
+    groups.map(([year, yearPosts]) => (
+      <section class="year">
+        <h2>
+          {year} <span>({yearPosts.length})</span>
+        </h2>
+        <ul>
+          {yearPosts.map((post) => (
+            <li>
+              <time datetime={post.data.pubDate.toISOString()}>
+                {formatDate(post.data.pubDate)}
+              </time>
+              <a href={postHref(post.id)}>{post.data.title}</a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))
+  }
+</PageLayout>
+
+<style>
+  h1 {
+    margin: 0 0 1.5rem;
+    font-family: var(--font-sans);
+    font-size: 1.8rem;
+    font-weight: 900;
+  }
+
+  .year + .year {
+    margin-top: 2rem;
+  }
+
+  h2 {
+    margin: 0 0 0.75rem;
+    font-family: var(--font-sans);
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+
+  h2 span {
+    color: var(--ink-faint);
+    font-weight: 400;
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li {
+    display: grid;
+    gap: 0.15rem;
+    margin-bottom: 0.75rem;
+  }
+
+  @media (min-width: 640px) {
+    li {
+      grid-template-columns: 7rem 1fr;
+      gap: 1rem;
+      align-items: baseline;
+    }
+  }
+
+  time {
+    color: var(--ink-faint);
+    font-size: 0.92rem;
+  }
+</style>

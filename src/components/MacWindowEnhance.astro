@@ -1,0 +1,104 @@
+---
+/**
+ * 将文章内 Markdown / Shiki 生成的 <pre> 升级为 macOS 窗口（含复制）
+ */
+import "../styles/mac-window.css";
+---
+
+<script>
+  function getLangTitle(pre: HTMLElement) {
+    const fromData = pre.getAttribute("data-language")?.trim();
+    if (fromData) {
+      if (fromData === "text" || fromData === "plaintext" || fromData === "txt") {
+        return "text";
+      }
+      return fromData;
+    }
+
+    const code = pre.querySelector("code");
+    const cls = code?.className || pre.className || "";
+    const match = /language-([a-z0-9_+-]+)/i.exec(cls);
+    if (match?.[1]) return match[1];
+    return "code";
+  }
+
+  function enhancePre(pre: HTMLElement) {
+    if (pre.closest("[data-mac-window]") || pre.dataset.macEnhanced === "1") return;
+    pre.dataset.macEnhanced = "1";
+
+    const figure = document.createElement("figure");
+    figure.className = "mac-window";
+    figure.setAttribute("data-mac-window", "");
+
+    const bar = document.createElement("div");
+    bar.className = "mac-titlebar";
+    bar.innerHTML = `
+      <div class="mac-dots" aria-hidden="true">
+        <span class="dot red"></span>
+        <span class="dot yellow"></span>
+        <span class="dot green"></span>
+      </div>
+      <span class="mac-title"></span>
+      <button type="button" class="mac-copy" data-mac-copy aria-label="复制代码">复制</button>
+    `;
+    const titleEl = bar.querySelector(".mac-title");
+    if (titleEl) titleEl.textContent = getLangTitle(pre);
+
+    const body = document.createElement("div");
+    body.className = "mac-body";
+
+    pre.parentNode?.insertBefore(figure, pre);
+    body.appendChild(pre);
+    figure.appendChild(bar);
+    figure.appendChild(body);
+  }
+
+  async function copyText(text: string) {
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(text);
+      return;
+    }
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand("copy");
+    ta.remove();
+  }
+
+  function bindCopy(root: ParentNode = document) {
+    root.querySelectorAll<HTMLButtonElement>("[data-mac-copy]").forEach((btn) => {
+      if (btn.dataset.bound === "1") return;
+      btn.dataset.bound = "1";
+      btn.addEventListener("click", async () => {
+        const win = btn.closest("[data-mac-window]");
+        const text = win?.querySelector("pre")?.textContent ?? "";
+        try {
+          await copyText(text);
+          const prev = btn.textContent;
+          btn.textContent = "已复制";
+          btn.classList.add("is-copied");
+          window.setTimeout(() => {
+            btn.textContent = prev || "复制";
+            btn.classList.remove("is-copied");
+          }, 1600);
+        } catch {
+          btn.textContent = "失败";
+          window.setTimeout(() => {
+            btn.textContent = "复制";
+          }, 1600);
+        }
+      });
+    });
+  }
+
+  function enhanceAll() {
+    document.querySelectorAll<HTMLElement>(".prose pre").forEach(enhancePre);
+    bindCopy();
+  }
+
+  enhanceAll();
+  document.addEventListener("astro:page-load", enhanceAll);
+</script>

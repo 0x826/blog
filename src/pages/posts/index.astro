@@ -1,0 +1,14 @@
+---
+import { getPublishedPosts, paginatePosts } from "../../lib/posts";
+import PageLayout from "../../layouts/PageLayout.astro";
+import PostList from "../../components/PostList.astro";
+import Pagination from "../../components/Pagination.astro";
+
+const allPosts = await getPublishedPosts();
+const { items, page, totalPages } = paginatePosts(allPosts, 1);
+---
+
+<PageLayout title="文章" description="全部文章">
+  <PostList posts={items} />
+  <Pagination page={page} totalPages={totalPages} />
+</PageLayout>

@@ -1,0 +1,45 @@
+---
+import { site, social } from "../consts";
+import { getPublishedPosts } from "../lib/posts";
+import PageLayout from "../layouts/PageLayout.astro";
+
+const posts = await getPublishedPosts();
+---
+
+<PageLayout title="关于" description={`关于 ${site.name} 与作者 ${site.author}`}>
+  <article class="about">
+    <h1>关于</h1>
+    <p>
+      你好，我是 {site.author}。这里写前端工程、产品设计与数字美学。
+    </p>
+    <p>
+      站点风格参考 <a href="https://overreacted.io/" rel="noopener noreferrer">overreacted</a>
+      ——少装饰，多文字，把注意力留给内容本身。
+    </p>
+    <p>目前已发布 {posts.length} 篇文章。</p>
+    <p>
+      {
+        social.map((item, i) => (
+          <>
+            {i > 0 && <span> · </span>}
+            <a href={item.href}>{item.label}</a>
+          </>
+        ))
+      }
+    </p>
+  </article>
+</PageLayout>
+
+<style>
+  h1 {
+    margin: 0 0 1rem;
+    font-family: var(--font-sans);
+    font-size: 1.8rem;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+  }
+
+  p {
+    margin: 0 0 1rem;
+  }
+</style>

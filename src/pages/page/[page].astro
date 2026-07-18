@@ -1,0 +1,33 @@
+---
+import {
+  getPublishedPosts,
+  getTotalPages,
+  PAGE_SIZE,
+  paginatePosts,
+} from "../../lib/posts";
+import PageLayout from "../../layouts/PageLayout.astro";
+import PostList from "../../components/PostList.astro";
+import Pagination from "../../components/Pagination.astro";
+
+export async function getStaticPaths() {
+  const allPosts = await getPublishedPosts();
+  const totalPages = getTotalPages(allPosts.length, PAGE_SIZE);
+  // 第 1 页在 /，这里从 2 开始
+  return Array.from({ length: Math.max(0, totalPages - 1) }, (_, i) => {
+    const page = i + 2;
+    return {
+      params: { page: String(page) },
+      props: { page },
+    };
+  });
+}
+
+const { page } = Astro.props;
+const allPosts = await getPublishedPosts();
+const { items, totalPages } = paginatePosts(allPosts, page);
+---
+
+<PageLayout title={`第 ${page} 页`} description={`文章列表第 ${page} 页`}>
+  <PostList posts={items} />
+  <Pagination page={page} totalPages={totalPages} />
+</PageLayout>

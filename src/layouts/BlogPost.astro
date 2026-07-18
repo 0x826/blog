@@ -1,0 +1,275 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import MacWindowEnhance from "../components/MacWindowEnhance.astro";
+import type { Post } from "../lib/posts";
+import { formatDate, readingLabel, slugifyTag } from "../lib/posts";
+import { postHref, withBase } from "../lib/paths";
+
+interface Props {
+  title: string;
+  description: string;
+  pubDate: Date;
+  updatedDate?: Date;
+  category: string;
+  tags?: string[];
+  series?: string;
+  readingMinutes: number;
+  related: Post[];
+  prev?: Post;
+  next?: Post;
+}
+
+const {
+  title,
+  description,
+  pubDate,
+  updatedDate,
+  category,
+  tags = [],
+  series,
+  readingMinutes,
+  related,
+  prev,
+  next,
+} = Astro.props;
+---
+
+<BaseLayout title={title} description={description}>
+  <Header />
+  <main class="wrap post">
+    <article>
+      <header class="header">
+        <h1>{title}</h1>
+        <p class="meta">
+          <time datetime={pubDate.toISOString()}>{formatDate(pubDate, "long")}</time>
+          <span>·</span>
+          <span>{readingLabel(readingMinutes)}</span>
+          <span>·</span>
+          <span>{category}</span>
+          {
+            series && (
+              <>
+                <span>·</span>
+                <span>{series}</span>
+              </>
+            )
+          }
+        </p>
+        {
+          tags.length > 0 && (
+            <p class="tags">
+              {tags.map((tag, i) => (
+                <>
+                  {i > 0 && <span> · </span>}
+                  <a href={withBase(`/tags/${slugifyTag(tag)}/`)}>{tag}</a>
+                </>
+              ))}
+            </p>
+          )
+        }
+        {
+          updatedDate && (
+            <p class="updated">
+              更新于 {formatDate(updatedDate, "long")}
+            </p>
+          )
+        }
+      </header>
+
+      <div class="prose">
+        <slot />
+      </div>
+      <MacWindowEnhance />
+    </article>
+
+    {
+      (prev || next) && (
+        <nav class="pager" aria-label="上下篇">
+          {prev && (
+            <p>
+              上一篇：
+              <a href={postHref(prev.id)}>{prev.data.title}</a>
+            </p>
+          )}
+          {next && (
+            <p>
+              下一篇：
+              <a href={postHref(next.id)}>{next.data.title}</a>
+            </p>
+          )}
+        </nav>
+      )
+    }
+
+    {
+      related.length > 0 && (
+        <section class="related">
+          <h2>相关阅读</h2>
+          <ul>
+            {related.map((post) => (
+              <li>
+                <a href={postHref(post.id)}>{post.data.title}</a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .post {
+    padding-bottom: 1rem;
+  }
+
+  .header {
+    margin-bottom: 2rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  h1 {
+    margin: 0 0 0.75rem;
+    font-family: var(--font-sans);
+    font-size: clamp(1.85rem, 5vw, 2.4rem);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+    color: var(--ink);
+  }
+
+  .meta,
+  .tags,
+  .updated {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--ink-faint);
+  }
+
+  .meta span,
+  .tags span {
+    margin: 0 0.2rem;
+  }
+
+  .tags,
+  .updated {
+    margin-top: 0.35rem;
+  }
+
+  .prose :global(h2),
+  .prose :global(h3) {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    scroll-margin-top: 1rem;
+  }
+
+  .prose :global(h2) {
+    font-size: 1.55rem;
+  }
+
+  .prose :global(h3) {
+    font-size: 1.25rem;
+  }
+
+  .prose :global(p),
+  .prose :global(ul),
+  .prose :global(ol) {
+    color: var(--ink);
+  }
+
+  .prose :global(li + li) {
+    margin-top: 0.35rem;
+  }
+
+  .prose :global(a) {
+    color: var(--accent);
+  }
+
+  .prose :global(code) {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    padding: 0.1em 0.35em;
+    border-radius: 3px;
+    background: var(--code-bg);
+  }
+
+  .prose :global(pre) {
+    padding: 1rem 1.1rem;
+    overflow-x: auto;
+    border-radius: 6px;
+    background: #1e1e1e;
+  }
+
+  .prose :global(.mac-window) {
+    margin: 1.5rem 0;
+  }
+
+  .prose :global(.mac-window pre) {
+    margin: 0;
+    border-radius: 0;
+  }
+
+  .prose :global(pre code) {
+    padding: 0;
+    background: transparent;
+  }
+
+  .prose :global(blockquote) {
+    margin: 1.5rem 0;
+    padding-left: 1rem;
+    border-left: 3px solid var(--accent);
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+
+  .prose :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.25rem 0;
+    font-size: 0.95rem;
+  }
+
+  .prose :global(th),
+  .prose :global(td) {
+    padding: 0.5rem 0.4rem;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+  }
+
+  .pager {
+    margin-top: 2.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .pager p {
+    margin: 0.4rem 0;
+  }
+
+  .related {
+    margin-top: 2rem;
+  }
+
+  .related h2 {
+    margin: 0 0 0.75rem;
+    font-family: var(--font-sans);
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+
+  .related ul {
+    margin: 0;
+    padding-left: 1.2rem;
+  }
+
+  .related li + li {
+    margin-top: 0.35rem;
+  }
+</style>

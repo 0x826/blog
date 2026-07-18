@@ -1,0 +1,46 @@
+---
+import {
+  getAllTags,
+  getPublishedPosts,
+  slugifyTag,
+} from "../../lib/posts";
+import { withBase } from "../../lib/paths";
+import PageLayout from "../../layouts/PageLayout.astro";
+import PostList from "../../components/PostList.astro";
+
+export async function getStaticPaths() {
+  const posts = await getPublishedPosts();
+  const tags = getAllTags(posts);
+  return tags.map((tag) => ({
+    params: { tag: slugifyTag(tag.name) },
+    props: { tagName: tag.name },
+  }));
+}
+
+const { tagName } = Astro.props;
+const posts = (await getPublishedPosts()).filter((post) =>
+  post.data.tags.includes(tagName),
+);
+---
+
+<PageLayout title={`标签：${tagName}`} description={`${tagName} 相关文章`}>
+  <h1>{tagName}</h1>
+  <p class="count">
+    {posts.length} 篇文章 · <a href={withBase("/tags/")}>全部标签</a>
+  </p>
+  <PostList posts={posts} />
+</PageLayout>
+
+<style>
+  h1 {
+    margin: 0 0 0.35rem;
+    font-family: var(--font-sans);
+    font-size: 1.8rem;
+    font-weight: 900;
+  }
+
+  .count {
+    margin: 0 0 2rem;
+    color: var(--ink-faint);
+  }
+</style>

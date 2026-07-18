@@ -1,0 +1,87 @@
+---
+import type { Post } from "../lib/posts";
+import { formatDate } from "../lib/posts";
+import { postHref } from "../lib/paths";
+
+interface Props {
+  posts: Post[];
+}
+
+const { posts } = Astro.props;
+---
+
+{
+  posts.length > 0 && (
+    <section class="related">
+      <h2>相关阅读</h2>
+      <div class="grid">
+        {posts.map((post) => (
+          <a class="item panel" href={postHref(post.id)}>
+            <span class="category">{post.data.category}</span>
+            <strong>{post.data.title}</strong>
+            <time datetime={post.data.pubDate.toISOString()}>
+              {formatDate(post.data.pubDate)}
+            </time>
+          </a>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .related {
+    margin-top: 2rem;
+  }
+
+  h2 {
+    margin: 0 0 1rem;
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    text-align: center;
+  }
+
+  .grid {
+    display: grid;
+    gap: 0.85rem;
+  }
+
+  @media (min-width: 760px) {
+    .grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .item {
+    display: grid;
+    gap: 0.45rem;
+    padding: 1.2rem 1.15rem;
+    transition:
+      transform 0.25s var(--ease),
+      box-shadow 0.25s var(--ease);
+  }
+
+  .item:hover {
+    transform: scale(1.015);
+    box-shadow: var(--shadow-hover);
+  }
+
+  .category {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  strong {
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    line-height: 1.3;
+  }
+
+  time {
+    color: var(--ink-faint);
+    font-size: 12px;
+  }
+</style>
