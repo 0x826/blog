@@ -1,18 +1,21 @@
+/*
+ * @Author: peonyJtao peonyfoals@gmail.com
+ * @Date: 2026-07-18 14:30:30
+ * @LastEditors: peonyJtao peonyfoals@gmail.com
+ * @LastEditTime: 2026-07-19 11:09:26
+ * @FilePath: /个人博客/src/consts.ts
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 export const site = {
   name: "lumen",
-  tagline: `A blog by JTao`,
+  tagline: `A blog by peony`,
   description: "记录前沿技术、产品思考与数字美学。",
   url: "https://langzyw.xyz",
-  author: "JTao",
-  email: "hello@lumen.dev",
+  author: "peony",
+  email: "peonyfoals@gmail.com",
   location: "China",
 };
 
-export const social = [
-  { label: "GitHub", href: "https://github.com/0x826/blog" },
-  { label: "RSS", href: "https://langzyw.xyz/rss.xml" },
-  { label: "Email", href: `mailto:${site.email}` },
-] as const;
 
 export const nav = [
   { href: "/", label: "首页" },
@@ -39,6 +42,10 @@ export const categories = [
   {
     id: "随笔",
     description: "阅读、方法论与长期主义笔记",
+  },
+  {
+    id: "区块链",
+    description: "智能合约、协议与 Web3 实践",
   },
 ] as const;
 

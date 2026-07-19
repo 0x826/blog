@@ -22,8 +22,6 @@ const { posts } = Astro.props;
             <time datetime={post.data.pubDate.toISOString()}>
               {formatDate(post.data.pubDate, "long")}
             </time>
-            <span class="sep">·</span>
-            <span>{post.data.category}</span>
           </p>
           <p class="desc">{post.data.description}</p>
         </article>
@@ -60,10 +58,6 @@ const { posts } = Astro.props;
     margin: 0 0 0.35rem;
     font-size: 0.92rem;
     color: var(--ink-faint);
-  }
-
-  .sep {
-    margin: 0 0.25rem;
   }
 
   .desc {

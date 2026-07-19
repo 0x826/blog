@@ -12,7 +12,6 @@ interface Props {
   description: string;
   pubDate: Date;
   updatedDate?: Date;
-  category: string;
   tags?: string[];
   series?: string;
   readingMinutes: number;
@@ -26,7 +25,6 @@ const {
   description,
   pubDate,
   updatedDate,
-  category,
   tags = [],
   series,
   readingMinutes,
@@ -46,8 +44,6 @@ const {
           <time datetime={pubDate.toISOString()}>{formatDate(pubDate, "long")}</time>
           <span>·</span>
           <span>{readingLabel(readingMinutes)}</span>
-          <span>·</span>
-          <span>{category}</span>
           {
             series && (
               <>

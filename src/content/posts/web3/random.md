@@ -1,0 +1,250 @@
+---
+title: 链上随机数
+description: 链上随机数
+pubDate: 2026-07-18
+category: 区块链
+tags: ["区块链", "智能合约"]
+---
+
+### 链上随机数
+
+`block.prevrandao` / `blockhash` / `keccak256(abi.encodePacked(...))` 可被验证者/矿工在一定范围内影响，**不适合**作为高价值 NFT 发售、抽奖、对战结果的唯一随机源。
+
+生产环境主流方案：**Chainlink VRF**（Verifiable Random Function）——链下生成随机数并附证明，链上 Coordinator 验证明后回调业务合约。
+
+本文为 Chainlink 官方开源合约，不是自写 demo。
+
+- 仓库：[smartcontractkit/chainlink](https://github.com/smartcontractkit/chainlink)
+- 文档：[Chainlink VRF](https://docs.chain.link/vrf)
+- 各链 Coordinator / Key Hash / LINK 地址见官方文档
+
+### 流程
+
+```text
+1. 创建并资助 Subscription，将 Consumer 合约加入订阅
+2. Consumer 调用 Coordinator.requestRandomWords(...)
+3. Oracle 生成随机数 + 证明
+4. Coordinator 验证明后调用 Consumer.rawFulfillRandomWords
+5. 业务在 fulfillRandomWords 中使用 randomWords
+```
+
+### VRFConsumerBaseV2（官方基类）
+
+业务合约继承它，实现 `fulfillRandomWords`；仅 Coordinator 可触发 `rawFulfillRandomWords`。
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.4;
+
+/** ****************************************************************************
+ * @notice Interface for contracts using VRF randomness
+ * *****************************************************************************
+ * @dev PURPOSE
+ *
+ * @dev Reggie the Random Oracle (not his real job) wants to provide randomness
+ * @dev to Vera the verifier in such a way that Vera can be sure he's not
+ * @dev making his output up to suit himself. Reggie provides Vera a public key
+ * @dev to which he knows the secret key. Each time Vera provides a seed to
+ * @dev Reggie, he gives back a value which is computed completely
+ * @dev deterministically from the seed and the secret key.
+ *
+ * @dev Reggie provides a proof by which Vera can verify that the output was
+ * @dev correctly computed once Reggie tells it to her, but without that proof,
+ * @dev the output is indistinguishable to her from a uniform random sample
+ * @dev from the output space.
+ *
+ * @dev The purpose of this contract is to make it easy for unrelated contracts
+ * @dev to talk to Vera the verifier about the work Reggie is doing, to provide
+ * @dev simple access to a verifiable source of randomness. It ensures 2 things:
+ * @dev 1. The fulfillment came from the VRFCoordinator
+ * @dev 2. The consumer contract implements fulfillRandomWords.
+ * *****************************************************************************
+ * @dev USAGE
+ *
+ * @dev Calling contracts must inherit from VRFConsumerBase, and can
+ * @dev initialize VRFConsumerBase's attributes in their constructor as
+ * @dev shown:
+ *
+ * @dev   contract VRFConsumer {
+ * @dev     constructor(<other arguments>, address _vrfCoordinator, address _link)
+ * @dev       VRFConsumerBase(_vrfCoordinator) public {
+ * @dev         <initialization with other arguments goes here>
+ * @dev       }
+ * @dev   }
+ *
+ * @dev The oracle will have given you an ID for the VRF keypair they have
+ * @dev committed to (let's call it keyHash). Create subscription, fund it
+ * @dev and your consumer contract as a consumer of it (see VRFCoordinatorInterface
+ * @dev subscription management functions).
+ * @dev Call requestRandomWords(keyHash, subId, minimumRequestConfirmations,
+ * @dev callbackGasLimit, numWords),
+ * @dev see (VRFCoordinatorInterface for a description of the arguments).
+ *
+ * @dev Once the VRFCoordinator has received and validated the oracle's response
+ * @dev to your request, it will call your contract's fulfillRandomWords method.
+ *
+ * @dev The randomness argument to fulfillRandomWords is a set of random words
+ * @dev generated from your requestId and the blockHash of the request.
+ *
+ * @dev If your contract could have concurrent requests open, you can use the
+ * @dev requestId returned from requestRandomWords to track which response is associated
+ * @dev with which randomness request.
+ * @dev See "SECURITY CONSIDERATIONS" for principles to keep in mind,
+ * @dev if your contract could have multiple requests in flight simultaneously.
+ *
+ * @dev Colliding `requestId`s are cryptographically impossible as long as seeds
+ * @dev differ.
+ *
+ * *****************************************************************************
+ * @dev SECURITY CONSIDERATIONS
+ *
+ * @dev A method with the ability to call your fulfillRandomness method directly
+ * @dev could spoof a VRF response with any random value, so it's critical that
+ * @dev it cannot be directly called by anything other than this base contract
+ * @dev (specifically, by the VRFConsumerBase.rawFulfillRandomness method).
+ *
+ * @dev For your users to trust that your contract's random behavior is free
+ * @dev from malicious interference, it's best if you can write it so that all
+ * @dev behaviors implied by a VRF response are executed *during* your
+ * @dev fulfillRandomness method. If your contract must store the response (or
+ * @dev anything derived from it) and use it later, you must ensure that any
+ * @dev user-significant behavior which depends on that stored value cannot be
+ * @dev manipulated by a subsequent VRF request.
+ *
+ * @dev Similarly, both miners and the VRF oracle itself have some influence
+ * @dev over the order in which VRF responses appear on the blockchain, so if
+ * @dev your contract could have multiple VRF requests in flight simultaneously,
+ * @dev you must ensure that the order in which the VRF responses arrive cannot
+ * @dev be used to manipulate your contract's user-significant behavior.
+ *
+ * @dev Since the block hash of the block which contains the requestRandomness
+ * @dev call is mixed into the input to the VRF *last*, a sufficiently powerful
+ * @dev miner could, in principle, fork the blockchain to evict the block
+ * @dev containing the request, forcing the request to be included in a
+ * @dev different block with a different hash, and therefore a different input
+ * @dev to the VRF. However, such an attack would incur a substantial economic
+ * @dev cost. This cost scales with the number of blocks the VRF oracle waits
+ * @dev until it calls responds to a request. It is for this reason that
+ * @dev that you can signal to an oracle you'd like them to wait longer before
+ * @dev responding to the request (however this is not enforced in the contract
+ * @dev and so remains effective only in the case of unmodified oracle software).
+ */
+abstract contract VRFConsumerBaseV2 {
+  error OnlyCoordinatorCanFulfill(address have, address want);
+  // solhint-disable-next-line chainlink-solidity/prefix-immutable-variables-with-i
+  address private immutable vrfCoordinator;
+
+  /**
+   * @param _vrfCoordinator address of VRFCoordinator contract
+   */
+  constructor(address _vrfCoordinator) {
+    vrfCoordinator = _vrfCoordinator;
+  }
+
+  /**
+   * @notice fulfillRandomness handles the VRF response. Your contract must
+   * @notice implement it. See "SECURITY CONSIDERATIONS" above for important
+   * @notice principles to keep in mind when implementing your fulfillRandomness
+   * @notice method.
+   *
+   * @dev VRFConsumerBaseV2 expects its subcontracts to have a method with this
+   * @dev signature, and will call it once it has verified the proof
+   * @dev associated with the randomness. (It is triggered via a call to
+   * @dev rawFulfillRandomness, below.)
+   *
+   * @param requestId The Id initially returned by requestRandomness
+   * @param randomWords the VRF output expanded to the requested number of words
+   */
+  // solhint-disable-next-line chainlink-solidity/prefix-internal-functions-with-underscore
+  function fulfillRandomWords(uint256 requestId, uint256[] memory randomWords) internal virtual;
+
+  // rawFulfillRandomness is called by VRFCoordinator when it receives a valid VRF
+  // proof. rawFulfillRandomness then calls fulfillRandomness, after validating
+  // the origin of the call
+  function rawFulfillRandomWords(uint256 requestId, uint256[] memory randomWords) external {
+    if (msg.sender != vrfCoordinator) {
+      revert OnlyCoordinatorCanFulfill(msg.sender, vrfCoordinator);
+    }
+    fulfillRandomWords(requestId, randomWords);
+  }
+}
+```
+
+### VRFConsumerV2（官方 testhelper / 示例消费者）
+
+Chainlink 仓库中的完整消费者示例，含订阅创建、充值、`requestRandomness`：
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+import {LinkTokenInterface} from "../../shared/interfaces/LinkTokenInterface.sol";
+import {VRFCoordinatorV2Interface} from "../interfaces/VRFCoordinatorV2Interface.sol";
+import {VRFConsumerBaseV2} from "../VRFConsumerBaseV2.sol";
+
+contract VRFConsumerV2 is VRFConsumerBaseV2 {
+  uint256[] public s_randomWords;
+  uint256 public s_requestId;
+  VRFCoordinatorV2Interface internal COORDINATOR;
+  LinkTokenInterface internal LINKTOKEN;
+  uint64 public s_subId;
+  uint256 public s_gasAvailable;
+
+  constructor(address vrfCoordinator, address link) VRFConsumerBaseV2(vrfCoordinator) {
+    COORDINATOR = VRFCoordinatorV2Interface(vrfCoordinator);
+    LINKTOKEN = LinkTokenInterface(link);
+  }
+
+  function fulfillRandomWords(uint256 requestId, uint256[] memory randomWords) internal override {
+    require(requestId == s_requestId, "request ID is incorrect");
+
+    s_gasAvailable = gasleft();
+    s_randomWords = randomWords;
+  }
+
+  function createSubscriptionAndFund(uint96 amount) external {
+    if (s_subId == 0) {
+      s_subId = COORDINATOR.createSubscription();
+      COORDINATOR.addConsumer(s_subId, address(this));
+    }
+    // Approve the link transfer.
+    LINKTOKEN.transferAndCall(address(COORDINATOR), amount, abi.encode(s_subId));
+  }
+
+  function topUpSubscription(uint96 amount) external {
+    require(s_subId != 0, "sub not set");
+    // Approve the link transfer.
+    LINKTOKEN.transferAndCall(address(COORDINATOR), amount, abi.encode(s_subId));
+  }
+
+  function updateSubscription(address[] memory consumers) external {
+    require(s_subId != 0, "subID not set");
+    for (uint256 i = 0; i < consumers.length; i++) {
+      COORDINATOR.addConsumer(s_subId, consumers[i]);
+    }
+  }
+
+  function requestRandomness(
+    bytes32 keyHash,
+    uint64 subId,
+    uint16 minReqConfs,
+    uint32 callbackGasLimit,
+    uint32 numWords
+  ) external returns (uint256) {
+    s_requestId = COORDINATOR.requestRandomWords(keyHash, subId, minReqConfs, callbackGasLimit, numWords);
+    return s_requestId;
+  }
+}
+```
+
+### 安全注意（官方文档强调）
+
+1. 不要让任意地址直接调用你的 `fulfillRandomWords` 逻辑（基类已限制 Coordinator）
+2. 若随机结果会影响用户利益，尽量在 `fulfillRandomWords` **当次**结算，减少被后续请求操纵的窗口
+3. 多请求并行时，用 `requestId` 绑定业务状态，勿假设回调顺序
+4. 订阅要有足够 LINK；`callbackGasLimit` / `numWords` 按业务配置
+
+### 小结
+
+- 朴素链上哈希 ≠ 安全随机数
+- 生产用 **Chainlink VRF**：继承 `VRFConsumerBaseV2`，在回调里消费 `randomWords`

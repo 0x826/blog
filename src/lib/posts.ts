@@ -42,21 +42,32 @@ export function formatDate(date: Date, style: "short" | "long" = "short") {
 }
 
 export function readingTimeFromBody(body = "") {
-  const text = body
+  const codeBlocks = body.match(/```[\s\S]*?```/g) ?? [];
+  let codeLines = 0;
+  for (const block of codeBlocks) {
+    // 去掉开头 ```lang 与结尾 ```
+    codeLines += Math.max(0, block.split("\n").length - 2);
+  }
+
+  const prose = body
     .replace(/```[\s\S]*?```/g, " ")
-    .replace(/`[^`]*`/g, " ")
     .replace(/!\[[^\]]*\]\([^)]*\)/g, " ")
-    .replace(/\[[^\]]*\]\([^)]*\)/g, " ")
-    .replace(/[#>*_\-~|]/g, " ")
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")
+    .replace(/^#{1,6}\s+/gm, "")
+    .replace(/[*_~>|]/g, " ")
     .trim();
 
-  const cn = (text.match(/[\u4e00-\u9fff]/g) || []).length;
-  const en = (text.match(/[A-Za-z0-9]+/g) || []).length;
-  const minutes = Math.max(1, Math.ceil((cn + en * 0.5) / 350));
-  return minutes;
+  const cn = (prose.match(/[\u4e00-\u9fff]/g) || []).length;
+  const en = (prose.match(/[A-Za-z0-9]+/g) || []).length;
+  // 正文约 300 字/分；教学向代码按精读约 3 行/分
+  return Math.max(1, Math.ceil((cn + en * 0.5) / 300 + codeLines / 3));
 }
 
 export function readingLabel(minutes: number) {
+  if (minutes >= 60) {
+    const hours = Math.ceil(minutes / 30) / 2;
+    return `约 ${hours} 小时`;
+  }
   return `约 ${minutes} 分钟`;
 }
 

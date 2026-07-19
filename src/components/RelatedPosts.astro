@@ -17,7 +17,6 @@ const { posts } = Astro.props;
       <div class="grid">
         {posts.map((post) => (
           <a class="item panel" href={postHref(post.id)}>
-            <span class="category">{post.data.category}</span>
             <strong>{post.data.title}</strong>
             <time datetime={post.data.pubDate.toISOString()}>
               {formatDate(post.data.pubDate)}
@@ -65,12 +64,6 @@ const { posts } = Astro.props;
   .item:hover {
     transform: scale(1.015);
     box-shadow: var(--shadow-hover);
-  }
-
-  .category {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--accent);
   }
 
   strong {

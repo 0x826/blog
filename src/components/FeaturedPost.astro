@@ -7,12 +7,11 @@ interface Props {
   title: string;
   description: string;
   pubDate: Date;
-  category: string;
   tags?: string[];
   readingMinutes: number;
 }
 
-const { href, title, description, pubDate, category, tags = [], readingMinutes } =
+const { href, title, description, pubDate, tags = [], readingMinutes } =
   Astro.props;
 ---
 
@@ -20,7 +19,6 @@ const { href, title, description, pubDate, category, tags = [], readingMinutes }
   <div class="copy">
     <p class="eyebrow">精选</p>
     <div class="meta">
-      <span class="category">{category}</span>
       <time datetime={pubDate.toISOString()}>{formatDate(pubDate, "long")}</time>
       <span>{readingLabel(readingMinutes)}</span>
     </div>
@@ -74,11 +72,6 @@ const { href, title, description, pubDate, category, tags = [], readingMinutes }
     margin-bottom: 0.85rem;
     color: var(--ink-faint);
     font-size: 12px;
-  }
-
-  .category {
-    color: var(--accent);
-    font-weight: 600;
   }
 
   h2 {

@@ -6,7 +6,6 @@ interface Props {
   title: string;
   description: string;
   pubDate: Date;
-  category: string;
   tags?: string[];
   readingMinutes?: number;
   index?: number;
@@ -18,7 +17,6 @@ const {
   title,
   description,
   pubDate,
-  category,
   tags = [],
   readingMinutes,
   index = 0,
@@ -32,7 +30,6 @@ const {
   style={`--delay: ${0.04 + index * 0.04}s`}
 >
   <div class="meta">
-    <span class="category">{category}</span>
     <time datetime={pubDate.toISOString()}>{formatDate(pubDate)}</time>
     {readingMinutes && <span>{readingLabel(readingMinutes)}</span>}
   </div>
@@ -76,11 +73,6 @@ const {
     margin-bottom: 0.75rem;
     color: var(--ink-faint);
     font-size: 12px;
-  }
-
-  .category {
-    color: var(--accent);
-    font-weight: 600;
   }
 
   h3 {
