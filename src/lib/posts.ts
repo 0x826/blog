@@ -61,7 +61,8 @@ export function readingLabel(minutes: number) {
 }
 
 export function slugifyTag(tag: string) {
-  return tag.trim();
+  // Avoid `/` in tags breaking nested routes (e.g. CI/CD → CI-CD)
+  return tag.trim().replaceAll("/", "-");
 }
 
 export function getAllTags(posts: Post[]) {

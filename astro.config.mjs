@@ -3,8 +3,7 @@ import { defineConfig } from "astro/config";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://0x826.github.io",
-  base: "/blog",
+  site: "https://langzyw.xyz",
   trailingSlash: "always",
   markdown: {
     syntaxHighlight: "shiki",
