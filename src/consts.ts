@@ -2,15 +2,15 @@ export const site = {
   name: "lumen",
   tagline: `A blog by JTao`,
   description: "记录前沿技术、产品思考与数字美学。",
-  url: "https://0x923123123.github.io/blog",
+  url: "https://0x826.github.io/blog",
   author: "JTao",
   email: "hello@lumen.dev",
   location: "China",
 };
 
 export const social = [
-  { label: "GitHub", href: "https://github.com/0x923123123/blog" },
-  { label: "RSS", href: "https://0x923123123.github.io/blog/rss.xml" },
+  { label: "GitHub", href: "https://github.com/0x826/blog" },
+  { label: "RSS", href: "https://0x826.github.io/blog/rss.xml" },
   { label: "Email", href: `mailto:${site.email}` },
 ] as const;
 
