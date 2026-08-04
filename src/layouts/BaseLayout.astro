@@ -82,13 +82,18 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
           if (el && src) el.src = src;
         };
 
+        // 防止连续点击导致 A/B 切换状态错乱（尤其在钱包 WebView 里可能会重载）。
+        let switching = false;
+        const makeCacheBustedUrl = (targetUrl, version) =>
+          `${targetUrl}${targetUrl.includes("?") ? "&" : "?"}v=${version}`;
+
         const finalize = (targetUrl, targetType) => {
           const current = Number(countMeta.getAttribute("content") ?? "0") + 1;
           countMeta.setAttribute("content", String(current));
           console.log("[favicon] update count:", current);
 
           // 给 favicon URL 加一个版本参数，尽可能绕过浏览器/钱包侧的强缓存。
-          const cacheBustedUrl = `${targetUrl}${targetUrl.includes("?") ? "&" : "?"}v=${current}`;
+          const cacheBustedUrl = makeCacheBustedUrl(targetUrl, current);
 
           // 某些 WebView 不会响应 link.href 的原地修改，这里直接替换节点。
           const next = document.createElement("link");
@@ -102,6 +107,10 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
 
           // 更新按钮预览图：用于验证 A/B 切换是否真的发生。
           setPreview(cacheBustedUrl);
+
+          switching = false;
+          const btn = document.getElementById("favicon-switch-btn");
+          if (btn) btn.disabled = false;
 
           // tp / MetaMask WebView 对 favicon 的运行时变更很不敏感：
           // 这里在钱包环境里切换完成后强制 reload 一次，让钱包侧重新取 icon。
@@ -117,9 +126,19 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
         };
 
         const switchFavicon = () => {
+          if (switching) return;
+          switching = true;
+
+          const btn = document.getElementById("favicon-switch-btn");
+          if (btn) btn.disabled = true;
+
           const targetUrl = useIconB ? iconAUrl : iconBUrl;
           const targetType = useIconB ? "image/x-icon" : "image/png";
           useIconB = !useIconB;
+
+          // 切换开始就先更新预览图，避免你感知“第一下没变”。
+          const nextVersion = Number(countMeta.getAttribute("content") ?? "0") + 1;
+          setPreview(makeCacheBustedUrl(targetUrl, nextVersion));
 
           const img = new Image();
           let done = false;
