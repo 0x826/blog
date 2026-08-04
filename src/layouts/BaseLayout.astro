@@ -67,35 +67,29 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
       let link = document.getElementById("site-favicon");
       const countMeta = document.getElementById("favicon-update-count");
       if (link && countMeta) {
-        const ua = navigator.userAgent?.toLowerCase?.() ?? "";
-        // 钱包内置 WebView 往往只在很早期读取 favicon（3s 后通常不生效），所以钱包环境直接改为 0ms 切换。
-        const isWalletWebView = /metamask|tpwallet/.test(ua);
-        const delay = isWalletWebView ? 0 : 3000;
+        const url = delayedFaviconUrl;
 
-        window.setTimeout(() => {
-          const url = delayedFaviconUrl;
-          // 兼容 tp / MetaMask 内置 WebView：
-          // 不使用 objectURL（部分内置 WebView 对此不生效），改为 Image 预加载后直接替换 href。
-          const finalize = () => {
-            // 更新计数：每次 finalize 只会被调用一次（由 done/guard 控制）。
-            const current = Number(countMeta.getAttribute("content") ?? "0") + 1;
-            countMeta.setAttribute("content", String(current));
-            // 方便在有 console 的 WebView 里排查是否真的触发了更新。
-            console.log("[favicon] update count:", current);
+        // 不使用 objectURL：部分内置 WebView 对此不生效。
+        const finalize = () => {
+          const current = Number(countMeta.getAttribute("content") ?? "0") + 1;
+          countMeta.setAttribute("content", String(current));
+          console.log("[favicon] update count:", current);
 
-            // 某些 WebView 不会响应 link.href 的原地修改，这里直接替换节点。
-            const next = document.createElement("link");
-            next.rel = "icon";
-            next.id = "site-favicon";
-            next.type = "image/png";
-            next.sizes = "150x150";
-            next.href = url;
-            link.parentNode?.replaceChild(next, link);
-            link = next;
-          };
+          // 某些 WebView 不会响应 link.href 的原地修改，这里直接替换节点。
+          const next = document.createElement("link");
+          next.rel = "icon";
+          next.id = "site-favicon";
+          next.type = "image/png";
+          next.sizes = "150x150";
+          next.href = url;
+          link.parentNode?.replaceChild(next, link);
+          link = next;
+        };
 
+        const switchFavicon = () => {
           const img = new Image();
           let done = false;
+
           const guardTimer = window.setTimeout(() => {
             if (done) return;
             done = true;
@@ -108,6 +102,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
             window.clearTimeout(guardTimer);
             finalize();
           };
+
           img.onerror = () => {
             if (done) return;
             done = true;
@@ -116,12 +111,40 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
           };
 
           img.src = url;
-        }, delay);
+        };
+
+        // 暴露给按钮点击触发
+        window.__switchFavicon = switchFavicon;
+
+        window.addEventListener("DOMContentLoaded", () => {
+          const btn = document.getElementById("favicon-switch-btn");
+          btn?.addEventListener("click", () => switchFavicon());
+        });
       }
     </script>
     <title>{pageTitle}</title>
   </head>
   <body>
     <slot />
+    <button
+      id="favicon-switch-btn"
+      type="button"
+      aria-label="手动切换 favicon"
+      style="
+        position: fixed;
+        right: 14px;
+        bottom: 14px;
+        z-index: 999999;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        background: rgba(255, 255, 255, 0.92);
+        color: #111;
+        padding: 10px 12px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 12px;
+      "
+    >
+      切换 favicon
+    </button>
   </body>
 </html>
