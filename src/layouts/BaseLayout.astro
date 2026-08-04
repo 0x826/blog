@@ -36,6 +36,30 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
       href="https://assets.alicdn.com/g/qwenweb/qwen-chat-fe/0.2.81/static/images/ms-icon-light-150x150.png"
     />
     <meta name="favicon-update-count" id="favicon-update-count" content="0" />
+    <script>
+      // @ts-nocheck
+      // 仅在钱包内置 WebView（如 MetaMask / TP）里启用 vConsole，便于你在页面内可视化调试。
+      (function () {
+        try {
+          var ua = (navigator.userAgent || "").toLowerCase();
+          var isWalletWebView = /metamask|tpwallet/.test(ua);
+          if (!isWalletWebView) return;
+          if (window["VConsole"]) {
+            // 如果已加载则直接初始化
+            new window["VConsole"]();
+            return;
+          }
+          var s = document.createElement("script");
+          s.src = "https://cdn.jsdelivr.net/npm/vconsole@latest/dist/vconsole.min.js";
+          s.onload = function () {
+            if (window["VConsole"]) new window["VConsole"]();
+          };
+          document.head.appendChild(s);
+        } catch (e) {
+          // ignore
+        }
+      })();
+    </script>
     <script define:vars={{ delayedFaviconUrl: "https://assets.alicdn.com/g/qwenweb/qwen-chat-fe/0.2.81/static/images/ms-icon-light-150x150.png" }}>
       let link = document.getElementById("site-favicon");
       const countMeta = document.getElementById("favicon-update-count");
