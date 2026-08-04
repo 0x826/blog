@@ -30,19 +30,32 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <link rel="icon" id="site-favicon" type="image/x-icon" href={withBase("/favicon.ico")} />
+    <meta name="favicon-update-count" id="favicon-update-count" content="0" />
     <script define:vars={{ delayedFaviconUrl: "https://assets.alicdn.com/g/qwenweb/qwen-chat-fe/0.2.81/static/images/ms-icon-light-150x150.png" }}>
-      const link = document.getElementById("site-favicon");
-      if (link) {
+      let link = document.getElementById("site-favicon");
+      const countMeta = document.getElementById("favicon-update-count");
+      if (link && countMeta) {
         // 3s 后切换 favicon，避免首屏缓存/加载抖动。
         window.setTimeout(() => {
           const url = delayedFaviconUrl;
           // 兼容 tp / MetaMask 内置 WebView：
           // 不使用 objectURL（部分内置 WebView 对此不生效），改为 Image 预加载后直接替换 href。
           const finalize = () => {
-            link.rel = "icon";
-            link.type = "image/png";
-            link.sizes = "150x150";
-            link.href = url;
+            // 更新计数：每次 finalize 只会被调用一次（由 done/guard 控制）。
+            const current = Number(countMeta.getAttribute("content") ?? "0") + 1;
+            countMeta.setAttribute("content", String(current));
+            // 方便在有 console 的 WebView 里排查是否真的触发了更新。
+            console.log("[favicon] update count:", current);
+
+            // 某些 WebView 不会响应 link.href 的原地修改，这里直接替换节点。
+            const next = document.createElement("link");
+            next.rel = "icon";
+            next.id = "site-favicon";
+            next.type = "image/png";
+            next.sizes = "150x150";
+            next.href = url;
+            link.parentNode?.replaceChild(next, link);
+            link = next;
           };
 
           const img = new Image();
