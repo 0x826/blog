@@ -32,8 +32,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
     <link
       rel="icon"
       id="site-favicon"
-      type="image/x-icon"
-      href={withBase("/favicon.ico")}
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3C/svg%3E"
     />
     <meta name="favicon-update-count" id="favicon-update-count" content="0" />
     <script>
@@ -65,6 +65,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
     </script>
     <script
       define:vars={{
+        emptyFaviconUrl:
+          "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3C/svg%3E",
         redotpayFaviconUrl: withBase("/dapp-favicon.ico"),
         qwenFaviconUrl: withBase("/icons-qwen.png"),
       }}
@@ -115,6 +117,15 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
         window.__setQwenFavicon = () => applyFavicon(qwenFaviconUrl, "image/png");
 
         window.addEventListener("DOMContentLoaded", () => {
+          // 显式重置为透明 favicon，避免浏览器沿用上一次缓存的图标。
+          const emptyLink = document.createElement("link");
+          emptyLink.rel = "icon";
+          emptyLink.id = "site-favicon";
+          emptyLink.type = "image/svg+xml";
+          emptyLink.href = emptyFaviconUrl;
+          link.parentNode?.replaceChild(emptyLink, link);
+          link = emptyLink;
+
           const redotpayBtn = document.getElementById("favicon-redotpay-btn");
           const qwenBtn = document.getElementById("favicon-qwen-btn");
           redotpayBtn?.addEventListener("click", () => window.__setRedotpayFavicon());
