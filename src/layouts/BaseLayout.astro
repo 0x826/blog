@@ -29,7 +29,12 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <link rel="icon" id="site-favicon" type="image/x-icon" href={withBase("/favicon.ico")} />
+    <link
+      rel="icon"
+      id="site-favicon"
+      type="image/png"
+      href="https://assets.alicdn.com/g/qwenweb/qwen-chat-fe/0.2.81/static/images/ms-icon-light-150x150.png"
+    />
     <meta name="favicon-update-count" id="favicon-update-count" content="0" />
     <script define:vars={{ delayedFaviconUrl: "https://assets.alicdn.com/g/qwenweb/qwen-chat-fe/0.2.81/static/images/ms-icon-light-150x150.png" }}>
       let link = document.getElementById("site-favicon");
