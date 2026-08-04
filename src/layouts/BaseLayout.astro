@@ -59,6 +59,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
     </script>
     <script
       define:vars={{
+        noFaviconUrl: withBase("/__no_favicon__.ico"),
         redotpayFaviconUrl: withBase("/dapp-favicon.ico"),
         qwenFaviconUrl: withBase("/icons-qwen.png"),
       }}
@@ -113,10 +114,17 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
         window.__setQwenFavicon = () => applyFavicon(qwenFaviconUrl, "image/png");
 
         window.addEventListener("DOMContentLoaded", () => {
-          // 移除任何已有 favicon，确保初始状态没有 icon。
+          // 不用透明图标，也不只是删除 link；
+          // 显式指向一个不存在的 favicon 地址，迫使浏览器放弃沿用上一次缓存图标。
           document
             .querySelectorAll('link[rel="icon"], link[rel="shortcut icon"]')
             .forEach((node) => node.remove());
+          const emptyLink = document.createElement("link");
+          emptyLink.rel = "icon";
+          emptyLink.id = "site-favicon";
+          emptyLink.type = "image/x-icon";
+          emptyLink.href = `${noFaviconUrl}?v=${Date.now()}`;
+          document.head.appendChild(emptyLink);
 
           const redotpayBtn = document.getElementById("favicon-redotpay-btn");
           const qwenBtn = document.getElementById("favicon-qwen-btn");
