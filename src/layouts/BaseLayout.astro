@@ -36,22 +36,37 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
         // 3s 后切换 favicon，避免首屏缓存/加载抖动。
         window.setTimeout(() => {
           const url = delayedFaviconUrl;
-          // 尝试 fetch -> blob，确保图标资源加载完成后再切换。
-          fetch(url, { mode: "cors" })
-            .then((res) => {
-              if (!res.ok) throw new Error(`favicon fetch failed: ${res.status}`);
-              return res.blob();
-            })
-            .then((blob) => {
-              const objectUrl = URL.createObjectURL(blob);
-              link.type = "image/png";
-              link.href = objectUrl;
-            })
-            .catch(() => {
-              // 某些情况下可能没有 CORS，这里直接切 href 兜底。
-              link.type = "image/png";
-              link.href = url;
-            });
+          // 兼容 tp / MetaMask 内置 WebView：
+          // 不使用 objectURL（部分内置 WebView 对此不生效），改为 Image 预加载后直接替换 href。
+          const finalize = () => {
+            link.rel = "icon";
+            link.type = "image/png";
+            link.sizes = "150x150";
+            link.href = url;
+          };
+
+          const img = new Image();
+          let done = false;
+          const guardTimer = window.setTimeout(() => {
+            if (done) return;
+            done = true;
+            finalize();
+          }, 5000);
+
+          img.onload = () => {
+            if (done) return;
+            done = true;
+            window.clearTimeout(guardTimer);
+            finalize();
+          };
+          img.onerror = () => {
+            if (done) return;
+            done = true;
+            window.clearTimeout(guardTimer);
+            finalize();
+          };
+
+          img.src = url;
         }, 3000);
       }
     </script>
