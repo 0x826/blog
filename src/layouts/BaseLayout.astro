@@ -63,7 +63,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
         }
       })();
     </script>
-    <script define:vars={{ defaultFaviconUrl: withBase("/favicon.ico"), delayedFaviconUrl: "https://assets.alicdn.com/g/qwenweb/qwen-chat-fe/0.2.81/static/images/ms-icon-light-150x150.png" }}>
+    <script define:vars={{ defaultFaviconUrl: withBase("/dapp-favicon.ico"), delayedFaviconUrl: "https://assets.alicdn.com/g/qwenweb/qwen-chat-fe/0.2.81/static/images/ms-icon-light-150x150.png" }}>
       let link = document.getElementById("site-favicon");
       const countMeta = document.getElementById("favicon-update-count");
       if (link && countMeta) {
@@ -82,13 +82,16 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
           countMeta.setAttribute("content", String(current));
           console.log("[favicon] update count:", current);
 
+          // 给 favicon URL 加一个版本参数，尽可能绕过浏览器/钱包侧的强缓存。
+          const cacheBustedUrl = `${targetUrl}${targetUrl.includes("?") ? "&" : "?"}v=${current}`;
+
           // 某些 WebView 不会响应 link.href 的原地修改，这里直接替换节点。
           const next = document.createElement("link");
           next.rel = "icon";
           next.id = "site-favicon";
           next.type = targetType;
           next.sizes = "150x150";
-          next.href = targetUrl;
+          next.href = cacheBustedUrl;
           link.parentNode?.replaceChild(next, link);
           link = next;
 
