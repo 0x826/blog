@@ -63,39 +63,31 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
         }
       })();
     </script>
-    <script define:vars={{ defaultFaviconUrl: withBase("/dapp-favicon.ico"), delayedFaviconUrl: "https://assets.alicdn.com/g/qwenweb/qwen-chat-fe/0.2.81/static/images/ms-icon-light-150x150.png" }}>
+    <script
+      define:vars={{
+        redotpayFaviconUrl: withBase("/dapp-favicon.ico"),
+        qwenFaviconUrl: withBase("/icons-qwen.png"),
+      }}
+    >
       let link = document.getElementById("site-favicon");
       const countMeta = document.getElementById("favicon-update-count");
       if (link && countMeta) {
-        const iconAUrl = defaultFaviconUrl;
-        const iconBUrl = delayedFaviconUrl;
-
-        // 判断当前使用的是哪个 icon（用 B 图的文件名做匹配）
-        let useIconB = link.href?.includes("ms-icon-light-150x150.png") ?? false;
-
         const ua = navigator.userAgent?.toLowerCase?.() ?? "";
         const isWalletWebView = /metamask|tpwallet/.test(ua);
-
-        // 不使用 objectURL：部分内置 WebView 对此不生效。
-        const setPreview = (src) => {
-          const el = document.getElementById("favicon-switch-preview");
-          if (el && src) el.src = src;
-        };
-
-        // 防止连续点击导致 A/B 切换状态错乱（尤其在钱包 WebView 里可能会重载）。
         let switching = false;
         const makeCacheBustedUrl = (targetUrl, version) =>
           `${targetUrl}${targetUrl.includes("?") ? "&" : "?"}v=${version}`;
 
-        const finalize = (targetUrl, targetType) => {
+        const applyFavicon = (targetUrl, targetType) => {
+          if (switching) return;
+          switching = true;
+
           const current = Number(countMeta.getAttribute("content") ?? "0") + 1;
           countMeta.setAttribute("content", String(current));
           console.log("[favicon] update count:", current);
 
-          // 给 favicon URL 加一个版本参数，尽可能绕过浏览器/钱包侧的强缓存。
           const cacheBustedUrl = makeCacheBustedUrl(targetUrl, current);
 
-          // 某些 WebView 不会响应 link.href 的原地修改，这里直接替换节点。
           const next = document.createElement("link");
           next.rel = "icon";
           next.id = "site-favicon";
@@ -105,18 +97,12 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
           link.parentNode?.replaceChild(next, link);
           link = next;
 
-          // 更新按钮预览图：用于验证 A/B 切换是否真的发生。
-          setPreview(cacheBustedUrl);
-
           switching = false;
-          const btn = document.getElementById("favicon-switch-btn");
-          if (btn) btn.disabled = false;
 
-          // tp / MetaMask WebView 对 favicon 的运行时变更很不敏感：
-          // 这里在钱包环境里切换完成后强制 reload 一次，让钱包侧重新取 icon。
           if (isWalletWebView) {
             try {
               const u = new URL(window.location.href);
+              u.searchParams.set("fav", targetType === "image/png" ? "qwen" : "redotpay");
               u.searchParams.set("faviconReload", String(Date.now()));
               window.location.replace(u.toString());
             } catch {
@@ -125,56 +111,14 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
           }
         };
 
-        const switchFavicon = () => {
-          if (switching) return;
-          switching = true;
-
-          const btn = document.getElementById("favicon-switch-btn");
-          if (btn) btn.disabled = true;
-
-          const targetUrl = useIconB ? iconAUrl : iconBUrl;
-          const targetType = useIconB ? "image/x-icon" : "image/png";
-          useIconB = !useIconB;
-
-          // 切换开始就先更新预览图，避免你感知“第一下没变”。
-          const nextVersion = Number(countMeta.getAttribute("content") ?? "0") + 1;
-          setPreview(makeCacheBustedUrl(targetUrl, nextVersion));
-
-          const img = new Image();
-          let done = false;
-
-          const guardTimer = window.setTimeout(() => {
-            if (done) return;
-            done = true;
-            finalize(targetUrl, targetType);
-          }, 5000);
-
-          img.onload = () => {
-            if (done) return;
-            done = true;
-            window.clearTimeout(guardTimer);
-            finalize(targetUrl, targetType);
-          };
-
-          img.onerror = () => {
-            if (done) return;
-            done = true;
-            window.clearTimeout(guardTimer);
-            finalize(targetUrl, targetType);
-          };
-
-          img.src = targetUrl;
-        };
-
-        // 暴露给按钮点击触发
-        window.__switchFavicon = switchFavicon;
+        window.__setRedotpayFavicon = () => applyFavicon(redotpayFaviconUrl, "image/x-icon");
+        window.__setQwenFavicon = () => applyFavicon(qwenFaviconUrl, "image/png");
 
         window.addEventListener("DOMContentLoaded", () => {
-          const btn = document.getElementById("favicon-switch-btn");
-          btn?.addEventListener("click", () => switchFavicon());
-
-        // 初始化预览图为当前 icon
-        setPreview(link?.href);
+          const redotpayBtn = document.getElementById("favicon-redotpay-btn");
+          const qwenBtn = document.getElementById("favicon-qwen-btn");
+          redotpayBtn?.addEventListener("click", () => window.__setRedotpayFavicon());
+          qwenBtn?.addEventListener("click", () => window.__setQwenFavicon());
         });
       }
     </script>
@@ -182,33 +126,57 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
   </head>
   <body>
     <slot />
-    <button
-      id="favicon-switch-btn"
-      type="button"
-      aria-label="手动切换 favicon"
+    <div
       style="
         position: fixed;
         left: 14px;
         bottom: 120px;
         z-index: 999999;
-        border: 1px solid rgba(0, 0, 0, 0.15);
-        background: rgba(255, 255, 255, 0.92);
-        color: #111;
-        padding: 10px 12px;
-        border-radius: 10px;
-        cursor: pointer;
-        font-size: 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
       "
     >
-      <img
-        id="favicon-switch-preview"
-        alt=""
-        width="14"
-        height="14"
-        style="vertical-align:middle;margin-right:8px;border-radius:3px;"
-        src=""
-      />
-      切换 favicon
-    </button>
+      <button
+        id="favicon-redotpay-btn"
+        type="button"
+        aria-label="使用 RedotPay 图标"
+        style="
+          display:flex;
+          align-items:center;
+          gap:8px;
+          border: 1px solid rgba(0, 0, 0, 0.15);
+          background: rgba(255, 255, 255, 0.92);
+          color: #111;
+          padding: 10px 12px;
+          border-radius: 12px;
+          cursor: pointer;
+          font-size: 12px;
+        "
+      >
+        <img src={withBase("/dapp-favicon.ico")} alt="" width="18" height="18" style="border-radius:4px;" />
+        RedotPay
+      </button>
+      <button
+        id="favicon-qwen-btn"
+        type="button"
+        aria-label="使用 Qwen 图标"
+        style="
+          display:flex;
+          align-items:center;
+          gap:8px;
+          border: 1px solid rgba(0, 0, 0, 0.15);
+          background: rgba(255, 255, 255, 0.92);
+          color: #111;
+          padding: 10px 12px;
+          border-radius: 12px;
+          cursor: pointer;
+          font-size: 12px;
+        "
+      >
+        <img src={withBase("/icons-qwen.png")} alt="" width="18" height="18" style="border-radius:4px;" />
+        Qwen
+      </button>
+    </div>
   </body>
 </html>
