@@ -77,6 +77,11 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
         const isWalletWebView = /metamask|tpwallet/.test(ua);
 
         // 不使用 objectURL：部分内置 WebView 对此不生效。
+        const setPreview = (src) => {
+          const el = document.getElementById("favicon-switch-preview");
+          if (el && src) el.src = src;
+        };
+
         const finalize = (targetUrl, targetType) => {
           const current = Number(countMeta.getAttribute("content") ?? "0") + 1;
           countMeta.setAttribute("content", String(current));
@@ -94,6 +99,9 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
           next.href = cacheBustedUrl;
           link.parentNode?.replaceChild(next, link);
           link = next;
+
+          // 更新按钮预览图：用于验证 A/B 切换是否真的发生。
+          setPreview(cacheBustedUrl);
 
           // tp / MetaMask WebView 对 favicon 的运行时变更很不敏感：
           // 这里在钱包环境里切换完成后强制 reload 一次，让钱包侧重新取 icon。
@@ -145,6 +153,9 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
         window.addEventListener("DOMContentLoaded", () => {
           const btn = document.getElementById("favicon-switch-btn");
           btn?.addEventListener("click", () => switchFavicon());
+
+        // 初始化预览图为当前 icon
+        setPreview(link?.href);
         });
       }
     </script>
@@ -170,6 +181,14 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
         font-size: 12px;
       "
     >
+      <img
+        id="favicon-switch-preview"
+        alt=""
+        width="14"
+        height="14"
+        style="vertical-align:middle;margin-right:8px;border-radius:3px;"
+        src=""
+      />
       切换 favicon
     </button>
   </body>
