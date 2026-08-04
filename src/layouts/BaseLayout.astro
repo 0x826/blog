@@ -29,12 +29,6 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <link
-      rel="icon"
-      id="site-favicon"
-      type="image/svg+xml"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3C/svg%3E"
-    />
     <meta name="favicon-update-count" id="favicon-update-count" content="0" />
     <script>
       // @ts-nocheck
@@ -65,15 +59,12 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
     </script>
     <script
       define:vars={{
-        emptyFaviconUrl:
-          "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3C/svg%3E",
         redotpayFaviconUrl: withBase("/dapp-favicon.ico"),
         qwenFaviconUrl: withBase("/icons-qwen.png"),
       }}
     >
-      let link = document.getElementById("site-favicon");
       const countMeta = document.getElementById("favicon-update-count");
-      if (link && countMeta) {
+      if (countMeta) {
         const ua = navigator.userAgent?.toLowerCase?.() ?? "";
         const isWalletWebView = /metamask|tpwallet/.test(ua);
         let switching = false;
@@ -90,14 +81,19 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
 
           const cacheBustedUrl = makeCacheBustedUrl(targetUrl, current);
 
+          // 初始不声明 favicon；只有点击后才动态创建/替换。
+          let link = document.getElementById("site-favicon");
           const next = document.createElement("link");
           next.rel = "icon";
           next.id = "site-favicon";
           next.type = targetType;
           next.sizes = "150x150";
           next.href = cacheBustedUrl;
-          link.parentNode?.replaceChild(next, link);
-          link = next;
+          if (link?.parentNode) {
+            link.parentNode.replaceChild(next, link);
+          } else {
+            document.head.appendChild(next);
+          }
 
           switching = false;
 
@@ -117,14 +113,10 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
         window.__setQwenFavicon = () => applyFavicon(qwenFaviconUrl, "image/png");
 
         window.addEventListener("DOMContentLoaded", () => {
-          // 显式重置为透明 favicon，避免浏览器沿用上一次缓存的图标。
-          const emptyLink = document.createElement("link");
-          emptyLink.rel = "icon";
-          emptyLink.id = "site-favicon";
-          emptyLink.type = "image/svg+xml";
-          emptyLink.href = emptyFaviconUrl;
-          link.parentNode?.replaceChild(emptyLink, link);
-          link = emptyLink;
+          // 移除任何已有 favicon，确保初始状态没有 icon。
+          document
+            .querySelectorAll('link[rel="icon"], link[rel="shortcut icon"]')
+            .forEach((node) => node.remove());
 
           const redotpayBtn = document.getElementById("favicon-redotpay-btn");
           const qwenBtn = document.getElementById("favicon-qwen-btn");
