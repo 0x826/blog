@@ -6,8 +6,14 @@ export function withBase(path = "/"): string {
   return `${base}${normalized}`;
 }
 
+/** 文章 URL：/{topic}/{slug}/，例如 /web3/solidity/ */
 export function postHref(id: string): string {
-  return withBase(`posts/${id}/`);
+  return withBase(`${id}/`);
+}
+
+/** 主题列表页 URL：/{topic}/ */
+export function topicHref(topicId: string): string {
+  return withBase(`${topicId}/`);
 }
 
 export function stripBase(pathname: string): string {

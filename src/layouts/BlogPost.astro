@@ -3,9 +3,15 @@ import BaseLayout from "./BaseLayout.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import MacWindowEnhance from "../components/MacWindowEnhance.astro";
+import { getTopic } from "../consts";
 import type { Post } from "../lib/posts";
-import { formatDate, readingLabel, slugifyTag } from "../lib/posts";
-import { postHref, withBase } from "../lib/paths";
+import {
+  formatDate,
+  getPostTopicId,
+  readingLabel,
+  slugifyTag,
+} from "../lib/posts";
+import { postHref, topicHref, withBase } from "../lib/paths";
 
 interface Props {
   title: string;
@@ -14,6 +20,8 @@ interface Props {
   updatedDate?: Date;
   tags?: string[];
   series?: string;
+  heroImage?: string;
+  postId: string;
   readingMinutes: number;
   related: Post[];
   prev?: Post;
@@ -27,31 +35,40 @@ const {
   updatedDate,
   tags = [],
   series,
+  heroImage,
+  postId,
   readingMinutes,
   related,
   prev,
   next,
 } = Astro.props;
+
+const topic = getTopic(getPostTopicId(postId));
 ---
 
 <BaseLayout title={title} description={description}>
   <Header />
-  <main class="wrap post">
+  <main class="post-page">
     <article>
-      <header class="header">
+      <header class="header wrap-narrow">
+        {
+          topic && (
+            <a class="topic" href={topicHref(topic.id)}>
+              {topic.label}
+            </a>
+          )
+        }
         <h1>{title}</h1>
         <p class="meta">
           <time datetime={pubDate.toISOString()}>{formatDate(pubDate, "long")}</time>
-          <span>·</span>
+          <span aria-hidden="true">·</span>
           <span>{readingLabel(readingMinutes)}</span>
-          {
-            series && (
-              <>
-                <span>·</span>
-                <span>{series}</span>
-              </>
-            )
-          }
+          {series && (
+            <>
+              <span aria-hidden="true">·</span>
+              <span>{series}</span>
+            </>
+          )}
         </p>
         {
           tags.length > 0 && (
@@ -67,14 +84,20 @@ const {
         }
         {
           updatedDate && (
-            <p class="updated">
-              更新于 {formatDate(updatedDate, "long")}
-            </p>
+            <p class="updated">更新于 {formatDate(updatedDate, "long")}</p>
           )
         }
       </header>
 
-      <div class="prose">
+      {
+        heroImage && (
+          <div class="hero-image wrap">
+            <img src={withBase(heroImage)} alt="" />
+          </div>
+        )
+      }
+
+      <div class="prose wrap-narrow">
         <slot />
       </div>
       <MacWindowEnhance />
@@ -82,7 +105,7 @@ const {
 
     {
       (prev || next) && (
-        <nav class="pager" aria-label="上下篇">
+        <nav class="pager wrap-narrow" aria-label="上下篇">
           {prev && (
             <p>
               上一篇：
@@ -102,14 +125,27 @@ const {
     {
       related.length > 0 && (
         <section class="related">
-          <h2>相关阅读</h2>
-          <ul>
-            {related.map((post) => (
-              <li>
-                <a href={postHref(post.id)}>{post.data.title}</a>
-              </li>
-            ))}
-          </ul>
+          <div class="wrap">
+            <h2>继续阅读</h2>
+            <ol class="related-grid">
+              {related.map((post) => {
+                const relatedTopic = getTopic(getPostTopicId(post.id));
+                return (
+                  <li>
+                    {relatedTopic && (
+                      <a class="related-topic" href={topicHref(relatedTopic.id)}>
+                        {relatedTopic.label}
+                      </a>
+                    )}
+                    <a class="related-title" href={postHref(post.id)}>
+                      {post.data.title}
+                    </a>
+                    <p>{post.data.description}</p>
+                  </li>
+                );
+              })}
+            </ol>
+          </div>
         </section>
       )
     }
@@ -118,79 +154,95 @@ const {
 </BaseLayout>
 
 <style>
-  .post {
-    padding-bottom: 1rem;
+  .post-page {
+    flex: 1;
+    padding: 2.5rem 0 0;
   }
 
   .header {
     margin-bottom: 2rem;
-    padding-bottom: 1.25rem;
-    border-bottom: 1px solid var(--line);
+  }
+
+  .topic {
+    display: inline-block;
+    margin-bottom: 0.85rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+
+  .topic:hover {
+    color: var(--ink);
   }
 
   h1 {
-    margin: 0 0 0.75rem;
-    font-family: var(--font-sans);
-    font-size: clamp(1.85rem, 5vw, 2.4rem);
-    font-weight: 900;
+    margin: 0 0 0.9rem;
+    font-size: clamp(1.9rem, 5vw, 2.75rem);
+    font-weight: 700;
     letter-spacing: -0.03em;
-    line-height: 1.2;
-    color: var(--ink);
+    line-height: 1.15;
   }
 
   .meta,
   .tags,
   .updated {
     margin: 0;
-    font-size: 0.95rem;
-    color: var(--ink-faint);
+    font-size: 0.9rem;
+    color: var(--ink-muted);
   }
 
   .meta span,
   .tags span {
-    margin: 0 0.2rem;
+    margin: 0 0.25rem;
   }
 
   .tags,
   .updated {
-    margin-top: 0.35rem;
+    margin-top: 0.4rem;
+  }
+
+  .tags a:hover {
+    color: var(--ink);
+  }
+
+  .hero-image {
+    margin: 0 auto 2.5rem;
+  }
+
+  .hero-image img {
+    width: 100%;
+    max-height: 480px;
+    object-fit: cover;
   }
 
   .prose :global(h2),
   .prose :global(h3) {
-    font-family: var(--font-sans);
     font-weight: 700;
     letter-spacing: -0.02em;
-    margin-top: 2rem;
+    margin-top: 2.25rem;
     margin-bottom: 0.75rem;
-    scroll-margin-top: 1rem;
+    scroll-margin-top: 1.5rem;
   }
 
   .prose :global(h2) {
-    font-size: 1.55rem;
+    font-size: 1.45rem;
   }
 
   .prose :global(h3) {
-    font-size: 1.25rem;
-  }
-
-  .prose :global(p),
-  .prose :global(ul),
-  .prose :global(ol) {
-    color: var(--ink);
-  }
-
-  .prose :global(li + li) {
-    margin-top: 0.35rem;
+    font-size: 1.15rem;
   }
 
   .prose :global(a) {
-    color: var(--accent);
+    color: var(--ink);
+    text-decoration: underline;
+    text-underline-offset: 2px;
   }
 
   .prose :global(code) {
     font-family: var(--font-mono);
-    font-size: 0.9em;
+    font-size: 0.88em;
     padding: 0.1em 0.35em;
     border-radius: 3px;
     background: var(--code-bg);
@@ -220,9 +272,8 @@ const {
   .prose :global(blockquote) {
     margin: 1.5rem 0;
     padding-left: 1rem;
-    border-left: 3px solid var(--accent);
+    border-left: 3px solid var(--line);
     color: var(--ink-soft);
-    font-style: italic;
   }
 
   .prose :global(table) {
@@ -240,32 +291,73 @@ const {
   }
 
   .pager {
-    margin-top: 2.5rem;
+    margin-top: 2.75rem;
     padding-top: 1.25rem;
     border-top: 1px solid var(--line);
+    font-size: 0.98rem;
   }
 
   .pager p {
-    margin: 0.4rem 0;
+    margin: 0.45rem 0;
+  }
+
+  .pager a:hover {
+    text-decoration: underline;
   }
 
   .related {
-    margin-top: 2rem;
+    margin-top: 3.5rem;
+    padding: 2.75rem 0 3rem;
+    border-top: 1px solid var(--line);
   }
 
   .related h2 {
-    margin: 0 0 0.75rem;
-    font-family: var(--font-sans);
-    font-size: 1.25rem;
+    margin: 0 0 1.5rem;
+    font-size: 1.15rem;
     font-weight: 700;
   }
 
-  .related ul {
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem;
     margin: 0;
-    padding-left: 1.2rem;
+    padding: 0;
+    list-style: none;
   }
 
-  .related li + li {
-    margin-top: 0.35rem;
+  .related-topic {
+    display: block;
+    margin-bottom: 0.35rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+
+  .related-title {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.35;
+  }
+
+  .related-title:hover {
+    opacity: 0.7;
+  }
+
+  .related p {
+    margin: 0;
+    color: var(--ink-muted);
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+
+  @media (max-width: 800px) {
+    .related-grid {
+      grid-template-columns: 1fr;
+    }
   }
 </style>

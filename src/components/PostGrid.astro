@@ -1,0 +1,149 @@
+---
+import type { Post } from "../lib/posts";
+import { getPostTopicId } from "../lib/posts";
+import { postHref, withBase } from "../lib/paths";
+
+interface Props {
+  posts: Post[];
+}
+
+const { posts } = Astro.props;
+
+const topicHue: Record<string, number> = {
+  interview: 210,
+  web3: 265,
+  wallet: 160,
+};
+
+function coverStyle(post: Post) {
+  const topic = getPostTopicId(post.id);
+  const hue = topicHue[topic] ?? 200;
+  return `background: linear-gradient(135deg, hsl(${hue} 35% 42%), hsl(${hue + 28} 40% 28%));`;
+}
+---
+
+{
+  posts.length > 0 && (
+    <ol class="post-feed">
+      {posts.map((post) => {
+        const href = postHref(post.id);
+        const image = post.data.heroImage;
+        return (
+          <li class="post-card">
+            <a class="post-card-image-link" href={href} tabindex="-1" aria-hidden="true">
+              {image ? (
+                <img
+                  class="post-card-image"
+                  src={withBase(image)}
+                  alt=""
+                  loading="lazy"
+                  width="640"
+                  height="360"
+                />
+              ) : (
+                <div class="post-card-image placeholder" style={coverStyle(post)} />
+              )}
+            </a>
+            <h2 class="post-card-title">
+              <a href={href}>{post.data.title}</a>
+            </h2>
+            <p class="post-card-excerpt">{post.data.description}</p>
+          </li>
+        );
+      })}
+    </ol>
+  )
+}
+
+<style>
+  .post-feed {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--line);
+  }
+
+  .post-card {
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 1.35rem 2.25rem;
+  }
+
+  .post-card:nth-child(3n) {
+    border-right: 0;
+  }
+
+  .post-card-image-link {
+    display: block;
+    margin-bottom: 1.1rem;
+    overflow: hidden;
+  }
+
+  .post-card-image {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    background: #eee;
+    border-radius: 16px;
+  }
+
+  .post-card-image.placeholder {
+    min-height: 1px;
+  }
+
+  .post-card-title {
+    margin: 0 0 0.55rem;
+    font-size: 1.15rem;
+    font-weight: 700;
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+  }
+
+  .post-card-title a {
+    color: var(--ink);
+  }
+
+  .post-card-title a:hover {
+    opacity: 0.7;
+  }
+
+  .post-card-excerpt {
+    margin: 0;
+    color: var(--ink-muted);
+    font-size: 0.95rem;
+    line-height: 1.65;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  @media (max-width: 900px) {
+    .post-feed {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .post-card:nth-child(3n) {
+      border-right: 1px solid var(--line);
+    }
+
+    .post-card:nth-child(2n) {
+      border-right: 0;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .post-feed {
+      grid-template-columns: 1fr;
+    }
+
+    .post-card,
+    .post-card:nth-child(2n),
+    .post-card:nth-child(3n) {
+      border-right: 0;
+      padding-inline: 0;
+    }
+  }
+</style>

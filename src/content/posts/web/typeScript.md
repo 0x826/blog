@@ -4,6 +4,7 @@ description: typescript
 pubDate: 2026-07-17
 category: 前端
 tags: ["typescript", "面试", "前端"]
+heroImage: /images/covers/code-screen-close.jpg
 ---
 
 ### 为什么要用 TypeScript？相比 JS 有哪些核心优势？

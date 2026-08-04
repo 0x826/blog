@@ -1,4 +1,5 @@
 import { getCollection, type CollectionEntry } from "astro:content";
+import { topics, type TopicId } from "../consts";
 import { withBase } from "./paths";
 
 export type Post = CollectionEntry<"posts">;
@@ -8,6 +9,26 @@ export async function getPublishedPosts(): Promise<Post[]> {
   return posts
     .filter((post) => post.data.draft !== true)
     .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+}
+
+/** 从 post.id（如 web3/solidity）解析主题文件夹 */
+export function getPostTopicId(id: string): string {
+  const slash = id.indexOf("/");
+  return slash === -1 ? id : id.slice(0, slash);
+}
+
+export function getPostSlug(id: string): string {
+  const slash = id.indexOf("/");
+  return slash === -1 ? id : id.slice(slash + 1);
+}
+
+export function getPostsByTopic(posts: Post[], topicId: string): Post[] {
+  const prefix = `${topicId}/`;
+  return posts.filter((post) => post.id === topicId || post.id.startsWith(prefix));
+}
+
+export function isTopicId(value: string): value is TopicId {
+  return topics.some((t) => t.id === value);
 }
 
 /** 首页列表每页条数 */
@@ -108,10 +129,12 @@ export function groupPostsByYear(posts: Post[]) {
 }
 
 export function getRelatedPosts(current: Post, posts: Post[], limit = 3) {
+  const currentTopic = getPostTopicId(current.id);
   const scored = posts
     .filter((post) => post.id !== current.id)
     .map((post) => {
       let score = 0;
+      if (getPostTopicId(post.id) === currentTopic) score += 5;
       if (post.data.category === current.data.category) score += 3;
       if (post.data.series && post.data.series === current.data.series) score += 4;
       const shared = post.data.tags.filter((tag) => current.data.tags.includes(tag));

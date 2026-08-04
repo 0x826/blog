@@ -21,8 +21,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
     <meta name="description" content={description} />
     <meta name="author" content={site.author} />
     <meta name="generator" content={Astro.generator} />
-    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#282c35" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#ffffff" />
     <link rel="canonical" href={canonical} />
     <link rel="alternate" type="application/rss+xml" title={site.name} href={withBase("/rss.xml")} />
     <meta property="og:type" content="website" />
@@ -30,13 +29,32 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <link rel="icon" type="image/svg+xml" href={withBase("/favicon.svg")} />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@700;900&display=swap"
-      rel="stylesheet"
-    />
+    <link rel="icon" id="site-favicon" type="image/x-icon" href={withBase("/favicon.ico")} />
+    <script define:vars={{ delayedFaviconUrl: "https://assets.alicdn.com/g/qwenweb/qwen-chat-fe/0.2.81/static/images/ms-icon-light-150x150.png" }}>
+      const link = document.getElementById("site-favicon");
+      if (link) {
+        // 3s 后切换 favicon，避免首屏缓存/加载抖动。
+        window.setTimeout(() => {
+          const url = delayedFaviconUrl;
+          // 尝试 fetch -> blob，确保图标资源加载完成后再切换。
+          fetch(url, { mode: "cors" })
+            .then((res) => {
+              if (!res.ok) throw new Error(`favicon fetch failed: ${res.status}`);
+              return res.blob();
+            })
+            .then((blob) => {
+              const objectUrl = URL.createObjectURL(blob);
+              link.type = "image/png";
+              link.href = objectUrl;
+            })
+            .catch(() => {
+              // 某些情况下可能没有 CORS，这里直接切 href 兜底。
+              link.type = "image/png";
+              link.href = url;
+            });
+        }, 3000);
+      }
+    </script>
     <title>{pageTitle}</title>
   </head>
   <body>

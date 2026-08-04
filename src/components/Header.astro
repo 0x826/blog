@@ -1,71 +1,293 @@
 ---
-import { site } from "../consts";
+import { nav, site } from "../consts";
 import { stripBase, withBase } from "../lib/paths";
 
 const pathname = stripBase(Astro.url.pathname);
 
-const isPostList =
-  pathname === "/" ||
-  pathname === "/posts" ||
-  pathname === "/posts/" ||
-  /^\/page\/\d+\/?$/.test(pathname);
+function isActive(href: string) {
+  if (href === "/") return pathname === "/" || pathname === "";
+  const normalized = href.endsWith("/") ? href : `${href}/`;
+  return pathname === normalized || pathname.startsWith(normalized);
+}
 ---
 
-<header class:list={["site-header", "wrap", { home: isPostList }]}>
-  <h1 class="brand">
-    <a href={withBase("/")}>{site.name}</a>
-  </h1>
-  <p class="byline">
-    {
-      !isPostList && (
-        <>
-          <a href={withBase("/")}>全部文章</a>
-        </>
-      )
-    }
-  </p>
+<header class="site-header">
+  <div class="wrap bar">
+    <div class="bar-flex">
+      <a class="brand" href={withBase("/")}>{site.name}</a>
+      <nav class="nav" aria-label="主导航">
+        {
+          nav.map((item) => (
+            <a
+              class:list={["nav-link", { active: isActive(item.href) }]}
+              href={withBase(item.href)}
+              aria-current={isActive(item.href) ? "page" : undefined}
+            >
+              {item.label}
+            </a>
+          ))
+        }
+      </nav>
+    </div>
+    <button class="search-btn" type="button" aria-label="搜索" data-search-open>
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+        <circle
+          cx="11"
+          cy="11"
+          r="7"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.6"></circle>
+        <path
+          d="M16.5 16.5L21 21"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.6"
+          stroke-linecap="round"></path>
+      </svg>
+    </button>
+  </div>
 </header>
+
+<dialog class="search-dialog" data-search-dialog>
+  <form class="search-panel" method="dialog">
+    <label class="sr-only" for="site-search">搜索文章</label>
+    <input
+      id="site-search"
+      class="search-input"
+      type="search"
+      placeholder="搜索文章…"
+      autocomplete="off"
+      data-search-input
+    />
+    <button class="search-close" value="cancel" type="submit" aria-label="关闭"
+      >×</button
+    >
+  </form>
+  <ul class="search-results" data-search-results></ul>
+</dialog>
+
+<script define:vars={{ searchIndexUrl: withBase("/search-index.json") }}>
+  const openBtn = document.querySelector("[data-search-open]");
+  const dialog = document.querySelector("[data-search-dialog]");
+  const input = document.querySelector("[data-search-input]");
+  const results = document.querySelector("[data-search-results]");
+
+  if (
+    openBtn &&
+    dialog instanceof HTMLDialogElement &&
+    input instanceof HTMLInputElement &&
+    results
+  ) {
+    let index = [];
+    let loaded = false;
+
+    async function ensureIndex() {
+      if (loaded) return;
+      const res = await fetch(searchIndexUrl);
+      index = await res.json();
+      loaded = true;
+    }
+
+    function render(q) {
+      const query = q.trim().toLowerCase();
+      if (!query) {
+        results.innerHTML = "";
+        return;
+      }
+      const hits = index
+        .filter((item) =>
+          `${item.title} ${item.description} ${item.topic}`
+            .toLowerCase()
+            .includes(query),
+        )
+        .slice(0, 8);
+      results.innerHTML = hits.length
+        ? hits
+            .map(
+              (item) =>
+                `<li><a href="${item.href}"><strong>${item.title}</strong><span>${item.description}</span></a></li>`,
+            )
+            .join("")
+        : `<li class="empty">没有匹配结果</li>`;
+    }
+
+    openBtn.addEventListener("click", async () => {
+      await ensureIndex();
+      dialog.showModal();
+      input.value = "";
+      results.innerHTML = "";
+      input.focus();
+    });
+
+    input.addEventListener("input", () => render(input.value));
+
+    dialog.addEventListener("click", (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+  }
+</script>
 
 <style>
   .site-header {
-    padding: 2.5rem 0 1.5rem;
+    position: relative;
+    z-index: 50;
   }
 
-  .site-header.home {
-    padding-bottom: 120px;
+  .bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: var(--header-height);
+    gap: 2rem;
   }
 
+  .bar-flex {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
   .brand {
+    justify-self: start;
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+
+  .brand:hover {
+    opacity: 0.75;
+  }
+
+  .nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.15rem 1.35rem;
+  }
+
+  .nav-link {
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+
+  .nav-link:hover,
+  .nav-link.active {
+    opacity: 0.55;
+  }
+
+  .search-btn {
+    justify-self: end;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--ink);
+    cursor: pointer;
+  }
+
+  .search-btn:hover {
+    opacity: 0.55;
+  }
+
+  .search-dialog {
+    width: min(100% - 2rem, 560px);
+    margin: auto;
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.12);
+  }
+
+  .search-dialog::backdrop {
+    background: rgba(21, 23, 26, 0.35);
+  }
+
+  .search-panel {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .search-input {
+    flex: 1;
+    border: 0;
+    outline: none;
+    font-size: 1.05rem;
+    background: transparent;
+  }
+
+  .search-close {
+    border: 0;
+    background: transparent;
+    font-size: 1.5rem;
+    line-height: 1;
+    color: var(--ink-muted);
+    cursor: pointer;
+  }
+
+  .search-results {
     margin: 0;
-    font-family: var(--font-sans);
-    font-size: clamp(2.4rem, 8vw, 3.2rem);
-    font-weight: 900;
-    letter-spacing: -0.03em;
-    line-height: 1.1;
+    padding: 0.35rem 0;
+    list-style: none;
+    max-height: 360px;
+    overflow: auto;
   }
 
-  .brand a {
-    color: var(--accent);
-    text-decoration: none;
+  .search-results :global(a) {
+    display: block;
+    padding: 0.75rem 1rem;
   }
 
-  .brand a:hover {
-    text-decoration: underline;
-    text-underline-offset: 4px;
+  .search-results :global(a:hover) {
+    background: #f7f7f7;
   }
 
-  .byline {
-    margin: 0.35rem 0 0;
-    font-family: var(--font-serif);
-    font-size: 1rem;
-    color: var(--ink-soft);
+  .search-results :global(strong) {
+    display: block;
+    margin-bottom: 0.2rem;
   }
 
-  .byline a {
-    color: var(--ink-soft);
+  .search-results :global(span),
+  .search-results :global(.empty) {
+    display: block;
+    padding: 0.85rem 1rem;
+    color: var(--ink-muted);
+    font-size: 0.9rem;
   }
 
-  .byline a:hover {
-    color: var(--accent);
+  @media (max-width: 860px) {
+    .bar {
+      grid-template-columns: 1fr auto;
+      grid-template-areas:
+        "brand search"
+        "nav nav";
+      padding-block: 0.75rem;
+    }
+
+    .brand {
+      grid-area: brand;
+    }
+
+    .search-btn {
+      grid-area: search;
+    }
+
+    .nav {
+      grid-area: nav;
+      justify-content: flex-start;
+      gap: 0.85rem;
+      padding-top: 0.35rem;
+      overflow-x: auto;
+    }
   }
 </style>

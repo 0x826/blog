@@ -12,6 +12,8 @@ const posts = defineCollection({
     tags: z.array(z.string()).default([]),
     featured: z.boolean().default(false),
     series: z.string().optional(),
+    /** 封面图，如 /images/xxx.jpg */
+    heroImage: z.string().optional(),
     draft: z.boolean().default(false),
   }),
 });

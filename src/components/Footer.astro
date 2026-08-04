@@ -1,34 +1,99 @@
 ---
 import { site } from "../consts";
 import { withBase } from "../lib/paths";
+
 const year = new Date().getFullYear();
 ---
 
-<footer class="site-footer wrap">
-  <p>
-    <a href={withBase("/about/")}>关于</a>
-    {" · "}
-    <a href={withBase("/archive/")}>归档</a>
-    {" · "}
-    <a href={withBase("/tags/")}>标签</a>
-  </p>
-  <p class="copy">© {year} {site.author}</p>
+<footer class="site-footer">
+  <div class="wrap bar">
+    <a class="brand" href={withBase("/")}>{site.name}</a>
+
+    <div class="social" aria-label="社交链接">
+      <a href={`mailto:${site.email}`} aria-label="Email">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+          <path
+            fill="currentColor"
+            d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5L4 8V6l8 5 8-5v2z"
+          ></path>
+        </svg>
+      </a>
+      <a href={withBase("/rss.xml")} aria-label="RSS">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+          <path
+            fill="currentColor"
+            d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20 5 20 4 19 4 17.82c0-1.2.98-2.18 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27zm0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93z"
+          ></path>
+        </svg>
+      </a>
+      <a href={withBase("/archive/")} aria-label="归档">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+          <path
+            fill="currentColor"
+            d="M4 6h16v2H4zm0 5h16v2H4zm0 5h10v2H4z"
+          ></path>
+        </svg>
+      </a>
+    </div>
+
+    <p class="meta">© {year} {site.author}</p>
+  </div>
 </footer>
 
 <style>
   .site-footer {
-    padding: 3rem 0 2.5rem;
-    margin-top: 1rem;
+    margin-top: auto;
+    padding: 2.5rem 0;
     border-top: 1px solid var(--line);
-    font-size: 0.95rem;
-    color: var(--ink-faint);
   }
 
-  .site-footer p {
+  .bar {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .brand {
+    justify-self: start;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  .social {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .social a {
+    display: inline-flex;
+    color: var(--ink-muted);
+  }
+
+  .social a:hover {
+    color: var(--ink);
+  }
+
+  .meta {
     margin: 0;
+    justify-self: end;
+    font-size: 0.9rem;
+    color: var(--ink-muted);
   }
 
-  .copy {
-    margin-top: 0.5rem !important;
+  @media (max-width: 640px) {
+    .bar {
+      grid-template-columns: 1fr;
+      justify-items: center;
+      text-align: center;
+      gap: 0.85rem;
+    }
+
+    .brand,
+    .meta {
+      justify-self: center;
+    }
   }
 </style>

@@ -4,6 +4,7 @@ description: 链上随机数
 pubDate: 2026-07-18
 category: 区块链
 tags: ["区块链", "智能合约"]
+heroImage: /images/covers/web3-servers.jpg
 ---
 
 ### 链上随机数
@@ -11,8 +12,6 @@ tags: ["区块链", "智能合约"]
 `block.prevrandao` / `blockhash` / `keccak256(abi.encodePacked(...))` 可被验证者/矿工在一定范围内影响，**不适合**作为高价值 NFT 发售、抽奖、对战结果的唯一随机源。
 
 生产环境主流方案：**Chainlink VRF**（Verifiable Random Function）——链下生成随机数并附证明，链上 Coordinator 验证明后回调业务合约。
-
-本文为 Chainlink 官方开源合约，不是自写 demo。
 
 - 仓库：[smartcontractkit/chainlink](https://github.com/smartcontractkit/chainlink)
 - 文档：[Chainlink VRF](https://docs.chain.link/vrf)

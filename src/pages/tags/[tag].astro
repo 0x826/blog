@@ -6,7 +6,7 @@ import {
 } from "../../lib/posts";
 import { withBase } from "../../lib/paths";
 import PageLayout from "../../layouts/PageLayout.astro";
-import PostList from "../../components/PostList.astro";
+import PostGrid from "../../components/PostGrid.astro";
 
 export async function getStaticPaths() {
   const posts = await getPublishedPosts();
@@ -23,24 +23,36 @@ const posts = (await getPublishedPosts()).filter((post) =>
 );
 ---
 
-<PageLayout title={`标签：${tagName}`} description={`${tagName} 相关文章`}>
-  <h1>{tagName}</h1>
-  <p class="count">
-    {posts.length} 篇文章 · <a href={withBase("/tags/")}>全部标签</a>
-  </p>
-  <PostList posts={posts} />
+<PageLayout title={tagName} description={`${tagName} 相关文章`}>
+  <header class="topic-header">
+    <h1>{tagName}</h1>
+    <p>
+      {posts.length} 篇文章 · <a href={withBase("/tags/")}>全部标签</a>
+    </p>
+  </header>
+  <PostGrid posts={posts} />
 </PageLayout>
 
 <style>
-  h1 {
-    margin: 0 0 0.35rem;
-    font-family: var(--font-sans);
-    font-size: 1.8rem;
-    font-weight: 900;
+  .topic-header {
+    margin-bottom: 2rem;
   }
 
-  .count {
-    margin: 0 0 2rem;
-    color: var(--ink-faint);
+  h1 {
+    margin: 0 0 0.55rem;
+    font-size: clamp(2rem, 4.5vw, 2.75rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  p {
+    margin: 0;
+    color: var(--ink-muted);
+  }
+
+  a {
+    color: var(--ink-muted);
+    text-decoration: underline;
+    text-underline-offset: 2px;
   }
 </style>

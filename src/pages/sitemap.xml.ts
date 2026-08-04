@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { site } from "../consts";
+import { site, topics } from "../consts";
 import { getPublishedPosts, getTotalPages, PAGE_SIZE } from "../lib/posts";
 import { postHref, withBase } from "../lib/paths";
 
@@ -9,7 +9,7 @@ export const GET: APIRoute = async ({ site: astroSite }) => {
   const totalPages = getTotalPages(posts.length, PAGE_SIZE);
   const base = withBase("/").replace(/\/$/, "") || "";
 
-  const staticPages = ["", "posts/", "tags/", "archive/", "about/"];
+  const staticPages = ["", "tags/", "archive/", "about/", ...topics.map((t) => `${t.id}/`)];
   const pageUrls = Array.from({ length: totalPages - 1 }, (_, i) => `page/${i + 2}/`);
 
   const urls = [

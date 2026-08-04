@@ -7,29 +7,44 @@ const posts = await getPublishedPosts();
 ---
 
 <PageLayout title="关于" description={`关于 ${site.name} 与作者 ${site.author}`}>
-  <article class="about">
+  <header class="topic-header">
     <h1>关于</h1>
+    <p>{site.description}</p>
+  </header>
+  <div class="about">
+    <p>你好，我是 {site.author}。</p>
     <p>
-      你好，我是 {site.author},
-    </p>
-    <p>
-      {site.email},
+      联系邮箱：
+      <a href={`mailto:${site.email}`}>{site.email}</a>
     </p>
     <p>目前已发布 {posts.length} 篇文章。</p>
-    
-  </article>
+  </div>
 </PageLayout>
 
 <style>
-  h1 {
-    margin: 0 0 1rem;
-    font-family: var(--font-sans);
-    font-size: 1.8rem;
-    font-weight: 900;
-    letter-spacing: -0.02em;
+  .topic-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--line);
   }
 
-  p {
+  h1 {
+    margin: 0 0 0.55rem;
+    font-size: clamp(2rem, 4.5vw, 2.75rem);
+    font-weight: 700;
+  }
+
+  .topic-header p {
+    margin: 0;
+    color: var(--ink-muted);
+  }
+
+  .about p {
     margin: 0 0 1rem;
+  }
+
+  a {
+    text-decoration: underline;
+    text-underline-offset: 2px;
   }
 </style>

@@ -4,6 +4,7 @@ description: react
 pubDate: 2026-07-17
 category: 前端
 tags: ["react", "面试", "前端"]
+heroImage: /images/covers/code-react.jpg
 ---
 
 ## 模块一：基础与编译机制

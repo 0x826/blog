@@ -1,32 +1,43 @@
 ---
+import { getTopic } from "../consts";
 import type { Post } from "../lib/posts";
-import { formatDate } from "../lib/posts";
-import { postHref } from "../lib/paths";
+import { formatDate, getPostTopicId } from "../lib/posts";
+import { postHref, topicHref } from "../lib/paths";
 
 interface Props {
   posts: Post[];
+  showTopic?: boolean;
 }
 
-const { posts } = Astro.props;
+const { posts, showTopic = true } = Astro.props;
 ---
 
 <ol class="post-list">
   {
-    posts.map((post) => (
-      <li>
-        <article>
-          <h2>
-            <a href={postHref(post.id)}>{post.data.title}</a>
-          </h2>
-          <p class="meta">
-            <time datetime={post.data.pubDate.toISOString()}>
-              {formatDate(post.data.pubDate, "long")}
-            </time>
-          </p>
-          <p class="desc">{post.data.description}</p>
-        </article>
-      </li>
-    ))
+    posts.map((post) => {
+      const topicId = getPostTopicId(post.id);
+      const topic = getTopic(topicId);
+      return (
+        <li>
+          <article>
+            {showTopic && topic && (
+              <a class="topic" href={topicHref(topic.id)}>
+                {topic.label}
+              </a>
+            )}
+            <h2>
+              <a href={postHref(post.id)}>{post.data.title}</a>
+            </h2>
+            <p class="desc">{post.data.description}</p>
+            <p class="meta">
+              <time datetime={post.data.pubDate.toISOString()}>
+                {formatDate(post.data.pubDate, "long")}
+              </time>
+            </p>
+          </article>
+        </li>
+      );
+    })
   }
 </ol>
 
@@ -38,31 +49,56 @@ const { posts } = Astro.props;
   }
 
   li + li {
-    margin-top: 2.25rem;
+    margin-top: 2.75rem;
+    padding-top: 2.75rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .topic {
+    display: inline-block;
+    margin-bottom: 0.55rem;
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent-hover);
+    text-decoration: none;
+  }
+
+  .topic:hover {
+    text-decoration: underline;
   }
 
   h2 {
-    margin: 0 0 0.35rem;
+    margin: 0 0 0.55rem;
     font-family: var(--font-sans);
-    font-size: 1.55rem;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    line-height: 1.3;
+    font-size: clamp(1.45rem, 3vw, 1.85rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.25;
   }
 
   h2 a {
-    color: var(--accent);
+    color: var(--ink);
+    text-decoration: none;
   }
 
-  .meta {
-    margin: 0 0 0.35rem;
-    font-size: 0.92rem;
-    color: var(--ink-faint);
+  h2 a:hover {
+    color: var(--accent-hover);
   }
 
   .desc {
-    margin: 0;
+    margin: 0 0 0.65rem;
     color: var(--ink-soft);
-    font-size: 1rem;
+    font-size: 1.02rem;
+    line-height: 1.65;
+  }
+
+  .meta {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    color: var(--ink-faint);
   }
 </style>

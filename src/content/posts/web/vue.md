@@ -4,6 +4,7 @@ description: vue
 pubDate: 2026-07-17
 category: 前端
 tags: ["vue", "面试", "前端"]
+heroImage: /images/covers/code-workspace.jpg
 ---
 
 ### 一、 响应式原理 (Vue2 vs Vue3)

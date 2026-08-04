@@ -13,14 +13,15 @@ const { title, description } = Astro.props;
 
 <BaseLayout title={title} description={description}>
   <Header />
-  <main class="wrap">
+  <main class="wrap page-main">
     <slot />
   </main>
   <Footer />
 </BaseLayout>
 
 <style>
-  main {
-    padding-bottom: 2rem;
+  .page-main {
+    flex: 1;
+    padding: 2.75rem 0 3rem;
   }
 </style>

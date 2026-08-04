@@ -1,21 +1,25 @@
 ---
-import { getAllTags, getPublishedPosts, slugifyTag } from "../../lib/posts";
+import { getAllTags, getPublishedPosts } from "../../lib/posts";
 import { withBase } from "../../lib/paths";
+import { slugifyTag } from "../../lib/posts";
 import PageLayout from "../../layouts/PageLayout.astro";
 
 const posts = await getPublishedPosts();
 const tags = getAllTags(posts);
 ---
 
-<PageLayout title="标签" description="按标签浏览文章">
-  <h1>标签</h1>
+<PageLayout title="标签" description="按标签浏览全部文章">
+  <header class="topic-header">
+    <h1>标签</h1>
+    <p>按标签浏览全部文章</p>
+  </header>
   <ul class="tags">
     {
       tags.map((tag) => (
         <li>
           <a href={withBase(`/tags/${slugifyTag(tag.name)}/`)}>
             {tag.name}
-            <span>({tag.count})</span>
+            <span>{tag.count}</span>
           </a>
         </li>
       ))
@@ -24,24 +28,44 @@ const tags = getAllTags(posts);
 </PageLayout>
 
 <style>
+  .topic-header {
+    margin-bottom: 2rem;
+  }
+
   h1 {
-    margin: 0 0 1rem;
-    font-family: var(--font-sans);
-    font-size: 1.8rem;
-    font-weight: 900;
+    margin: 0 0 0.55rem;
+    font-size: clamp(2rem, 4.5vw, 2.75rem);
+    font-weight: 700;
+  }
+
+  p {
+    margin: 0;
+    color: var(--ink-muted);
   }
 
   .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1rem;
     margin: 0;
-    padding: 0;
+    padding: 2rem 0 0;
     list-style: none;
+    border-top: 1px solid var(--line);
   }
 
-  li + li {
-    margin-top: 0.5rem;
+  a {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    color: var(--ink);
+  }
+
+  a:hover {
+    opacity: 0.65;
   }
 
   span {
-    color: var(--ink-faint);
+    color: var(--ink-muted);
+    font-size: 0.9rem;
   }
 </style>

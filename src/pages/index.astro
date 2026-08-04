@@ -1,7 +1,7 @@
 ---
 import { getPublishedPosts, paginatePosts } from "../lib/posts";
 import PageLayout from "../layouts/PageLayout.astro";
-import PostList from "../components/PostList.astro";
+import PostGrid from "../components/PostGrid.astro";
 import Pagination from "../components/Pagination.astro";
 
 const allPosts = await getPublishedPosts();
@@ -11,10 +11,10 @@ const { items, page, totalPages } = paginatePosts(allPosts, 1);
 <PageLayout>
   {
     allPosts.length === 0 ? (
-      <p class="empty">暂无文章。请确认 src/content/posts 下有 Markdown，并重启 yarn dev。</p>
+      <p class="empty">暂无文章。请确认 src/content/posts 下有 Markdown，并重启开发服务器。</p>
     ) : (
       <>
-        <PostList posts={items} />
+        <PostGrid posts={items} />
         <Pagination page={page} totalPages={totalPages} />
       </>
     )
@@ -23,7 +23,7 @@ const { items, page, totalPages } = paginatePosts(allPosts, 1);
 
 <style>
   .empty {
-    color: var(--ink-soft);
+    color: var(--ink-muted);
     padding: 1rem 0 3rem;
   }
 </style>
