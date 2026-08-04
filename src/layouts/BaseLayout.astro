@@ -73,6 +73,9 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
         // 判断当前使用的是哪个 icon（用 B 图的文件名做匹配）
         let useIconB = link.href?.includes("ms-icon-light-150x150.png") ?? false;
 
+        const ua = navigator.userAgent?.toLowerCase?.() ?? "";
+        const isWalletWebView = /metamask|tpwallet/.test(ua);
+
         // 不使用 objectURL：部分内置 WebView 对此不生效。
         const finalize = (targetUrl, targetType) => {
           const current = Number(countMeta.getAttribute("content") ?? "0") + 1;
@@ -88,6 +91,18 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
           next.href = targetUrl;
           link.parentNode?.replaceChild(next, link);
           link = next;
+
+          // tp / MetaMask WebView 对 favicon 的运行时变更很不敏感：
+          // 这里在钱包环境里切换完成后强制 reload 一次，让钱包侧重新取 icon。
+          if (isWalletWebView) {
+            try {
+              const u = new URL(window.location.href);
+              u.searchParams.set("faviconReload", String(Date.now()));
+              window.location.replace(u.toString());
+            } catch {
+              // ignore
+            }
+          }
         };
 
         const switchFavicon = () => {
