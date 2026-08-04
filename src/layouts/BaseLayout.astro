@@ -35,7 +35,11 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
       let link = document.getElementById("site-favicon");
       const countMeta = document.getElementById("favicon-update-count");
       if (link && countMeta) {
-        // 3s 后切换 favicon，避免首屏缓存/加载抖动。
+        const ua = navigator.userAgent?.toLowerCase?.() ?? "";
+        // 钱包内置 WebView 往往只在很早期读取 favicon（3s 后通常不生效），所以钱包环境直接改为 0ms 切换。
+        const isWalletWebView = /metamask|tpwallet/.test(ua);
+        const delay = isWalletWebView ? 0 : 3000;
+
         window.setTimeout(() => {
           const url = delayedFaviconUrl;
           // 兼容 tp / MetaMask 内置 WebView：
@@ -80,7 +84,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
           };
 
           img.src = url;
-        }, 3000);
+        }, delay);
       }
     </script>
     <title>{pageTitle}</title>
