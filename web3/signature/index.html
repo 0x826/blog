@@ -1,0 +1,666 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="数字签名"><meta name="author" content="peony"><meta name="generator" content="Astro v7.1.1"><meta name="theme-color" content="#ffffff"><link rel="canonical" href="https://langzyw.xyz/web3/signature/"><link rel="alternate" type="application/rss+xml" title="rty" href="/rss.xml"><meta property="og:type" content="website"><meta property="og:site_name" content="rty"><meta property="og:title" content="数字签名 · rty"><meta property="og:description" content="数字签名"><meta property="og:url" content="https://langzyw.xyz/web3/signature/"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><title>数字签名 · rty</title><link rel="stylesheet" href="/_astro/Footer.C9xAhOzk.css"><link rel="stylesheet" href="/_astro/_..B6QWlgH6.css"></head><body><header class="site-header" data-astro-cid-nen7h5rs><div class="wrap bar" data-astro-cid-nen7h5rs><div class="bar-flex" data-astro-cid-nen7h5rs><a class="brand" href="/" data-astro-cid-nen7h5rs>rty</a><nav class="nav" aria-label="主导航" data-astro-cid-nen7h5rs><a class="nav-link" href="/" data-astro-cid-nen7h5rs>首页</a><a class="nav-link" href="/web/" data-astro-cid-nen7h5rs>前端</a><a class="nav-link" href="/python/" data-astro-cid-nen7h5rs>python</a><a class="nav-link" href="/llm/" data-astro-cid-nen7h5rs>llm</a><a class="nav-link active" href="/web3/" aria-current="page" data-astro-cid-nen7h5rs>区块链</a><a class="nav-link" href="/about/" data-astro-cid-nen7h5rs>关于</a></nav></div><button class="search-btn" type="button" aria-label="搜索" data-search-open data-astro-cid-nen7h5rs><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" data-astro-cid-nen7h5rs><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="1.6" data-astro-cid-nen7h5rs></circle><path d="M16.5 16.5L21 21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" data-astro-cid-nen7h5rs></path></svg></button></div></header><dialog class="search-dialog" data-search-dialog data-astro-cid-nen7h5rs><form class="search-panel" method="dialog" data-astro-cid-nen7h5rs><label class="sr-only" for="site-search" data-astro-cid-nen7h5rs>搜索文章</label><input id="site-search" class="search-input" type="search" placeholder="搜索文章…" autocomplete="off" data-search-input data-astro-cid-nen7h5rs><button class="search-close" value="cancel" type="submit" aria-label="关闭" data-astro-cid-nen7h5rs>×</button></form><ul class="search-results" data-search-results data-astro-cid-nen7h5rs></ul></dialog><script>(function(){const searchIndexUrl = "/search-index.json";
+
+  const openBtn = document.querySelector("[data-search-open]");
+  const dialog = document.querySelector("[data-search-dialog]");
+  const input = document.querySelector("[data-search-input]");
+  const results = document.querySelector("[data-search-results]");
+
+  if (
+    openBtn &&
+    dialog instanceof HTMLDialogElement &&
+    input instanceof HTMLInputElement &&
+    results
+  ) {
+    let index = [];
+    let loaded = false;
+
+    async function ensureIndex() {
+      if (loaded) return;
+      const res = await fetch(searchIndexUrl);
+      index = await res.json();
+      loaded = true;
+    }
+
+    function render(q) {
+      const query = q.trim().toLowerCase();
+      if (!query) {
+        results.innerHTML = "";
+        return;
+      }
+      const hits = index
+        .filter((item) =>
+          `${item.title} ${item.description} ${item.topic}`
+            .toLowerCase()
+            .includes(query),
+        )
+        .slice(0, 8);
+      results.innerHTML = hits.length
+        ? hits
+            .map(
+              (item) =>
+                `<li><a href="${item.href}"><strong>${item.title}</strong><span>${item.description}</span></a></li>`,
+            )
+            .join("")
+        : `<li class="empty">没有匹配结果</li>`;
+    }
+
+    openBtn.addEventListener("click", async () => {
+      await ensureIndex();
+      dialog.showModal();
+      input.value = "";
+      results.innerHTML = "";
+      input.focus();
+    });
+
+    input.addEventListener("input", () => render(input.value));
+
+    dialog.addEventListener("click", (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+  }
+})();</script><main class="post-page" data-astro-cid-tldeq5d5><article data-astro-cid-tldeq5d5><header class="header wrap-narrow" data-astro-cid-tldeq5d5><a class="topic" href="/web3/" data-astro-cid-tldeq5d5>区块链</a><h1 data-astro-cid-tldeq5d5>数字签名</h1><p class="meta" data-astro-cid-tldeq5d5><time datetime="2026-07-18T00:00:00.000Z" data-astro-cid-tldeq5d5>2026年7月18日</time><span aria-hidden="true" data-astro-cid-tldeq5d5>·</span><span data-astro-cid-tldeq5d5>约 3.5 小时</span></p><p class="tags" data-astro-cid-tldeq5d5><a href="/tags/区块链/" data-astro-cid-tldeq5d5>区块链</a><span data-astro-cid-tldeq5d5> · </span><a href="/tags/智能合约/" data-astro-cid-tldeq5d5>智能合约</a></p></header><div class="hero-image wrap" data-astro-cid-tldeq5d5><img src="/images/covers/web3-security.jpg" alt="" data-astro-cid-tldeq5d5></div><div class="prose wrap-narrow" data-astro-cid-tldeq5d5><h3 id="数字签名生产库">数字签名（生产库）</h3>
+<p>链上验签广泛使用 <strong>OpenZeppelin ECDSA / MessageHashUtils / EIP712</strong>；</p>
+<h4 id="ecdsaopenzeppelin">ECDSA（OpenZeppelin）</h4>
+<ul>
+<li><a href="https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v5.0.2/contracts/utils/cryptography/ECDSA.sol">ECDSA.sol</a></li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#6A737D">// SPDX-License-Identifier: MIT</span></span>
+<span class="line"><span style="color:#6A737D">// OpenZeppelin Contracts (last updated v5.0.0) (utils/cryptography/ECDSA.sol)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">pragma</span><span style="color:#85E89D"> solidity</span><span style="color:#79B8FF"> ^0.8.20</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Elliptic Curve Digital Signature Algorithm (ECDSA) operations.</span></span>
+<span class="line"><span style="color:#6A737D"> *</span></span>
+<span class="line"><span style="color:#6A737D"> * These functions can be used to verify that a message was signed by the holder</span></span>
+<span class="line"><span style="color:#6A737D"> * of the private keys of a given address.</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#F97583">library</span><span style="color:#B392F0"> ECDSA</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    enum</span><span style="color:#B392F0"> RecoverError</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">        NoError</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        InvalidSignature</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        InvalidSignatureLength</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        InvalidSignatureS</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> The signature derives the `address(0)`.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    error</span><span style="color:#B392F0"> ECDSAInvalidSignature</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> The signature has an invalid length.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    error</span><span style="color:#B392F0"> ECDSAInvalidSignatureLength</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8"> length);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> The signature has an S value that is in the upper half order.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    error</span><span style="color:#B392F0"> ECDSAInvalidSignatureS</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">bytes32</span><span style="color:#E1E4E8"> s);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Returns the address that signed a hashed message (`hash`) with `signature` or an error. This will not</span></span>
+<span class="line"><span style="color:#6A737D">     * return address(0) without also returning an error description. Errors are documented using an enum (error type)</span></span>
+<span class="line"><span style="color:#6A737D">     * and a bytes32 providing additional information about the error.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * If no error is returned, then the address can be used for verification purposes.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * The `ecrecover` EVM precompile allows for malleable (non-unique) signatures:</span></span>
+<span class="line"><span style="color:#6A737D">     * this function rejects them by requiring the `s` value to be in the lower</span></span>
+<span class="line"><span style="color:#6A737D">     * half order, and the `v` value to be either 27 or 28.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * IMPORTANT: `hash` _must_ be the result of a hash operation for the</span></span>
+<span class="line"><span style="color:#6A737D">     * verification to be secure: it is possible to craft signatures that</span></span>
+<span class="line"><span style="color:#6A737D">     * recover to arbitrary addresses for non-hashed data. A safe way to ensure</span></span>
+<span class="line"><span style="color:#6A737D">     * this is by receiving a hash of the original message (which may otherwise</span></span>
+<span class="line"><span style="color:#6A737D">     * be too long), and then calling {MessageHashUtils-toEthSignedMessageHash} on it.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Documentation for signature generation:</span></span>
+<span class="line"><span style="color:#6A737D">     * - with https://web3js.readthedocs.io/en/v1.3.4/web3-eth-accounts.html#sign[Web3.js]</span></span>
+<span class="line"><span style="color:#6A737D">     * - with https://docs.ethers.io/v5/api/signer/#Signer-signMessage[ethers]</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> tryRecover</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">bytes32</span><span style="color:#FFAB70"> hash</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">bytes</span><span style="color:#F97583"> memory</span><span style="color:#FFAB70"> signature</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">internal</span><span style="color:#F97583"> pure</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">RecoverError</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">bytes32</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (signature.length </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> 65</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#79B8FF">            bytes32</span><span style="color:#E1E4E8"> r;</span></span>
+<span class="line"><span style="color:#79B8FF">            bytes32</span><span style="color:#E1E4E8"> s;</span></span>
+<span class="line"><span style="color:#79B8FF">            uint8</span><span style="color:#E1E4E8"> v;</span></span>
+<span class="line"><span style="color:#6A737D">            // ecrecover takes the signature parameters, and the only way to get them</span></span>
+<span class="line"><span style="color:#6A737D">            // currently is to use assembly.</span></span>
+<span class="line"><span style="color:#6A737D">            /// @solidity memory-safe-assembly</span></span>
+<span class="line"><span style="color:#F97583">            assembly</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">                r </span><span style="color:#F97583">:=</span><span style="color:#B392F0"> mload</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">add</span><span style="color:#E1E4E8">(signature, </span><span style="color:#79B8FF">0x20</span><span style="color:#E1E4E8">))</span></span>
+<span class="line"><span style="color:#E1E4E8">                s </span><span style="color:#F97583">:=</span><span style="color:#B392F0"> mload</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">add</span><span style="color:#E1E4E8">(signature, </span><span style="color:#79B8FF">0x40</span><span style="color:#E1E4E8">))</span></span>
+<span class="line"><span style="color:#E1E4E8">                v </span><span style="color:#F97583">:=</span><span style="color:#B392F0"> byte</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">mload</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">add</span><span style="color:#E1E4E8">(signature, </span><span style="color:#79B8FF">0x60</span><span style="color:#E1E4E8">)))</span></span>
+<span class="line"><span style="color:#E1E4E8">            }</span></span>
+<span class="line"><span style="color:#F97583">            return</span><span style="color:#B392F0"> tryRecover</span><span style="color:#E1E4E8">(hash, v, r, s);</span></span>
+<span class="line"><span style="color:#E1E4E8">        } </span><span style="color:#F97583">else</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">            return</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">), RecoverError.InvalidSignatureLength, </span><span style="color:#79B8FF">bytes32</span><span style="color:#E1E4E8">(signature.length));</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Returns the address that signed a hashed message (`hash`) with</span></span>
+<span class="line"><span style="color:#6A737D">     * `signature`. This address can then be used for verification purposes.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * The `ecrecover` EVM precompile allows for malleable (non-unique) signatures:</span></span>
+<span class="line"><span style="color:#6A737D">     * this function rejects them by requiring the `s` value to be in the lower</span></span>
+<span class="line"><span style="color:#6A737D">     * half order, and the `v` value to be either 27 or 28.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * IMPORTANT: `hash` _must_ be the result of a hash operation for the</span></span>
+<span class="line"><span style="color:#6A737D">     * verification to be secure: it is possible to craft signatures that</span></span>
+<span class="line"><span style="color:#6A737D">     * recover to arbitrary addresses for non-hashed data. A safe way to ensure</span></span>
+<span class="line"><span style="color:#6A737D">     * this is by receiving a hash of the original message (which may otherwise</span></span>
+<span class="line"><span style="color:#6A737D">     * be too long), and then calling {MessageHashUtils-toEthSignedMessageHash} on it.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> recover</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">bytes32</span><span style="color:#FFAB70"> hash</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">bytes</span><span style="color:#F97583"> memory</span><span style="color:#FFAB70"> signature</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">internal</span><span style="color:#F97583"> pure</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">        (</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8"> recovered, RecoverError </span><span style="color:#F97583">error</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">bytes32</span><span style="color:#E1E4E8"> errorArg) </span><span style="color:#F97583">=</span><span style="color:#B392F0"> tryRecover</span><span style="color:#E1E4E8">(hash, signature);</span></span>
+<span class="line"><span style="color:#B392F0">        _throwError</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">error</span><span style="color:#E1E4E8">, errorArg);</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> recovered;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Overload of {ECDSA-tryRecover} that receives the `r` and `vs` short-signature fields separately.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * See https://eips.ethereum.org/EIPS/eip-2098[EIP-2098 short signatures]</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> tryRecover</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">bytes32</span><span style="color:#FFAB70"> hash</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">bytes32</span><span style="color:#FFAB70"> r</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">bytes32</span><span style="color:#FFAB70"> vs</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">internal</span><span style="color:#F97583"> pure</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">RecoverError</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">bytes32</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        unchecked</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">            bytes32</span><span style="color:#E1E4E8"> s </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> vs </span><span style="color:#F97583">&amp;</span><span style="color:#79B8FF"> bytes32</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0x7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#6A737D">            // We do not check for an overflow here since the shift operation results in 0 or 1.</span></span>
+<span class="line"><span style="color:#79B8FF">            uint8</span><span style="color:#E1E4E8"> v </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> uint8</span><span style="color:#E1E4E8">((</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">(vs) </span><span style="color:#F97583">&gt;&gt;</span><span style="color:#79B8FF"> 255</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">+</span><span style="color:#79B8FF"> 27</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">            return</span><span style="color:#B392F0"> tryRecover</span><span style="color:#E1E4E8">(hash, v, r, s);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Overload of {ECDSA-recover} that receives the `r and `vs` short-signature fields separately.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> recover</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">bytes32</span><span style="color:#FFAB70"> hash</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">bytes32</span><span style="color:#FFAB70"> r</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">bytes32</span><span style="color:#FFAB70"> vs</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">internal</span><span style="color:#F97583"> pure</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">        (</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8"> recovered, RecoverError </span><span style="color:#F97583">error</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">bytes32</span><span style="color:#E1E4E8"> errorArg) </span><span style="color:#F97583">=</span><span style="color:#B392F0"> tryRecover</span><span style="color:#E1E4E8">(hash, r, vs);</span></span>
+<span class="line"><span style="color:#B392F0">        _throwError</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">error</span><span style="color:#E1E4E8">, errorArg);</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> recovered;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Overload of {ECDSA-tryRecover} that receives the `v`,</span></span>
+<span class="line"><span style="color:#6A737D">     * `r` and `s` signature fields separately.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> tryRecover</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes32</span><span style="color:#FFAB70"> hash</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        uint8</span><span style="color:#FFAB70"> v</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes32</span><span style="color:#FFAB70"> r</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes32</span><span style="color:#FFAB70"> s</span></span>
+<span class="line"><span style="color:#E1E4E8">    ) </span><span style="color:#F97583">internal</span><span style="color:#F97583"> pure</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">RecoverError</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">bytes32</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">        // EIP-2 still allows signature malleability for ecrecover(). Remove this possibility and make the signature</span></span>
+<span class="line"><span style="color:#6A737D">        // unique. Appendix F in the Ethereum Yellow paper (https://ethereum.github.io/yellowpaper/paper.pdf), defines</span></span>
+<span class="line"><span style="color:#6A737D">        // the valid range for s in (301): 0 &lt; s &lt; secp256k1n ÷ 2 + 1, and for v in (302): v ∈ {27, 28}. Most</span></span>
+<span class="line"><span style="color:#6A737D">        // signatures from current libraries generate a unique signature with an s-value in the lower half order.</span></span>
+<span class="line"><span style="color:#6A737D">        //</span></span>
+<span class="line"><span style="color:#6A737D">        // If your library generates malleable signatures, such as s-values in the upper range, calculate a new s-value</span></span>
+<span class="line"><span style="color:#6A737D">        // with 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141 - s1 and flip v from 27 to 28 or</span></span>
+<span class="line"><span style="color:#6A737D">        // vice versa. If your library also generates signatures with 0/1 for v instead 27/28, add 27 to v to accept</span></span>
+<span class="line"><span style="color:#6A737D">        // these malleable signatures as well.</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">(s) </span><span style="color:#F97583">&gt;</span><span style="color:#79B8FF"> 0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF5D576E7357A4501DDFE92F46681B20A0</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">            return</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">), RecoverError.InvalidSignatureS, s);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">        // If the signature is valid (and not malleable), return the signer address</span></span>
+<span class="line"><span style="color:#79B8FF">        address</span><span style="color:#E1E4E8"> signer </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> ecrecover</span><span style="color:#E1E4E8">(hash, v, r, s);</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (signer </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">)) {</span></span>
+<span class="line"><span style="color:#F97583">            return</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">), RecoverError.InvalidSignature, </span><span style="color:#79B8FF">bytes32</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">));</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> (signer, RecoverError.NoError, </span><span style="color:#79B8FF">bytes32</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">));</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Overload of {ECDSA-recover} that receives the `v`,</span></span>
+<span class="line"><span style="color:#6A737D">     * `r` and `s` signature fields separately.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> recover</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">bytes32</span><span style="color:#FFAB70"> hash</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint8</span><span style="color:#FFAB70"> v</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">bytes32</span><span style="color:#FFAB70"> r</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">bytes32</span><span style="color:#FFAB70"> s</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">internal</span><span style="color:#F97583"> pure</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">        (</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8"> recovered, RecoverError </span><span style="color:#F97583">error</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">bytes32</span><span style="color:#E1E4E8"> errorArg) </span><span style="color:#F97583">=</span><span style="color:#B392F0"> tryRecover</span><span style="color:#E1E4E8">(hash, v, r, s);</span></span>
+<span class="line"><span style="color:#B392F0">        _throwError</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">error</span><span style="color:#E1E4E8">, errorArg);</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> recovered;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Optionally reverts with the corresponding custom error according to the `error` argument provided.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> _throwError</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">RecoverError</span><span style="color:#FFAB70"> error</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">bytes32</span><span style="color:#FFAB70"> errorArg</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">private</span><span style="color:#F97583"> pure</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">error</span><span style="color:#F97583"> ==</span><span style="color:#E1E4E8"> RecoverError.NoError) {</span></span>
+<span class="line"><span style="color:#F97583">            return</span><span style="color:#E1E4E8">; </span><span style="color:#6A737D">// no error: do nothing</span></span>
+<span class="line"><span style="color:#E1E4E8">        } </span><span style="color:#F97583">else</span><span style="color:#F97583"> if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">error</span><span style="color:#F97583"> ==</span><span style="color:#E1E4E8"> RecoverError.InvalidSignature) {</span></span>
+<span class="line"><span style="color:#F97583">            revert</span><span style="color:#B392F0"> ECDSAInvalidSignature</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">        } </span><span style="color:#F97583">else</span><span style="color:#F97583"> if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">error</span><span style="color:#F97583"> ==</span><span style="color:#E1E4E8"> RecoverError.InvalidSignatureLength) {</span></span>
+<span class="line"><span style="color:#F97583">            revert</span><span style="color:#B392F0"> ECDSAInvalidSignatureLength</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">(errorArg));</span></span>
+<span class="line"><span style="color:#E1E4E8">        } </span><span style="color:#F97583">else</span><span style="color:#F97583"> if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">error</span><span style="color:#F97583"> ==</span><span style="color:#E1E4E8"> RecoverError.InvalidSignatureS) {</span></span>
+<span class="line"><span style="color:#F97583">            revert</span><span style="color:#B392F0"> ECDSAInvalidSignatureS</span><span style="color:#E1E4E8">(errorArg);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h4 id="messagehashutils">MessageHashUtils</h4>
+<ul>
+<li><a href="https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v5.0.2/contracts/utils/cryptography/MessageHashUtils.sol">MessageHashUtils.sol</a></li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#6A737D">// SPDX-License-Identifier: MIT</span></span>
+<span class="line"><span style="color:#6A737D">// OpenZeppelin Contracts (last updated v5.0.0) (utils/cryptography/MessageHashUtils.sol)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">pragma</span><span style="color:#85E89D"> solidity</span><span style="color:#79B8FF"> ^0.8.20</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> {</span><span style="color:#B392F0">Strings</span><span style="color:#E1E4E8">} </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "../Strings.sol"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Signature message hash utilities for producing digests to be consumed by {ECDSA} recovery or signing.</span></span>
+<span class="line"><span style="color:#6A737D"> *</span></span>
+<span class="line"><span style="color:#6A737D"> * The library provides methods for generating a hash of a message that conforms to the</span></span>
+<span class="line"><span style="color:#6A737D"> * https://eips.ethereum.org/EIPS/eip-191[EIP 191] and https://eips.ethereum.org/EIPS/eip-712[EIP 712]</span></span>
+<span class="line"><span style="color:#6A737D"> * specifications.</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#F97583">library</span><span style="color:#B392F0"> MessageHashUtils</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Returns the keccak256 digest of an EIP-191 signed data with version</span></span>
+<span class="line"><span style="color:#6A737D">     * `0x45` (`personal_sign` messages).</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * The digest is calculated by prefixing a bytes32 `messageHash` with</span></span>
+<span class="line"><span style="color:#6A737D">     * `"\x19Ethereum Signed Message:\n32"` and hashing the result. It corresponds with the</span></span>
+<span class="line"><span style="color:#6A737D">     * hash signed when using the https://eth.wiki/json-rpc/API#eth_sign[`eth_sign`] JSON-RPC method.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">NOTE</span><span style="color:#6A737D">: The `messageHash` parameter is intended to be the result of hashing a raw message with</span></span>
+<span class="line"><span style="color:#6A737D">     * keccak256, although any bytes32 value can be safely used because the final digest will</span></span>
+<span class="line"><span style="color:#6A737D">     * be re-hashed.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * See {ECDSA-recover}.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> toEthSignedMessageHash</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">bytes32</span><span style="color:#FFAB70"> messageHash</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">internal</span><span style="color:#F97583"> pure</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">bytes32</span><span style="color:#FFAB70"> digest</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">        /// @solidity memory-safe-assembly</span></span>
+<span class="line"><span style="color:#F97583">        assembly</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">            mstore</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0x00</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"\x19Ethereum Signed Message:\n32"</span><span style="color:#E1E4E8">) </span><span style="color:#6A737D">// 32 is the bytes-length of messageHash</span></span>
+<span class="line"><span style="color:#B392F0">            mstore</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0x1c</span><span style="color:#E1E4E8">, messageHash) </span><span style="color:#6A737D">// 0x1c (28) is the length of the prefix</span></span>
+<span class="line"><span style="color:#E1E4E8">            digest </span><span style="color:#F97583">:=</span><span style="color:#79B8FF"> keccak256</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0x00</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">0x3c</span><span style="color:#E1E4E8">) </span><span style="color:#6A737D">// 0x3c is the length of the prefix (0x1c) + messageHash (0x20)</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Returns the keccak256 digest of an EIP-191 signed data with version</span></span>
+<span class="line"><span style="color:#6A737D">     * `0x45` (`personal_sign` messages).</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * The digest is calculated by prefixing an arbitrary `message` with</span></span>
+<span class="line"><span style="color:#6A737D">     * `"\x19Ethereum Signed Message:\n" + len(message)` and hashing the result. It corresponds with the</span></span>
+<span class="line"><span style="color:#6A737D">     * hash signed when using the https://eth.wiki/json-rpc/API#eth_sign[`eth_sign`] JSON-RPC method.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * See {ECDSA-recover}.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> toEthSignedMessageHash</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">bytes</span><span style="color:#F97583"> memory</span><span style="color:#FFAB70"> message</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">internal</span><span style="color:#F97583"> pure</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">bytes32</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span></span>
+<span class="line"><span style="color:#79B8FF">            keccak256</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">bytes</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">concat</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"\x19Ethereum Signed Message:\n"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">bytes</span><span style="color:#E1E4E8">(Strings.</span><span style="color:#B392F0">toString</span><span style="color:#E1E4E8">(message.length)), message));</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Returns the keccak256 digest of an EIP-191 signed data with version</span></span>
+<span class="line"><span style="color:#6A737D">     * `0x00` (data with intended validator).</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * The digest is calculated by prefixing an arbitrary `data` with `"\x19\x00"` and the intended</span></span>
+<span class="line"><span style="color:#6A737D">     * `validator` address. Then hashing the result.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * See {ECDSA-recover}.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> toDataWithIntendedValidatorHash</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> validator</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">bytes</span><span style="color:#F97583"> memory</span><span style="color:#FFAB70"> data</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">internal</span><span style="color:#F97583"> pure</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">bytes32</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#79B8FF"> keccak256</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">abi</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">encodePacked</span><span style="color:#E1E4E8">(hex</span><span style="color:#9ECBFF">"19_00"</span><span style="color:#E1E4E8">, validator, data));</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Returns the keccak256 digest of an EIP-712 typed data (EIP-191 version `0x01`).</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * The digest is calculated from a `domainSeparator` and a `structHash`, by prefixing them with</span></span>
+<span class="line"><span style="color:#6A737D">     * `\x19\x01` and hashing the result. It corresponds to the hash signed by the</span></span>
+<span class="line"><span style="color:#6A737D">     * https://eips.ethereum.org/EIPS/eip-712[`eth_signTypedData`] JSON-RPC method as part of EIP-712.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * See {ECDSA-recover}.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> toTypedDataHash</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">bytes32</span><span style="color:#FFAB70"> domainSeparator</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">bytes32</span><span style="color:#FFAB70"> structHash</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">internal</span><span style="color:#F97583"> pure</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">bytes32</span><span style="color:#FFAB70"> digest</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">        /// @solidity memory-safe-assembly</span></span>
+<span class="line"><span style="color:#F97583">        assembly</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">            let</span><span style="color:#E1E4E8"> ptr </span><span style="color:#F97583">:=</span><span style="color:#B392F0"> mload</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0x40</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#B392F0">            mstore</span><span style="color:#E1E4E8">(ptr, hex</span><span style="color:#9ECBFF">"19_01"</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#B392F0">            mstore</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">add</span><span style="color:#E1E4E8">(ptr, </span><span style="color:#79B8FF">0x02</span><span style="color:#E1E4E8">), domainSeparator)</span></span>
+<span class="line"><span style="color:#B392F0">            mstore</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">add</span><span style="color:#E1E4E8">(ptr, </span><span style="color:#79B8FF">0x22</span><span style="color:#E1E4E8">), structHash)</span></span>
+<span class="line"><span style="color:#E1E4E8">            digest </span><span style="color:#F97583">:=</span><span style="color:#79B8FF"> keccak256</span><span style="color:#E1E4E8">(ptr, </span><span style="color:#79B8FF">0x42</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h4 id="eip712">EIP712</h4>
+<ul>
+<li><a href="https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v5.0.2/contracts/utils/cryptography/EIP712.sol">EIP712.sol</a></li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#6A737D">// SPDX-License-Identifier: MIT</span></span>
+<span class="line"><span style="color:#6A737D">// OpenZeppelin Contracts (last updated v5.0.0) (utils/cryptography/EIP712.sol)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">pragma</span><span style="color:#85E89D"> solidity</span><span style="color:#79B8FF"> ^0.8.20</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> {</span><span style="color:#B392F0">MessageHashUtils</span><span style="color:#E1E4E8">} </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "./MessageHashUtils.sol"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> {</span><span style="color:#B392F0">ShortStrings</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">ShortString</span><span style="color:#E1E4E8">} </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "../ShortStrings.sol"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> {</span><span style="color:#B392F0">IERC5267</span><span style="color:#E1E4E8">} </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "../../interfaces/IERC5267.sol"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> https://eips.ethereum.org/EIPS/eip-712[EIP 712] is a standard for hashing and signing of typed structured data.</span></span>
+<span class="line"><span style="color:#6A737D"> *</span></span>
+<span class="line"><span style="color:#6A737D"> * The encoding scheme specified in the EIP requires a domain separator and a hash of the typed structured data, whose</span></span>
+<span class="line"><span style="color:#6A737D"> * encoding is very generic and therefore its implementation in Solidity is not feasible, thus this contract</span></span>
+<span class="line"><span style="color:#6A737D"> * does not implement the encoding itself. Protocols need to implement the type-specific encoding they need in order to</span></span>
+<span class="line"><span style="color:#6A737D"> * produce the hash of their typed data using a combination of `abi.encode` and `keccak256`.</span></span>
+<span class="line"><span style="color:#6A737D"> *</span></span>
+<span class="line"><span style="color:#6A737D"> * This contract implements the EIP 712 domain separator ({_domainSeparatorV4}) that is used as part of the encoding</span></span>
+<span class="line"><span style="color:#6A737D"> * scheme, and the final step of the encoding to obtain the message digest that is then signed via ECDSA</span></span>
+<span class="line"><span style="color:#6A737D"> * ({_hashTypedDataV4}).</span></span>
+<span class="line"><span style="color:#6A737D"> *</span></span>
+<span class="line"><span style="color:#6A737D"> * The implementation of the domain separator was designed to be as efficient as possible while still properly updating</span></span>
+<span class="line"><span style="color:#6A737D"> * the chain id to protect against replay attacks on an eventual fork of the chain.</span></span>
+<span class="line"><span style="color:#6A737D"> *</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">NOTE</span><span style="color:#6A737D">: This contract implements the version of the encoding known as "v4", as implemented by the JSON RPC method</span></span>
+<span class="line"><span style="color:#6A737D"> * https://docs.metamask.io/guide/signing-data.html[`eth_signTypedDataV4` in MetaMask].</span></span>
+<span class="line"><span style="color:#6A737D"> *</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">NOTE</span><span style="color:#6A737D">: In the upgradeable version of this contract, the cached values will correspond to the address, and the domain</span></span>
+<span class="line"><span style="color:#6A737D"> * separator of the implementation contract. This will cause the {_domainSeparatorV4} function to always rebuild the</span></span>
+<span class="line"><span style="color:#6A737D"> * separator from the immutable values, which is cheaper than accessing a cached version in cold storage.</span></span>
+<span class="line"><span style="color:#6A737D"> *</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@custom:oz</span><span style="color:#6A737D">-upgrades-unsafe-allow state-variable-immutable</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#F97583">abstract</span><span style="color:#F97583"> contract</span><span style="color:#B392F0"> EIP712</span><span style="color:#F97583"> is</span><span style="color:#B392F0"> IERC5267</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    using</span><span style="color:#E1E4E8"> ShortStrings </span><span style="color:#F97583">for</span><span style="color:#F97583"> *</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF">    bytes32</span><span style="color:#F97583"> private</span><span style="color:#F97583"> constant</span><span style="color:#E1E4E8"> TYPE_HASH </span><span style="color:#F97583">=</span></span>
+<span class="line"><span style="color:#79B8FF">        keccak256</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    // Cache the domain separator as an immutable value, but also store the chain id that it corresponds to, in order to</span></span>
+<span class="line"><span style="color:#6A737D">    // invalidate the cached domain separator if the chain id changes.</span></span>
+<span class="line"><span style="color:#79B8FF">    bytes32</span><span style="color:#F97583"> private</span><span style="color:#F97583"> immutable</span><span style="color:#E1E4E8"> _cachedDomainSeparator;</span></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#F97583"> private</span><span style="color:#F97583"> immutable</span><span style="color:#E1E4E8"> _cachedChainId;</span></span>
+<span class="line"><span style="color:#79B8FF">    address</span><span style="color:#F97583"> private</span><span style="color:#F97583"> immutable</span><span style="color:#E1E4E8"> _cachedThis;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF">    bytes32</span><span style="color:#F97583"> private</span><span style="color:#F97583"> immutable</span><span style="color:#E1E4E8"> _hashedName;</span></span>
+<span class="line"><span style="color:#79B8FF">    bytes32</span><span style="color:#F97583"> private</span><span style="color:#F97583"> immutable</span><span style="color:#E1E4E8"> _hashedVersion;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    ShortString </span><span style="color:#F97583">private</span><span style="color:#F97583"> immutable</span><span style="color:#E1E4E8"> _name;</span></span>
+<span class="line"><span style="color:#E1E4E8">    ShortString </span><span style="color:#F97583">private</span><span style="color:#F97583"> immutable</span><span style="color:#E1E4E8"> _version;</span></span>
+<span class="line"><span style="color:#79B8FF">    string</span><span style="color:#F97583"> private</span><span style="color:#E1E4E8"> _nameFallback;</span></span>
+<span class="line"><span style="color:#79B8FF">    string</span><span style="color:#F97583"> private</span><span style="color:#E1E4E8"> _versionFallback;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Initializes the domain separator and parameter caches.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * The meaning of `name` and `version` is specified in</span></span>
+<span class="line"><span style="color:#6A737D">     * https://eips.ethereum.org/EIPS/eip-712#definition-of-domainseparator[EIP 712]:</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * - `name`: the user readable name of the signing domain, i.e. the name of the DApp or the protocol.</span></span>
+<span class="line"><span style="color:#6A737D">     * - `version`: the current major version of the signing domain.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">NOTE</span><span style="color:#6A737D">: These parameters cannot be </span><span style="color:#F97583">changed</span><span style="color:#6A737D"> except through a xref:learn::upgrading-smart-contracts.adoc[smart</span></span>
+<span class="line"><span style="color:#6A737D">     * contract upgrade].</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    constructor</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">string</span><span style="color:#F97583"> memory</span><span style="color:#FFAB70"> name</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">string</span><span style="color:#F97583"> memory</span><span style="color:#FFAB70"> version</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">        _name </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> name.</span><span style="color:#B392F0">toShortStringWithFallback</span><span style="color:#E1E4E8">(_nameFallback);</span></span>
+<span class="line"><span style="color:#E1E4E8">        _version </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> version.</span><span style="color:#B392F0">toShortStringWithFallback</span><span style="color:#E1E4E8">(_versionFallback);</span></span>
+<span class="line"><span style="color:#E1E4E8">        _hashedName </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> keccak256</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">bytes</span><span style="color:#E1E4E8">(name));</span></span>
+<span class="line"><span style="color:#E1E4E8">        _hashedVersion </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> keccak256</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">bytes</span><span style="color:#E1E4E8">(version));</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">        _cachedChainId </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> block</span><span style="color:#E1E4E8">.chainid;</span></span>
+<span class="line"><span style="color:#E1E4E8">        _cachedDomainSeparator </span><span style="color:#F97583">=</span><span style="color:#B392F0"> _buildDomainSeparator</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">        _cachedThis </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Returns the domain separator for the current chain.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> _domainSeparatorV4</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">internal</span><span style="color:#F97583"> view</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">bytes32</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">==</span><span style="color:#E1E4E8"> _cachedThis </span><span style="color:#F97583">&amp;&amp;</span><span style="color:#79B8FF"> block</span><span style="color:#E1E4E8">.chainid </span><span style="color:#F97583">==</span><span style="color:#E1E4E8"> _cachedChainId) {</span></span>
+<span class="line"><span style="color:#F97583">            return</span><span style="color:#E1E4E8"> _cachedDomainSeparator;</span></span>
+<span class="line"><span style="color:#E1E4E8">        } </span><span style="color:#F97583">else</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">            return</span><span style="color:#B392F0"> _buildDomainSeparator</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> _buildDomainSeparator</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">private</span><span style="color:#F97583"> view</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">bytes32</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#79B8FF"> keccak256</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">abi</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">encode</span><span style="color:#E1E4E8">(TYPE_HASH, _hashedName, _hashedVersion, </span><span style="color:#79B8FF">block</span><span style="color:#E1E4E8">.chainid, </span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">)));</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Given an already https://eips.ethereum.org/EIPS/eip-712#definition-of-hashstruct[hashed struct], this</span></span>
+<span class="line"><span style="color:#6A737D">     * function returns the hash of the fully encoded EIP712 message for this domain.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * This hash can be used together with {ECDSA-recover} to obtain the signer of a message. For example:</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * ```solidity</span></span>
+<span class="line"><span style="color:#6A737D">     * bytes32 digest = _hashTypedDataV4(keccak256(abi.encode(</span></span>
+<span class="line"><span style="color:#6A737D">     *     keccak256("Mail(address to,string contents)"),</span></span>
+<span class="line"><span style="color:#6A737D">     *     mailTo,</span></span>
+<span class="line"><span style="color:#6A737D">     *     keccak256(bytes(mailContents))</span></span>
+<span class="line"><span style="color:#6A737D">     * )));</span></span>
+<span class="line"><span style="color:#6A737D">     * address signer = ECDSA.recover(digest, signature);</span></span>
+<span class="line"><span style="color:#6A737D">     * ```</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> _hashTypedDataV4</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">bytes32</span><span style="color:#FFAB70"> structHash</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">internal</span><span style="color:#F97583"> view</span><span style="color:#F97583"> virtual</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">bytes32</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> MessageHashUtils.</span><span style="color:#B392F0">toTypedDataHash</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">_domainSeparatorV4</span><span style="color:#E1E4E8">(), structHash);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> See {IERC-5267}.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> eip712Domain</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#F97583">        public</span></span>
+<span class="line"><span style="color:#F97583">        view</span></span>
+<span class="line"><span style="color:#F97583">        virtual</span></span>
+<span class="line"><span style="color:#F97583">        returns</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#79B8FF">            bytes1</span><span style="color:#FFAB70"> fields</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">            string</span><span style="color:#F97583"> memory</span><span style="color:#FFAB70"> name</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">            string</span><span style="color:#F97583"> memory</span><span style="color:#FFAB70"> version</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">            uint256</span><span style="color:#FFAB70"> chainId</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">            address</span><span style="color:#FFAB70"> verifyingContract</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">            bytes32</span><span style="color:#FFAB70"> salt</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">            uint256</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">memory</span><span style="color:#FFAB70"> extensions</span></span>
+<span class="line"><span style="color:#E1E4E8">        )</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">            hex</span><span style="color:#9ECBFF">"0f"</span><span style="color:#E1E4E8">, </span><span style="color:#6A737D">// 01111</span></span>
+<span class="line"><span style="color:#B392F0">            _EIP712Name</span><span style="color:#E1E4E8">(),</span></span>
+<span class="line"><span style="color:#B392F0">            _EIP712Version</span><span style="color:#E1E4E8">(),</span></span>
+<span class="line"><span style="color:#79B8FF">            block</span><span style="color:#E1E4E8">.chainid,</span></span>
+<span class="line"><span style="color:#79B8FF">            address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">),</span></span>
+<span class="line"><span style="color:#79B8FF">            bytes32</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">),</span></span>
+<span class="line"><span style="color:#F97583">            new</span><span style="color:#79B8FF"> uint256</span><span style="color:#E1E4E8">[](</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">        );</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> The name parameter for the EIP712 domain.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">NOTE</span><span style="color:#6A737D">: By default this function reads _name which is an immutable value.</span></span>
+<span class="line"><span style="color:#6A737D">     * It only reads from storage if necessary (in case the value is too large to fit in a ShortString).</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#6A737D">    // </span><span style="color:#F97583">solhint-disable</span><span style="color:#6A737D">-next-line func-name-mixedcase</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> _EIP712Name</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">internal</span><span style="color:#F97583"> view</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">string</span><span style="color:#F97583"> memory</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> _name.</span><span style="color:#B392F0">toStringWithFallback</span><span style="color:#E1E4E8">(_nameFallback);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> The version parameter for the EIP712 domain.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">NOTE</span><span style="color:#6A737D">: By default this function reads _version which is an immutable value.</span></span>
+<span class="line"><span style="color:#6A737D">     * It only reads from storage if necessary (in case the value is too large to fit in a ShortString).</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#6A737D">    // </span><span style="color:#F97583">solhint-disable</span><span style="color:#6A737D">-next-line func-name-mixedcase</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> _EIP712Version</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">internal</span><span style="color:#F97583"> view</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">string</span><span style="color:#F97583"> memory</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> _version.</span><span style="color:#B392F0">toStringWithFallback</span><span style="color:#E1E4E8">(_versionFallback);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h4 id="permit2-signaturetransferuniswap">Permit2 SignatureTransfer（Uniswap）</h4>
+<ul>
+<li>仓库：<a href="https://github.com/Uniswap/permit2">Uniswap/permit2</a></li>
+<li>主网等多链已部署，用 EIP-712 签名授权一次性或限额转账</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#6A737D">// SPDX-License-Identifier: MIT</span></span>
+<span class="line"><span style="color:#F97583">pragma</span><span style="color:#85E89D"> solidity</span><span style="color:#79B8FF"> 0.8.17</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> {</span><span style="color:#B392F0">ISignatureTransfer</span><span style="color:#E1E4E8">} </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "./interfaces/ISignatureTransfer.sol"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> {</span><span style="color:#B392F0">SignatureExpired</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">InvalidNonce</span><span style="color:#E1E4E8">} </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "./PermitErrors.sol"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> {</span><span style="color:#B392F0">ERC20</span><span style="color:#E1E4E8">} </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "solmate/src/tokens/ERC20.sol"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> {</span><span style="color:#B392F0">SafeTransferLib</span><span style="color:#E1E4E8">} </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "solmate/src/utils/SafeTransferLib.sol"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> {</span><span style="color:#B392F0">SignatureVerification</span><span style="color:#E1E4E8">} </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "./libraries/SignatureVerification.sol"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> {</span><span style="color:#B392F0">PermitHash</span><span style="color:#E1E4E8">} </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "./libraries/PermitHash.sol"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> {</span><span style="color:#B392F0">EIP712</span><span style="color:#E1E4E8">} </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "./EIP712.sol"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">contract</span><span style="color:#B392F0"> SignatureTransfer</span><span style="color:#F97583"> is</span><span style="color:#B392F0"> ISignatureTransfer</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">EIP712</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    using</span><span style="color:#B392F0"> SignatureVerification</span><span style="color:#F97583"> for</span><span style="color:#B392F0"> bytes</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">    using</span><span style="color:#B392F0"> SafeTransferLib</span><span style="color:#F97583"> for</span><span style="color:#B392F0"> ERC20</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">    using</span><span style="color:#B392F0"> PermitHash</span><span style="color:#F97583"> for</span><span style="color:#B392F0"> PermitTransferFrom</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">    using</span><span style="color:#B392F0"> PermitHash</span><span style="color:#F97583"> for</span><span style="color:#B392F0"> PermitBatchTransferFrom</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /// </span><span style="color:#F97583">@inheritdoc</span><span style="color:#6A737D"> ISignatureTransfer</span></span>
+<span class="line"><span style="color:#F97583">    mapping</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#F97583"> =&gt;</span><span style="color:#F97583"> mapping</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint256</span><span style="color:#F97583"> =&gt;</span><span style="color:#79B8FF"> uint256</span><span style="color:#E1E4E8">)) </span><span style="color:#F97583">public</span><span style="color:#E1E4E8"> nonceBitmap;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /// </span><span style="color:#F97583">@inheritdoc</span><span style="color:#6A737D"> ISignatureTransfer</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> permitTransferFrom</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#F97583">        PermitTransferFrom</span><span style="color:#F97583"> memory</span><span style="color:#FFAB70"> permit</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#F97583">        SignatureTransferDetails</span><span style="color:#F97583"> calldata</span><span style="color:#FFAB70"> transferDetails</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        address</span><span style="color:#FFAB70"> owner</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes</span><span style="color:#F97583"> calldata</span><span style="color:#FFAB70"> signature</span></span>
+<span class="line"><span style="color:#E1E4E8">    ) </span><span style="color:#F97583">external</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">        _permitTransferFrom</span><span style="color:#E1E4E8">(permit, transferDetails, owner, permit.</span><span style="color:#B392F0">hash</span><span style="color:#E1E4E8">(), signature);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /// </span><span style="color:#F97583">@inheritdoc</span><span style="color:#6A737D"> ISignatureTransfer</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> permitWitnessTransferFrom</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#F97583">        PermitTransferFrom</span><span style="color:#F97583"> memory</span><span style="color:#FFAB70"> permit</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#F97583">        SignatureTransferDetails</span><span style="color:#F97583"> calldata</span><span style="color:#FFAB70"> transferDetails</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        address</span><span style="color:#FFAB70"> owner</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes32</span><span style="color:#FFAB70"> witness</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        string</span><span style="color:#F97583"> calldata</span><span style="color:#FFAB70"> witnessTypeString</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes</span><span style="color:#F97583"> calldata</span><span style="color:#FFAB70"> signature</span></span>
+<span class="line"><span style="color:#E1E4E8">    ) </span><span style="color:#F97583">external</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">        _permitTransferFrom</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#E1E4E8">            permit, transferDetails, owner, permit.</span><span style="color:#B392F0">hashWithWitness</span><span style="color:#E1E4E8">(witness, witnessTypeString), signature</span></span>
+<span class="line"><span style="color:#E1E4E8">        );</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /// </span><span style="color:#F97583">@notice</span><span style="color:#6A737D"> Transfers a token using a signed permit message.</span></span>
+<span class="line"><span style="color:#6A737D">    /// </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> permit</span><span style="color:#6A737D"> The permit data signed over by the owner</span></span>
+<span class="line"><span style="color:#6A737D">    /// </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> dataHash</span><span style="color:#6A737D"> The EIP-712 hash of permit data to include when checking signature</span></span>
+<span class="line"><span style="color:#6A737D">    /// </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> owner</span><span style="color:#6A737D"> The owner of the tokens to transfer</span></span>
+<span class="line"><span style="color:#6A737D">    /// </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> transferDetails</span><span style="color:#6A737D"> The spender's requested transfer details for the permitted token</span></span>
+<span class="line"><span style="color:#6A737D">    /// </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> signature</span><span style="color:#6A737D"> The signature to verify</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> _permitTransferFrom</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#F97583">        PermitTransferFrom</span><span style="color:#F97583"> memory</span><span style="color:#FFAB70"> permit</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#F97583">        SignatureTransferDetails</span><span style="color:#F97583"> calldata</span><span style="color:#FFAB70"> transferDetails</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        address</span><span style="color:#FFAB70"> owner</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes32</span><span style="color:#FFAB70"> dataHash</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes</span><span style="color:#F97583"> calldata</span><span style="color:#FFAB70"> signature</span></span>
+<span class="line"><span style="color:#E1E4E8">    ) </span><span style="color:#F97583">private</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#E1E4E8"> requestedAmount </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> transferDetails.requestedAmount;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">block</span><span style="color:#E1E4E8">.timestamp </span><span style="color:#F97583">&gt;</span><span style="color:#E1E4E8"> permit.deadline) </span><span style="color:#F97583">revert</span><span style="color:#B392F0"> SignatureExpired</span><span style="color:#E1E4E8">(permit.deadline);</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (requestedAmount </span><span style="color:#F97583">&gt;</span><span style="color:#E1E4E8"> permit.permitted.amount) </span><span style="color:#F97583">revert</span><span style="color:#B392F0"> InvalidAmount</span><span style="color:#E1E4E8">(permit.permitted.amount);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">        _useUnorderedNonce</span><span style="color:#E1E4E8">(owner, permit.nonce);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">        signature.</span><span style="color:#B392F0">verify</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">_hashTypedData</span><span style="color:#E1E4E8">(dataHash), owner);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">        ERC20</span><span style="color:#E1E4E8">(permit.permitted.token).</span><span style="color:#B392F0">safeTransferFrom</span><span style="color:#E1E4E8">(owner, transferDetails.to, requestedAmount);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /// </span><span style="color:#F97583">@inheritdoc</span><span style="color:#6A737D"> ISignatureTransfer</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> permitTransferFrom</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#F97583">        PermitBatchTransferFrom</span><span style="color:#F97583"> memory</span><span style="color:#FFAB70"> permit</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#F97583">        SignatureTransferDetails</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">calldata</span><span style="color:#FFAB70"> transferDetails</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        address</span><span style="color:#FFAB70"> owner</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes</span><span style="color:#F97583"> calldata</span><span style="color:#FFAB70"> signature</span></span>
+<span class="line"><span style="color:#E1E4E8">    ) </span><span style="color:#F97583">external</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">        _permitTransferFrom</span><span style="color:#E1E4E8">(permit, transferDetails, owner, permit.</span><span style="color:#B392F0">hash</span><span style="color:#E1E4E8">(), signature);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /// </span><span style="color:#F97583">@inheritdoc</span><span style="color:#6A737D"> ISignatureTransfer</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> permitWitnessTransferFrom</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#F97583">        PermitBatchTransferFrom</span><span style="color:#F97583"> memory</span><span style="color:#FFAB70"> permit</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#F97583">        SignatureTransferDetails</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">calldata</span><span style="color:#FFAB70"> transferDetails</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        address</span><span style="color:#FFAB70"> owner</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes32</span><span style="color:#FFAB70"> witness</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        string</span><span style="color:#F97583"> calldata</span><span style="color:#FFAB70"> witnessTypeString</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes</span><span style="color:#F97583"> calldata</span><span style="color:#FFAB70"> signature</span></span>
+<span class="line"><span style="color:#E1E4E8">    ) </span><span style="color:#F97583">external</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">        _permitTransferFrom</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#E1E4E8">            permit, transferDetails, owner, permit.</span><span style="color:#B392F0">hashWithWitness</span><span style="color:#E1E4E8">(witness, witnessTypeString), signature</span></span>
+<span class="line"><span style="color:#E1E4E8">        );</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /// </span><span style="color:#F97583">@notice</span><span style="color:#6A737D"> Transfers tokens using a signed permit messages</span></span>
+<span class="line"><span style="color:#6A737D">    /// </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> permit</span><span style="color:#6A737D"> The permit data signed over by the owner</span></span>
+<span class="line"><span style="color:#6A737D">    /// </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> dataHash</span><span style="color:#6A737D"> The EIP-712 hash of permit data to include when checking signature</span></span>
+<span class="line"><span style="color:#6A737D">    /// </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> owner</span><span style="color:#6A737D"> The owner of the tokens to transfer</span></span>
+<span class="line"><span style="color:#6A737D">    /// </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> signature</span><span style="color:#6A737D"> The signature to verify</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> _permitTransferFrom</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#F97583">        PermitBatchTransferFrom</span><span style="color:#F97583"> memory</span><span style="color:#FFAB70"> permit</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#F97583">        SignatureTransferDetails</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">calldata</span><span style="color:#FFAB70"> transferDetails</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        address</span><span style="color:#FFAB70"> owner</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes32</span><span style="color:#FFAB70"> dataHash</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes</span><span style="color:#F97583"> calldata</span><span style="color:#FFAB70"> signature</span></span>
+<span class="line"><span style="color:#E1E4E8">    ) </span><span style="color:#F97583">private</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#E1E4E8"> numPermitted </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> permit.permitted.length;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">block</span><span style="color:#E1E4E8">.timestamp </span><span style="color:#F97583">&gt;</span><span style="color:#E1E4E8"> permit.deadline) </span><span style="color:#F97583">revert</span><span style="color:#B392F0"> SignatureExpired</span><span style="color:#E1E4E8">(permit.deadline);</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (numPermitted </span><span style="color:#F97583">!=</span><span style="color:#E1E4E8"> transferDetails.length) </span><span style="color:#F97583">revert</span><span style="color:#B392F0"> LengthMismatch</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">        _useUnorderedNonce</span><span style="color:#E1E4E8">(owner, permit.nonce);</span></span>
+<span class="line"><span style="color:#E1E4E8">        signature.</span><span style="color:#B392F0">verify</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">_hashTypedData</span><span style="color:#E1E4E8">(dataHash), owner);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">        unchecked</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">            for</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">; i </span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8"> numPermitted; </span><span style="color:#F97583">++</span><span style="color:#E1E4E8">i) {</span></span>
+<span class="line"><span style="color:#E1E4E8">                TokenPermissions </span><span style="color:#F97583">memory</span><span style="color:#E1E4E8"> permitted </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> permit.permitted[i];</span></span>
+<span class="line"><span style="color:#79B8FF">                uint256</span><span style="color:#E1E4E8"> requestedAmount </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> transferDetails[i].requestedAmount;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">                if</span><span style="color:#E1E4E8"> (requestedAmount </span><span style="color:#F97583">&gt;</span><span style="color:#E1E4E8"> permitted.amount) </span><span style="color:#F97583">revert</span><span style="color:#B392F0"> InvalidAmount</span><span style="color:#E1E4E8">(permitted.amount);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">                if</span><span style="color:#E1E4E8"> (requestedAmount </span><span style="color:#F97583">!=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">                    // allow spender to specify which of the permitted tokens should be transferred</span></span>
+<span class="line"><span style="color:#B392F0">                    ERC20</span><span style="color:#E1E4E8">(permitted.token).</span><span style="color:#B392F0">safeTransferFrom</span><span style="color:#E1E4E8">(owner, transferDetails[i].to, requestedAmount);</span></span>
+<span class="line"><span style="color:#E1E4E8">                }</span></span>
+<span class="line"><span style="color:#E1E4E8">            }</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /// </span><span style="color:#F97583">@inheritdoc</span><span style="color:#6A737D"> ISignatureTransfer</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> invalidateUnorderedNonces</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> wordPos</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> mask</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">external</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">        nonceBitmap[</span><span style="color:#79B8FF">msg.sender</span><span style="color:#E1E4E8">][wordPos] </span><span style="color:#F97583">|=</span><span style="color:#E1E4E8"> mask;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">        emit</span><span style="color:#B392F0"> UnorderedNonceInvalidation</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">msg.sender</span><span style="color:#E1E4E8">, wordPos, mask);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /// </span><span style="color:#F97583">@notice</span><span style="color:#6A737D"> Returns the index of the bitmap and the bit position within the bitmap. Used for unordered nonces</span></span>
+<span class="line"><span style="color:#6A737D">    /// </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> nonce</span><span style="color:#6A737D"> The nonce to get the associated word and bit positions</span></span>
+<span class="line"><span style="color:#6A737D">    /// </span><span style="color:#F97583">@return</span><span style="color:#E1E4E8"> wordPos</span><span style="color:#6A737D"> The word position or index into the nonceBitmap</span></span>
+<span class="line"><span style="color:#6A737D">    /// </span><span style="color:#F97583">@return</span><span style="color:#E1E4E8"> bitPos</span><span style="color:#6A737D"> The bit position</span></span>
+<span class="line"><span style="color:#6A737D">    /// </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> The first 248 bits of the nonce value is the index of the desired bitmap</span></span>
+<span class="line"><span style="color:#6A737D">    /// </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> The last 8 bits of the nonce value is the position of the bit in the bitmap</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> bitmapPositions</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> nonce</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">private</span><span style="color:#F97583"> pure</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> wordPos</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> bitPos</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">        wordPos </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> uint248</span><span style="color:#E1E4E8">(nonce </span><span style="color:#F97583">&gt;&gt;</span><span style="color:#79B8FF"> 8</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">        bitPos </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> uint8</span><span style="color:#E1E4E8">(nonce);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /// </span><span style="color:#F97583">@notice</span><span style="color:#6A737D"> Checks whether a nonce is taken and sets the bit at the bit position in the bitmap at the word position</span></span>
+<span class="line"><span style="color:#6A737D">    /// </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> from</span><span style="color:#6A737D"> The address to use the nonce at</span></span>
+<span class="line"><span style="color:#6A737D">    /// </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> nonce</span><span style="color:#6A737D"> The nonce to spend</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> _useUnorderedNonce</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> from</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> nonce</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">internal</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">        (</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8"> wordPos, </span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8"> bitPos) </span><span style="color:#F97583">=</span><span style="color:#B392F0"> bitmapPositions</span><span style="color:#E1E4E8">(nonce);</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#E1E4E8"> bit </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 1</span><span style="color:#F97583"> &lt;&lt;</span><span style="color:#E1E4E8"> bitPos;</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#E1E4E8"> flipped </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> nonceBitmap[from][wordPos] </span><span style="color:#F97583">^=</span><span style="color:#E1E4E8"> bit;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (flipped </span><span style="color:#F97583">&amp;</span><span style="color:#E1E4E8"> bit </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">revert</span><span style="color:#B392F0"> InvalidNonce</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>验签流程简述：链下用私钥签 <code>eth_sign</code> / EIP-712 结构化数据 → 链上 <code>ECDSA.recover</code> 得 signer → 与白名单或 Permit2 逻辑比对。</p>
+</div><script type="module">function e(e){let t=e.getAttribute(`data-language`)?.trim();if(t)return t===`text`||t===`plaintext`||t===`txt`?`text`:t;let n=e.querySelector(`code`)?.className||e.className||``,r=/language-([a-z0-9_+-]+)/i.exec(n);return r?.[1]?r[1]:`code`}function t(t){if(t.closest(`[data-mac-window]`)||t.dataset.macEnhanced===`1`)return;t.dataset.macEnhanced=`1`;let n=document.createElement(`figure`);n.className=`mac-window`,n.setAttribute(`data-mac-window`,``);let r=document.createElement(`div`);r.className=`mac-titlebar`,r.innerHTML=`
+      <div class="mac-dots" aria-hidden="true">
+        <span class="dot red"></span>
+        <span class="dot yellow"></span>
+        <span class="dot green"></span>
+      </div>
+      <span class="mac-title"></span>
+      <button type="button" class="mac-copy" data-mac-copy aria-label="复制代码">复制</button>
+    `;let i=r.querySelector(`.mac-title`);i&&(i.textContent=e(t));let a=document.createElement(`div`);a.className=`mac-body`,t.parentNode?.insertBefore(n,t),a.appendChild(t),n.appendChild(r),n.appendChild(a)}async function n(e){if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(e);return}let t=document.createElement(`textarea`);t.value=e,t.style.position=`fixed`,t.style.opacity=`0`,document.body.appendChild(t),t.select(),document.execCommand(`copy`),t.remove()}function r(e=document){e.querySelectorAll(`[data-mac-copy]`).forEach(e=>{e.dataset.bound!==`1`&&(e.dataset.bound=`1`,e.addEventListener(`click`,async()=>{let t=e.closest(`[data-mac-window]`)?.querySelector(`pre`)?.textContent??``;try{await n(t);let r=e.textContent;e.textContent=`已复制`,e.classList.add(`is-copied`),window.setTimeout(()=>{e.textContent=r||`复制`,e.classList.remove(`is-copied`)},1600)}catch{e.textContent=`失败`,window.setTimeout(()=>{e.textContent=`复制`},1600)}}))})}function i(){document.querySelectorAll(`.prose pre`).forEach(t),r()}i(),document.addEventListener(`astro:page-load`,i);</script></article><nav class="pager wrap-narrow" aria-label="上下篇" data-astro-cid-tldeq5d5><p data-astro-cid-tldeq5d5>上一篇：<a href="/web3/solidity/" data-astro-cid-tldeq5d5>solidity</a></p><p data-astro-cid-tldeq5d5>下一篇：<a href="/web3/random/" data-astro-cid-tldeq5d5>链上随机数</a></p></nav><section class="related" data-astro-cid-tldeq5d5><div class="wrap" data-astro-cid-tldeq5d5><h2 data-astro-cid-tldeq5d5>继续阅读</h2><ol class="related-grid" data-astro-cid-tldeq5d5><li data-astro-cid-tldeq5d5><a class="related-topic" href="/web3/" data-astro-cid-tldeq5d5>区块链</a><a class="related-title" href="/web3/airdrop/" data-astro-cid-tldeq5d5>空投</a><p data-astro-cid-tldeq5d5>空投</p></li><li data-astro-cid-tldeq5d5><a class="related-topic" href="/web3/" data-astro-cid-tldeq5d5>区块链</a><a class="related-title" href="/web3/cross-chain-bridge/" data-astro-cid-tldeq5d5>跨链桥</a><p data-astro-cid-tldeq5d5>跨链桥</p></li><li data-astro-cid-tldeq5d5><a class="related-topic" href="/web3/" data-astro-cid-tldeq5d5>区块链</a><a class="related-title" href="/web3/ddos/" data-astro-cid-tldeq5d5>DDOS攻击</a><p data-astro-cid-tldeq5d5>DDOS攻击</p></li></ol></div></section></main><footer class="site-footer" data-astro-cid-jo6i4kqk><div class="wrap bar" data-astro-cid-jo6i4kqk><a class="brand" href="/" data-astro-cid-jo6i4kqk>rty</a><div class="social" aria-label="社交链接" data-astro-cid-jo6i4kqk><a href="mailto:peonyfoals@gmail.com" aria-label="Email" data-astro-cid-jo6i4kqk><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" data-astro-cid-jo6i4kqk><path fill="currentColor" d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5L4 8V6l8 5 8-5v2z" data-astro-cid-jo6i4kqk></path></svg></a><a href="/rss.xml" aria-label="RSS" data-astro-cid-jo6i4kqk><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" data-astro-cid-jo6i4kqk><path fill="currentColor" d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20 5 20 4 19 4 17.82c0-1.2.98-2.18 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27zm0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93z" data-astro-cid-jo6i4kqk></path></svg></a><a href="/archive/" aria-label="归档" data-astro-cid-jo6i4kqk><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" data-astro-cid-jo6i4kqk><path fill="currentColor" d="M4 6h16v2H4zm0 5h16v2H4zm0 5h10v2H4z" data-astro-cid-jo6i4kqk></path></svg></a></div><p class="meta" data-astro-cid-jo6i4kqk>© 2026 peony</p></div></footer></body></html>

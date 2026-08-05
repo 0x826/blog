@@ -1,0 +1,1178 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="solidity"><meta name="author" content="peony"><meta name="generator" content="Astro v7.1.1"><meta name="theme-color" content="#ffffff"><link rel="canonical" href="https://langzyw.xyz/web3/solidity/"><link rel="alternate" type="application/rss+xml" title="rty" href="/rss.xml"><meta property="og:type" content="website"><meta property="og:site_name" content="rty"><meta property="og:title" content="solidity · rty"><meta property="og:description" content="solidity"><meta property="og:url" content="https://langzyw.xyz/web3/solidity/"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><title>solidity · rty</title><link rel="stylesheet" href="/_astro/Footer.C9xAhOzk.css"><link rel="stylesheet" href="/_astro/_..B6QWlgH6.css"></head><body><header class="site-header" data-astro-cid-nen7h5rs><div class="wrap bar" data-astro-cid-nen7h5rs><div class="bar-flex" data-astro-cid-nen7h5rs><a class="brand" href="/" data-astro-cid-nen7h5rs>rty</a><nav class="nav" aria-label="主导航" data-astro-cid-nen7h5rs><a class="nav-link" href="/" data-astro-cid-nen7h5rs>首页</a><a class="nav-link" href="/web/" data-astro-cid-nen7h5rs>前端</a><a class="nav-link" href="/python/" data-astro-cid-nen7h5rs>python</a><a class="nav-link" href="/llm/" data-astro-cid-nen7h5rs>llm</a><a class="nav-link active" href="/web3/" aria-current="page" data-astro-cid-nen7h5rs>区块链</a><a class="nav-link" href="/about/" data-astro-cid-nen7h5rs>关于</a></nav></div><button class="search-btn" type="button" aria-label="搜索" data-search-open data-astro-cid-nen7h5rs><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" data-astro-cid-nen7h5rs><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="1.6" data-astro-cid-nen7h5rs></circle><path d="M16.5 16.5L21 21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" data-astro-cid-nen7h5rs></path></svg></button></div></header><dialog class="search-dialog" data-search-dialog data-astro-cid-nen7h5rs><form class="search-panel" method="dialog" data-astro-cid-nen7h5rs><label class="sr-only" for="site-search" data-astro-cid-nen7h5rs>搜索文章</label><input id="site-search" class="search-input" type="search" placeholder="搜索文章…" autocomplete="off" data-search-input data-astro-cid-nen7h5rs><button class="search-close" value="cancel" type="submit" aria-label="关闭" data-astro-cid-nen7h5rs>×</button></form><ul class="search-results" data-search-results data-astro-cid-nen7h5rs></ul></dialog><script>(function(){const searchIndexUrl = "/search-index.json";
+
+  const openBtn = document.querySelector("[data-search-open]");
+  const dialog = document.querySelector("[data-search-dialog]");
+  const input = document.querySelector("[data-search-input]");
+  const results = document.querySelector("[data-search-results]");
+
+  if (
+    openBtn &&
+    dialog instanceof HTMLDialogElement &&
+    input instanceof HTMLInputElement &&
+    results
+  ) {
+    let index = [];
+    let loaded = false;
+
+    async function ensureIndex() {
+      if (loaded) return;
+      const res = await fetch(searchIndexUrl);
+      index = await res.json();
+      loaded = true;
+    }
+
+    function render(q) {
+      const query = q.trim().toLowerCase();
+      if (!query) {
+        results.innerHTML = "";
+        return;
+      }
+      const hits = index
+        .filter((item) =>
+          `${item.title} ${item.description} ${item.topic}`
+            .toLowerCase()
+            .includes(query),
+        )
+        .slice(0, 8);
+      results.innerHTML = hits.length
+        ? hits
+            .map(
+              (item) =>
+                `<li><a href="${item.href}"><strong>${item.title}</strong><span>${item.description}</span></a></li>`,
+            )
+            .join("")
+        : `<li class="empty">没有匹配结果</li>`;
+    }
+
+    openBtn.addEventListener("click", async () => {
+      await ensureIndex();
+      dialog.showModal();
+      input.value = "";
+      results.innerHTML = "";
+      input.focus();
+    });
+
+    input.addEventListener("input", () => render(input.value));
+
+    dialog.addEventListener("click", (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+  }
+})();</script><main class="post-page" data-astro-cid-tldeq5d5><article data-astro-cid-tldeq5d5><header class="header wrap-narrow" data-astro-cid-tldeq5d5><a class="topic" href="/web3/" data-astro-cid-tldeq5d5>区块链</a><h1 data-astro-cid-tldeq5d5>solidity</h1><p class="meta" data-astro-cid-tldeq5d5><time datetime="2026-07-18T00:00:00.000Z" data-astro-cid-tldeq5d5>2026年7月18日</time><span aria-hidden="true" data-astro-cid-tldeq5d5>·</span><span data-astro-cid-tldeq5d5>约 4.5 小时</span></p><p class="tags" data-astro-cid-tldeq5d5><a href="/tags/区块链/" data-astro-cid-tldeq5d5>区块链</a><span data-astro-cid-tldeq5d5> · </span><a href="/tags/智能合约/" data-astro-cid-tldeq5d5>智能合约</a></p></header><div class="hero-image wrap" data-astro-cid-tldeq5d5><img src="/images/covers/web3-code-terminal.jpg" alt="" data-astro-cid-tldeq5d5></div><div class="prose wrap-narrow" data-astro-cid-tldeq5d5><p><code>solidity</code> 适用于编写以太坊虚拟机(<code>EVM</code>)智能合约的编程语言</p>
+<h3 id="第一个智能合约">第一个智能合约</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#6A737D">// 开源许可协议 MIT</span></span>
+<span class="line"><span style="color:#6A737D">// SPDX-License-Identifier: MIT`</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 指定编译器版本</span></span>
+<span class="line"><span style="color:#F97583">pragma</span><span style="color:#85E89D"> solidity</span><span style="color:#79B8FF"> ^0.8.0</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 合约</span></span>
+<span class="line"><span style="color:#F97583">contract</span><span style="color:#B392F0"> HelloWorld</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">    // 状态变量</span></span>
+<span class="line"><span style="color:#79B8FF">    string</span><span style="color:#F97583"> public</span><span style="color:#E1E4E8"> greet </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "Hello World!"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="值类型">值类型</h3>
+<h4 id="1-布尔型">1. 布尔型</h4>
+<p>布尔类型取值为 <code>true</code> 或 <code>false</code></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#79B8FF">bool</span><span style="color:#F97583"> public</span><span style="color:#E1E4E8"> _bool </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span></code></pre>
+<p>布尔的运算符</p>
+<ul>
+<li><code>!</code> 逻辑非</li>
+<li><code>&amp;&amp;</code> 逻辑与，<code>"and"</code></li>
+<li><code>||</code> 逻辑或，<code>"or"</code></li>
+<li><code>==</code> 等于</li>
+<li><code>!=</code> 不等于</li>
+</ul>
+<h3 id="整型">整型</h3>
+<ul>
+<li><code>int</code> 有符号整型</li>
+<li><code>uint</code> 无符号整型</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#6A737D">// 整型</span></span>
+<span class="line"><span style="color:#79B8FF">int8</span><span style="color:#F97583"> public</span><span style="color:#E1E4E8"> _int </span><span style="color:#F97583">=</span><span style="color:#F97583"> -</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">; </span><span style="color:#6A737D">// 整数，包括负数</span></span>
+<span class="line"><span style="color:#79B8FF">uint8</span><span style="color:#F97583"> public</span><span style="color:#E1E4E8"> _uint </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">; </span><span style="color:#6A737D">// 无符号整数</span></span>
+<span class="line"><span style="color:#79B8FF">uint256</span><span style="color:#F97583"> public</span><span style="color:#E1E4E8"> _number </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 20220330</span><span style="color:#E1E4E8">; </span><span style="color:#6A737D">// 256位无符号整数</span></span>
+<span class="line"><span style="color:#79B8FF">uint256</span><span style="color:#F97583"> public</span><span style="color:#E1E4E8"> max256 </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> type</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">).max; </span><span style="color:#6A737D">// 256位无符号整数的最大值</span></span>
+<span class="line"><span style="color:#79B8FF">uint8</span><span style="color:#F97583"> public</span><span style="color:#E1E4E8"> max8 </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> type</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint8</span><span style="color:#E1E4E8">).max;  </span><span style="color:#6A737D">// 8位无符号整数的最大值</span></span></code></pre>
+<p>运算符</p>
+<ul>
+<li>比较运算符（返回布尔值）： <code>&lt;=</code> <code>&lt;</code> <code>==</code> <code>!=</code> <code>&gt;=</code> <code>&gt;</code></li>
+<li>算术运算符： <code>+</code> <code>-</code> <code>*</code> <code>/</code> <code>%（取余）</code> <code>**（幂）</code></li>
+</ul>
+<h3 id="地址类型">地址类型</h3>
+<p>地址类型(<code>address</code>)有两类</p>
+<ul>
+<li>普通地址（<code>address</code>）: 存储一个 20 字节的值（以太坊地址的大小）</li>
+<li><code>payable address</code>: 比普通地址多了 <code>transfer</code> 和 <code>send</code> 两个成员方法，用于接收转账</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#6A737D">// SPDX-License-Identifier: MIT</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">pragma</span><span style="color:#85E89D"> solidity</span><span style="color:#79B8FF"> ^0.8.20</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">contract</span><span style="color:#B392F0"> Deposit</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    event</span><span style="color:#B392F0"> Deposit</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#F97583"> indexed</span><span style="color:#FFAB70"> from</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint</span><span style="color:#FFAB70"> amount</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    // 查询任意地址的原生代币余额</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> getBalanceOf</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> account</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">external</span><span style="color:#F97583"> view</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">uint</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> account.balance; </span><span style="color:#6A737D">// 单位：wei</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    // 查询本合约自己的余额</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> getContractBalance</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">external</span><span style="color:#F97583"> view</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">uint</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#79B8FF"> address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">).balance;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> deposit</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">external</span><span style="color:#F97583"> payable</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">        require</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">msg</span><span style="color:#E1E4E8">.value </span><span style="color:#F97583">&gt;</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"no eth"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">        emit</span><span style="color:#B392F0"> Deposit</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">msg.sender</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">msg</span><span style="color:#E1E4E8">.value);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    // 也可用 receive 接收纯转账（不带 data）</span></span>
+<span class="line"><span style="color:#B392F0">    receive</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">external</span><span style="color:#F97583"> payable</span><span style="color:#E1E4E8"> {}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="函数">函数</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#E1E4E8">function </span><span style="color:#F97583">&lt;function</span><span style="color:#B392F0"> name</span><span style="color:#E1E4E8">&gt;([</span><span style="color:#B392F0">parameter</span><span style="color:#B392F0"> types</span><span style="color:#E1E4E8">[, ...]]) {</span><span style="color:#F97583">internal|external|public|private</span><span style="color:#E1E4E8">} [</span><span style="color:#F97583">pure|view|payable</span><span style="color:#E1E4E8">] [</span><span style="color:#F97583">virtual|override</span><span style="color:#E1E4E8">] [</span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8">modifiers</span><span style="color:#F97583">&gt;</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#E1E4E8">[</span><span style="color:#F97583">returns</span><span style="color:#E1E4E8"> (&lt;</span><span style="color:#FFAB70">return</span><span style="color:#FFAB70"> types</span><span style="color:#E1E4E8">&gt;)]{ </span><span style="color:#F97583">&lt;function</span><span style="color:#B392F0"> body</span><span style="color:#E1E4E8">&gt; }</span></span></code></pre>
+<ul>
+<li><code>function</code> 申明函数的关键字</li>
+<li><code>&lt;function name&gt;</code> 函数名</li>
+<li><code>([parameter types[, ...]])</code> 入函数的参数</li>
+<li><code>{internal|external|public|private}</code> 函数可见性</li>
+<li><code>public</code> 内部和外部均可见</li>
+<li><code>private</code> 仅内部可见 继承合约不可用</li>
+<li><code>external</code> 仅外部可见</li>
+<li><code>external</code> internal</li>
+<li><code>payable</code> 可接收转账</li>
+<li><code>view</code> 纯函数，不能修改状态变量</li>
+<li><code>pure</code> 纯函数，不能读取状态变量</li>
+<li><code>returns (&lt;return types&gt;)</code> 返回值类型</li>
+<li><code>&lt;modifiers&gt;</code> 函数修饰符</li>
+<li><code>virtual</code> 虚函数，可被重写</li>
+<li><code>override</code> 重写父合约的虚函数</li>
+<li><code>&lt;function body&gt;</code> 函数体</li>
+</ul>
+<h4 id="pure和view">pure和view</h4>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#6A737D">// SPDX-License-Identifier: MIT</span></span>
+<span class="line"><span style="color:#F97583">pragma</span><span style="color:#85E89D"> solidity</span><span style="color:#79B8FF"> ^0.8.20</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">contrract HelloWorld {</span></span>
+<span class="line"><span style="color:#79B8FF">    string</span><span style="color:#F97583"> public</span><span style="color:#E1E4E8"> greet </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "Hello World!"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    // 只读函数</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> getGreet</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">public</span><span style="color:#F97583"> view</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">string</span><span style="color:#F97583"> memory</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> greet;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    // 纯函数</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> count</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint</span><span style="color:#FFAB70"> a</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint</span><span style="color:#FFAB70"> b</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">public</span><span style="color:#F97583"> pure</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">uint</span><span style="color:#FFAB70"> result</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> a </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> b;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h4 id="payable">payable</h4>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#6A737D">// SPDX-License-Identifier: MIT</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">pragma</span><span style="color:#85E89D"> solidity</span><span style="color:#79B8FF"> ^0.8.20</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">contract</span><span style="color:#B392F0"> Deposit</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    event</span><span style="color:#B392F0"> Deposit</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#F97583"> indexed</span><span style="color:#FFAB70"> from</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint</span><span style="color:#FFAB70"> amount</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    // 查询任意地址的原生代币余额</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> getBalanceOf</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> account</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">external</span><span style="color:#F97583"> view</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">uint</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> account.balance; </span><span style="color:#6A737D">// 单位：wei</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    // 查询本合约自己的余额</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> getContractBalance</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">external</span><span style="color:#F97583"> view</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">uint</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#79B8FF"> address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">).balance;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> deposit</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">external</span><span style="color:#F97583"> payable</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">        require</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">msg</span><span style="color:#E1E4E8">.value </span><span style="color:#F97583">&gt;</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"no eth"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">        emit</span><span style="color:#B392F0"> Deposit</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">msg.sender</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">msg</span><span style="color:#E1E4E8">.value);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    // 也可用 receive 接收纯转账（不带 data）</span></span>
+<span class="line"><span style="color:#B392F0">    receive</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">external</span><span style="color:#F97583"> payable</span><span style="color:#E1E4E8"> {}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h4 id="函数输出">函数输出</h4>
+<ul>
+<li><code>returns</code> 返回的变量类型及变量名</li>
+<li><code>return</code> 返回指定的变量</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#6A737D">// 返回多个变量</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> returnMultiple</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">public</span><span style="color:#F97583"> pure</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">bool</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">[</span><span style="color:#FFAB70">3</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">memory</span><span style="color:#E1E4E8">){</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">, [</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">),</span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">,</span><span style="color:#79B8FF">5</span><span style="color:#E1E4E8">]);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 命名式返回</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> returnNamed</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">public</span><span style="color:#F97583"> pure</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8"> _number, </span><span style="color:#79B8FF">bool</span><span style="color:#E1E4E8"> _bool, </span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">[</span><span style="color:#FFAB70">3</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">memory</span><span style="color:#E1E4E8"> _array){</span></span>
+<span class="line"><span style="color:#E1E4E8">    _number </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 2</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    _bool </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> false</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    _array </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">),</span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">,</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">];</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 解构式赋值</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8"> _number, </span><span style="color:#79B8FF">bool</span><span style="color:#E1E4E8"> _bool, </span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">[</span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">memory</span><span style="color:#E1E4E8"> _array) </span><span style="color:#F97583">=</span><span style="color:#B392F0"> returnNamed</span><span style="color:#E1E4E8">();</span></span></code></pre>
+<h3 id="变量数据存储和作用域">变量数据存储和作用域</h3>
+<p>引用类型: 引用类型存储在链上，引用类型变量的赋值会改变变量的存储位置。</p>
+<ul>
+<li>
+<p>数组 <code>array</code></p>
+</li>
+<li>
+<p>结构体 <code>struct</code></p>
+</li>
+<li>
+<p><code>storage</code>：合约里的状态变量默认都是storage，存储在链上</p>
+</li>
+<li>
+<p><code>memory</code>：函数里的参数和临时变量一般用memory，存储在内存中，不上链。</p>
+</li>
+<li>
+<p><code>calldata</code>：与 <code>memory</code> 类似，但专门用于函数参数，不可修改</p>
+</li>
+</ul>
+<h4 id="变量的作用域">变量的作用域</h4>
+<h5 id="1-状态变量">1. 状态变量</h5>
+<p>状态变量是数据存储在链上的变量，所有合约内函数都可以访问，gas消耗高</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#F97583">contract</span><span style="color:#B392F0"> Variables</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">    uint</span><span style="color:#F97583"> public</span><span style="color:#E1E4E8"> x </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#79B8FF">    uint</span><span style="color:#F97583"> public</span><span style="color:#E1E4E8"> y;</span></span>
+<span class="line"><span style="color:#79B8FF">    string</span><span style="color:#F97583"> public</span><span style="color:#E1E4E8"> z;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h5 id="2-局部变量">2. 局部变量</h5>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> bar</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">external</span><span style="color:#F97583"> pure</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint</span><span style="color:#E1E4E8">){</span></span>
+<span class="line"><span style="color:#79B8FF">    uint</span><span style="color:#E1E4E8"> count1 </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#79B8FF">    uint</span><span style="color:#E1E4E8"> count2 </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 2</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> count1 </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> count2;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h5 id="3-全局变量">3. 全局变量</h5>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> global</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">external</span><span style="color:#F97583"> view</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">bytes</span><span style="color:#F97583"> memory</span><span style="color:#E1E4E8">){</span></span>
+<span class="line"><span style="color:#79B8FF">    address</span><span style="color:#E1E4E8"> sender </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> msg.sender</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#79B8FF">    uint</span><span style="color:#E1E4E8"> blockNum </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> block</span><span style="color:#E1E4E8">.number;</span></span>
+<span class="line"><span style="color:#79B8FF">    bytes</span><span style="color:#F97583"> memory</span><span style="color:#E1E4E8"> data </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> msg</span><span style="color:#E1E4E8">.data;</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8">(sender, blockNum, data);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<ul>
+<li><code>blockhash(uint blockNumber)</code>: (<code>bytes32</code>) 给定区块的哈希值 – 只适用于最近的256个区块, 不包含当前区块。</li>
+<li><code>block.coinbase</code>: (<code>address payable</code>) 当前区块矿工的地址</li>
+<li><code>block.gaslimit</code>: (<code>uint</code>) 当前区块的<code>gaslimit</code></li>
+<li><code>block.number</code>: (<code>uint</code>) 当前区块的<code>number</code></li>
+<li><code>block.timestamp</code>: (<code>uint</code>) 当前区块的时间戳，为<code>unix</code>纪元以来的秒</li>
+<li><code>gasleft()</code>: (<code>uint256</code>) 剩余 <code>gas</code></li>
+<li><code>msg.data</code>: (<code>bytes calldata) 完整</code>call data`</li>
+<li><code>msg.sender</code>: (<code>address payable</code>) 消息发送者 (当前 <code>caller</code>)</li>
+<li><code>msg.sig</code>: (<code>bytes4</code>) <code>calldata</code>的前四个字节 (<code>function identifier</code>)</li>
+<li><code>msg.value</code>: (<code>uint</code>) 当前交易发送的 <code>wei</code> 值</li>
+<li><code>block.blobbasefee</code>: (<code>uint</code>) 当前区块的blob基础费用。这是Cancun升级新增的全局变量。</li>
+<li><code>blobhash(uint index)</code>: (<code>bytes32</code>) 返回跟当前交易关联的第 index 个blob的版本化哈希（第一个字节为版本号，当前为0x01，后面接KZG承诺的SHA256哈希的最后31个字节）。若当前交易不包含blob，则返回空字节。这是Cancun升级新增的全局变量。</li>
+</ul>
+<h4 id="以太单位">以太单位</h4>
+<ul>
+<li><code>wei</code>: 1 wei</li>
+<li><code>kwei</code>: 1e3 wei</li>
+<li><code>mwei</code>: 1e6 wei</li>
+<li><code>gwei</code>: 1e9 wei</li>
+<li><code>szabo</code>: 1e12 wei</li>
+<li><code>finney</code>: 1e15 wei</li>
+<li><code>ether</code>: 1e18 wei</li>
+</ul>
+<h3 id="数组">数组</h3>
+<ul>
+<li>固定长度数组</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#6A737D">// 固定长度 Array</span></span>
+<span class="line"><span style="color:#79B8FF">uint</span><span style="color:#E1E4E8">[</span><span style="color:#79B8FF">8</span><span style="color:#E1E4E8">] array1;</span></span>
+<span class="line"><span style="color:#79B8FF">bytes1</span><span style="color:#E1E4E8">[</span><span style="color:#79B8FF">5</span><span style="color:#E1E4E8">] array2;</span></span>
+<span class="line"><span style="color:#79B8FF">address</span><span style="color:#E1E4E8">[</span><span style="color:#79B8FF">100</span><span style="color:#E1E4E8">] array3;</span></span></code></pre>
+<ul>
+<li>可变长度数组</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#6A737D">// 可变长度 Array</span></span>
+<span class="line"><span style="color:#79B8FF">uint</span><span style="color:#E1E4E8">[] array4;</span></span>
+<span class="line"><span style="color:#79B8FF">bytes1</span><span style="color:#E1E4E8">[] array5;</span></span>
+<span class="line"><span style="color:#79B8FF">address</span><span style="color:#E1E4E8">[] array6;</span></span>
+<span class="line"><span style="color:#79B8FF">bytes</span><span style="color:#E1E4E8"> array7;</span></span></code></pre>
+<h4 id="数组成员">数组成员</h4>
+<ul>
+<li><code>length</code>: 数组有一个包含元素数量的<code>length</code>成员，<code>memory</code>数组的长度在创建后是固定的。</li>
+<li><code>push()</code>: 动态数组拥有<code>push()</code>成员，可以在数组最后添加一个0元素，并返回该元素的引用。</li>
+<li><code>push(x)</code>: 动态数组拥有<code>push(x)</code>成员，可以在数组最后添加一个x元素。</li>
+<li><code>pop()</code>: 动态数组拥有<code>pop()</code>成员，可以移除数组最后一个元素。</li>
+</ul>
+<h3 id="结构体-struct">结构体 struct</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#6A737D">// 结构体</span></span>
+<span class="line"><span style="color:#F97583">struct</span><span style="color:#B392F0"> Student</span><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#E1E4E8"> id;</span></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#E1E4E8"> score;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>给结构体赋值的四种方法：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#E1E4E8">方法1</span><span style="color:#F97583">:</span><span style="color:#E1E4E8">在函数中创建一个storage的struct引用</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> initStudent1</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">external</span><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#E1E4E8">    Student </span><span style="color:#F97583">storage</span><span style="color:#E1E4E8"> _student </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> student; </span><span style="color:#6A737D">// assign a copy of student</span></span>
+<span class="line"><span style="color:#E1E4E8">    _student.id </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 11</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    _student.score </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 100</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#6A737D">// 方法2:直接引用状态变量的struct</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> initStudent2</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">external</span><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#E1E4E8">    student.id </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    student.score </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 80</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#6A737D">// 方法3:构造函数式</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> initStudent3</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">external</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    student </span><span style="color:#F97583">=</span><span style="color:#B392F0"> Student</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">90</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#6A737D">// 方法4:key value</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> initStudent4</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">external</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    student </span><span style="color:#F97583">=</span><span style="color:#B392F0"> Student</span><span style="color:#E1E4E8">({id</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> 4</span><span style="color:#E1E4E8">, score</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> 60</span><span style="color:#E1E4E8">});</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="映射mapping">映射Mapping</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#F97583">mapping</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint256</span><span style="color:#F97583"> =&gt;</span><span style="color:#79B8FF"> uint256</span><span style="color:#E1E4E8">) scores;</span></span>
+<span class="line"><span style="color:#6A737D">// 我们定义一个结构体 Struct</span></span>
+<span class="line"><span style="color:#F97583">struct</span><span style="color:#B392F0"> Student</span><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#E1E4E8"> id;</span></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#E1E4E8"> score;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#F97583">mapping</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint</span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8">Student) </span><span style="color:#F97583">public</span><span style="color:#E1E4E8"> testVar;</span></span></code></pre>
+<h3 id="变量初始值">变量初始值</h3>
+<ul>
+<li><code>boolean</code>: <code>false</code></li>
+<li><code>string</code>: “”</li>
+<li><code>int</code>: 0</li>
+<li><code>uint</code>: 0</li>
+<li><code>enum</code>: 枚举中的第一个元素</li>
+<li><code>address</code>: 0x0000000000000000000000000000000000000000 (或 address(0))</li>
+<li><code>function</code>
+<ul>
+<li><code>internal</code>: 空白函数</li>
+<li><code>external</code>: 空白函数</li>
+</ul>
+</li>
+</ul>
+<h4 id="delete">delete</h4>
+<p><code>delete</code> 删除变量的值，将变量的值设置为初始值。</p>
+<h3 id="constant和immutable">constant和immutable</h3>
+<ul>
+<li><code>constant</code>: 只能在合约内部使用，不能在函数外部使用</li>
+<li><code>immutable</code>: 只能在合约内部使用，不能在函数外部使用，只能在构造函数中赋值</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"></span>
+<span class="line"><span style="color:#F97583">contract</span><span style="color:#B392F0"> HelloWorld</span><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#F97583"> public</span><span style="color:#F97583"> constant</span><span style="color:#E1E4E8"> a </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">; </span><span style="color:#6A737D">// 声明赋值</span></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#F97583"> public</span><span style="color:#F97583"> immutable</span><span style="color:#E1E4E8"> b; </span><span style="color:#6A737D">// 构造函数赋值</span></span>
+<span class="line"><span style="color:#F97583">    constructor</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8"> _b){</span></span>
+<span class="line"><span style="color:#E1E4E8">        b </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> _b;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="控制流">控制流</h3>
+<ul>
+<li><code>if-else</code></li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> isAddressZero</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8"> _address) </span><span style="color:#F97583">public</span><span style="color:#F97583"> pure</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">bool</span><span style="color:#E1E4E8">){</span></span>
+<span class="line"><span style="color:#6A737D">    // 判断地址是否为0</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8">(_address </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">)){</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#79B8FF"> false</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<ul>
+<li><code>for循环</code></li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> forLoop</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint</span><span style="color:#E1E4E8"> _b) </span><span style="color:#F97583">public</span><span style="color:#F97583"> pure</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> count</span><span style="color:#E1E4E8">){</span></span>
+<span class="line"><span style="color:#E1E4E8">    count </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">    for</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">; i </span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8"> _b; </span><span style="color:#F97583">++</span><span style="color:#E1E4E8">i){</span></span>
+<span class="line"><span style="color:#E1E4E8">        count </span><span style="color:#F97583">+=</span><span style="color:#E1E4E8"> i;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<ul>
+<li><code>while循环</code></li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> whileLoop</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint</span><span style="color:#E1E4E8"> _b) </span><span style="color:#F97583">public</span><span style="color:#F97583"> pure</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> count</span><span style="color:#E1E4E8">){</span></span>
+<span class="line"><span style="color:#E1E4E8">    count </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#79B8FF">    uint</span><span style="color:#E1E4E8"> i</span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">    while</span><span style="color:#E1E4E8">(i </span><span style="color:#F97583">&lt;=</span><span style="color:#E1E4E8"> _b){</span></span>
+<span class="line"><span style="color:#E1E4E8">        count </span><span style="color:#F97583">+=</span><span style="color:#E1E4E8"> i;</span></span>
+<span class="line"><span style="color:#E1E4E8">        i</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<ul>
+<li><code>do-while循环</code></li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#F97583"> function</span><span style="color:#B392F0"> whileLoop</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint</span><span style="color:#E1E4E8"> _b) </span><span style="color:#F97583">public</span><span style="color:#F97583"> pure</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> count</span><span style="color:#E1E4E8">){</span></span>
+<span class="line"><span style="color:#E1E4E8">    count </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#79B8FF">    uint</span><span style="color:#E1E4E8"> i</span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">    do</span><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#E1E4E8">        count </span><span style="color:#F97583">+=</span><span style="color:#E1E4E8"> i;</span></span>
+<span class="line"><span style="color:#E1E4E8">        i</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span><span style="color:#F97583">while</span><span style="color:#E1E4E8">(i </span><span style="color:#F97583">&lt;=</span><span style="color:#E1E4E8"> _b);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<ul>
+<li><code>三元运算符</code></li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> isAddressZero</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8"> _address) </span><span style="color:#F97583">public</span><span style="color:#F97583"> pure</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">bool</span><span style="color:#E1E4E8">){</span></span>
+<span class="line"><span style="color:#6A737D">    // 判断地址是否为0</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> _address </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">?</span><span style="color:#79B8FF"> true</span><span style="color:#F97583"> :</span><span style="color:#79B8FF"> false</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="构造函数">构造函数</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#79B8FF">address</span><span style="color:#E1E4E8"> owner; </span><span style="color:#6A737D">// 定义owner变量</span></span>
+<span class="line"><span style="color:#6A737D">// 构造函数</span></span>
+<span class="line"><span style="color:#F97583">constructor</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> initialOwner</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    owner </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> initialOwner; </span><span style="color:#6A737D">// 在部署合约的时候，将owner设置为传入的initialOwner地址</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="修饰器">修饰器</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#79B8FF">address</span><span style="color:#E1E4E8"> owner; </span><span style="color:#6A737D">// 定义owner变量</span></span>
+<span class="line"><span style="color:#6A737D">// 构造函数</span></span>
+<span class="line"><span style="color:#F97583">constructor</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> initialOwner</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    owner </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> initialOwner; </span><span style="color:#6A737D">// 在部署合约的时候，将owner设置为传入的initialOwner地址</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#6A737D">// 定义modifier</span></span>
+<span class="line"><span style="color:#F97583">modifier</span><span style="color:#B392F0"> onlyOwner</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">   require</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">msg.sender</span><span style="color:#F97583"> ==</span><span style="color:#E1E4E8"> owner); </span><span style="color:#6A737D">// 检查调用者是否为owner地址</span></span>
+<span class="line"><span style="color:#79B8FF">   _</span><span style="color:#E1E4E8">; </span><span style="color:#6A737D">// 如果是的话，继续运行函数主体；否则报错并revert交易</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> setOwner</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> newOwner</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">public</span><span style="color:#B392F0"> onlyOwner</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    owner </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> newOwner;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="事件">事件</h3>
+<p><code>Solidity</code>中的事件（<code>event</code>）是<code>EVM</code>上日志的抽象，它具有两个特点：</p>
+<ul>
+<li>响应 : 应用程序（ethers.js）可以通过RPC接口订阅和监听这些事件，并在前端做响应</li>
+<li>经济 : 事件是EVM上比较经济的存储数据的方式，每个大概消耗2,000 gas；相比之下，链上存储一个新变量至少需要20,000 gas。</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#F97583">event</span><span style="color:#B392F0"> Transfer</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#F97583"> indexed</span><span style="color:#FFAB70"> from</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">address</span><span style="color:#F97583"> indexed</span><span style="color:#FFAB70"> to</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> value</span><span style="color:#E1E4E8">);</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#6A737D">// 定义_transfer函数，执行转账逻辑</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> _transfer</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#79B8FF">    address</span><span style="color:#FFAB70"> from</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">    address</span><span style="color:#FFAB70"> to</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#FFAB70"> amount</span></span>
+<span class="line"><span style="color:#E1E4E8">) </span><span style="color:#F97583">external</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    _balances[from] </span><span style="color:#F97583">-=</span><span style="color:#E1E4E8">  amount;</span></span>
+<span class="line"><span style="color:#E1E4E8">    _balances[to] </span><span style="color:#F97583">+=</span><span style="color:#E1E4E8"> amount;</span></span>
+<span class="line"><span style="color:#F97583">    emit</span><span style="color:#B392F0"> Transfer</span><span style="color:#E1E4E8">(from, to, amount);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="继承">继承</h3>
+<ul>
+<li>
+<p><code>virtual</code> 父合约中的函数，如果希望子合约重写，需要加上 <code>virtual</code> 关键字。</p>
+</li>
+<li>
+<p><code>override</code> 子合约重写了父合约中的函数，需要加上 <code>override</code> 关键字</p>
+</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#6A737D">// 定义_transfer函数，执行转账逻辑</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> _transfer</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#79B8FF">    address</span><span style="color:#FFAB70"> from</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">    address</span><span style="color:#FFAB70"> to</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#FFAB70"> amount</span></span>
+<span class="line"><span style="color:#E1E4E8">) </span><span style="color:#F97583">external</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    _balances[from] </span><span style="color:#F97583">-=</span><span style="color:#E1E4E8">  amount;</span></span>
+<span class="line"><span style="color:#E1E4E8">    _balances[to] </span><span style="color:#F97583">+=</span><span style="color:#E1E4E8"> amount;</span></span>
+<span class="line"><span style="color:#F97583">    emit</span><span style="color:#B392F0"> Transfer</span><span style="color:#E1E4E8">(from, to, amount);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h4 id="简单继承">简单继承</h4>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#F97583">contract</span><span style="color:#B392F0"> Yeye</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    event</span><span style="color:#B392F0"> Log</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">string</span><span style="color:#FFAB70"> msg</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    // 定义3个function: hip(), pop(), yeye()，Log值为Yeye。</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> hip</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">public</span><span style="color:#F97583"> virtual</span><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#F97583">        emit</span><span style="color:#B392F0"> Log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"Yeye"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> pop</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">public</span><span style="color:#F97583"> virtual</span><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#F97583">        emit</span><span style="color:#B392F0"> Log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"Yeye"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> yeye</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">public</span><span style="color:#F97583"> virtual</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">        emit</span><span style="color:#B392F0"> Log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"Yeye"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#F97583">contract</span><span style="color:#B392F0"> Baba</span><span style="color:#F97583"> is</span><span style="color:#B392F0"> Yeye</span><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#6A737D">    // 继承两个function: hip()和pop()，输出改为Baba。</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> hip</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">public</span><span style="color:#F97583"> virtual</span><span style="color:#F97583"> override</span><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#F97583">        emit</span><span style="color:#B392F0"> Log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"Baba"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> pop</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">public</span><span style="color:#F97583"> virtual</span><span style="color:#F97583"> override</span><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#F97583">        emit</span><span style="color:#B392F0"> Log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"Baba"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> baba</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">public</span><span style="color:#F97583"> virtual</span><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#F97583">        emit</span><span style="color:#B392F0"> Log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"Baba"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h4 id="多重继承">多重继承</h4>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#F97583">contract</span><span style="color:#B392F0"> Erzi</span><span style="color:#F97583"> is</span><span style="color:#B392F0"> Yeye</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">Baba</span><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#6A737D">    // 继承两个function: hip()和pop()，输出值为Erzi。</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> hip</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">public</span><span style="color:#F97583"> virtual</span><span style="color:#F97583"> override</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">Yeye</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">Baba</span><span style="color:#E1E4E8">){</span></span>
+<span class="line"><span style="color:#F97583">        emit</span><span style="color:#B392F0"> Log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"Erzi"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> pop</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">public</span><span style="color:#F97583"> virtual</span><span style="color:#F97583"> override</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">Yeye</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">Baba</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        emit</span><span style="color:#B392F0"> Log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"Erzi"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h4 id="修饰器的继承">修饰器的继承</h4>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#F97583">contract</span><span style="color:#B392F0"> Base1</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    modifier</span><span style="color:#B392F0"> exactDividedBy2And3</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint</span><span style="color:#E1E4E8"> _a) </span><span style="color:#F97583">virtual</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">        require</span><span style="color:#E1E4E8">(_a % </span><span style="color:#79B8FF">2</span><span style="color:#F97583"> ==</span><span style="color:#79B8FF"> 0</span><span style="color:#F97583"> &amp;&amp;</span><span style="color:#E1E4E8"> _a % </span><span style="color:#79B8FF">3</span><span style="color:#F97583"> ==</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#79B8FF">        _</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">contract</span><span style="color:#B392F0"> Identifier</span><span style="color:#F97583"> is</span><span style="color:#B392F0"> Base1</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    //计算一个数分别被2除和被3除的值，但是传入的参数必须是2和3的倍数</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> getExactDividedBy2And3</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint</span><span style="color:#E1E4E8"> _dividend) </span><span style="color:#F97583">public</span><span style="color:#B392F0"> exactDividedBy2And3</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">_dividend</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">pure</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#B392F0"> getExactDividedBy2And3WithoutModifier</span><span style="color:#E1E4E8">(_dividend);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    //计算一个数分别被2除和被3除的值</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> getExactDividedBy2And3WithoutModifier</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint</span><span style="color:#E1E4E8"> _dividend) </span><span style="color:#F97583">public</span><span style="color:#F97583"> pure</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint</span><span style="color:#E1E4E8">){</span></span>
+<span class="line"><span style="color:#79B8FF">        uint</span><span style="color:#E1E4E8"> div2 </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> _dividend </span><span style="color:#F97583">/</span><span style="color:#79B8FF"> 2</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#79B8FF">        uint</span><span style="color:#E1E4E8"> div3 </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> _dividend </span><span style="color:#F97583">/</span><span style="color:#79B8FF"> 3</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> (div2, div3);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="抽象合约和接口">抽象合约和接口</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#F97583">abstract</span><span style="color:#F97583"> contract</span><span style="color:#B392F0"> InsertionSort</span><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> insertionSort</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">memory</span><span style="color:#FFAB70"> a</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">public</span><span style="color:#F97583"> pure</span><span style="color:#F97583"> virtual</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">memory</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h4 id="接口">接口</h4>
+<p>接口类似于抽象合约，但它不实现任何功能。接口的规则：</p>
+<ul>
+<li>不能包含状态变量</li>
+<li>不能包含构造函数</li>
+<li>不能继承除接口外的其他合约</li>
+<li>所有函数都必须是external且不能有函数体</li>
+<li>继承接口的非抽象合约必须实现接口定义的所有功能</li>
+<li>虽然接口不实现任何功能，但它非常重要。接口是智能合约的骨架，定义了合约的功能以及如何触发它们：如果智能合约实现了某种接口（比如ERC20或ERC721），其他Dapps和智能合约就知道如何与它交互。因为接口提供了两个重要的信息：</li>
+</ul>
+<p>合约里每个函数的bytes4选择器，以及函数签名函数名(每个参数类型）。</p>
+<ul>
+<li>接口id（更多信息见EIP165）</li>
+<li>另外，接口与合约ABI（Application Binary Interface）等价，可以相互转换：编译接口可以得到合约的ABI，利用abi-to-sol工具，也可以将ABI json文件转换为接口sol文件。</li>
+</ul>
+<p>我们以ERC721接口合约IERC721为例，它定义了3个event和9个function，所有ERC721标准的NFT都实现了这些函数。我们可以看到，接口和常规合约的区别在于每个函数都以;代替函数体{ }结尾。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#F97583">interface</span><span style="color:#B392F0"> IERC721</span><span style="color:#F97583"> is</span><span style="color:#B392F0"> IERC165</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    event</span><span style="color:#B392F0"> Transfer</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#F97583"> indexed</span><span style="color:#FFAB70"> from</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">address</span><span style="color:#F97583"> indexed</span><span style="color:#FFAB70"> to</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#F97583"> indexed</span><span style="color:#FFAB70"> tokenId</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">    event</span><span style="color:#B392F0"> Approval</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#F97583"> indexed</span><span style="color:#FFAB70"> owner</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">address</span><span style="color:#F97583"> indexed</span><span style="color:#FFAB70"> approved</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#F97583"> indexed</span><span style="color:#FFAB70"> tokenId</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">    event</span><span style="color:#B392F0"> ApprovalForAll</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#F97583"> indexed</span><span style="color:#FFAB70"> owner</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">address</span><span style="color:#F97583"> indexed</span><span style="color:#FFAB70"> operator</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">bool</span><span style="color:#FFAB70"> approved</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> balanceOf</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> owner</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">external</span><span style="color:#F97583"> view</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> balance</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> ownerOf</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> tokenId</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">external</span><span style="color:#F97583"> view</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> owner</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> safeTransferFrom</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> from</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> to</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> tokenId</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">external</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> transferFrom</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> from</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> to</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> tokenId</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">external</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> approve</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> to</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> tokenId</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">external</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> getApproved</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> tokenId</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">external</span><span style="color:#F97583"> view</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> operator</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> setApprovalForAll</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> operator</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">bool</span><span style="color:#E1E4E8"> _approved) </span><span style="color:#F97583">external</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> isApprovedForAll</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> owner</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> operator</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">external</span><span style="color:#F97583"> view</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">bool</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> safeTransferFrom</span><span style="color:#E1E4E8">( </span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> from</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> to</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> tokenId</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">bytes</span><span style="color:#F97583"> calldata</span><span style="color:#FFAB70"> data</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">external</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h4 id="ierc721事件">IERC721事件</h4>
+<p>IERC721包含3个事件，其中<code>Transfer</code>和<code>Approval</code>事件在<code>ERC20</code>中也有。</p>
+<ul>
+<li><code>Transfer</code>事件：在转账时被释放，记录代币的发出地址<code>from</code>，接收地址<code>to</code>和<code>tokenId</code>。</li>
+<li><code>Approval</code>事件：在授权时被释放，记录授权地址<code>owner</code>，被授权地址<code>approved</code>和<code>tokenId</code>。</li>
+<li><code>ApprovalForAll</code>事件：在批量授权时被释放，记录批量授权的发出地址<code>owner</code>，被授权地址<code>operator</code>和授权与否的<code>approved</code></li>
+</ul>
+<h4 id="ierc721函数">IERC721函数</h4>
+<ul>
+<li><code>balanceOf</code>：返回某地址的<code>NFT</code>持有量<code>balance</code>。</li>
+<li><code>ownerOf</code>：返回某<code>tokenId</code>的主人<code>owner</code>。</li>
+<li><code>transferFrom</code>：普通转账，参数为转出地址<code>from</code>，接收地址<code>to</code>和<code>tokenId</code>。</li>
+<li><code>safeTransferFrom</code>：安全转账（如果接收方是合约地址，会要求实现<code>ERC721Receiver</code>接口）。参数为转出地址<code>from</code>，接收地址<code>to</code>和<code>tokenId</code>。</li>
+<li><code>approve</code>：授权另一个地址使用你的<code>NFT</code>。参数为被授权地址<code>approve</code>和<code>tokenId</code>。</li>
+<li><code>getApproved</code>：查询<code>tokenId</code>被批准给了哪个地址。</li>
+<li><code>setApprovalForAll</code>：将自己持有的该系列<code>NFT</code>批量授权给某个地址<code>operator</code>。</li>
+<li><code>isApprovedForAll</code>：查询某地址的<code>NFT</code>是否批量授权给了另一个<code>operator</code>地址。</li>
+<li><code>safeTransferFrom</code>：安全转账的重载函数，参数里面包含了<code>data</code>。</li>
+</ul>
+<h3 id="异常">异常</h3>
+<h4 id="error">Error</h4>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#F97583">error</span><span style="color:#B392F0"> TransferNotOwner</span><span style="color:#E1E4E8">(); </span><span style="color:#6A737D">// 自定义error</span></span>
+<span class="line"><span style="color:#F97583">error</span><span style="color:#B392F0"> TransferNotOwner</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8"> sender); </span><span style="color:#6A737D">// 自定义的带参数的error</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> transferOwner1</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> tokenId</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> newOwner</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">public</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8">(_owners[tokenId] </span><span style="color:#F97583">!=</span><span style="color:#79B8FF"> msg.sender</span><span style="color:#E1E4E8">){</span></span>
+<span class="line"><span style="color:#F97583">        revert</span><span style="color:#B392F0"> TransferNotOwner</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#6A737D">        // revert TransferNotOwner(msg.sender);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">    _owners[tokenId] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> newOwner;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h4 id="require">Require</h4>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> transferOwner2</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> tokenId</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> newOwner</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">public</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    require</span><span style="color:#E1E4E8">(_owners[tokenId] </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> msg.sender</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"Transfer Not Owner"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    _owners[tokenId] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> newOwner;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h4 id="assert">Assert</h4>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> transferOwner3</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> tokenId</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> newOwner</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">public</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    assert</span><span style="color:#E1E4E8">(_owners[tokenId] </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> msg.sender</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    _owners[tokenId] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> newOwner;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="函数重载">函数重载</h3>
+<p>名字相同但输入参数类型不同的函数可以同时存在，他们被视为不同的函数</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> saySomething</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">public</span><span style="color:#F97583"> pure</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">string</span><span style="color:#F97583"> memory</span><span style="color:#E1E4E8">){</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"Nothing"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> saySomething</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">string</span><span style="color:#F97583"> memory</span><span style="color:#FFAB70"> something</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">public</span><span style="color:#F97583"> pure</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">string</span><span style="color:#F97583"> memory</span><span style="color:#E1E4E8">){</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8">(something);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="库合约">库合约</h3>
+<ul>
+<li>不能存在状态变量</li>
+<li>不能够继承或被继承</li>
+<li>不能接收以太币</li>
+<li>不可以被销毁</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#F97583">library</span><span style="color:#B392F0"> Strings</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">    bytes16</span><span style="color:#F97583"> private</span><span style="color:#F97583"> constant</span><span style="color:#E1E4E8"> _HEX_SYMBOLS </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "0123456789abcdef"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Converts a `uint256` to its ASCII `string` decimal representation.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> toString</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> value</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">public</span><span style="color:#F97583"> pure</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">string</span><span style="color:#F97583"> memory</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">        // Inspired by OraclizeAPI's implementation - MIT licence</span></span>
+<span class="line"><span style="color:#6A737D">        // https://github.com/oraclize/ethereum-api/blob/b42146b063c7d6ee1358846c198246239e9360e8/oraclizeAPI_0.4.25.sol</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (value </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">            return</span><span style="color:#9ECBFF"> "0"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#E1E4E8"> temp </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> value;</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#E1E4E8"> digits;</span></span>
+<span class="line"><span style="color:#F97583">        while</span><span style="color:#E1E4E8"> (temp </span><span style="color:#F97583">!=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">            digits</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">            temp </span><span style="color:#F97583">/=</span><span style="color:#79B8FF"> 10</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes</span><span style="color:#F97583"> memory</span><span style="color:#E1E4E8"> buffer </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#79B8FF"> bytes</span><span style="color:#E1E4E8">(digits);</span></span>
+<span class="line"><span style="color:#F97583">        while</span><span style="color:#E1E4E8"> (value </span><span style="color:#F97583">!=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">            digits </span><span style="color:#F97583">-=</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">            buffer[digits] </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> bytes1</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint8</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">48</span><span style="color:#F97583"> +</span><span style="color:#79B8FF"> uint256</span><span style="color:#E1E4E8">(value % </span><span style="color:#79B8FF">10</span><span style="color:#E1E4E8">)));</span></span>
+<span class="line"><span style="color:#E1E4E8">            value </span><span style="color:#F97583">/=</span><span style="color:#79B8FF"> 10</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#79B8FF"> string</span><span style="color:#E1E4E8">(buffer);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Converts a `uint256` to its ASCII `string` hexadecimal representation.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> toHexString</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> value</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">public</span><span style="color:#F97583"> pure</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">string</span><span style="color:#F97583"> memory</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (value </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">            return</span><span style="color:#9ECBFF"> "0x00"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#E1E4E8"> temp </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> value;</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#E1E4E8"> length </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">        while</span><span style="color:#E1E4E8"> (temp </span><span style="color:#F97583">!=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">            length</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">            temp </span><span style="color:#F97583">&gt;&gt;=</span><span style="color:#79B8FF"> 8</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#B392F0"> toHexString</span><span style="color:#E1E4E8">(value, length);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Converts a `uint256` to its ASCII `string` hexadecimal representation with fixed length.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> toHexString</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> value</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> length</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">public</span><span style="color:#F97583"> pure</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">string</span><span style="color:#F97583"> memory</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes</span><span style="color:#F97583"> memory</span><span style="color:#E1E4E8"> buffer </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#79B8FF"> bytes</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">2</span><span style="color:#F97583"> *</span><span style="color:#E1E4E8"> length </span><span style="color:#F97583">+</span><span style="color:#79B8FF"> 2</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">        buffer[</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "0"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">        buffer[</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "x"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">        for</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 2</span><span style="color:#F97583"> *</span><span style="color:#E1E4E8"> length </span><span style="color:#F97583">+</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">; i </span><span style="color:#F97583">&gt;</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">; </span><span style="color:#F97583">--</span><span style="color:#E1E4E8">i) {</span></span>
+<span class="line"><span style="color:#E1E4E8">            buffer[i] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> _HEX_SYMBOLS[value </span><span style="color:#F97583">&amp;</span><span style="color:#79B8FF"> 0xf</span><span style="color:#E1E4E8">];</span></span>
+<span class="line"><span style="color:#E1E4E8">            value </span><span style="color:#F97583">&gt;&gt;=</span><span style="color:#79B8FF"> 4</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#F97583">        require</span><span style="color:#E1E4E8">(value </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"Strings: hex length insufficient"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#79B8FF"> string</span><span style="color:#E1E4E8">(buffer);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h4 id="使用库合约">使用库合约</h4>
+<ul>
+<li>
+<ol>
+<li>利用using for指令</li>
+</ol>
+</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#6A737D">// 利用using for指令</span></span>
+<span class="line"><span style="color:#F97583">using</span><span style="color:#B392F0"> Strings</span><span style="color:#F97583"> for</span><span style="color:#B392F0"> uint256</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> getString1</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8"> _number) </span><span style="color:#F97583">public</span><span style="color:#F97583"> pure</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">string</span><span style="color:#F97583"> memory</span><span style="color:#E1E4E8">){</span></span>
+<span class="line"><span style="color:#6A737D">    // 库合约中的函数会自动添加为uint256型变量的成员</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> _number.</span><span style="color:#B392F0">toHexString</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<ul>
+<li>2.通过库合约名称调用函数</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#6A737D">// 直接通过库合约名调用</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> getString2</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8"> _number) </span><span style="color:#F97583">public</span><span style="color:#F97583"> pure</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">string</span><span style="color:#F97583"> memory</span><span style="color:#E1E4E8">){</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> Strings.</span><span style="color:#B392F0">toHexString</span><span style="color:#E1E4E8">(_number);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="import">Import</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#9ECBFF"> '@openzeppelin/contracts/access/Ownable.sol'</span><span style="color:#E1E4E8">;</span></span></code></pre>
+<h3 id="接收eth">接收ETH</h3>
+<h4 id="接收eth函数-receive">接收ETH函数 receive</h4>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#F97583">contract</span><span style="color:#B392F0"> ReceiveEth</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">    // 定义事件</span></span>
+<span class="line"><span style="color:#F97583">    event</span><span style="color:#B392F0"> Received</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> Sender</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint</span><span style="color:#FFAB70"> Value</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#6A737D">    // 接收ETH时释放Received事件</span></span>
+<span class="line"><span style="color:#B392F0">    receive</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">external</span><span style="color:#F97583"> payable</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">        emit</span><span style="color:#B392F0"> Received</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">msg.sender</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">msg</span><span style="color:#E1E4E8">.value);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h4 id="回退函数-fallback">回退函数 fallback</h4>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#F97583">contract</span><span style="color:#B392F0"> ReceiveEth</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">    // 定义事件</span></span>
+<span class="line"><span style="color:#F97583">    event</span><span style="color:#B392F0"> fallbackCalled</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> Sender</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint</span><span style="color:#FFAB70"> Value</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">bytes</span><span style="color:#FFAB70"> Data</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    // fallback</span></span>
+<span class="line"><span style="color:#B392F0">    fallback</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">external</span><span style="color:#F97583"> payable</span><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#F97583">        emit</span><span style="color:#B392F0"> fallbackCalled</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">msg.sender</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">msg</span><span style="color:#E1E4E8">.value, </span><span style="color:#79B8FF">msg</span><span style="color:#E1E4E8">.data);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h4 id="receive和fallback的区别">receive和fallback的区别</h4>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>触发fallback() 还是 receive()?</span></span>
+<span class="line"><span>           接收ETH</span></span>
+<span class="line"><span>              |</span></span>
+<span class="line"><span>         msg.data是空？</span></span>
+<span class="line"><span>            /  \</span></span>
+<span class="line"><span>          是    否</span></span>
+<span class="line"><span>          /      \</span></span>
+<span class="line"><span>receive()存在?   fallback()</span></span>
+<span class="line"><span>        / \</span></span>
+<span class="line"><span>       是  否</span></span>
+<span class="line"><span>      /     \</span></span>
+<span class="line"><span>receive()   fallback()</span></span></code></pre>
+<h3 id="发送eth">发送ETH</h3>
+<ol>
+<li><code>transfer()</code></li>
+</ol>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#6A737D">// 用transfer()发送ETH</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> transferETH</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> payable</span><span style="color:#E1E4E8"> _to, </span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> amount</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">external</span><span style="color:#F97583"> payable</span><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#E1E4E8">    _to.</span><span style="color:#B392F0">transfer</span><span style="color:#E1E4E8">(amount);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<ol start="2">
+<li><code>send()</code></li>
+</ol>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#F97583">error</span><span style="color:#B392F0"> SendFailed</span><span style="color:#E1E4E8">(); </span><span style="color:#6A737D">// 用send发送ETH失败error</span></span>
+<span class="line"><span style="color:#6A737D">// send()发送ETH</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> sendETH</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> payable</span><span style="color:#E1E4E8"> _to, </span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> amount</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">external</span><span style="color:#F97583"> payable</span><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#6A737D">    // 处理下send的返回值，如果失败，revert交易并发送error</span></span>
+<span class="line"><span style="color:#79B8FF">    bool</span><span style="color:#E1E4E8"> success </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> _to.</span><span style="color:#B392F0">send</span><span style="color:#E1E4E8">(amount);</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">success){</span></span>
+<span class="line"><span style="color:#F97583">        revert</span><span style="color:#B392F0"> SendFailed</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<ol start="3">
+<li><code>call()</code></li>
+</ol>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#F97583">error</span><span style="color:#B392F0"> CallFailed</span><span style="color:#E1E4E8">(); </span><span style="color:#6A737D">// 用call发送ETH失败error</span></span>
+<span class="line"><span style="color:#6A737D">// call()发送ETH</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> callETH</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> payable</span><span style="color:#E1E4E8"> _to, </span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> amount</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">external</span><span style="color:#F97583"> payable</span><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#6A737D">    // 处理下call的返回值，如果失败，revert交易并发送error</span></span>
+<span class="line"><span style="color:#E1E4E8">    (</span><span style="color:#79B8FF">bool</span><span style="color:#E1E4E8"> success,) </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> _to.call{value</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> amount}(</span><span style="color:#9ECBFF">""</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">success){</span></span>
+<span class="line"><span style="color:#F97583">        revert</span><span style="color:#B392F0"> CallFailed</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="调用其他合约">调用其他合约</h3>
+<ol>
+<li>目标合约</li>
+</ol>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#F97583">contract</span><span style="color:#B392F0"> OtherContract</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#F97583"> private</span><span style="color:#E1E4E8"> _x </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">; </span><span style="color:#6A737D">// 状态变量_x</span></span>
+<span class="line"><span style="color:#6A737D">    // 收到eth的事件，记录amount和gas</span></span>
+<span class="line"><span style="color:#F97583">    event</span><span style="color:#B392F0"> Log</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint</span><span style="color:#FFAB70"> amount</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint</span><span style="color:#FFAB70"> gas</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    // 返回合约ETH余额</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> getBalance</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">view</span><span style="color:#F97583"> public</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#79B8FF"> address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">).balance;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    // 可以调整状态变量_x的函数，并且可以往合约转ETH (payable)</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> setX</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> x</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">external</span><span style="color:#F97583"> payable</span><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#E1E4E8">        _x </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> x;</span></span>
+<span class="line"><span style="color:#6A737D">        // 如果转入ETH，则释放Log事件</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">msg</span><span style="color:#E1E4E8">.value </span><span style="color:#F97583">&gt;</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">){</span></span>
+<span class="line"><span style="color:#F97583">            emit</span><span style="color:#B392F0"> Log</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">msg</span><span style="color:#E1E4E8">.value, </span><span style="color:#79B8FF">gasleft</span><span style="color:#E1E4E8">());</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    // 读取_x</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> getX</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">external</span><span style="color:#F97583"> view</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint</span><span style="color:#FFAB70"> x</span><span style="color:#E1E4E8">){</span></span>
+<span class="line"><span style="color:#E1E4E8">        x </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> _x;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<ol start="2">
+<li>调用合约</li>
+</ol>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#F97583">contract</span><span style="color:#B392F0"> CallOtherContract</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> callSetX</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8"> _Address, </span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> x</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">external</span><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#B392F0">        OtherContract</span><span style="color:#E1E4E8">(_Address).</span><span style="color:#B392F0">setX</span><span style="color:#E1E4E8">(x);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> callGetX</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">OtherContract</span><span style="color:#E1E4E8"> _Address) </span><span style="color:#F97583">external</span><span style="color:#F97583"> view</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint</span><span style="color:#FFAB70"> x</span><span style="color:#E1E4E8">){</span></span>
+<span class="line"><span style="color:#E1E4E8">        x </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> _Address.</span><span style="color:#B392F0">getX</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> callGetX2</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8"> _Address) </span><span style="color:#F97583">external</span><span style="color:#F97583"> view</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint</span><span style="color:#FFAB70"> x</span><span style="color:#E1E4E8">){</span></span>
+<span class="line"><span style="color:#E1E4E8">        OtherContract oc </span><span style="color:#F97583">=</span><span style="color:#B392F0"> OtherContract</span><span style="color:#E1E4E8">(_Address);</span></span>
+<span class="line"><span style="color:#E1E4E8">        x </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> oc.</span><span style="color:#B392F0">getX</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> setXTransferETH</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> otherContract</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> x</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">payable</span><span style="color:#F97583"> external</span><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#B392F0">        OtherContract</span><span style="color:#E1E4E8">(otherContract).setX{value</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> msg</span><span style="color:#E1E4E8">.value}(x);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="call">Call</h3>
+<p><code>call</code> 是address类型的低级成员函数，它用来与其他合约交互。它的返回值为(bool, bytes memory)，分别对应call是否成功以及目标函数的返回值。</p>
+<p><code>encodeWithSignature</code> 函数用来将参数编码成bytes，以便传递给call函数。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> callSetX</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> payable</span><span style="color:#E1E4E8"> _addr, </span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> x</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">public</span><span style="color:#F97583"> payable</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">    // call setX()，同时可以发送ETH</span></span>
+<span class="line"><span style="color:#E1E4E8">    (</span><span style="color:#79B8FF">bool</span><span style="color:#E1E4E8"> success, </span><span style="color:#79B8FF">bytes</span><span style="color:#F97583"> memory</span><span style="color:#E1E4E8"> data) </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> _addr.call{value</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> msg</span><span style="color:#E1E4E8">.value}(</span></span>
+<span class="line"><span style="color:#79B8FF">        abi</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">encodeWithSignature</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"setX(uint256)"</span><span style="color:#E1E4E8">, x)</span></span>
+<span class="line"><span style="color:#E1E4E8">    );</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    emit</span><span style="color:#B392F0"> Response</span><span style="color:#E1E4E8">(success, data); </span><span style="color:#6A737D">//释放事件</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="delegatecall">Delegatecall</h3>
+<p><code>delegatecall</code>与<code>call</code>类似，是<code>Solidity</code>中地址类型的低级成员函数。<code>delegate</code>中是委托/代表的意思，那么<code>delegatecall</code>委托了什么？</p>
+<p>当用户A通过合约B来<code>call</code>合约C的时候，执行的是合约C的函数，上下文(<code>Context</code>，可以理解为包含变量和状态的环境)也是合约C的：<code>msg.sender</code>是B的地址，并且如果函数改变一些状态变量，产生的效果会作用于合约C的变量上。</p>
+<h3 id="create">create</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#E1E4E8">Contract x </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#E1E4E8"> Contract{value</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> _value}(params)</span></span>
+<span class="line"><span style="color:#6A737D">// _value : 传递给合约的ETH数量</span></span>
+<span class="line"><span style="color:#6A737D">// params : 传递给合约构造函数的参数</span></span></code></pre>
+<h4 id="极简uniswap">极简Uniswap</h4>
+<p><code>Uniswap V2</code> 核心合约中包含两个合约</p>
+<ul>
+<li><code>UniswapV2Pair</code>: 币对合约，用于管理币对地址、流动性、买卖。</li>
+<li><code>UniswapV2Factory</code>: 工厂合约，用于创建新的币对，并管理币对地址。</li>
+</ul>
+<h5 id="pair-合约"><code>Pair</code> 合约</h5>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#F97583">contract</span><span style="color:#B392F0"> Pair</span><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#79B8FF">    address</span><span style="color:#F97583"> public</span><span style="color:#E1E4E8"> factory; </span><span style="color:#6A737D">// 工厂合约地址</span></span>
+<span class="line"><span style="color:#79B8FF">    address</span><span style="color:#F97583"> public</span><span style="color:#E1E4E8"> token0; </span><span style="color:#6A737D">// 代币1</span></span>
+<span class="line"><span style="color:#79B8FF">    address</span><span style="color:#F97583"> public</span><span style="color:#E1E4E8"> token1; </span><span style="color:#6A737D">// 代币2</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    constructor</span><span style="color:#E1E4E8">() payable {</span></span>
+<span class="line"><span style="color:#E1E4E8">        factory </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> msg.sender</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    // called once by the factory at time of deployment</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> initialize</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8"> _token0, </span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8"> _token1) </span><span style="color:#F97583">external</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">        require</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">msg.sender</span><span style="color:#F97583"> ==</span><span style="color:#E1E4E8"> factory, </span><span style="color:#9ECBFF">'UniswapV2: FORBIDDEN'</span><span style="color:#E1E4E8">); </span><span style="color:#6A737D">// sufficient check</span></span>
+<span class="line"><span style="color:#E1E4E8">        token0 </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> _token0;</span></span>
+<span class="line"><span style="color:#E1E4E8">        token1 </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> _token1;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h5 id="pairfactory-合约"><code>PairFactory</code> 合约</h5>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#F97583">contract</span><span style="color:#B392F0"> PairFactory</span><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#F97583">    mapping</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#F97583"> =&gt;</span><span style="color:#F97583"> mapping</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#F97583"> =&gt;</span><span style="color:#79B8FF"> address</span><span style="color:#E1E4E8">)) </span><span style="color:#F97583">public</span><span style="color:#E1E4E8"> getPair; </span><span style="color:#6A737D">// 通过两个代币地址查Pair地址</span></span>
+<span class="line"><span style="color:#79B8FF">    address</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">public</span><span style="color:#E1E4E8"> allPairs; </span><span style="color:#6A737D">// 保存所有Pair地址</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> createPair</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> tokenA</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> tokenB</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">external</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> pairAddr</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">        // 创建新合约</span></span>
+<span class="line"><span style="color:#E1E4E8">        Pair pair </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Pair</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#6A737D">        // 调用新合约的initialize方法</span></span>
+<span class="line"><span style="color:#E1E4E8">        pair.</span><span style="color:#B392F0">initialize</span><span style="color:#E1E4E8">(tokenA, tokenB);</span></span>
+<span class="line"><span style="color:#6A737D">        // 更新地址map</span></span>
+<span class="line"><span style="color:#E1E4E8">        pairAddr </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> address</span><span style="color:#E1E4E8">(pair);</span></span>
+<span class="line"><span style="color:#E1E4E8">        allPairs.</span><span style="color:#B392F0">push</span><span style="color:#E1E4E8">(pairAddr);</span></span>
+<span class="line"><span style="color:#E1E4E8">        getPair[tokenA][tokenB] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> pairAddr;</span></span>
+<span class="line"><span style="color:#E1E4E8">        getPair[tokenB][tokenA] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> pairAddr;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="create2">create2</h3>
+<h4 id="create如何计算地址">CREATE如何计算地址?</h4>
+<p>智能合约可以由其他合约和普通账户利用<code>Create</code>操作码创建。</p>
+<p>在这两种情况下，新合约的地址都以相同的方式计算：创造者地址(部署者钱包地址或合约地址)和<code>nonce</code>(该地址发起交易的总数，对于合约账户是创建的合约总数，每创建一个合约nonce+1)的哈希</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#E1E4E8">新地址 </span><span style="color:#F97583">=</span><span style="color:#B392F0"> hash</span><span style="color:#E1E4E8">(创建者地址, nonce)</span></span></code></pre>
+<h4 id="create2-1">CREATE2</h4>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#E1E4E8">新地址 </span><span style="color:#F97583">=</span><span style="color:#B392F0"> hash</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"0xFF"</span><span style="color:#E1E4E8">,创建者地址, salt, initcode)</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#F97583">contract</span><span style="color:#B392F0"> PairFactory2</span><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#F97583">    mapping</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#F97583"> =&gt;</span><span style="color:#F97583"> mapping</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#F97583"> =&gt;</span><span style="color:#79B8FF"> address</span><span style="color:#E1E4E8">)) </span><span style="color:#F97583">public</span><span style="color:#E1E4E8"> getPair; </span><span style="color:#6A737D">// 通过两个代币地址查Pair地址</span></span>
+<span class="line"><span style="color:#79B8FF">    address</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">public</span><span style="color:#E1E4E8"> allPairs; </span><span style="color:#6A737D">// 保存所有Pair地址</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> createPair2</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> tokenA</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> tokenB</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">external</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> pairAddr</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        require</span><span style="color:#E1E4E8">(tokenA </span><span style="color:#F97583">!=</span><span style="color:#E1E4E8"> tokenB, </span><span style="color:#9ECBFF">'IDENTICAL_ADDRESSES'</span><span style="color:#E1E4E8">); </span><span style="color:#6A737D">//避免tokenA和tokenB相同产生的冲突</span></span>
+<span class="line"><span style="color:#6A737D">        // 用tokenA和tokenB地址计算salt</span></span>
+<span class="line"><span style="color:#E1E4E8">        (</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8"> token0, </span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8"> token1) </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> tokenA </span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8"> tokenB </span><span style="color:#F97583">?</span><span style="color:#E1E4E8"> (tokenA, tokenB) </span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> (tokenB, tokenA); </span><span style="color:#6A737D">//将tokenA和tokenB按大小排序</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes32</span><span style="color:#E1E4E8"> salt </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> keccak256</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">abi</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">encodePacked</span><span style="color:#E1E4E8">(token0, token1));</span></span>
+<span class="line"><span style="color:#6A737D">        // 用create2部署新合约</span></span>
+<span class="line"><span style="color:#E1E4E8">        Pair pair </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#E1E4E8"> Pair{salt</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> salt}();</span></span>
+<span class="line"><span style="color:#6A737D">        // 调用新合约的initialize方法</span></span>
+<span class="line"><span style="color:#E1E4E8">        pair.</span><span style="color:#B392F0">initialize</span><span style="color:#E1E4E8">(tokenA, tokenB);</span></span>
+<span class="line"><span style="color:#6A737D">        // 更新地址map</span></span>
+<span class="line"><span style="color:#E1E4E8">        pairAddr </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> address</span><span style="color:#E1E4E8">(pair);</span></span>
+<span class="line"><span style="color:#E1E4E8">        allPairs.</span><span style="color:#B392F0">push</span><span style="color:#E1E4E8">(pairAddr);</span></span>
+<span class="line"><span style="color:#E1E4E8">        getPair[tokenA][tokenB] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> pairAddr;</span></span>
+<span class="line"><span style="color:#E1E4E8">        getPair[tokenB][tokenA] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> pairAddr;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#6A737D">    // 提前计算pair合约地址</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> calculateAddr</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> tokenA</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> tokenB</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">public</span><span style="color:#F97583"> view</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> predictedAddress</span><span style="color:#E1E4E8">){</span></span>
+<span class="line"><span style="color:#F97583">        require</span><span style="color:#E1E4E8">(tokenA </span><span style="color:#F97583">!=</span><span style="color:#E1E4E8"> tokenB, </span><span style="color:#9ECBFF">'IDENTICAL_ADDRESSES'</span><span style="color:#E1E4E8">); </span><span style="color:#6A737D">//避免tokenA和tokenB相同产生的冲突</span></span>
+<span class="line"><span style="color:#6A737D">        // 计算用tokenA和tokenB地址计算salt</span></span>
+<span class="line"><span style="color:#E1E4E8">        (</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8"> token0, </span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8"> token1) </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> tokenA </span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8"> tokenB </span><span style="color:#F97583">?</span><span style="color:#E1E4E8"> (tokenA, tokenB) </span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> (tokenB, tokenA); </span><span style="color:#6A737D">//将tokenA和tokenB按大小排序</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes32</span><span style="color:#E1E4E8"> salt </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> keccak256</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">abi</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">encodePacked</span><span style="color:#E1E4E8">(token0, token1));</span></span>
+<span class="line"><span style="color:#6A737D">        // 计算合约地址方法 hash()</span></span>
+<span class="line"><span style="color:#E1E4E8">        predictedAddress </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint160</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">keccak256</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">abi</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">encodePacked</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#79B8FF">            bytes1</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0xff</span><span style="color:#E1E4E8">),</span></span>
+<span class="line"><span style="color:#79B8FF">            address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">),</span></span>
+<span class="line"><span style="color:#E1E4E8">            salt,</span></span>
+<span class="line"><span style="color:#79B8FF">            keccak256</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">type</span><span style="color:#E1E4E8">(Pair).creationCode)</span></span>
+<span class="line"><span style="color:#E1E4E8">            )))));</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="删除合约">删除合约</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#F97583">selfdestruct</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#F97583"> payable</span><span style="color:#E1E4E8"> _to)</span></span>
+<span class="line"><span style="color:#6A737D">// _to : 删除合约后，将合约的ETH和ERC20代币发送给该地址</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#F97583">contract</span><span style="color:#B392F0"> DeleteContract</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF">    uint</span><span style="color:#F97583"> public</span><span style="color:#E1E4E8"> value </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 10</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    constructor</span><span style="color:#E1E4E8">() payable {}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">    receive</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">external</span><span style="color:#F97583"> payable</span><span style="color:#E1E4E8"> {}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> deleteContract</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">external</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">        // 调用selfdestruct销毁合约，并把剩余的ETH转给msg.sender</span></span>
+<span class="line"><span style="color:#F97583">        selfdestruct</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">payable</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">msg.sender</span><span style="color:#E1E4E8">));</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> getBalance</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">external</span><span style="color:#F97583"> view</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint</span><span style="color:#FFAB70"> balance</span><span style="color:#E1E4E8">){</span></span>
+<span class="line"><span style="color:#E1E4E8">        balance </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">).balance;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="abi编码解码">ABI编码解码</h3>
+<p><code>ABI</code> (Application Binary Interface，应用二进制接口)是与以太坊智能合约交互的标准。数据基于他们的类型编码；并且由于编码后不包含类型信息，解码时需要注明它们的类型。</p>
+<ul>
+<li><code>abi.encode</code> : 按 ABI 标准将参数编码为字节数组（每个参数 32 字节对齐填充）</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> encode</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">public</span><span style="color:#F97583"> view</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">bytes</span><span style="color:#F97583"> memory</span><span style="color:#FFAB70"> result</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    result </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> abi</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">encode</span><span style="color:#E1E4E8">(x, addr, name, array);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<ul>
+<li><code>abi.encodePacked</code> : 紧凑编码，将参数紧密打包为字节数组（不做填充；编码结果不含类型信息，动态类型拼接时可能产生哈希碰撞）</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> encodePacked</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">public</span><span style="color:#F97583"> view</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">bytes</span><span style="color:#F97583"> memory</span><span style="color:#FFAB70"> result</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    result </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> abi</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">encodePacked</span><span style="color:#E1E4E8">(x, addr, name, array);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<ul>
+<li><code>abi.encodeWithSignature</code> : 根据函数签名字符串计算选择器，再与参数一起编码（常用于构造 call data）</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> encodeWithSignature</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">public</span><span style="color:#F97583"> view</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">bytes</span><span style="color:#F97583"> memory</span><span style="color:#FFAB70"> result</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    result </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> abi</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">encodeWithSignature</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"foo(uint256,address,string,uint256[2])"</span><span style="color:#E1E4E8">, x, addr, name, array);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<ul>
+<li><code>abi.encodeWithSelector</code> : 直接传入函数选择器，再与参数一起编码（常用于构造 call data）</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> encodeWithSelector</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">public</span><span style="color:#F97583"> view</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">bytes</span><span style="color:#F97583"> memory</span><span style="color:#FFAB70"> result</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    result </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> abi</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">encodeWithSelector</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">bytes4</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">keccak256</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"foo(uint256,address,string,uint256[2])"</span><span style="color:#E1E4E8">)), x, addr, name, array);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<ul>
+<li><code>abi.decode</code> : 将字节数组按指定类型解码为参数</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> decode</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">bytes</span><span style="color:#F97583"> memory</span><span style="color:#FFAB70"> data</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">public</span><span style="color:#F97583"> pure</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint</span><span style="color:#FFAB70"> x</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> addr</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">string</span><span style="color:#F97583"> memory</span><span style="color:#FFAB70"> name</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint</span><span style="color:#E1E4E8">[</span><span style="color:#FFAB70">2</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">memory</span><span style="color:#FFAB70"> array</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    (x, addr, name, array) </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> abi</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">decode</span><span style="color:#E1E4E8">(data, (</span><span style="color:#79B8FF">uint</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">string</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint</span><span style="color:#E1E4E8">[</span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">]));</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="hash">hash</h3>
+<ul>
+<li>生成数据唯一标识</li>
+<li>加密签名</li>
+<li>安全加密</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> hash</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">public</span><span style="color:#F97583"> view</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">bytes32</span><span style="color:#FFAB70"> result</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    result </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> keccak256</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">abi</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">encodePacked</span><span style="color:#E1E4E8">(x, addr, name, array));</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="选择器">选择器</h3>
+<p>调用智能合约时，本质上是向目标合约发送一段 <code>calldata</code>。<code>calldata</code> 前 4 个字节是 <code>selector</code>（函数选择器），后面是编码后的参数。</p>
+<p><img src="/images/59470b621e98b18d1b6f8e6b3f49cc62.png" alt="选择器"></p>
+<h4 id="msgdata">msg.data</h4>
+<p><code>msg.data</code> 是完整的 <code>calldata</code>（调用函数时传入的数据）。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#F97583">event</span><span style="color:#B392F0"> Log</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">bytes</span><span style="color:#FFAB70"> data</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> mint</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> to</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">external</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    emit</span><span style="color:#B392F0"> Log</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">msg</span><span style="color:#E1E4E8">.data);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>当参数为 <code>0x2c44b726ADF1963cA47Af88B284C06f30380fC78</code> 时，<code>calldata</code> 为：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>0x6a6278420000000000000000000000002c44b726adf1963ca47af88b284c06f30380fc78</span></span></code></pre>
+<p>可分为两部分：</p>
+<ul>
+<li>前 4 字节 <code>selector</code>：<code>0x6a627842</code></li>
+<li>后 32 字节参数：<code>0x0000000000000000000000002c44b726adf1963ca47af88b284c06f30380fc78</code></li>
+</ul>
+<h4 id="method-idselector-和函数签名">method id、selector 和函数签名</h4>
+<ul>
+<li><strong>函数签名</strong>：<code>"函数名(逗号分隔的参数类型)"</code>，例如 <code>mint(address)</code></li>
+<li><strong>method id</strong>：函数签名做 <code>keccak256</code> 后取前 4 字节</li>
+<li>当 <code>selector</code> 与某函数的 <code>method id</code> 匹配时，即调用该函数</li>
+</ul>
+<p>注意：函数签名里 <code>uint</code> / <code>int</code> 要写成 <code>uint256</code> / <code>int256</code>。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> mintSelector</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">external</span><span style="color:#F97583"> pure</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">bytes4</span><span style="color:#FFAB70"> mSelector</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#79B8FF"> bytes4</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">keccak256</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"mint(address)"</span><span style="color:#E1E4E8">)); </span><span style="color:#6A737D">// 0x6a627842</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>也可用 <code>this.函数名.selector</code> 直接取选择器。</p>
+<h4 id="不同参数类型的-method-id">不同参数类型的 method id</h4>
+<p>计算 <code>method id</code>：<code>bytes4(keccak256("函数名(参数类型1,参数类型2,...)"))</code></p>
+<p><strong>基础类型</strong>（<code>uint256</code>、<code>bool</code>、<code>address</code> 等）：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#6A737D">// elementaryParamSelector(uint256,bool) : 0x3ec37834</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> elementaryParamSelector</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> param1</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">bool</span><span style="color:#FFAB70"> param2</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">external</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">bytes4</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#79B8FF"> bytes4</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">keccak256</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"elementaryParamSelector(uint256,bool)"</span><span style="color:#E1E4E8">));</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p><strong>固定长度类型</strong>（如 <code>uint256[3]</code>）：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#6A737D">// fixedSizeParamSelector(uint256[3]) : 0xead6b8bd</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> fixedSizeParamSelector</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">[</span><span style="color:#FFAB70">3</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">memory</span><span style="color:#FFAB70"> param1</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">external</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">bytes4</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#79B8FF"> bytes4</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">keccak256</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"fixedSizeParamSelector(uint256[3])"</span><span style="color:#E1E4E8">));</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p><strong>可变长度类型</strong>（如 <code>uint256[]</code>、<code>string</code>）：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#6A737D">// nonFixedSizeParamSelector(uint256[],string) : 0xf0ca01de</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> nonFixedSizeParamSelector</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">memory</span><span style="color:#FFAB70"> param1</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">string</span><span style="color:#F97583"> memory</span><span style="color:#FFAB70"> param2</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">external</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">bytes4</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#79B8FF"> bytes4</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">keccak256</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"nonFixedSizeParamSelector(uint256[],string)"</span><span style="color:#E1E4E8">));</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p><strong>映射类型参数</strong>（<code>contract</code>、<code>enum</code>、<code>struct</code>）：需转成 ABI 类型后再算签名。</p>
+<table>
+<thead>
+<tr>
+<th>原类型</th>
+<th>ABI 类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>contract</code></td>
+<td><code>address</code></td>
+</tr>
+<tr>
+<td><code>struct</code>（如 <code>(uint256,bytes)</code>）</td>
+<td><code>tuple</code>，写作 <code>(uint256,bytes)</code></td>
+</tr>
+<tr>
+<td><code>enum</code></td>
+<td><code>uint8</code></td>
+</tr>
+</tbody>
+</table>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#6A737D">// mappingParamSelector(address,(uint256,bytes),uint256[],uint8) : 0xe355b0ce</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> mappingParamSelector</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#F97583">    DemoContract</span><span style="color:#FFAB70"> demo</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#F97583">    User</span><span style="color:#F97583"> memory</span><span style="color:#FFAB70"> user</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">memory</span><span style="color:#FFAB70"> count</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#F97583">    School</span><span style="color:#FFAB70"> mySchool</span></span>
+<span class="line"><span style="color:#E1E4E8">) </span><span style="color:#F97583">external</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">bytes4</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#79B8FF"> bytes4</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">keccak256</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"mappingParamSelector(address,(uint256,bytes),uint256[],uint8)"</span><span style="color:#E1E4E8">));</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h4 id="使用-selector-调用函数">使用 selector 调用函数</h4>
+<p>用 <code>abi.encodeWithSelector</code> 把 <code>method id</code> 和参数打包，再交给 <code>call</code>：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> callWithSignature</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">external</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">    // 调用 elementaryParamSelector(uint256,bool)</span></span>
+<span class="line"><span style="color:#E1E4E8">    (</span><span style="color:#79B8FF">bool</span><span style="color:#E1E4E8"> success, </span><span style="color:#79B8FF">bytes</span><span style="color:#F97583"> memory</span><span style="color:#E1E4E8"> data) </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">).</span><span style="color:#B392F0">call</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#79B8FF">        abi</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">encodeWithSelector</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0x3ec37834</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    );</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="trycatch">trycatch</h3>
+<p><code>try-catch</code> 用于处理智能合约中的异常，<code>Solidity</code> 0.6 起支持。<strong>只能</strong>用于外部调用（<code>external</code> / <code>public</code> 函数，或创建合约的 <code>constructor</code>）。</p>
+<h4 id="基本语法">基本语法</h4>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#F97583">try</span><span style="color:#E1E4E8"> externalContract.</span><span style="color:#B392F0">f</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#6A737D">    // 调用成功</span></span>
+<span class="line"><span style="color:#E1E4E8">} </span><span style="color:#F97583">catch</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">    // 调用失败</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<ul>
+<li>也可用 <code>this.f()</code>，同样视为外部调用，但<strong>不能在构造函数中使用</strong>（合约尚未创建完成）。</li>
+<li>若被调函数有返回值，须在 <code>try</code> 后声明 <code>returns(returnType val)</code>；创建合约时返回值是新合约实例。</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#F97583">try</span><span style="color:#E1E4E8"> externalContract.</span><span style="color:#B392F0">f</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">returns</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">returnType</span><span style="color:#FFAB70"> val</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">    // 可用 val</span></span>
+<span class="line"><span style="color:#E1E4E8">} </span><span style="color:#F97583">catch</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">    // 失败</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h4 id="捕获不同类型异常">捕获不同类型异常</h4>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#F97583">try</span><span style="color:#E1E4E8"> externalContract.</span><span style="color:#B392F0">f</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">returns</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">returnType</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">    // 成功</span></span>
+<span class="line"><span style="color:#E1E4E8">} </span><span style="color:#F97583">catch</span><span style="color:#B392F0"> Error</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">string</span><span style="color:#F97583"> memory</span><span style="color:#6A737D"> /*reason*/</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">    // revert("reason") / require(false, "reason")</span></span>
+<span class="line"><span style="color:#E1E4E8">} </span><span style="color:#F97583">catch</span><span style="color:#B392F0"> Panic</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint</span><span style="color:#6A737D"> /*errorCode*/</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">    // assert 失败、溢出、除零、数组越界等</span></span>
+<span class="line"><span style="color:#E1E4E8">} </span><span style="color:#F97583">catch</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">bytes</span><span style="color:#F97583"> memory</span><span style="color:#6A737D"> /*lowLevelData*/</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">    // 上面两类都未匹配：如 revert()、require(false)、自定义 error</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h4 id="实战onlyeven">实战：OnlyEven</h4>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#F97583">contract</span><span style="color:#B392F0"> OnlyEven</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    constructor</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint</span><span style="color:#FFAB70"> a</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        require</span><span style="color:#E1E4E8">(a </span><span style="color:#F97583">!=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"invalid number"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">        assert</span><span style="color:#E1E4E8">(a </span><span style="color:#F97583">!=</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> onlyEven</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> b</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">external</span><span style="color:#F97583"> pure</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">bool</span><span style="color:#FFAB70"> success</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        require</span><span style="color:#E1E4E8">(b % </span><span style="color:#79B8FF">2</span><span style="color:#F97583"> ==</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"Ups! Reverting"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">        success </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<ul>
+<li>构造函数：<code>a == 0</code> 触发 <code>require</code>；<code>a == 1</code> 触发 <code>assert</code></li>
+<li><code>onlyEven</code>：奇数时 <code>require</code> 失败</li>
+</ul>
+<h4 id="处理外部函数调用异常">处理外部函数调用异常</h4>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#F97583">event</span><span style="color:#B392F0"> SuccessEvent</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#F97583">event</span><span style="color:#B392F0"> CatchEvent</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">string</span><span style="color:#FFAB70"> message</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">event</span><span style="color:#B392F0"> CatchByte</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">bytes</span><span style="color:#FFAB70"> data</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">OnlyEven even;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">constructor</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">    even </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> OnlyEven</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> execute</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint</span><span style="color:#FFAB70"> amount</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">external</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">bool</span><span style="color:#FFAB70"> success</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">    try</span><span style="color:#E1E4E8"> even.</span><span style="color:#B392F0">onlyEven</span><span style="color:#E1E4E8">(amount) </span><span style="color:#F97583">returns</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">bool</span><span style="color:#E1E4E8"> _success) {</span></span>
+<span class="line"><span style="color:#F97583">        emit</span><span style="color:#B392F0"> SuccessEvent</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> _success;</span></span>
+<span class="line"><span style="color:#E1E4E8">    } </span><span style="color:#F97583">catch</span><span style="color:#B392F0"> Error</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">string</span><span style="color:#F97583"> memory</span><span style="color:#E1E4E8"> reason) {</span></span>
+<span class="line"><span style="color:#F97583">        emit</span><span style="color:#B392F0"> CatchEvent</span><span style="color:#E1E4E8">(reason);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<ul>
+<li><code>execute(0)</code>：偶数，成功，触发 <code>SuccessEvent</code></li>
+<li><code>execute(1)</code>：奇数，失败，触发 <code>CatchEvent</code></li>
+</ul>
+<h4 id="处理合约创建异常">处理合约创建异常</h4>
+<p>合约创建也视为外部调用，可用 <code>try-catch</code>：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#6A737D">// executeNew(0) → CatchEvent（require）</span></span>
+<span class="line"><span style="color:#6A737D">// executeNew(1) → CatchByte（assert）</span></span>
+<span class="line"><span style="color:#6A737D">// executeNew(2) → SuccessEvent</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> executeNew</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint</span><span style="color:#FFAB70"> a</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">external</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">bool</span><span style="color:#FFAB70"> success</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">    try</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> OnlyEven</span><span style="color:#E1E4E8">(a) </span><span style="color:#F97583">returns</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">OnlyEven</span><span style="color:#E1E4E8"> _even) {</span></span>
+<span class="line"><span style="color:#F97583">        emit</span><span style="color:#B392F0"> SuccessEvent</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">        success </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> _even.</span><span style="color:#B392F0">onlyEven</span><span style="color:#E1E4E8">(a);</span></span>
+<span class="line"><span style="color:#E1E4E8">    } </span><span style="color:#F97583">catch</span><span style="color:#B392F0"> Error</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">string</span><span style="color:#F97583"> memory</span><span style="color:#E1E4E8"> reason) {</span></span>
+<span class="line"><span style="color:#F97583">        emit</span><span style="color:#B392F0"> CatchEvent</span><span style="color:#E1E4E8">(reason);</span></span>
+<span class="line"><span style="color:#E1E4E8">    } </span><span style="color:#F97583">catch</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">bytes</span><span style="color:#F97583"> memory</span><span style="color:#E1E4E8"> reason) {</span></span>
+<span class="line"><span style="color:#F97583">        emit</span><span style="color:#B392F0"> CatchByte</span><span style="color:#E1E4E8">(reason);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>要点：</p>
+<ul>
+<li>仅适用于外部调用和合约创建</li>
+<li><code>try</code> 成功时，返回变量必须声明且类型匹配</li>
+</ul>
+</div><script type="module">function e(e){let t=e.getAttribute(`data-language`)?.trim();if(t)return t===`text`||t===`plaintext`||t===`txt`?`text`:t;let n=e.querySelector(`code`)?.className||e.className||``,r=/language-([a-z0-9_+-]+)/i.exec(n);return r?.[1]?r[1]:`code`}function t(t){if(t.closest(`[data-mac-window]`)||t.dataset.macEnhanced===`1`)return;t.dataset.macEnhanced=`1`;let n=document.createElement(`figure`);n.className=`mac-window`,n.setAttribute(`data-mac-window`,``);let r=document.createElement(`div`);r.className=`mac-titlebar`,r.innerHTML=`
+      <div class="mac-dots" aria-hidden="true">
+        <span class="dot red"></span>
+        <span class="dot yellow"></span>
+        <span class="dot green"></span>
+      </div>
+      <span class="mac-title"></span>
+      <button type="button" class="mac-copy" data-mac-copy aria-label="复制代码">复制</button>
+    `;let i=r.querySelector(`.mac-title`);i&&(i.textContent=e(t));let a=document.createElement(`div`);a.className=`mac-body`,t.parentNode?.insertBefore(n,t),a.appendChild(t),n.appendChild(r),n.appendChild(a)}async function n(e){if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(e);return}let t=document.createElement(`textarea`);t.value=e,t.style.position=`fixed`,t.style.opacity=`0`,document.body.appendChild(t),t.select(),document.execCommand(`copy`),t.remove()}function r(e=document){e.querySelectorAll(`[data-mac-copy]`).forEach(e=>{e.dataset.bound!==`1`&&(e.dataset.bound=`1`,e.addEventListener(`click`,async()=>{let t=e.closest(`[data-mac-window]`)?.querySelector(`pre`)?.textContent??``;try{await n(t);let r=e.textContent;e.textContent=`已复制`,e.classList.add(`is-copied`),window.setTimeout(()=>{e.textContent=r||`复制`,e.classList.remove(`is-copied`)},1600)}catch{e.textContent=`失败`,window.setTimeout(()=>{e.textContent=`复制`},1600)}}))})}function i(){document.querySelectorAll(`.prose pre`).forEach(t),r()}i(),document.addEventListener(`astro:page-load`,i);</script></article><nav class="pager wrap-narrow" aria-label="上下篇" data-astro-cid-tldeq5d5><p data-astro-cid-tldeq5d5>上一篇：<a href="/web3/timelock/" data-astro-cid-tldeq5d5>时间锁</a></p><p data-astro-cid-tldeq5d5>下一篇：<a href="/web3/signature/" data-astro-cid-tldeq5d5>数字签名</a></p></nav><section class="related" data-astro-cid-tldeq5d5><div class="wrap" data-astro-cid-tldeq5d5><h2 data-astro-cid-tldeq5d5>继续阅读</h2><ol class="related-grid" data-astro-cid-tldeq5d5><li data-astro-cid-tldeq5d5><a class="related-topic" href="/web3/" data-astro-cid-tldeq5d5>区块链</a><a class="related-title" href="/web3/airdrop/" data-astro-cid-tldeq5d5>空投</a><p data-astro-cid-tldeq5d5>空投</p></li><li data-astro-cid-tldeq5d5><a class="related-topic" href="/web3/" data-astro-cid-tldeq5d5>区块链</a><a class="related-title" href="/web3/cross-chain-bridge/" data-astro-cid-tldeq5d5>跨链桥</a><p data-astro-cid-tldeq5d5>跨链桥</p></li><li data-astro-cid-tldeq5d5><a class="related-topic" href="/web3/" data-astro-cid-tldeq5d5>区块链</a><a class="related-title" href="/web3/ddos/" data-astro-cid-tldeq5d5>DDOS攻击</a><p data-astro-cid-tldeq5d5>DDOS攻击</p></li></ol></div></section></main><footer class="site-footer" data-astro-cid-jo6i4kqk><div class="wrap bar" data-astro-cid-jo6i4kqk><a class="brand" href="/" data-astro-cid-jo6i4kqk>rty</a><div class="social" aria-label="社交链接" data-astro-cid-jo6i4kqk><a href="mailto:peonyfoals@gmail.com" aria-label="Email" data-astro-cid-jo6i4kqk><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" data-astro-cid-jo6i4kqk><path fill="currentColor" d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5L4 8V6l8 5 8-5v2z" data-astro-cid-jo6i4kqk></path></svg></a><a href="/rss.xml" aria-label="RSS" data-astro-cid-jo6i4kqk><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" data-astro-cid-jo6i4kqk><path fill="currentColor" d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20 5 20 4 19 4 17.82c0-1.2.98-2.18 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27zm0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93z" data-astro-cid-jo6i4kqk></path></svg></a><a href="/archive/" aria-label="归档" data-astro-cid-jo6i4kqk><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" data-astro-cid-jo6i4kqk><path fill="currentColor" d="M4 6h16v2H4zm0 5h16v2H4zm0 5h10v2H4z" data-astro-cid-jo6i4kqk></path></svg></a></div><p class="meta" data-astro-cid-jo6i4kqk>© 2026 peony</p></div></footer></body></html>

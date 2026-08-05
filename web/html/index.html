@@ -1,0 +1,415 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="HTML"><meta name="author" content="peony"><meta name="generator" content="Astro v7.1.1"><meta name="theme-color" content="#ffffff"><link rel="canonical" href="https://langzyw.xyz/web/html/"><link rel="alternate" type="application/rss+xml" title="rty" href="/rss.xml"><meta property="og:type" content="website"><meta property="og:site_name" content="rty"><meta property="og:title" content="HTML · rty"><meta property="og:description" content="HTML"><meta property="og:url" content="https://langzyw.xyz/web/html/"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><title>HTML · rty</title><link rel="stylesheet" href="/_astro/Footer.C9xAhOzk.css"><link rel="stylesheet" href="/_astro/_..B6QWlgH6.css"></head><body><header class="site-header" data-astro-cid-nen7h5rs><div class="wrap bar" data-astro-cid-nen7h5rs><div class="bar-flex" data-astro-cid-nen7h5rs><a class="brand" href="/" data-astro-cid-nen7h5rs>rty</a><nav class="nav" aria-label="主导航" data-astro-cid-nen7h5rs><a class="nav-link" href="/" data-astro-cid-nen7h5rs>首页</a><a class="nav-link active" href="/web/" aria-current="page" data-astro-cid-nen7h5rs>前端</a><a class="nav-link" href="/python/" data-astro-cid-nen7h5rs>python</a><a class="nav-link" href="/llm/" data-astro-cid-nen7h5rs>llm</a><a class="nav-link" href="/web3/" data-astro-cid-nen7h5rs>区块链</a><a class="nav-link" href="/about/" data-astro-cid-nen7h5rs>关于</a></nav></div><button class="search-btn" type="button" aria-label="搜索" data-search-open data-astro-cid-nen7h5rs><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" data-astro-cid-nen7h5rs><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="1.6" data-astro-cid-nen7h5rs></circle><path d="M16.5 16.5L21 21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" data-astro-cid-nen7h5rs></path></svg></button></div></header><dialog class="search-dialog" data-search-dialog data-astro-cid-nen7h5rs><form class="search-panel" method="dialog" data-astro-cid-nen7h5rs><label class="sr-only" for="site-search" data-astro-cid-nen7h5rs>搜索文章</label><input id="site-search" class="search-input" type="search" placeholder="搜索文章…" autocomplete="off" data-search-input data-astro-cid-nen7h5rs><button class="search-close" value="cancel" type="submit" aria-label="关闭" data-astro-cid-nen7h5rs>×</button></form><ul class="search-results" data-search-results data-astro-cid-nen7h5rs></ul></dialog><script>(function(){const searchIndexUrl = "/search-index.json";
+
+  const openBtn = document.querySelector("[data-search-open]");
+  const dialog = document.querySelector("[data-search-dialog]");
+  const input = document.querySelector("[data-search-input]");
+  const results = document.querySelector("[data-search-results]");
+
+  if (
+    openBtn &&
+    dialog instanceof HTMLDialogElement &&
+    input instanceof HTMLInputElement &&
+    results
+  ) {
+    let index = [];
+    let loaded = false;
+
+    async function ensureIndex() {
+      if (loaded) return;
+      const res = await fetch(searchIndexUrl);
+      index = await res.json();
+      loaded = true;
+    }
+
+    function render(q) {
+      const query = q.trim().toLowerCase();
+      if (!query) {
+        results.innerHTML = "";
+        return;
+      }
+      const hits = index
+        .filter((item) =>
+          `${item.title} ${item.description} ${item.topic}`
+            .toLowerCase()
+            .includes(query),
+        )
+        .slice(0, 8);
+      results.innerHTML = hits.length
+        ? hits
+            .map(
+              (item) =>
+                `<li><a href="${item.href}"><strong>${item.title}</strong><span>${item.description}</span></a></li>`,
+            )
+            .join("")
+        : `<li class="empty">没有匹配结果</li>`;
+    }
+
+    openBtn.addEventListener("click", async () => {
+      await ensureIndex();
+      dialog.showModal();
+      input.value = "";
+      results.innerHTML = "";
+      input.focus();
+    });
+
+    input.addEventListener("input", () => render(input.value));
+
+    dialog.addEventListener("click", (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+  }
+})();</script><main class="post-page" data-astro-cid-tldeq5d5><article data-astro-cid-tldeq5d5><header class="header wrap-narrow" data-astro-cid-tldeq5d5><a class="topic" href="/web/" data-astro-cid-tldeq5d5>前端</a><h1 data-astro-cid-tldeq5d5>HTML</h1><p class="meta" data-astro-cid-tldeq5d5><time datetime="2026-07-17T00:00:00.000Z" data-astro-cid-tldeq5d5>2026年7月17日</time><span aria-hidden="true" data-astro-cid-tldeq5d5>·</span><span data-astro-cid-tldeq5d5>约 21 分钟</span></p><p class="tags" data-astro-cid-tldeq5d5><a href="/tags/html/" data-astro-cid-tldeq5d5>html</a><span data-astro-cid-tldeq5d5> · </span><a href="/tags/面试/" data-astro-cid-tldeq5d5>面试</a><span data-astro-cid-tldeq5d5> · </span><a href="/tags/前端/" data-astro-cid-tldeq5d5>前端</a></p></header><div class="hero-image wrap" data-astro-cid-tldeq5d5><img src="/images/covers/code-monitor.jpg" alt="" data-astro-cid-tldeq5d5></div><div class="prose wrap-narrow" data-astro-cid-tldeq5d5><h3 id="什么是语义化标签为什么要语义化">什么是语义化标签？为什么要语义化？</h3>
+<ol>
+<li><strong>提升代码可读性与可维护性</strong>：让代码结构更清晰，便于团队协作。</li>
+<li><strong>有利于搜索引擎优化 (SEO)</strong>：爬虫能更好地理解页面结构和内容权重。</li>
+<li><strong>增强无障碍访问 (a11y)</strong>：方便屏幕阅读器等辅助设备解析页面。</li>
+<li><strong>降级体验</strong>：在不使用 CSS 或 CSS 加载失败的情况下，依然能看出页面的基本轮廓和层级。</li>
+</ol>
+<h3 id="doctype-的作用是什么">DOCTYPE 的作用是什么？</h3>
+<p>声明文档类型（如 HTML5），并<strong>触发浏览器的标准渲染模式</strong>，防止浏览器进入怪异模式（Quirks Mode）。</p>
+<h3 id="标准模式与怪异模式的区别">标准模式与怪异模式的区别？</h3>
+<ul>
+<li><strong>标准模式</strong>：浏览器严格按照 W3C 规范解析和渲染页面。</li>
+<li><strong>怪异模式</strong>：浏览器为了兼容老旧网页，使用非标准的、向后兼容的方式渲染（模拟旧版 IE 的行为）。</li>
+<li><strong>盒模型差异</strong>：标准模式下默认使用<strong>标准盒模型</strong>；怪异模式下（特别是针对旧版 IE）默认使用 <strong>IE 盒模型</strong>。
+<ul>
+<li><strong>标准盒模型</strong>：<code>width/height</code> = <code>content</code>（内容区域）。</li>
+<li><strong>IE 盒模型</strong>：<code>width/height</code> = <code>content</code> + <code>padding</code> + <code>border</code>。</li>
+</ul>
+</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="css"><code><span class="line"><span style="color:#6A737D">/* 现代开发中，推荐全局统一使用 IE 盒模型（替代盒模型） */</span></span>
+<span class="line"><span style="color:#85E89D">*</span><span style="color:#E1E4E8">, </span><span style="color:#85E89D">*</span><span style="color:#B392F0">::before</span><span style="color:#E1E4E8">, </span><span style="color:#85E89D">*</span><span style="color:#B392F0">::after</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">  box-sizing</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">border-box</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="行内元素与块级元素的区别有哪些">行内元素与块级元素的区别？有哪些？</h3>
+<ul>
+<li><strong>行内元素 (inline)</strong>：与其他元素同行排列，宽高由内容决定，不支持设置宽高和上下 margin。如 <code>span</code>, <code>a</code>, <code>strong</code>, <code>img</code>, <code>input</code>。</li>
+<li><strong>块级元素 (block)</strong>：独占一行，可设置宽高和所有 margin/padding。如 <code>div</code>, <code>p</code>, <code>h1-h6</code>, <code>ul</code>, <code>li</code>, <code>form</code>。</li>
+</ul>
+<h3 id="src-和-href-的区别">src 和 href 的区别？</h3>
+<ul>
+<li><strong><code>src</code> (Source)</strong>：用于<strong>引入</strong>外部资源（如 <code>&lt;script src&gt;</code>, <code>&lt;img src&gt;</code>, <code>&lt;iframe src&gt;</code>）。
+<ul>
+<li>对于 <code>&lt;script&gt;</code>，浏览器会<strong>暂停</strong> HTML 解析，去下载并执行脚本（<strong>会阻塞 DOM 解析</strong>，除非加了 <code>async</code> 或 <code>defer</code>）。</li>
+<li><strong><code>async</code></strong>：并行下载，<strong>下载完成后立即执行</strong>（<strong>会阻塞</strong> DOM 解析，执行顺序不可控）。</li>
+<li><strong><code>defer</code></strong>：并行下载，<strong>DOM 解析完成后、DOMContentLoaded 触发前</strong>按顺序执行（<strong>不会阻塞</strong> DOM 解析）。</li>
+</ul>
+</li>
+<li><strong><code>href</code> (Hypertext Reference)</strong>：用于建立当前文档与外部资源的<strong>链接</strong>（如 <code>&lt;link href&gt;</code>, <code>&lt;a href&gt;</code>）。
+<ul>
+<li>浏览器会<strong>并行</strong>下载资源，<strong>不会中断</strong> HTML 文档的解析。</li>
+</ul>
+</li>
+</ul>
+<h3 id="meta-标签有哪些常见用途">meta 标签有哪些常见用途？</h3>
+<ol>
+<li><strong>字符编码</strong>：<code>&lt;meta charset="UTF-8"&gt;</code></li>
+<li><strong>移动端视口配置</strong>：<code>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</code></li>
+<li><strong>SEO 优化</strong>：<code>&lt;meta name="description" content="..."&gt;</code>, <code>&lt;meta name="keywords" content="..."&gt;</code></li>
+<li><strong>浏览器行为控制</strong>：<code>&lt;meta http-equiv="X-UA-Compatible" content="IE=edge"&gt;</code></li>
+<li><strong>安全策略</strong>：<code>&lt;meta http-equiv="Content-Security-Policy" content="..."&gt;</code></li>
+</ol>
+<h3 id="如何做-html-层面的-seo-优化">如何做 HTML 层面的 SEO 优化？</h3>
+<ul>
+<li><strong>结构语义化</strong>：合理使用 <code>header</code>, <code>article</code>, <code>nav</code> 等标签。</li>
+<li><strong>信息完整化</strong>：完善 <code>title</code>, <code>description</code>, <code>alt</code>（图片替代文本）。</li>
+<li><strong>内容可被抓取</strong>：采用 SSR（服务端渲染）或 SSG（静态站点生成）；配置 <code>sitemap.xml</code> 和 <code>robots.txt</code>。</li>
+</ul>
+<h3 id="canvas-与-svg-的区别如何选型">canvas 与 svg 的区别？如何选型？</h3>
+<ul>
+<li><strong>SVG</strong>：矢量图，基于 XML，放大不失真；DOM 节点，可通过 CSS/JS 单独操作每个图形；<strong>适合</strong>图标、简单图表、需要独立交互的图形。</li>
+<li><strong>Canvas</strong>：像素图（位图），基于 JS 逐像素绘制；单 DOM 节点，无法直接操作内部图形（需重绘整个画布）；<strong>适合</strong>复杂动画、游戏、大数据量可视化（如 WebGL）。</li>
+</ul>
+<h3 id="iframe-的优缺点">iframe 的优缺点？</h3>
+<ul>
+<li><strong>优点</strong>：核心价值是<strong>强隔离</strong>（CSS/JS 独立），适合嵌入第三方内容（广告、支付、地图）；可实现跨域通信。</li>
+<li><strong>缺点</strong>：阻塞父页面 <code>onload</code> 事件；SEO 不友好（搜索引擎难以抓取内部内容）；移动端适配差；跨域通信需使用 <code>postMessage</code>；存在安全隐患（需配合 <code>sandbox</code> 和 CSP 防点击劫持）。</li>
+</ul>
+<h3 id="html5-有哪些新特性">HTML5 有哪些新特性？</h3>
+<ul>
+<li><strong>语义标签</strong>：<code>header</code>, <code>nav</code>, <code>article</code>, <code>section</code>, <code>footer</code>, <code>figure</code>, <code>time</code>, <code>mark</code>。</li>
+<li><strong>表单增强</strong>：新 input 类型（<code>email/date/range/color</code>）、<code>placeholder</code>, <code>required</code>, <code>pattern</code>, <code>datalist</code>。</li>
+<li><strong>多媒体</strong>：<code>audio</code>, <code>video</code>, <code>track</code>，全部无需插件。</li>
+<li><strong>图形</strong>：<code>canvas</code>、内联 <code>svg</code>。</li>
+<li><strong>存储</strong>：<code>localStorage</code>（永久）、<code>sessionStorage</code>（会话级）、<code>IndexedDB</code>（本地数据库）。</li>
+<li><strong>离线与通信</strong>：<code>Service Worker</code>（离线缓存/拦截请求）、<code>Web Worker</code>（后台线程）、<code>WebSocket</code>（双向长连接）、<code>SSE</code>（单向推送）。</li>
+<li><strong>设备 API</strong>：地理定位、拖放、<code>requestAnimationFrame</code>（按刷新节奏执行动画）。</li>
+</ul>
+<h3 id="什么是-bfc如何触发有什么应用">什么是 BFC？如何触发？有什么应用？</h3>
+<ul>
+<li><strong>BFC (块级格式化上下文)</strong>：一个独立的渲染区域，内部元素的布局不会影响外部，反之亦然。</li>
+<li><strong>触发条件</strong>：
+<ol>
+<li>根元素 <code>&lt;html&gt;</code></li>
+<li><code>float</code> 不为 <code>none</code></li>
+<li><code>position</code> 为 <code>absolute</code> 或 <code>fixed</code></li>
+<li><code>display</code> 为 <code>inline-block</code>, <code>flex</code>, <code>grid</code>, <code>table-cell</code>, <code>flow-root</code> 等</li>
+<li><code>overflow</code> 不为 <code>visible</code>（如 <code>hidden</code>, <code>auto</code>, <code>scroll</code>）</li>
+</ol>
+</li>
+<li><strong>三大应用</strong>：
+<ol>
+<li>清除内部浮动（防止父元素高度塌陷）。</li>
+<li>防止 margin 重叠（塌陷）。</li>
+<li>阻止元素被浮动元素覆盖（实现自适应两栏布局）。</li>
+</ol>
+</li>
+</ul>
+<h3 id="css-选择器优先级如何计算">CSS 选择器优先级如何计算？</h3>
+<ul>
+<li><strong>权重计算 (Specificity)</strong>：
+<ul>
+<li><code>!important</code>：最高优先级（但应尽量避免使用，破坏层叠规则）。</li>
+<li>行内样式（<code>style="..."</code>）：1000</li>
+<li>ID 选择器（<code>#id</code>）：100</li>
+<li>类、伪类、属性选择器（<code>.class</code>, <code>:hover</code>, <code>[type="text"]</code>）：10</li>
+<li>标签、伪元素选择器（<code>div</code>, <code>::before</code>）：1</li>
+<li>通配符、组合器（<code>*</code>, <code>&gt;</code>, <code>+</code>）：0</li>
+</ul>
+</li>
+<li><strong>规则</strong>：从左到右比较权重，权重相同则后定义的覆盖先定义的。</li>
+</ul>
+<h3 id="哪些-css-属性可以继承">哪些 CSS 属性可以继承？</h3>
+<ul>
+<li><strong>可继承</strong>：颜色、字体相关（<code>color</code>, <code>font-*</code>, <code>line-height</code>, <code>text-align</code>）、列表相关（<code>list-style</code>）、可见性（<code>visibility</code>）、光标（<code>cursor</code>）。</li>
+<li><strong>不可继承</strong>：盒模型（<code>width</code>, <code>margin</code>, <code>padding</code>）、定位（<code>position</code>, <code>z-index</code>）、背景（<code>background</code>）、布局（<code>display</code>, <code>flex</code>）。</li>
+</ul>
+<h3 id="display-各取值的含义">display 各取值的含义？</h3>
+<ul>
+<li><code>block</code>：块级，独占一行。</li>
+<li><code>inline</code>：行内，同行排列，不支持宽高。</li>
+<li><code>inline-block</code>：行内块，同行排列，支持宽高。</li>
+<li><code>none</code>：不渲染，不占据空间。</li>
+<li><code>flex</code>：弹性盒子（一维布局）。</li>
+<li><code>grid</code>：网格容器（二维布局）。</li>
+<li><code>table / table-cell</code>：表格布局。</li>
+<li><code>flow-root</code>：创建 BFC，无副作用。</li>
+<li><code>contents</code>：元素自身不生成盒，其子元素直接参与父级布局。</li>
+</ul>
+<h3 id="position-各取值与定位原理">position 各取值与定位原理？</h3>
+<ul>
+<li><code>static</code>：默认，正常文档流，<code>top/left</code> 无效。</li>
+<li><code>relative</code>：相对自身原位置偏移，<strong>不脱离文档流</strong>。</li>
+<li><code>absolute</code>：脱离文档流，相对最近的<strong>非 static</strong> 祖先元素偏移。</li>
+<li><code>fixed</code>：脱离文档流，相对<strong>浏览器视口</strong>偏移，滚动不移动。</li>
+<li><code>sticky</code>：粘性布局，滚动到阈值前表现为 <code>relative</code>，达到阈值后表现为 <code>fixed</code>。</li>
+</ul>
+<h3 id="浮动的原理与清除浮动的方法">浮动的原理与清除浮动的方法？</h3>
+<ul>
+<li><strong>原理</strong>：浮动元素会脱离文档流，导致父元素无法计算其高度，产生<strong>高度塌陷</strong>。</li>
+<li><strong>清除方法</strong>：</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="css"><code><span class="line"><span style="color:#6A737D">/* 1. 推荐：clearfix 伪元素（触发 BFC 清除） */</span></span>
+<span class="line"><span style="color:#B392F0">.clearfix::after</span><span style="color:#E1E4E8"> { </span><span style="color:#79B8FF">content</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">""</span><span style="color:#E1E4E8">; </span><span style="color:#79B8FF">display</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">block</span><span style="color:#E1E4E8">; </span><span style="color:#79B8FF">clear</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">both</span><span style="color:#E1E4E8">; }</span></span>
+<span class="line"><span style="color:#E1E4E8"> </span></span>
+<span class="line"><span style="color:#6A737D">/* 2. 父级触发 BFC */</span></span>
+<span class="line"><span style="color:#B392F0">.parent</span><span style="color:#E1E4E8"> { </span><span style="color:#79B8FF">overflow</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">hidden</span><span style="color:#E1E4E8">; } </span><span style="color:#6A737D">/* 或 display: flow-root; */</span></span>
+<span class="line"><span style="color:#E1E4E8"> </span></span>
+<span class="line"><span style="color:#6A737D">/* 3. 额外空标签（不推荐，污染 DOM 结构） */</span></span>
+<span class="line"><span style="color:#E1E4E8">&lt;</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8"> style="clear:both"</span><span style="color:#F97583">&gt;</span><span style="color:#E1E4E8">&lt;/</span><span style="color:#85E89D">div</span><span style="color:#F97583">&gt;</span></span></code></pre>
+<h3 id="margin-合并塌陷是什么如何避免">margin 合并（塌陷）是什么？如何避免？</h3>
+<ul>
+<li><strong>现象</strong>：只有普通文档流中的块级元素，在<strong>垂直方向</strong>上相邻时，上下 margin 会合并，取两者中的<strong>较大值</strong>。</li>
+<li><strong>避免方法</strong>：
+<ol>
+<li>使用 Flex 或 Grid 布局（子元素的 margin 不会合并）。</li>
+<li>触发 BFC（如父元素设置 <code>overflow: hidden</code>）。</li>
+<li>规范代码：只设置单边 margin（如统一用 <code>margin-bottom</code>）。</li>
+<li>使用 <code>padding</code> 替代 <code>margin</code>。</li>
+</ol>
+</li>
+</ul>
+<h3 id="flex-布局完整属性">Flex 布局完整属性？</h3>
+<p><strong>容器属性</strong>：</p>
+<ul>
+<li><code>flex-direction</code>：主轴方向（<code>row</code>, <code>column</code> 等）。</li>
+<li><code>flex-wrap</code>：是否换行（<code>nowrap</code>, <code>wrap</code>）。</li>
+<li><code>justify-content</code>：主轴对齐（<code>flex-start</code>, <code>center</code>, <code>space-between</code>, <code>space-around</code>）。</li>
+<li><code>align-items</code>：交叉轴对齐（<code>stretch</code>, <code>center</code>, <code>flex-start</code>）。</li>
+<li><code>align-content</code>：多根交叉轴的对齐（换行时生效）。</li>
+</ul>
+<p><strong>项目属性</strong>：</p>
+<ul>
+<li><code>order</code>：排列顺序。</li>
+<li><code>flex-grow</code>：放大比例（默认 0）。</li>
+<li><code>flex-shrink</code>：缩小比例（默认 1）。</li>
+<li><code>flex-basis</code>：占据主轴的初始大小（默认 <code>auto</code>）。</li>
+<li><code>flex</code>：上述三者的简写。</li>
+<li><code>align-self</code>：单个项目的交叉轴对齐，覆盖容器的 <code>align-items</code>。</li>
+</ul>
+<h3 id="flex-1-到底代表什么">flex: 1 到底代表什么？</h3>
+<p><code>flex: 1</code> 是 <code>flex: 1 1 0%</code> 的简写。
+代表：<code>flex-grow: 1</code>（按比例分配剩余空间），<code>flex-shrink: 1</code>（空间不足时按比例缩小），<code>flex-basis: 0%</code>（初始主轴尺寸为 0）。因此，设置 <code>flex: 1</code> 的元素会忽略内容宽度，完全按 1:1 的比例瓜分容器的剩余空间。</p>
+<h3 id="grid-布局核心属性">Grid 布局核心属性？</h3>
+<p><strong>容器属性</strong>：</p>
+<ul>
+<li><code>grid-template-columns / rows</code>：定义列/行尺寸（如 <code>1fr 2fr</code>, <code>repeat(3, 1fr)</code>）。</li>
+<li><code>grid-template-areas</code>：定义网格区域命名。</li>
+<li><code>gap</code>：设置网格间距。</li>
+<li><code>justify-items / align-items</code>：单元格内容在网格区域内的对齐。</li>
+<li><code>justify-content / align-content</code>：整个网格在容器内的对齐。</li>
+</ul>
+<p><strong>项目属性</strong>：</p>
+<ul>
+<li><code>grid-column / row</code>：指定跨越的列/行起止位置（如 <code>1 / 3</code>）。</li>
+<li><code>grid-area</code>：指定命名区域或作为起止位置的简写。</li>
+</ul>
+<h3 id="各种垂直水平居中方案">各种垂直水平居中方案？</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="css"><code><span class="line"><span style="color:#6A737D">/* 1. Flex（最常用、最推荐） */</span></span>
+<span class="line"><span style="color:#B392F0">.parent</span><span style="color:#E1E4E8"> { </span><span style="color:#79B8FF">display</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">flex</span><span style="color:#E1E4E8">; </span><span style="color:#79B8FF">justify-content</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">center</span><span style="color:#E1E4E8">; </span><span style="color:#79B8FF">align-items</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">center</span><span style="color:#E1E4E8">; }</span></span>
+<span class="line"><span style="color:#E1E4E8"> </span></span>
+<span class="line"><span style="color:#6A737D">/* 2. Grid（最简洁） */</span></span>
+<span class="line"><span style="color:#B392F0">.parent</span><span style="color:#E1E4E8"> { </span><span style="color:#79B8FF">display</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">grid</span><span style="color:#E1E4E8">; </span><span style="color:#79B8FF">place-items</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">center</span><span style="color:#E1E4E8">; }</span></span>
+<span class="line"><span style="color:#E1E4E8"> </span></span>
+<span class="line"><span style="color:#6A737D">/* 3. absolute + transform（不需知道子元素宽高） */</span></span>
+<span class="line"><span style="color:#B392F0">.child</span><span style="color:#E1E4E8"> { </span><span style="color:#79B8FF">position</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">absolute</span><span style="color:#E1E4E8">; </span><span style="color:#79B8FF">top</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">50</span><span style="color:#F97583">%</span><span style="color:#E1E4E8">; </span><span style="color:#79B8FF">left</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">50</span><span style="color:#F97583">%</span><span style="color:#E1E4E8">; </span><span style="color:#79B8FF">transform</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">translate</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">-50</span><span style="color:#F97583">%</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">-50</span><span style="color:#F97583">%</span><span style="color:#E1E4E8">); }</span></span>
+<span class="line"><span style="color:#E1E4E8"> </span></span>
+<span class="line"><span style="color:#6A737D">/* 4. absolute + margin auto（需已知宽高或 inset:0） */</span></span>
+<span class="line"><span style="color:#B392F0">.child</span><span style="color:#E1E4E8"> { </span><span style="color:#79B8FF">position</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">absolute</span><span style="color:#E1E4E8">; </span><span style="color:#79B8FF">inset</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">; </span><span style="color:#79B8FF">margin</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">auto</span><span style="color:#E1E4E8">; </span><span style="color:#79B8FF">width</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">100</span><span style="color:#F97583">px</span><span style="color:#E1E4E8">; </span><span style="color:#79B8FF">height</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">100</span><span style="color:#F97583">px</span><span style="color:#E1E4E8">; }</span></span></code></pre>
+<h3 id="z-index-失效的常见原因">z-index 失效的常见原因？</h3>
+<ol>
+<li>元素未设置 <code>position</code>（<code>z-index</code> 仅对定位元素和 Flex/Grid 子元素有效）。</li>
+<li>被父元素的<strong>层叠上下文 (Stacking Context)</strong> 隔离（父元素 <code>z-index</code> 较小，子元素再大也无法突破）。</li>
+<li>元素是 Flex/Grid 子元素，但 <code>z-index</code> 默认值为 <code>auto</code>，需显式设置数值。</li>
+</ol>
+<h3 id="positionsticky-吸顶怎么用为什么有时失效">position:sticky 吸顶怎么用？为什么有时失效？</h3>
+<ul>
+<li><strong>用法</strong>：<code>sticky = relative + fixed</code> 的混血儿，必须设置 <code>top/bottom</code> 等阈值。</li>
+<li><strong>失效排查</strong>：
+<ol>
+<li>父元素或祖先元素设置了 <code>overflow: hidden/auto/scroll</code>（截断了滚动参考）。</li>
+<li>没有设置 <code>top</code>/<code>bottom</code> 阈值。</li>
+<li>父元素的高度小于 sticky 元素的高度（没有滚动空间）。</li>
+</ol>
+</li>
+</ul>
+<h3 id="pxemremvwvh-的区别">px、em、rem、vw/vh、% 的区别？</h3>
+<ul>
+<li><code>px</code>：绝对单位，设备像素。</li>
+<li><code>em</code>：相对<strong>当前元素</strong>的 <code>font-size</code>。<strong>坑</strong>：会层层叠加，嵌套深了字越来越大，适合做“跟着字号联动”的局部缩放。</li>
+<li><code>rem</code>：相对<strong>根元素 (html)</strong> 的 <code>font-size</code>。统一基准、不受嵌套影响，是移动端适配的主流方案。</li>
+<li><code>vw/vh</code>：相对<strong>视口</strong>宽/高的百分比（1vw = 视口宽度的 1%）。</li>
+<li><code>%</code>：相对<strong>父元素</strong>的对应属性（如宽度相对父宽度，高度相对父高度）。</li>
+</ul>
+<h3 id="移动端适配方案有哪些">移动端适配方案有哪些？</h3>
+<p>主流套路：<code>viewport meta</code> 打底，再叠加 <strong>rem 方案</strong>（配合 <code>postcss-pxtorem</code> 自动转换）、<strong>vw 方案</strong>（配合 <code>postcss-px-to-viewport</code>）、或 <strong>flex/grid + 百分比 + 媒体查询</strong>。</p>
+<h3 id="移动端-1px-边框问题如何解决">移动端 1px 边框问题如何解决？</h3>
+<p>高清屏上 CSS 的「1px」会被渲染成 2~3 个物理像素，显得偏粗。</p>
+<ul>
+<li><strong>最推荐方案</strong>：使用<strong>伪元素 + transform: scale</strong>。用 <code>::after</code> 画 1px 边框，然后 <code>transform: scaleY(0.5)</code> 或 <code>scale(0.5)</code>。</li>
+<li>其他方案：<code>box-shadow</code> 模拟（颜色易发虚）、viewport 整体缩放（副作用大）。</li>
+</ul>
+<h3 id="css-自定义属性变量怎么用">CSS 自定义属性（变量）怎么用？</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="css"><code><span class="line"><span style="color:#B392F0">:root</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#FFAB70">  --primary</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">#3498db</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#FFAB70">  --gap</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">16</span><span style="color:#F97583">px</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#B392F0">.box</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">  color</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">var</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">--primary</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#79B8FF">  padding</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">var</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">--gap</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">8</span><span style="color:#F97583">px</span><span style="color:#E1E4E8">);  </span><span style="color:#6A737D">/* 第二参数为兜底值 */</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="calc--clamp--min--max-怎么用">calc / clamp / min / max 怎么用？</h3>
+<ul>
+<li><code>calc</code>：做混合单位的加减乘除（如 <code>width: calc(100% - 20px)</code>）。</li>
+<li><code>min / max</code>：取较小/较大值（如 <code>width: min(500px, 100%)</code>）。</li>
+<li><code>clamp</code>：设「下限-首选-上限」三段式，专治响应式字号（如 <code>font-size: clamp(16px, 2vw, 24px)</code>）。</li>
+</ul>
+<h3 id="sassless-解决了什么问题">Sass/Less 解决了什么问题？</h3>
+<p>预处理器给 CSS 补上「变量/嵌套/mixin/函数/循环」的编程能力，编译后输出普通 CSS。</p>
+<h3 id="postcss-是什么和预处理器的关系">PostCSS 是什么？和预处理器的关系？</h3>
+<ul>
+<li><strong>PostCSS</strong>：基于插件的 CSS <strong>后处理</strong>平台，典型用 <code>autoprefixer</code> 加前缀、<code>cssnano</code> 压缩。</li>
+<li><strong>关系</strong>：不是竞争关系。预处理器做「超集语言 ➔ CSS」，PostCSS 做「CSS ➔ CSS」，实战中一前一后配合。</li>
+</ul>
+<h3 id="css-modules-与-css-in-js-的区别">CSS Modules 与 CSS-in-JS 的区别？</h3>
+<ul>
+<li><strong>CSS Modules</strong>：构建期哈希类名、零运行时开销、适合稳定样式。</li>
+<li><strong>CSS-in-JS</strong>：在 JS 里写样式、可按 props 动态生成、和逻辑共享变量；代价是运行时开销和 SSR 配置复杂（除非用零运行时方案如 Vanilla Extract）。</li>
+</ul>
+<h3 id="原子化-csstailwindunocss是什么优缺点">原子化 CSS（Tailwind/UnoCSS）是什么？优缺点？</h3>
+<ul>
+<li><strong>优点</strong>：开发极快（无需命名类名）、样式复用率高、打包体积极小（按需生成）、无需在 CSS 和 JS 间切换。</li>
+<li><strong>缺点</strong>：HTML 中类名冗长（“class 地狱”）、学习曲线（需记忆大量工具类）、不利于复杂动画和伪类的维护、脱离 HTML 后样式难以复用。</li>
+</ul>
+<h3 id="什么是重排回流和重绘如何减少">什么是重排（回流）和重绘？如何减少？</h3>
+<ul>
+<li><strong>重排 (Reflow/Layout)</strong>：DOM 变化影响几何信息（宽高、位置），浏览器重新计算布局。<strong>代价极高</strong>。</li>
+<li><strong>重绘 (Repaint)</strong>：元素外观改变但不影响布局（如颜色、阴影），浏览器重新绘制像素。<strong>代价中等</strong>。</li>
+<li><strong>关系</strong>：重排必定导致重绘，重绘不一定导致重排。</li>
+<li><strong>减少方法</strong>：
+<ol>
+<li>批量修改 DOM（使用 <code>DocumentFragment</code> 或先隐藏再修改）。</li>
+<li>避免频繁读取布局信息（如 <code>offsetTop</code>, <code>getComputedStyle</code> 会触发强制同步布局）。</li>
+<li>使用绝对/固定定位，使元素脱离文档流。</li>
+<li>使用 CSS3 硬件加速（<code>transform</code>, <code>opacity</code>），跳过重排重绘。</li>
+</ol>
+</li>
+</ul>
+<h3 id="will-change-与合成层是什么有何注意">will-change 与合成层是什么？有何注意？</h3>
+<ul>
+<li><strong>合成层 (Compositing Layer)</strong>：浏览器将某些元素（如设置了 <code>transform</code>, <code>opacity</code> 的元素）提升为独立层，由 GPU 渲染。修改它们时<strong>不会触发重排和重绘</strong>，性能极高。</li>
+<li><strong>will-change</strong>：提前告诉浏览器“这个元素即将发生变化”，让其提前创建合成层。</li>
+<li><strong>注意事项</strong>：
+<ol>
+<li><strong>不要滥用</strong>：合成层会占用额外 GPU 内存，滥用会导致内存泄漏和卡顿。</li>
+<li><strong>用完即毁</strong>：动画结束后，通过 JS 移除 <code>will-change</code> 属性释放内存。</li>
+</ol>
+</li>
+</ul>
+<h3 id="隐藏元素的多种方式有何区别">隐藏元素的多种方式有何区别？</h3>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>占据空间</th>
+<th>触发重排/重绘</th>
+<th>绑定事件</th>
+<th>子元素继承</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>display: none</code></td>
+<td>❌ 不占据</td>
+<td>触发重排+重绘</td>
+<td>❌ 无法触发</td>
+<td>❌ 不继承</td>
+<td>彻底隐藏，如折叠面板、Tab 切换。</td>
+</tr>
+<tr>
+<td><code>visibility: hidden</code></td>
+<td>✅ 占据</td>
+<td>仅触发重绘</td>
+<td>❌ 无法触发</td>
+<td>✅ 继承（子设 visible 可显示）</td>
+<td>隐藏但保留占位，防布局抖动。</td>
+</tr>
+<tr>
+<td><code>opacity: 0</code></td>
+<td>✅ 占据</td>
+<td>仅触发重绘/合成</td>
+<td>✅ 可触发</td>
+<td>❌ 不继承</td>
+<td>需要淡入淡出动画，或保留交互（透明按钮）。</td>
+</tr>
+<tr>
+<td><code>z-index: -1</code></td>
+<td>✅ 占据</td>
+<td>仅触发重绘</td>
+<td>❌ 被遮挡无法触发</td>
+<td>❌ 不继承</td>
+<td>将元素置于底层（需配合 position）。</td>
+</tr>
+</tbody>
+</table>
+</div><script type="module">function e(e){let t=e.getAttribute(`data-language`)?.trim();if(t)return t===`text`||t===`plaintext`||t===`txt`?`text`:t;let n=e.querySelector(`code`)?.className||e.className||``,r=/language-([a-z0-9_+-]+)/i.exec(n);return r?.[1]?r[1]:`code`}function t(t){if(t.closest(`[data-mac-window]`)||t.dataset.macEnhanced===`1`)return;t.dataset.macEnhanced=`1`;let n=document.createElement(`figure`);n.className=`mac-window`,n.setAttribute(`data-mac-window`,``);let r=document.createElement(`div`);r.className=`mac-titlebar`,r.innerHTML=`
+      <div class="mac-dots" aria-hidden="true">
+        <span class="dot red"></span>
+        <span class="dot yellow"></span>
+        <span class="dot green"></span>
+      </div>
+      <span class="mac-title"></span>
+      <button type="button" class="mac-copy" data-mac-copy aria-label="复制代码">复制</button>
+    `;let i=r.querySelector(`.mac-title`);i&&(i.textContent=e(t));let a=document.createElement(`div`);a.className=`mac-body`,t.parentNode?.insertBefore(n,t),a.appendChild(t),n.appendChild(r),n.appendChild(a)}async function n(e){if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(e);return}let t=document.createElement(`textarea`);t.value=e,t.style.position=`fixed`,t.style.opacity=`0`,document.body.appendChild(t),t.select(),document.execCommand(`copy`),t.remove()}function r(e=document){e.querySelectorAll(`[data-mac-copy]`).forEach(e=>{e.dataset.bound!==`1`&&(e.dataset.bound=`1`,e.addEventListener(`click`,async()=>{let t=e.closest(`[data-mac-window]`)?.querySelector(`pre`)?.textContent??``;try{await n(t);let r=e.textContent;e.textContent=`已复制`,e.classList.add(`is-copied`),window.setTimeout(()=>{e.textContent=r||`复制`,e.classList.remove(`is-copied`)},1600)}catch{e.textContent=`失败`,window.setTimeout(()=>{e.textContent=`复制`},1600)}}))})}function i(){document.querySelectorAll(`.prose pre`).forEach(t),r()}i(),document.addEventListener(`astro:page-load`,i);</script></article><nav class="pager wrap-narrow" aria-label="上下篇" data-astro-cid-tldeq5d5><p data-astro-cid-tldeq5d5>上一篇：<a href="/web/javascript/" data-astro-cid-tldeq5d5>javaScript</a></p><p data-astro-cid-tldeq5d5>下一篇：<a href="/web/微前端/" data-astro-cid-tldeq5d5>微前端</a></p></nav><section class="related" data-astro-cid-tldeq5d5><div class="wrap" data-astro-cid-tldeq5d5><h2 data-astro-cid-tldeq5d5>继续阅读</h2><ol class="related-grid" data-astro-cid-tldeq5d5><li data-astro-cid-tldeq5d5><a class="related-topic" href="/web/" data-astro-cid-tldeq5d5>前端</a><a class="related-title" href="/web/react/" data-astro-cid-tldeq5d5>react</a><p data-astro-cid-tldeq5d5>react</p></li><li data-astro-cid-tldeq5d5><a class="related-topic" href="/web/" data-astro-cid-tldeq5d5>前端</a><a class="related-title" href="/web/typescript/" data-astro-cid-tldeq5d5>typescript</a><p data-astro-cid-tldeq5d5>typescript</p></li><li data-astro-cid-tldeq5d5><a class="related-topic" href="/web/" data-astro-cid-tldeq5d5>前端</a><a class="related-title" href="/web/vue/" data-astro-cid-tldeq5d5>vue</a><p data-astro-cid-tldeq5d5>vue</p></li></ol></div></section></main><footer class="site-footer" data-astro-cid-jo6i4kqk><div class="wrap bar" data-astro-cid-jo6i4kqk><a class="brand" href="/" data-astro-cid-jo6i4kqk>rty</a><div class="social" aria-label="社交链接" data-astro-cid-jo6i4kqk><a href="mailto:peonyfoals@gmail.com" aria-label="Email" data-astro-cid-jo6i4kqk><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" data-astro-cid-jo6i4kqk><path fill="currentColor" d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5L4 8V6l8 5 8-5v2z" data-astro-cid-jo6i4kqk></path></svg></a><a href="/rss.xml" aria-label="RSS" data-astro-cid-jo6i4kqk><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" data-astro-cid-jo6i4kqk><path fill="currentColor" d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20 5 20 4 19 4 17.82c0-1.2.98-2.18 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27zm0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93z" data-astro-cid-jo6i4kqk></path></svg></a><a href="/archive/" aria-label="归档" data-astro-cid-jo6i4kqk><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" data-astro-cid-jo6i4kqk><path fill="currentColor" d="M4 6h16v2H4zm0 5h16v2H4zm0 5h10v2H4z" data-astro-cid-jo6i4kqk></path></svg></a></div><p class="meta" data-astro-cid-jo6i4kqk>© 2026 peony</p></div></footer></body></html>

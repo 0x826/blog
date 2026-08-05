@@ -1,0 +1,750 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="ERC20"><meta name="author" content="peony"><meta name="generator" content="Astro v7.1.1"><meta name="theme-color" content="#ffffff"><link rel="canonical" href="https://langzyw.xyz/web3/erc20/"><link rel="alternate" type="application/rss+xml" title="rty" href="/rss.xml"><meta property="og:type" content="website"><meta property="og:site_name" content="rty"><meta property="og:title" content="ERC20 · rty"><meta property="og:description" content="ERC20"><meta property="og:url" content="https://langzyw.xyz/web3/erc20/"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><title>ERC20 · rty</title><link rel="stylesheet" href="/_astro/Footer.C9xAhOzk.css"><link rel="stylesheet" href="/_astro/_..B6QWlgH6.css"></head><body><header class="site-header" data-astro-cid-nen7h5rs><div class="wrap bar" data-astro-cid-nen7h5rs><div class="bar-flex" data-astro-cid-nen7h5rs><a class="brand" href="/" data-astro-cid-nen7h5rs>rty</a><nav class="nav" aria-label="主导航" data-astro-cid-nen7h5rs><a class="nav-link" href="/" data-astro-cid-nen7h5rs>首页</a><a class="nav-link" href="/web/" data-astro-cid-nen7h5rs>前端</a><a class="nav-link" href="/python/" data-astro-cid-nen7h5rs>python</a><a class="nav-link" href="/llm/" data-astro-cid-nen7h5rs>llm</a><a class="nav-link active" href="/web3/" aria-current="page" data-astro-cid-nen7h5rs>区块链</a><a class="nav-link" href="/about/" data-astro-cid-nen7h5rs>关于</a></nav></div><button class="search-btn" type="button" aria-label="搜索" data-search-open data-astro-cid-nen7h5rs><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" data-astro-cid-nen7h5rs><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="1.6" data-astro-cid-nen7h5rs></circle><path d="M16.5 16.5L21 21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" data-astro-cid-nen7h5rs></path></svg></button></div></header><dialog class="search-dialog" data-search-dialog data-astro-cid-nen7h5rs><form class="search-panel" method="dialog" data-astro-cid-nen7h5rs><label class="sr-only" for="site-search" data-astro-cid-nen7h5rs>搜索文章</label><input id="site-search" class="search-input" type="search" placeholder="搜索文章…" autocomplete="off" data-search-input data-astro-cid-nen7h5rs><button class="search-close" value="cancel" type="submit" aria-label="关闭" data-astro-cid-nen7h5rs>×</button></form><ul class="search-results" data-search-results data-astro-cid-nen7h5rs></ul></dialog><script>(function(){const searchIndexUrl = "/search-index.json";
+
+  const openBtn = document.querySelector("[data-search-open]");
+  const dialog = document.querySelector("[data-search-dialog]");
+  const input = document.querySelector("[data-search-input]");
+  const results = document.querySelector("[data-search-results]");
+
+  if (
+    openBtn &&
+    dialog instanceof HTMLDialogElement &&
+    input instanceof HTMLInputElement &&
+    results
+  ) {
+    let index = [];
+    let loaded = false;
+
+    async function ensureIndex() {
+      if (loaded) return;
+      const res = await fetch(searchIndexUrl);
+      index = await res.json();
+      loaded = true;
+    }
+
+    function render(q) {
+      const query = q.trim().toLowerCase();
+      if (!query) {
+        results.innerHTML = "";
+        return;
+      }
+      const hits = index
+        .filter((item) =>
+          `${item.title} ${item.description} ${item.topic}`
+            .toLowerCase()
+            .includes(query),
+        )
+        .slice(0, 8);
+      results.innerHTML = hits.length
+        ? hits
+            .map(
+              (item) =>
+                `<li><a href="${item.href}"><strong>${item.title}</strong><span>${item.description}</span></a></li>`,
+            )
+            .join("")
+        : `<li class="empty">没有匹配结果</li>`;
+    }
+
+    openBtn.addEventListener("click", async () => {
+      await ensureIndex();
+      dialog.showModal();
+      input.value = "";
+      results.innerHTML = "";
+      input.focus();
+    });
+
+    input.addEventListener("input", () => render(input.value));
+
+    dialog.addEventListener("click", (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+  }
+})();</script><main class="post-page" data-astro-cid-tldeq5d5><article data-astro-cid-tldeq5d5><header class="header wrap-narrow" data-astro-cid-tldeq5d5><a class="topic" href="/web3/" data-astro-cid-tldeq5d5>区块链</a><h1 data-astro-cid-tldeq5d5>ERC20</h1><p class="meta" data-astro-cid-tldeq5d5><time datetime="2026-07-18T00:00:00.000Z" data-astro-cid-tldeq5d5>2026年7月18日</time><span aria-hidden="true" data-astro-cid-tldeq5d5>·</span><span data-astro-cid-tldeq5d5>约 4 小时</span></p><p class="tags" data-astro-cid-tldeq5d5><a href="/tags/区块链/" data-astro-cid-tldeq5d5>区块链</a><span data-astro-cid-tldeq5d5> · </span><a href="/tags/智能合约/" data-astro-cid-tldeq5d5>智能合约</a></p></header><div class="hero-image wrap" data-astro-cid-tldeq5d5><img src="/images/covers/web3-bitcoin.jpg" alt="" data-astro-cid-tldeq5d5></div><div class="prose wrap-narrow" data-astro-cid-tldeq5d5><h3 id="erc20">ERC20</h3>
+<ul>
+<li>账户余额(balanceOf())</li>
+<li>转账(transfer())</li>
+<li>授权转账(transferFrom())</li>
+<li>授权(approve())</li>
+<li>代币总供给(totalSupply())</li>
+<li>授权转账额度(allowance())</li>
+<li>代币信息（可选）：名称(name())，代号(symbol())，小数位数(decimals())</li>
+</ul>
+<h3 id="ierc20">IERC20</h3>
+<h4 id="事件">事件</h4>
+<p><code>IERC20</code>定义了2个事件：<code>Transfer</code>事件和<code>Approval</code>事件，分别在转账和授权时被释放</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> 释放条件：当 `value` 单位的货币从账户 (`from`) 转账到另一账户 (`to`)时.</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#F97583">event</span><span style="color:#B392F0"> Transfer</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#F97583"> indexed</span><span style="color:#FFAB70"> from</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">address</span><span style="color:#F97583"> indexed</span><span style="color:#FFAB70"> to</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> value</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> 释放条件：当 `value` 单位的货币从账户 (`owner`) 授权给另一账户 (`spender`)时.</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#F97583">event</span><span style="color:#B392F0"> Approval</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#F97583"> indexed</span><span style="color:#FFAB70"> owner</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">address</span><span style="color:#F97583"> indexed</span><span style="color:#FFAB70"> spender</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> value</span><span style="color:#E1E4E8">);</span></span></code></pre>
+<h4 id="函数">函数</h4>
+<p><code>IERC20</code>定义了6个函数，提供了转移代币的基本功能，并允许代币获得批准，以便其他链上第三方使用。</p>
+<ul>
+<li><code>totalSupply()</code> 返回代币总供给</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> 返回代币总供给.</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> totalSupply</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">external</span><span style="color:#F97583"> view</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">);</span></span></code></pre>
+<ul>
+<li><code>balanceOf()</code> 返回账户余额</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> 返回代币总供给.</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> totalSupply</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">external</span><span style="color:#F97583"> view</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">);</span></span></code></pre>
+<ul>
+<li><code>transfer()</code> 转账</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> 转账 `amount` 单位代币，从调用者账户到另一账户 `to`.</span></span>
+<span class="line"><span style="color:#6A737D"> *</span></span>
+<span class="line"><span style="color:#6A737D"> * 如果成功，返回 `true`.</span></span>
+<span class="line"><span style="color:#6A737D"> *</span></span>
+<span class="line"><span style="color:#6A737D"> * 释放 {Transfer} 事件.</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> transfer</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> to</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> amount</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">external</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">bool</span><span style="color:#E1E4E8">);</span></span></code></pre>
+<ul>
+<li><code>allowance()</code> 返回授权额度</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> 返回`owner`账户授权给`spender`账户的额度，默认为0。</span></span>
+<span class="line"><span style="color:#6A737D"> *</span></span>
+<span class="line"><span style="color:#6A737D"> * 当{approve} 或 {transferFrom} 被调用时，`allowance`会改变.</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> allowance</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> owner</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> spender</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">external</span><span style="color:#F97583"> view</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">);</span></span></code></pre>
+<ul>
+<li><code>transferFrom()</code> 授权转账</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> 通过授权机制，从`from`账户向`to`账户转账`amount`数量代币。转账的部分会从调用者的`allowance`中扣除。</span></span>
+<span class="line"><span style="color:#6A737D"> *</span></span>
+<span class="line"><span style="color:#6A737D"> * 如果成功，返回 `true`.</span></span>
+<span class="line"><span style="color:#6A737D"> *</span></span>
+<span class="line"><span style="color:#6A737D"> * 释放 {Transfer} 事件.</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> transferFrom</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#79B8FF">    address</span><span style="color:#FFAB70"> from</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">    address</span><span style="color:#FFAB70"> to</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#FFAB70"> amount</span></span>
+<span class="line"><span style="color:#E1E4E8">) </span><span style="color:#F97583">external</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">bool</span><span style="color:#E1E4E8">);</span></span></code></pre>
+<h3 id="ierc20-完整代码"><code>IERC20</code> 完整代码</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#6A737D">// SPDX-License-Identifier: MIT</span></span>
+<span class="line"><span style="color:#6A737D">// OpenZeppelin Contracts (last updated v5.4.0) (token/ERC20/IERC20.sol)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">pragma</span><span style="color:#85E89D"> solidity</span><span style="color:#79B8FF"> &gt;=0.4.16</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Interface of the ERC-20 standard as defined in the ERC.</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#F97583">interface</span><span style="color:#B392F0"> IERC20</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Emitted when `value` tokens are moved from one account (`from`) to</span></span>
+<span class="line"><span style="color:#6A737D">     * another (`to`).</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">Note</span><span style="color:#6A737D"> that `value` may be zero.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    event</span><span style="color:#B392F0"> Transfer</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#F97583"> indexed</span><span style="color:#FFAB70"> from</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">address</span><span style="color:#F97583"> indexed</span><span style="color:#FFAB70"> to</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> value</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Emitted when the allowance of a `spender` for an `owner` is set by</span></span>
+<span class="line"><span style="color:#6A737D">     * a call to {approve}. `value` is the new allowance.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    event</span><span style="color:#B392F0"> Approval</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#F97583"> indexed</span><span style="color:#FFAB70"> owner</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">address</span><span style="color:#F97583"> indexed</span><span style="color:#FFAB70"> spender</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> value</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Returns the value of tokens in existence.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> totalSupply</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">external</span><span style="color:#F97583"> view</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Returns the value of tokens owned by `account`.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> balanceOf</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> account</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">external</span><span style="color:#F97583"> view</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Moves a `value` amount of tokens from the caller's account to `to`.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Returns a boolean value indicating whether the operation succeeded.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Emits a {Transfer} event.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> transfer</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> to</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> value</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">external</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">bool</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Returns the remaining number of tokens that `spender` will be</span></span>
+<span class="line"><span style="color:#6A737D">     * allowed to spend on behalf of `owner` through {transferFrom}. This is</span></span>
+<span class="line"><span style="color:#6A737D">     * zero by default.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * This value changes when {approve} or {transferFrom} are called.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> allowance</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> owner</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> spender</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">external</span><span style="color:#F97583"> view</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Sets a `value` amount of tokens as the allowance of `spender` over the</span></span>
+<span class="line"><span style="color:#6A737D">     * caller's tokens.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Returns a boolean value indicating whether the operation succeeded.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * IMPORTANT: Beware that changing an allowance with this method brings the risk</span></span>
+<span class="line"><span style="color:#6A737D">     * that someone may use both the old and the new allowance by unfortunate</span></span>
+<span class="line"><span style="color:#6A737D">     * transaction ordering. One possible solution to mitigate this race</span></span>
+<span class="line"><span style="color:#6A737D">     * condition is to first reduce the spender's allowance to 0 and set the</span></span>
+<span class="line"><span style="color:#6A737D">     * desired value afterwards:</span></span>
+<span class="line"><span style="color:#6A737D">     * https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Emits an {Approval} event.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> approve</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> spender</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> value</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">external</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">bool</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Moves a `value` amount of tokens from `from` to `to` using the</span></span>
+<span class="line"><span style="color:#6A737D">     * allowance mechanism. `value` is then deducted from the caller's</span></span>
+<span class="line"><span style="color:#6A737D">     * allowance.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Returns a boolean value indicating whether the operation succeeded.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Emits a {Transfer} event.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> transferFrom</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> from</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> to</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> value</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">external</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">bool</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="ierc20metadata-完整代码"><code>IERC20Metadata</code> 完整代码</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#6A737D">// SPDX-License-Identifier: MIT</span></span>
+<span class="line"><span style="color:#6A737D">// OpenZeppelin Contracts (last updated v5.4.0) (token/ERC20/extensions/IERC20Metadata.sol)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">pragma</span><span style="color:#85E89D"> solidity</span><span style="color:#79B8FF"> &gt;=0.6.2</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> {</span><span style="color:#B392F0">IERC20</span><span style="color:#E1E4E8">} </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "../IERC20.sol"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Interface for the optional metadata functions from the ERC-20 standard.</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#F97583">interface</span><span style="color:#B392F0"> IERC20Metadata</span><span style="color:#F97583"> is</span><span style="color:#B392F0"> IERC20</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Returns the name of the token.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> name</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">external</span><span style="color:#F97583"> view</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">string</span><span style="color:#F97583"> memory</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Returns the symbol of the token.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> symbol</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">external</span><span style="color:#F97583"> view</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">string</span><span style="color:#F97583"> memory</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Returns the decimals places of the token.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> decimals</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">external</span><span style="color:#F97583"> view</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">uint8</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="context-完整代码"><code>Context</code> 完整代码</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"></span>
+<span class="line"><span style="color:#6A737D">// SPDX-License-Identifier: MIT</span></span>
+<span class="line"><span style="color:#6A737D">// OpenZeppelin Contracts (last updated v5.0.1) (utils/Context.sol)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">pragma</span><span style="color:#85E89D"> solidity</span><span style="color:#79B8FF"> ^0.8.20</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Provides information about the current execution context, including the</span></span>
+<span class="line"><span style="color:#6A737D"> * sender of the transaction and its data. While these are generally available</span></span>
+<span class="line"><span style="color:#6A737D"> * via msg.sender and msg.data, they should not be accessed in such a direct</span></span>
+<span class="line"><span style="color:#6A737D"> * manner, since when dealing with meta-transactions the account sending and</span></span>
+<span class="line"><span style="color:#6A737D"> * paying for execution may not be the actual sender (as far as an application</span></span>
+<span class="line"><span style="color:#6A737D"> * is concerned).</span></span>
+<span class="line"><span style="color:#6A737D"> *</span></span>
+<span class="line"><span style="color:#6A737D"> * This contract is only required for intermediate, library-like contracts.</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#F97583">abstract</span><span style="color:#F97583"> contract</span><span style="color:#B392F0"> Context</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> _msgSender</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">internal</span><span style="color:#F97583"> view</span><span style="color:#F97583"> virtual</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#79B8FF"> msg.sender</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> _msgData</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">internal</span><span style="color:#F97583"> view</span><span style="color:#F97583"> virtual</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">bytes</span><span style="color:#F97583"> calldata</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#79B8FF"> msg</span><span style="color:#E1E4E8">.data;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> _contextSuffixLength</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">internal</span><span style="color:#F97583"> view</span><span style="color:#F97583"> virtual</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="ierc20errors-完整代码"><code>IERC20Errors</code> 完整代码</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"></span>
+<span class="line"><span style="color:#6A737D">// SPDX-License-Identifier: MIT</span></span>
+<span class="line"><span style="color:#6A737D">// OpenZeppelin Contracts (last updated v5.5.0) (interfaces/draft-IERC6093.sol)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">pragma</span><span style="color:#85E89D"> solidity</span><span style="color:#79B8FF"> &gt;=0.8.4</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Standard ERC-20 Errors</span></span>
+<span class="line"><span style="color:#6A737D"> * Interface of the https://eips.ethereum.org/EIPS/eip-6093[ERC-6093] custom errors for ERC-20 tokens.</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#F97583">interface</span><span style="color:#B392F0"> IERC20Errors</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Indicates an error related to the current `balance` of a `sender`. Used in transfers.</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> sender</span><span style="color:#6A737D"> Address whose tokens are being transferred.</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> balance</span><span style="color:#6A737D"> Current balance for the interacting account.</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> needed</span><span style="color:#6A737D"> Minimum amount required to perform a transfer.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    error</span><span style="color:#B392F0"> ERC20InsufficientBalance</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8"> sender, </span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8"> balance, </span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8"> needed);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Indicates a failure with the token `sender`. Used in transfers.</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> sender</span><span style="color:#6A737D"> Address whose tokens are being transferred.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    error</span><span style="color:#B392F0"> ERC20InvalidSender</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8"> sender);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Indicates a failure with the token `receiver`. Used in transfers.</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> receiver</span><span style="color:#6A737D"> Address to which tokens are being transferred.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    error</span><span style="color:#B392F0"> ERC20InvalidReceiver</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8"> receiver);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Indicates a failure with the `spender`’s `allowance`. Used in transfers.</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> spender</span><span style="color:#6A737D"> Address that may be allowed to operate on tokens without being their owner.</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> allowance</span><span style="color:#6A737D"> Amount of tokens a `spender` is allowed to operate with.</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> needed</span><span style="color:#6A737D"> Minimum amount required to perform a transfer.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    error</span><span style="color:#B392F0"> ERC20InsufficientAllowance</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8"> spender, </span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8"> allowance, </span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8"> needed);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Indicates a failure with the `approver` of a token to be approved. Used in approvals.</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> approver</span><span style="color:#6A737D"> Address initiating an approval operation.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    error</span><span style="color:#B392F0"> ERC20InvalidApprover</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8"> approver);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Indicates a failure with the `spender` to be approved. Used in approvals.</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> spender</span><span style="color:#6A737D"> Address that may be allowed to operate on tokens without being their owner.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    error</span><span style="color:#B392F0"> ERC20InvalidSpender</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8"> spender);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Standard ERC-721 Errors</span></span>
+<span class="line"><span style="color:#6A737D"> * Interface of the https://eips.ethereum.org/EIPS/eip-6093[ERC-6093] custom errors for ERC-721 tokens.</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#F97583">interface</span><span style="color:#B392F0"> IERC721Errors</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Indicates that an address can't be an owner. For example, `address(0)` is a forbidden owner in ERC-721.</span></span>
+<span class="line"><span style="color:#6A737D">     * Used in balance queries.</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> owner</span><span style="color:#6A737D"> Address of the current owner of a token.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    error</span><span style="color:#B392F0"> ERC721InvalidOwner</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8"> owner);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Indicates a `tokenId` whose `owner` is the zero address.</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> tokenId</span><span style="color:#6A737D"> Identifier number of a token.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    error</span><span style="color:#B392F0"> ERC721NonexistentToken</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8"> tokenId);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Indicates an error related to the ownership over a particular token. Used in transfers.</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> sender</span><span style="color:#6A737D"> Address whose tokens are being transferred.</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> tokenId</span><span style="color:#6A737D"> Identifier number of a token.</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> owner</span><span style="color:#6A737D"> Address of the current owner of a token.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    error</span><span style="color:#B392F0"> ERC721IncorrectOwner</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8"> sender, </span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8"> tokenId, </span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8"> owner);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Indicates a failure with the token `sender`. Used in transfers.</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> sender</span><span style="color:#6A737D"> Address whose tokens are being transferred.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    error</span><span style="color:#B392F0"> ERC721InvalidSender</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8"> sender);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Indicates a failure with the token `receiver`. Used in transfers.</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> receiver</span><span style="color:#6A737D"> Address to which tokens are being transferred.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    error</span><span style="color:#B392F0"> ERC721InvalidReceiver</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8"> receiver);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Indicates a failure with the `operator`’s approval. Used in transfers.</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> operator</span><span style="color:#6A737D"> Address that may be allowed to operate on tokens without being their owner.</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> tokenId</span><span style="color:#6A737D"> Identifier number of a token.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    error</span><span style="color:#B392F0"> ERC721InsufficientApproval</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8"> operator, </span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8"> tokenId);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Indicates a failure with the `approver` of a token to be approved. Used in approvals.</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> approver</span><span style="color:#6A737D"> Address initiating an approval operation.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    error</span><span style="color:#B392F0"> ERC721InvalidApprover</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8"> approver);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Indicates a failure with the `operator` to be approved. Used in approvals.</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> operator</span><span style="color:#6A737D"> Address that may be allowed to operate on tokens without being their owner.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    error</span><span style="color:#B392F0"> ERC721InvalidOperator</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8"> operator);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Standard ERC-1155 Errors</span></span>
+<span class="line"><span style="color:#6A737D"> * Interface of the https://eips.ethereum.org/EIPS/eip-6093[ERC-6093] custom errors for ERC-1155 tokens.</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#F97583">interface</span><span style="color:#B392F0"> IERC1155Errors</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Indicates an error related to the current `balance` of a `sender`. Used in transfers.</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> sender</span><span style="color:#6A737D"> Address whose tokens are being transferred.</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> balance</span><span style="color:#6A737D"> Current balance for the interacting account.</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> needed</span><span style="color:#6A737D"> Minimum amount required to perform a transfer.</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> tokenId</span><span style="color:#6A737D"> Identifier number of a token.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    error</span><span style="color:#B392F0"> ERC1155InsufficientBalance</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8"> sender, </span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8"> balance, </span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8"> needed, </span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8"> tokenId);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Indicates a failure with the token `sender`. Used in transfers.</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> sender</span><span style="color:#6A737D"> Address whose tokens are being transferred.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    error</span><span style="color:#B392F0"> ERC1155InvalidSender</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8"> sender);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Indicates a failure with the token `receiver`. Used in transfers.</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> receiver</span><span style="color:#6A737D"> Address to which tokens are being transferred.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    error</span><span style="color:#B392F0"> ERC1155InvalidReceiver</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8"> receiver);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Indicates a failure with the `operator`’s approval. Used in transfers.</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> operator</span><span style="color:#6A737D"> Address that may be allowed to operate on tokens without being their owner.</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> owner</span><span style="color:#6A737D"> Address of the current owner of a token.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    error</span><span style="color:#B392F0"> ERC1155MissingApprovalForAll</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8"> operator, </span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8"> owner);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Indicates a failure with the `approver` of a token to be approved. Used in approvals.</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> approver</span><span style="color:#6A737D"> Address initiating an approval operation.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    error</span><span style="color:#B392F0"> ERC1155InvalidApprover</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8"> approver);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Indicates a failure with the `operator` to be approved. Used in approvals.</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> operator</span><span style="color:#6A737D"> Address that may be allowed to operate on tokens without being their owner.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    error</span><span style="color:#B392F0"> ERC1155InvalidOperator</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8"> operator);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Indicates an array length mismatch between ids and values in a safeBatchTransferFrom operation.</span></span>
+<span class="line"><span style="color:#6A737D">     * Used in batch transfers.</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> idsLength</span><span style="color:#6A737D"> Length of the array of token identifiers</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> valuesLength</span><span style="color:#6A737D"> Length of the array of token amounts</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    error</span><span style="color:#B392F0"> ERC1155InvalidArrayLength</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8"> idsLength, </span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8"> valuesLength);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="代币实现">代币实现</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#6A737D">// SPDX-License-Identifier: MIT</span></span>
+<span class="line"><span style="color:#6A737D">// OpenZeppelin Contracts (last updated v5.5.0) (token/ERC20/ERC20.sol)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">pragma</span><span style="color:#85E89D"> solidity</span><span style="color:#79B8FF"> ^0.8.20</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> {</span><span style="color:#B392F0">IERC20</span><span style="color:#E1E4E8">} </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "./IERC20.sol"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> {</span><span style="color:#B392F0">IERC20Metadata</span><span style="color:#E1E4E8">} </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "./IERC20Metadata.sol"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> {</span><span style="color:#B392F0">Context</span><span style="color:#E1E4E8">} </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "./Context.sol"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> {</span><span style="color:#B392F0">IERC20Errors</span><span style="color:#E1E4E8">} </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "./draft-IERC6093.sol"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Implementation of the {IERC20} interface.</span></span>
+<span class="line"><span style="color:#6A737D"> *</span></span>
+<span class="line"><span style="color:#6A737D"> * This implementation is agnostic to the way tokens are created. This means</span></span>
+<span class="line"><span style="color:#6A737D"> * that a supply mechanism has to be added in a derived contract using {_mint}.</span></span>
+<span class="line"><span style="color:#6A737D"> *</span></span>
+<span class="line"><span style="color:#6A737D"> * TIP: For a detailed writeup see our guide</span></span>
+<span class="line"><span style="color:#6A737D"> * https://forum.openzeppelin.com/t/how-to-implement-erc20-supply-mechanisms/226[How</span></span>
+<span class="line"><span style="color:#6A737D"> * to implement supply mechanisms].</span></span>
+<span class="line"><span style="color:#6A737D"> *</span></span>
+<span class="line"><span style="color:#6A737D"> * The default value of {decimals} is 18. To change this, you should override</span></span>
+<span class="line"><span style="color:#6A737D"> * this function so it returns a different value.</span></span>
+<span class="line"><span style="color:#6A737D"> *</span></span>
+<span class="line"><span style="color:#6A737D"> * We have followed general OpenZeppelin Contracts guidelines: functions revert</span></span>
+<span class="line"><span style="color:#6A737D"> * instead returning `false` on failure. This behavior is nonetheless</span></span>
+<span class="line"><span style="color:#6A737D"> * conventional and does not conflict with the expectations of ERC-20</span></span>
+<span class="line"><span style="color:#6A737D"> * applications.</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#F97583">abstract</span><span style="color:#F97583"> contract</span><span style="color:#B392F0"> ERC20</span><span style="color:#F97583"> is</span><span style="color:#B392F0"> Context</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">IERC20</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">IERC20Metadata</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">IERC20Errors</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    mapping</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8"> account </span><span style="color:#F97583">=&gt;</span><span style="color:#79B8FF"> uint256</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">private</span><span style="color:#E1E4E8"> _balances;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    mapping</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8"> account </span><span style="color:#F97583">=&gt;</span><span style="color:#F97583"> mapping</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8"> spender </span><span style="color:#F97583">=&gt;</span><span style="color:#79B8FF"> uint256</span><span style="color:#E1E4E8">)) </span><span style="color:#F97583">private</span><span style="color:#E1E4E8"> _allowances;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#F97583"> private</span><span style="color:#E1E4E8"> _totalSupply;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF">    string</span><span style="color:#F97583"> private</span><span style="color:#E1E4E8"> _name;</span></span>
+<span class="line"><span style="color:#79B8FF">    string</span><span style="color:#F97583"> private</span><span style="color:#E1E4E8"> _symbol;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Sets the values for {name} and {symbol}.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Both values are immutable: they can only be set once during construction.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    constructor</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">string</span><span style="color:#F97583"> memory</span><span style="color:#FFAB70"> name_</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">string</span><span style="color:#F97583"> memory</span><span style="color:#FFAB70"> symbol_</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">        _name </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> name_;</span></span>
+<span class="line"><span style="color:#E1E4E8">        _symbol </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> symbol_;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Returns the name of the token.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> name</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">public</span><span style="color:#F97583"> view</span><span style="color:#F97583"> virtual</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">string</span><span style="color:#F97583"> memory</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> _name;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Returns the symbol of the token, usually a shorter version of the</span></span>
+<span class="line"><span style="color:#6A737D">     * name.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> symbol</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">public</span><span style="color:#F97583"> view</span><span style="color:#F97583"> virtual</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">string</span><span style="color:#F97583"> memory</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> _symbol;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Returns the number of decimals used to get its user representation.</span></span>
+<span class="line"><span style="color:#6A737D">     * For example, if `decimals` equals `2`, a balance of `505` tokens should</span></span>
+<span class="line"><span style="color:#6A737D">     * be displayed to a user as `5.05` (`505 / 10 ** 2`).</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Tokens usually opt for a value of 18, imitating the relationship between</span></span>
+<span class="line"><span style="color:#6A737D">     * Ether and Wei. This is the default value returned by this function, unless</span></span>
+<span class="line"><span style="color:#6A737D">     * it's overridden.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">NOTE</span><span style="color:#6A737D">: This information is only used for _display_ purposes: it in</span></span>
+<span class="line"><span style="color:#6A737D">     * no way affects any of the arithmetic of the contract, including</span></span>
+<span class="line"><span style="color:#6A737D">     * {IERC20-balanceOf} and {IERC20-transfer}.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> decimals</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">public</span><span style="color:#F97583"> view</span><span style="color:#F97583"> virtual</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">uint8</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#79B8FF"> 18</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /// </span><span style="color:#F97583">@inheritdoc</span><span style="color:#6A737D"> IERC20</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> totalSupply</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">public</span><span style="color:#F97583"> view</span><span style="color:#F97583"> virtual</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> _totalSupply;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /// </span><span style="color:#F97583">@inheritdoc</span><span style="color:#6A737D"> IERC20</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> balanceOf</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> account</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">public</span><span style="color:#F97583"> view</span><span style="color:#F97583"> virtual</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> _balances[account];</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> See {IERC20-transfer}.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Requirements:</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * - `to` cannot be the zero address.</span></span>
+<span class="line"><span style="color:#6A737D">     * - the caller must have a balance of at least `value`.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> transfer</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> to</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> value</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">public</span><span style="color:#F97583"> virtual</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">bool</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#79B8FF">        address</span><span style="color:#E1E4E8"> owner </span><span style="color:#F97583">=</span><span style="color:#B392F0"> _msgSender</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#B392F0">        _transfer</span><span style="color:#E1E4E8">(owner, to, value);</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /// </span><span style="color:#F97583">@inheritdoc</span><span style="color:#6A737D"> IERC20</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> allowance</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> owner</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> spender</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">public</span><span style="color:#F97583"> view</span><span style="color:#F97583"> virtual</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> _allowances[owner][spender];</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> See {IERC20-approve}.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">NOTE</span><span style="color:#6A737D">: If `value` is the maximum `uint256`, the allowance is not updated on</span></span>
+<span class="line"><span style="color:#6A737D">     * `transferFrom`. This is semantically equivalent to an infinite approval.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Requirements:</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * - `spender` cannot be the zero address.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> approve</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> spender</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> value</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">public</span><span style="color:#F97583"> virtual</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">bool</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#79B8FF">        address</span><span style="color:#E1E4E8"> owner </span><span style="color:#F97583">=</span><span style="color:#B392F0"> _msgSender</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#B392F0">        _approve</span><span style="color:#E1E4E8">(owner, spender, value);</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> See {IERC20-transferFrom}.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Skips emitting an {Approval} event indicating an allowance update. This is not</span></span>
+<span class="line"><span style="color:#6A737D">     * required by the ERC. See {xref-ERC20-_approve-address-address-uint256-bool-}[_approve].</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">NOTE</span><span style="color:#6A737D">: Does not update the allowance if the current allowance</span></span>
+<span class="line"><span style="color:#6A737D">     * is the maximum `uint256`.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Requirements:</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * - `from` and `to` cannot be the zero address.</span></span>
+<span class="line"><span style="color:#6A737D">     * - `from` must have a balance of at least `value`.</span></span>
+<span class="line"><span style="color:#6A737D">     * - the caller must have allowance for ``from``'s tokens of at least</span></span>
+<span class="line"><span style="color:#6A737D">     * `value`.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> transferFrom</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> from</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> to</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> value</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">public</span><span style="color:#F97583"> virtual</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">bool</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#79B8FF">        address</span><span style="color:#E1E4E8"> spender </span><span style="color:#F97583">=</span><span style="color:#B392F0"> _msgSender</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#B392F0">        _spendAllowance</span><span style="color:#E1E4E8">(from, spender, value);</span></span>
+<span class="line"><span style="color:#B392F0">        _transfer</span><span style="color:#E1E4E8">(from, to, value);</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Moves a `value` amount of tokens from `from` to `to`.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * This internal function is equivalent to {transfer}, and can be used to</span></span>
+<span class="line"><span style="color:#6A737D">     * e.g. implement automatic token fees, slashing mechanisms, etc.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Emits a {Transfer} event.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">NOTE</span><span style="color:#6A737D">: This function is not virtual, {_update} should be overridden instead.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> _transfer</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> from</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> to</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> value</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">internal</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (from </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">)) {</span></span>
+<span class="line"><span style="color:#F97583">            revert</span><span style="color:#B392F0"> ERC20InvalidSender</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">));</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (to </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">)) {</span></span>
+<span class="line"><span style="color:#F97583">            revert</span><span style="color:#B392F0"> ERC20InvalidReceiver</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">));</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#B392F0">        _update</span><span style="color:#E1E4E8">(from, to, value);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Transfers a `value` amount of tokens from `from` to `to`, or alternatively mints (or burns) if `from`</span></span>
+<span class="line"><span style="color:#6A737D">     * (or `to`) is the zero address. All customizations to transfers, mints, and burns should be done by overriding</span></span>
+<span class="line"><span style="color:#6A737D">     * this function.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Emits a {Transfer} event.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> _update</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> from</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> to</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> value</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">internal</span><span style="color:#F97583"> virtual</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (from </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">)) {</span></span>
+<span class="line"><span style="color:#6A737D">            // Overflow check required: The rest of the code assumes that totalSupply never overflows</span></span>
+<span class="line"><span style="color:#E1E4E8">            _totalSupply </span><span style="color:#F97583">+=</span><span style="color:#E1E4E8"> value;</span></span>
+<span class="line"><span style="color:#E1E4E8">        } </span><span style="color:#F97583">else</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">            uint256</span><span style="color:#E1E4E8"> fromBalance </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> _balances[from];</span></span>
+<span class="line"><span style="color:#F97583">            if</span><span style="color:#E1E4E8"> (fromBalance </span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8"> value) {</span></span>
+<span class="line"><span style="color:#F97583">                revert</span><span style="color:#B392F0"> ERC20InsufficientBalance</span><span style="color:#E1E4E8">(from, fromBalance, value);</span></span>
+<span class="line"><span style="color:#E1E4E8">            }</span></span>
+<span class="line"><span style="color:#F97583">            unchecked</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">                // Overflow not possible: value &lt;= fromBalance &lt;= totalSupply.</span></span>
+<span class="line"><span style="color:#E1E4E8">                _balances[from] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> fromBalance </span><span style="color:#F97583">-</span><span style="color:#E1E4E8"> value;</span></span>
+<span class="line"><span style="color:#E1E4E8">            }</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (to </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">)) {</span></span>
+<span class="line"><span style="color:#F97583">            unchecked</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">                // Overflow not possible: value &lt;= totalSupply or value &lt;= fromBalance &lt;= totalSupply.</span></span>
+<span class="line"><span style="color:#E1E4E8">                _totalSupply </span><span style="color:#F97583">-=</span><span style="color:#E1E4E8"> value;</span></span>
+<span class="line"><span style="color:#E1E4E8">            }</span></span>
+<span class="line"><span style="color:#E1E4E8">        } </span><span style="color:#F97583">else</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">            unchecked</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">                // Overflow not possible: balance + value is at most totalSupply, which we know fits into a uint256.</span></span>
+<span class="line"><span style="color:#E1E4E8">                _balances[to] </span><span style="color:#F97583">+=</span><span style="color:#E1E4E8"> value;</span></span>
+<span class="line"><span style="color:#E1E4E8">            }</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">        emit</span><span style="color:#B392F0"> Transfer</span><span style="color:#E1E4E8">(from, to, value);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Creates a `value` amount of tokens and assigns them to `account`, by transferring it from address(0).</span></span>
+<span class="line"><span style="color:#6A737D">     * Relies on the `_update` mechanism</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Emits a {Transfer} event with `from` set to the zero address.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">NOTE</span><span style="color:#6A737D">: This function is not virtual, {_update} should be overridden instead.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> _mint</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> account</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> value</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">internal</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (account </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">)) {</span></span>
+<span class="line"><span style="color:#F97583">            revert</span><span style="color:#B392F0"> ERC20InvalidReceiver</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">));</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#B392F0">        _update</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">), account, value);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Destroys a `value` amount of tokens from `account`, lowering the total supply.</span></span>
+<span class="line"><span style="color:#6A737D">     * Relies on the `_update` mechanism.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Emits a {Transfer} event with `to` set to the zero address.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">NOTE</span><span style="color:#6A737D">: This function is not virtual, {_update} should be overridden instead</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> _burn</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> account</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> value</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">internal</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (account </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">)) {</span></span>
+<span class="line"><span style="color:#F97583">            revert</span><span style="color:#B392F0"> ERC20InvalidSender</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">));</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#B392F0">        _update</span><span style="color:#E1E4E8">(account, </span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">), value);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Sets `value` as the allowance of `spender` over the `owner`'s tokens.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * This internal function is equivalent to `approve`, and can be used to</span></span>
+<span class="line"><span style="color:#6A737D">     * e.g. set automatic allowances for certain subsystems, etc.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Emits an {Approval} event.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Requirements:</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * - `owner` cannot be the zero address.</span></span>
+<span class="line"><span style="color:#6A737D">     * - `spender` cannot be the zero address.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Overrides to this logic should be done to the variant with an additional `bool emitEvent` argument.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> _approve</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> owner</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> spender</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> value</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">internal</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">        _approve</span><span style="color:#E1E4E8">(owner, spender, value, </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Variant of {_approve} with an optional flag to enable or disable the {Approval} event.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * By default (when calling {_approve}) the flag is set to true. On the other hand, approval changes made by</span></span>
+<span class="line"><span style="color:#6A737D">     * `_spendAllowance` during the `transferFrom` operation sets the flag to false. This saves gas by not emitting any</span></span>
+<span class="line"><span style="color:#6A737D">     * `Approval` event during `transferFrom` operations.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Anyone who wishes to continue emitting `Approval` events on the `transferFrom` operation can force the flag to</span></span>
+<span class="line"><span style="color:#6A737D">     * true using the following override:</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * ```solidity</span></span>
+<span class="line"><span style="color:#6A737D">     * function _approve(address owner, address spender, uint256 value, bool) internal virtual override {</span></span>
+<span class="line"><span style="color:#6A737D">     *     super._approve(owner, spender, value, true);</span></span>
+<span class="line"><span style="color:#6A737D">     * }</span></span>
+<span class="line"><span style="color:#6A737D">     * ```</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Requirements are the same as {_approve}.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> _approve</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> owner</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> spender</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> value</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">bool</span><span style="color:#FFAB70"> emitEvent</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">internal</span><span style="color:#F97583"> virtual</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (owner </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">)) {</span></span>
+<span class="line"><span style="color:#F97583">            revert</span><span style="color:#B392F0"> ERC20InvalidApprover</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">));</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (spender </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">)) {</span></span>
+<span class="line"><span style="color:#F97583">            revert</span><span style="color:#B392F0"> ERC20InvalidSpender</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">));</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">        _allowances[owner][spender] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> value;</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (emitEvent) {</span></span>
+<span class="line"><span style="color:#F97583">            emit</span><span style="color:#B392F0"> Approval</span><span style="color:#E1E4E8">(owner, spender, value);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Updates `owner`'s allowance for `spender` based on spent `value`.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Does not update the allowance value in case of infinite allowance.</span></span>
+<span class="line"><span style="color:#6A737D">     * Revert if not enough allowance is available.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Does not emit an {Approval} event.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> _spendAllowance</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> owner</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> spender</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> value</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">internal</span><span style="color:#F97583"> virtual</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#E1E4E8"> currentAllowance </span><span style="color:#F97583">=</span><span style="color:#B392F0"> allowance</span><span style="color:#E1E4E8">(owner, spender);</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (currentAllowance </span><span style="color:#F97583">&lt;</span><span style="color:#79B8FF"> type</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">).max) {</span></span>
+<span class="line"><span style="color:#F97583">            if</span><span style="color:#E1E4E8"> (currentAllowance </span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8"> value) {</span></span>
+<span class="line"><span style="color:#F97583">                revert</span><span style="color:#B392F0"> ERC20InsufficientAllowance</span><span style="color:#E1E4E8">(spender, currentAllowance, value);</span></span>
+<span class="line"><span style="color:#E1E4E8">            }</span></span>
+<span class="line"><span style="color:#F97583">            unchecked</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">                _approve</span><span style="color:#E1E4E8">(owner, spender, currentAllowance </span><span style="color:#F97583">-</span><span style="color:#E1E4E8"> value, </span><span style="color:#79B8FF">false</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">            }</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="有买卖税等分配的代币">有买卖税等分配的代币</h3>
+</div><script type="module">function e(e){let t=e.getAttribute(`data-language`)?.trim();if(t)return t===`text`||t===`plaintext`||t===`txt`?`text`:t;let n=e.querySelector(`code`)?.className||e.className||``,r=/language-([a-z0-9_+-]+)/i.exec(n);return r?.[1]?r[1]:`code`}function t(t){if(t.closest(`[data-mac-window]`)||t.dataset.macEnhanced===`1`)return;t.dataset.macEnhanced=`1`;let n=document.createElement(`figure`);n.className=`mac-window`,n.setAttribute(`data-mac-window`,``);let r=document.createElement(`div`);r.className=`mac-titlebar`,r.innerHTML=`
+      <div class="mac-dots" aria-hidden="true">
+        <span class="dot red"></span>
+        <span class="dot yellow"></span>
+        <span class="dot green"></span>
+      </div>
+      <span class="mac-title"></span>
+      <button type="button" class="mac-copy" data-mac-copy aria-label="复制代码">复制</button>
+    `;let i=r.querySelector(`.mac-title`);i&&(i.textContent=e(t));let a=document.createElement(`div`);a.className=`mac-body`,t.parentNode?.insertBefore(n,t),a.appendChild(t),n.appendChild(r),n.appendChild(a)}async function n(e){if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(e);return}let t=document.createElement(`textarea`);t.value=e,t.style.position=`fixed`,t.style.opacity=`0`,document.body.appendChild(t),t.select(),document.execCommand(`copy`),t.remove()}function r(e=document){e.querySelectorAll(`[data-mac-copy]`).forEach(e=>{e.dataset.bound!==`1`&&(e.dataset.bound=`1`,e.addEventListener(`click`,async()=>{let t=e.closest(`[data-mac-window]`)?.querySelector(`pre`)?.textContent??``;try{await n(t);let r=e.textContent;e.textContent=`已复制`,e.classList.add(`is-copied`),window.setTimeout(()=>{e.textContent=r||`复制`,e.classList.remove(`is-copied`)},1600)}catch{e.textContent=`失败`,window.setTimeout(()=>{e.textContent=`复制`},1600)}}))})}function i(){document.querySelectorAll(`.prose pre`).forEach(t),r()}i(),document.addEventListener(`astro:page-load`,i);</script></article><nav class="pager wrap-narrow" aria-label="上下篇" data-astro-cid-tldeq5d5><p data-astro-cid-tldeq5d5>上一篇：<a href="/web3/erc721/" data-astro-cid-tldeq5d5>ERC721</a></p><p data-astro-cid-tldeq5d5>下一篇：<a href="/web3/erc1155/" data-astro-cid-tldeq5d5>ERC1155</a></p></nav><section class="related" data-astro-cid-tldeq5d5><div class="wrap" data-astro-cid-tldeq5d5><h2 data-astro-cid-tldeq5d5>继续阅读</h2><ol class="related-grid" data-astro-cid-tldeq5d5><li data-astro-cid-tldeq5d5><a class="related-topic" href="/web3/" data-astro-cid-tldeq5d5>区块链</a><a class="related-title" href="/web3/airdrop/" data-astro-cid-tldeq5d5>空投</a><p data-astro-cid-tldeq5d5>空投</p></li><li data-astro-cid-tldeq5d5><a class="related-topic" href="/web3/" data-astro-cid-tldeq5d5>区块链</a><a class="related-title" href="/web3/cross-chain-bridge/" data-astro-cid-tldeq5d5>跨链桥</a><p data-astro-cid-tldeq5d5>跨链桥</p></li><li data-astro-cid-tldeq5d5><a class="related-topic" href="/web3/" data-astro-cid-tldeq5d5>区块链</a><a class="related-title" href="/web3/ddos/" data-astro-cid-tldeq5d5>DDOS攻击</a><p data-astro-cid-tldeq5d5>DDOS攻击</p></li></ol></div></section></main><footer class="site-footer" data-astro-cid-jo6i4kqk><div class="wrap bar" data-astro-cid-jo6i4kqk><a class="brand" href="/" data-astro-cid-jo6i4kqk>rty</a><div class="social" aria-label="社交链接" data-astro-cid-jo6i4kqk><a href="mailto:peonyfoals@gmail.com" aria-label="Email" data-astro-cid-jo6i4kqk><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" data-astro-cid-jo6i4kqk><path fill="currentColor" d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5L4 8V6l8 5 8-5v2z" data-astro-cid-jo6i4kqk></path></svg></a><a href="/rss.xml" aria-label="RSS" data-astro-cid-jo6i4kqk><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" data-astro-cid-jo6i4kqk><path fill="currentColor" d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20 5 20 4 19 4 17.82c0-1.2.98-2.18 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27zm0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93z" data-astro-cid-jo6i4kqk></path></svg></a><a href="/archive/" aria-label="归档" data-astro-cid-jo6i4kqk><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" data-astro-cid-jo6i4kqk><path fill="currentColor" d="M4 6h16v2H4zm0 5h16v2H4zm0 5h10v2H4z" data-astro-cid-jo6i4kqk></path></svg></a></div><p class="meta" data-astro-cid-jo6i4kqk>© 2026 peony</p></div></footer></body></html>

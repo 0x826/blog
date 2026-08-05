@@ -1,0 +1,812 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="DDOS攻击"><meta name="author" content="peony"><meta name="generator" content="Astro v7.1.1"><meta name="theme-color" content="#ffffff"><link rel="canonical" href="https://langzyw.xyz/web3/ddos/"><link rel="alternate" type="application/rss+xml" title="rty" href="/rss.xml"><meta property="og:type" content="website"><meta property="og:site_name" content="rty"><meta property="og:title" content="DDOS攻击 · rty"><meta property="og:description" content="DDOS攻击"><meta property="og:url" content="https://langzyw.xyz/web3/ddos/"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><title>DDOS攻击 · rty</title><link rel="stylesheet" href="/_astro/Footer.C9xAhOzk.css"><link rel="stylesheet" href="/_astro/_..B6QWlgH6.css"></head><body><header class="site-header" data-astro-cid-nen7h5rs><div class="wrap bar" data-astro-cid-nen7h5rs><div class="bar-flex" data-astro-cid-nen7h5rs><a class="brand" href="/" data-astro-cid-nen7h5rs>rty</a><nav class="nav" aria-label="主导航" data-astro-cid-nen7h5rs><a class="nav-link" href="/" data-astro-cid-nen7h5rs>首页</a><a class="nav-link" href="/web/" data-astro-cid-nen7h5rs>前端</a><a class="nav-link" href="/python/" data-astro-cid-nen7h5rs>python</a><a class="nav-link" href="/llm/" data-astro-cid-nen7h5rs>llm</a><a class="nav-link active" href="/web3/" aria-current="page" data-astro-cid-nen7h5rs>区块链</a><a class="nav-link" href="/about/" data-astro-cid-nen7h5rs>关于</a></nav></div><button class="search-btn" type="button" aria-label="搜索" data-search-open data-astro-cid-nen7h5rs><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" data-astro-cid-nen7h5rs><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="1.6" data-astro-cid-nen7h5rs></circle><path d="M16.5 16.5L21 21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" data-astro-cid-nen7h5rs></path></svg></button></div></header><dialog class="search-dialog" data-search-dialog data-astro-cid-nen7h5rs><form class="search-panel" method="dialog" data-astro-cid-nen7h5rs><label class="sr-only" for="site-search" data-astro-cid-nen7h5rs>搜索文章</label><input id="site-search" class="search-input" type="search" placeholder="搜索文章…" autocomplete="off" data-search-input data-astro-cid-nen7h5rs><button class="search-close" value="cancel" type="submit" aria-label="关闭" data-astro-cid-nen7h5rs>×</button></form><ul class="search-results" data-search-results data-astro-cid-nen7h5rs></ul></dialog><script>(function(){const searchIndexUrl = "/search-index.json";
+
+  const openBtn = document.querySelector("[data-search-open]");
+  const dialog = document.querySelector("[data-search-dialog]");
+  const input = document.querySelector("[data-search-input]");
+  const results = document.querySelector("[data-search-results]");
+
+  if (
+    openBtn &&
+    dialog instanceof HTMLDialogElement &&
+    input instanceof HTMLInputElement &&
+    results
+  ) {
+    let index = [];
+    let loaded = false;
+
+    async function ensureIndex() {
+      if (loaded) return;
+      const res = await fetch(searchIndexUrl);
+      index = await res.json();
+      loaded = true;
+    }
+
+    function render(q) {
+      const query = q.trim().toLowerCase();
+      if (!query) {
+        results.innerHTML = "";
+        return;
+      }
+      const hits = index
+        .filter((item) =>
+          `${item.title} ${item.description} ${item.topic}`
+            .toLowerCase()
+            .includes(query),
+        )
+        .slice(0, 8);
+      results.innerHTML = hits.length
+        ? hits
+            .map(
+              (item) =>
+                `<li><a href="${item.href}"><strong>${item.title}</strong><span>${item.description}</span></a></li>`,
+            )
+            .join("")
+        : `<li class="empty">没有匹配结果</li>`;
+    }
+
+    openBtn.addEventListener("click", async () => {
+      await ensureIndex();
+      dialog.showModal();
+      input.value = "";
+      results.innerHTML = "";
+      input.focus();
+    });
+
+    input.addEventListener("input", () => render(input.value));
+
+    dialog.addEventListener("click", (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+  }
+})();</script><main class="post-page" data-astro-cid-tldeq5d5><article data-astro-cid-tldeq5d5><header class="header wrap-narrow" data-astro-cid-tldeq5d5><a class="topic" href="/web3/" data-astro-cid-tldeq5d5>区块链</a><h1 data-astro-cid-tldeq5d5>DDOS攻击</h1><p class="meta" data-astro-cid-tldeq5d5><time datetime="2026-07-18T00:00:00.000Z" data-astro-cid-tldeq5d5>2026年7月18日</time><span aria-hidden="true" data-astro-cid-tldeq5d5>·</span><span data-astro-cid-tldeq5d5>约 4 小时</span></p><p class="tags" data-astro-cid-tldeq5d5><a href="/tags/区块链/" data-astro-cid-tldeq5d5>区块链</a><span data-astro-cid-tldeq5d5> · </span><a href="/tags/智能合约/" data-astro-cid-tldeq5d5>智能合约</a></p></header><div class="hero-image wrap" data-astro-cid-tldeq5d5><img src="/images/covers/web3-cyber.jpg" alt="" data-astro-cid-tldeq5d5></div><div class="prose wrap-narrow" data-astro-cid-tldeq5d5><h3 id="智能合约拒绝服务dos">智能合约拒绝服务（DoS）</h3>
+<p>Web2 里的 DDoS 是用海量请求打瘫服务器；<strong>Web3 语境下的 DoS</strong> 通常指：利用合约逻辑漏洞，让合约<strong>关键功能永久或长期无法执行</strong>（退款、提款、结算卡住），资金或业务被锁死。</p>
+<h3 id="两类致命问题">两类致命问题</h3>
+<h4 id="1-push-退款可被-dosprocessrefunds">1. Push 退款可被 DoS（<code>processRefunds</code>）</h4>
+<p>合约用循环 <code>call</code> 给每个 bidder 推送退款，且：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">bool</span><span style="color:#E1E4E8"> sent, ) </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> bidData.bidder.call{value</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> refund}(</span><span style="color:#9ECBFF">""</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">require</span><span style="color:#E1E4E8">(sent, </span><span style="color:#9ECBFF">"Failed to refund bidder"</span><span style="color:#E1E4E8">);</span></span></code></pre>
+<p>若 bidder 是恶意合约，在 <code>receive</code> / <code>fallback</code> 里 <code>revert</code> 或耗尽 gas，<strong>整笔 <code>processRefunds</code> 失败</strong>，退款进度卡在攻击者处，后续用户也无法继续被 push 退款。</p>
+<p>这是典型的 <strong>push payment + 外部调用失败即整体 revert</strong>。</p>
+<h4 id="2-提款条件写错导致资金永久锁定真正锁死-11-万-eth-的原因">2. 提款条件写错导致资金永久锁定（真正锁死 1.1 万 ETH 的原因）</h4>
+<p><code>claimProjectFunds</code> 要求：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#F97583">require</span><span style="color:#E1E4E8">(refundProgress </span><span style="color:#F97583">&gt;=</span><span style="color:#E1E4E8"> totalBids, </span><span style="color:#9ECBFF">"Refunds not yet processed"</span><span style="color:#E1E4E8">);</span></span></code></pre>
+<p>但：</p>
+<ul>
+<li><code>refundProgress</code>：按<strong>出价人数 / 记录条数</strong>推进（与 <code>bidIndex</code> 同量级）</li>
+<li><code>totalBids</code>：按<strong>NFT 份数</strong>累加（一人可拍多份）</li>
+</ul>
+<p>因此 <code>refundProgress</code> 往往<strong>永远到不了</strong> <code>totalBids</code>，项目方无法提款。更合理的比较对象应是 <code>bidIndex</code>（出价记录数），而不是 <code>totalBids</code>。</p>
+<blockquote>
+<p>历史上 DoS（griefing）曾被演示/缓解，但逻辑 bug 使资金最终永久锁死。</p>
+</blockquote>
+<h3 id="攻击合约思路开源-post-mortem">攻击合约思路（开源 post-mortem）</h3>
+<p>通过合约参拍，退款时 <code>receive</code> 故意失败，卡住 push 退款队列：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#6A737D">// SPDX-License-Identifier: MIT</span></span>
+<span class="line"><span style="color:#F97583">pragma</span><span style="color:#85E89D"> solidity</span><span style="color:#79B8FF"> 0.8.13</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> {</span><span style="color:#B392F0">Ownable</span><span style="color:#E1E4E8">} </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "@openzeppelin/contracts/access/Ownable.sol"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">interface</span><span style="color:#B392F0"> IAkutarAuction</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> bid</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint8</span><span style="color:#FFAB70"> amount</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">external</span><span style="color:#F97583"> payable</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">contract</span><span style="color:#B392F0"> Griefer</span><span style="color:#F97583"> is</span><span style="color:#B392F0"> Ownable</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">    bool</span><span style="color:#E1E4E8"> flag;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    // Set flag to false upon initialization</span></span>
+<span class="line"><span style="color:#F97583">    constructor</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">        flag </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> false</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    // Bid on the Akutar Auction through this contract</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> bidAuction</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> auctionAddr</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint8</span><span style="color:#FFAB70"> amount</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">        external</span></span>
+<span class="line"><span style="color:#F97583">        payable</span></span>
+<span class="line"><span style="color:#B392F0">        onlyOwner</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#E1E4E8">        IAkutarAuction auction </span><span style="color:#F97583">=</span><span style="color:#B392F0"> IAkutarAuction</span><span style="color:#E1E4E8">(auctionAddr);</span></span>
+<span class="line"><span style="color:#E1E4E8">        auction.bid{value</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> msg</span><span style="color:#E1E4E8">.value}(amount);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    // Set flag to true to unblock the receive function</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> unblock</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">external</span><span style="color:#B392F0"> onlyOwner</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">        flag </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    // Function to withdraw any funds after done griefing</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> withdraw</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">external</span><span style="color:#B392F0"> onlyOwner</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">        (</span><span style="color:#79B8FF">bool</span><span style="color:#E1E4E8"> sent, ) </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">msg.sender</span><span style="color:#E1E4E8">).call{value</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">).balance}(</span></span>
+<span class="line"><span style="color:#9ECBFF">            ""</span></span>
+<span class="line"><span style="color:#E1E4E8">        );</span></span>
+<span class="line"><span style="color:#F97583">        require</span><span style="color:#E1E4E8">(sent);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    // Payment txs made to this contract revert if flag != true</span></span>
+<span class="line"><span style="color:#B392F0">    receive</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">external</span><span style="color:#F97583"> payable</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">        require</span><span style="color:#E1E4E8">(flag);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>来源：<a href="https://github.com/calvwang9/akutars-auction-post-mortem">calvwang9/akutars-auction-post-mortem</a></p>
+<h3 id="如何防御">如何防御</h3>
+<ol>
+<li><strong>Pull 优于 Push</strong>：让用户自己 <code>claim</code> / <code>withdraw</code>，单人失败不影响其他人（参考 OZ <code>PaymentSplitter</code> / <code>VestingWallet</code>）</li>
+<li>外部 <code>call</code> 失败<strong>不要</strong>用 <code>require</code> 卡死整批业务；或限制 gas、跳过失败地址并记录</li>
+<li>限制仅 EOA 出价（<code>tx.origin == msg.sender</code>），或改收 <strong>WETH</strong> 避免任意合约回调</li>
+<li>循环不要依赖<strong>攻击者可控、无界增长</strong>的数组长度（防 OOG / 超 block gas limit）</li>
+<li><code>require</code> 条件与业务语义一致（Akutar 的 <code>refundProgress</code> vs <code>totalBids</code> 就是反例）</li>
+<li>Owner 长期失联时，核心领取路径仍应可走通</li>
+</ol>
+<h3 id="其他常见合约-dos">其他常见合约 DoS</h3>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>表现</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>无界循环</td>
+<td>数组被灌爆，遍历 gas 超过区块上限</td>
+</tr>
+<tr>
+<td>退款/分账 Push</td>
+<td>任一收款方 revert 导致整批失败</td>
+</tr>
+<tr>
+<td>Return bomb</td>
+<td>恶意合约返回超大 returndata，拷贝耗尽 gas</td>
+</tr>
+<tr>
+<td>错误的权限/断言</td>
+<td>关键函数永远无法通过 <code>require</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="akuauction-主网完整合约">AkuAuction 主网完整合约</h3>
+<p>以下为 Sourcify / Etherscan 验证源码（<code>AkuAuction.sol</code>）：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#6A737D">// File: @openzeppelin/contracts/utils/Strings.sol</span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// OpenZeppelin Contracts v4.4.1 (utils/Strings.sol)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">pragma</span><span style="color:#85E89D"> solidity</span><span style="color:#79B8FF"> ^0.8.0</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> String operations.</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#F97583">library</span><span style="color:#B392F0"> Strings</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">    bytes16</span><span style="color:#F97583"> private</span><span style="color:#F97583"> constant</span><span style="color:#E1E4E8"> _HEX_SYMBOLS </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "0123456789abcdef"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Converts a `uint256` to its ASCII `string` decimal representation.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> toString</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> value</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">internal</span><span style="color:#F97583"> pure</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">string</span><span style="color:#F97583"> memory</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">        // Inspired by OraclizeAPI's implementation - MIT licence</span></span>
+<span class="line"><span style="color:#6A737D">        // https://github.com/oraclize/ethereum-api/blob/b42146b063c7d6ee1358846c198246239e9360e8/oraclizeAPI_0.4.25.sol</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (value </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">            return</span><span style="color:#9ECBFF"> "0"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#E1E4E8"> temp </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> value;</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#E1E4E8"> digits;</span></span>
+<span class="line"><span style="color:#F97583">        while</span><span style="color:#E1E4E8"> (temp </span><span style="color:#F97583">!=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">            digits</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">            temp </span><span style="color:#F97583">/=</span><span style="color:#79B8FF"> 10</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes</span><span style="color:#F97583"> memory</span><span style="color:#E1E4E8"> buffer </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#79B8FF"> bytes</span><span style="color:#E1E4E8">(digits);</span></span>
+<span class="line"><span style="color:#F97583">        while</span><span style="color:#E1E4E8"> (value </span><span style="color:#F97583">!=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">            digits </span><span style="color:#F97583">-=</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">            buffer[digits] </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> bytes1</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint8</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">48</span><span style="color:#F97583"> +</span><span style="color:#79B8FF"> uint256</span><span style="color:#E1E4E8">(value % </span><span style="color:#79B8FF">10</span><span style="color:#E1E4E8">)));</span></span>
+<span class="line"><span style="color:#E1E4E8">            value </span><span style="color:#F97583">/=</span><span style="color:#79B8FF"> 10</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#79B8FF"> string</span><span style="color:#E1E4E8">(buffer);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Converts a `uint256` to its ASCII `string` hexadecimal representation.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> toHexString</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> value</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">internal</span><span style="color:#F97583"> pure</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">string</span><span style="color:#F97583"> memory</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (value </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">            return</span><span style="color:#9ECBFF"> "0x00"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#E1E4E8"> temp </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> value;</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#E1E4E8"> length </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">        while</span><span style="color:#E1E4E8"> (temp </span><span style="color:#F97583">!=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">            length</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">            temp </span><span style="color:#F97583">&gt;&gt;=</span><span style="color:#79B8FF"> 8</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#B392F0"> toHexString</span><span style="color:#E1E4E8">(value, length);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Converts a `uint256` to its ASCII `string` hexadecimal representation with fixed length.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> toHexString</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> value</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> length</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">internal</span><span style="color:#F97583"> pure</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">string</span><span style="color:#F97583"> memory</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes</span><span style="color:#F97583"> memory</span><span style="color:#E1E4E8"> buffer </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#79B8FF"> bytes</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">2</span><span style="color:#F97583"> *</span><span style="color:#E1E4E8"> length </span><span style="color:#F97583">+</span><span style="color:#79B8FF"> 2</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">        buffer[</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "0"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">        buffer[</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "x"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">        for</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 2</span><span style="color:#F97583"> *</span><span style="color:#E1E4E8"> length </span><span style="color:#F97583">+</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">; i </span><span style="color:#F97583">&gt;</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">; </span><span style="color:#F97583">--</span><span style="color:#E1E4E8">i) {</span></span>
+<span class="line"><span style="color:#E1E4E8">            buffer[i] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> _HEX_SYMBOLS[value </span><span style="color:#F97583">&amp;</span><span style="color:#79B8FF"> 0xf</span><span style="color:#E1E4E8">];</span></span>
+<span class="line"><span style="color:#E1E4E8">            value </span><span style="color:#F97583">&gt;&gt;=</span><span style="color:#79B8FF"> 4</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#F97583">        require</span><span style="color:#E1E4E8">(value </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"Strings: hex length insufficient"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#79B8FF"> string</span><span style="color:#E1E4E8">(buffer);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// File: @openzeppelin/contracts/utils/Context.sol</span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// OpenZeppelin Contracts v4.4.1 (utils/Context.sol)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">pragma</span><span style="color:#85E89D"> solidity</span><span style="color:#79B8FF"> ^0.8.0</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Provides information about the current execution context, including the</span></span>
+<span class="line"><span style="color:#6A737D"> * sender of the transaction and its data. While these are generally available</span></span>
+<span class="line"><span style="color:#6A737D"> * via msg.sender and msg.data, they should not be accessed in such a direct</span></span>
+<span class="line"><span style="color:#6A737D"> * manner, since when dealing with meta-transactions the account sending and</span></span>
+<span class="line"><span style="color:#6A737D"> * paying for execution may not be the actual sender (as far as an application</span></span>
+<span class="line"><span style="color:#6A737D"> * is concerned).</span></span>
+<span class="line"><span style="color:#6A737D"> *</span></span>
+<span class="line"><span style="color:#6A737D"> * This contract is only required for intermediate, library-like contracts.</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#F97583">abstract</span><span style="color:#F97583"> contract</span><span style="color:#B392F0"> Context</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> _msgSender</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">internal</span><span style="color:#F97583"> view</span><span style="color:#F97583"> virtual</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#79B8FF"> msg.sender</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> _msgData</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">internal</span><span style="color:#F97583"> view</span><span style="color:#F97583"> virtual</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">bytes</span><span style="color:#F97583"> calldata</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#79B8FF"> msg</span><span style="color:#E1E4E8">.data;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// File: @openzeppelin/contracts/access/Ownable.sol</span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// OpenZeppelin Contracts v4.4.1 (access/Ownable.sol)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">pragma</span><span style="color:#85E89D"> solidity</span><span style="color:#79B8FF"> ^0.8.0</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Contract module which provides a basic access control mechanism, where</span></span>
+<span class="line"><span style="color:#6A737D"> * there is an account (an owner) that can be granted exclusive access to</span></span>
+<span class="line"><span style="color:#6A737D"> * specific functions.</span></span>
+<span class="line"><span style="color:#6A737D"> *</span></span>
+<span class="line"><span style="color:#6A737D"> * By default, the owner account will be the one that deploys the contract. This</span></span>
+<span class="line"><span style="color:#6A737D"> * can later be </span><span style="color:#F97583">changed</span><span style="color:#6A737D"> with {transferOwnership}.</span></span>
+<span class="line"><span style="color:#6A737D"> *</span></span>
+<span class="line"><span style="color:#6A737D"> * This module is used through inheritance. It will make available the modifier</span></span>
+<span class="line"><span style="color:#6A737D"> * `onlyOwner`, which can be applied to your functions to restrict their use to</span></span>
+<span class="line"><span style="color:#6A737D"> * the owner.</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#F97583">abstract</span><span style="color:#F97583"> contract</span><span style="color:#B392F0"> Ownable</span><span style="color:#F97583"> is</span><span style="color:#B392F0"> Context</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">    address</span><span style="color:#F97583"> private</span><span style="color:#E1E4E8"> _owner;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    event</span><span style="color:#B392F0"> OwnershipTransferred</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#F97583"> indexed</span><span style="color:#FFAB70"> previousOwner</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">address</span><span style="color:#F97583"> indexed</span><span style="color:#FFAB70"> newOwner</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Initializes the contract setting the deployer as the initial owner.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    constructor</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#B392F0">        _transferOwnership</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">_msgSender</span><span style="color:#E1E4E8">());</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Returns the address of the current owner.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> owner</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">public</span><span style="color:#F97583"> view</span><span style="color:#F97583"> virtual</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> _owner;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Throws if called by any account other than the owner.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    modifier</span><span style="color:#B392F0"> onlyOwner</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">        require</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">owner</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">==</span><span style="color:#B392F0"> _msgSender</span><span style="color:#E1E4E8">(), </span><span style="color:#9ECBFF">"Ownable: caller is not the owner"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#79B8FF">        _</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Leaves the contract without owner. It will not be possible to call</span></span>
+<span class="line"><span style="color:#6A737D">     * `onlyOwner` functions anymore. Can only be called by the current owner.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">NOTE</span><span style="color:#6A737D">: Renouncing ownership will leave the contract without an owner,</span></span>
+<span class="line"><span style="color:#6A737D">     * thereby removing any functionality that is only available to the owner.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> renounceOwnership</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">public</span><span style="color:#F97583"> virtual</span><span style="color:#B392F0"> onlyOwner</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">        _transferOwnership</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">));</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Transfers ownership of the contract to a new account (`newOwner`).</span></span>
+<span class="line"><span style="color:#6A737D">     * Can only be called by the current owner.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> transferOwnership</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> newOwner</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">public</span><span style="color:#F97583"> virtual</span><span style="color:#B392F0"> onlyOwner</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">        require</span><span style="color:#E1E4E8">(newOwner </span><span style="color:#F97583">!=</span><span style="color:#79B8FF"> address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">), </span><span style="color:#9ECBFF">"Ownable: new owner is the zero address"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#B392F0">        _transferOwnership</span><span style="color:#E1E4E8">(newOwner);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Transfers ownership of the contract to a new account (`newOwner`).</span></span>
+<span class="line"><span style="color:#6A737D">     * Internal function without access restriction.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> _transferOwnership</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> newOwner</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">internal</span><span style="color:#F97583"> virtual</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">        address</span><span style="color:#E1E4E8"> oldOwner </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> _owner;</span></span>
+<span class="line"><span style="color:#E1E4E8">        _owner </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> newOwner;</span></span>
+<span class="line"><span style="color:#F97583">        emit</span><span style="color:#B392F0"> OwnershipTransferred</span><span style="color:#E1E4E8">(oldOwner, newOwner);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// File: @openzeppelin/contracts/utils/Address.sol</span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// OpenZeppelin Contracts (last updated v4.5.0) (utils/Address.sol)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">pragma</span><span style="color:#85E89D"> solidity</span><span style="color:#79B8FF"> ^0.8.1</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Collection of functions related to the address type</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#F97583">library</span><span style="color:#B392F0"> Address</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Returns true if `account` is a contract.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * [IMPORTANT]</span></span>
+<span class="line"><span style="color:#6A737D">     * ====</span></span>
+<span class="line"><span style="color:#6A737D">     * It is unsafe to assume that an address for which this function returns</span></span>
+<span class="line"><span style="color:#6A737D">     * false is an externally-owned account (EOA) and not a contract.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Among others, `isContract` will return false for the following</span></span>
+<span class="line"><span style="color:#6A737D">     * types of addresses:</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     *  - an externally-owned account</span></span>
+<span class="line"><span style="color:#6A737D">     *  - a contract in construction</span></span>
+<span class="line"><span style="color:#6A737D">     *  - an address where a contract will be created</span></span>
+<span class="line"><span style="color:#6A737D">     *  - an address where a contract lived, but was destroyed</span></span>
+<span class="line"><span style="color:#6A737D">     * ====</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * [IMPORTANT]</span></span>
+<span class="line"><span style="color:#6A737D">     * ====</span></span>
+<span class="line"><span style="color:#6A737D">     * You shouldn't rely on `isContract` to protect against flash loan attacks!</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Preventing calls from contracts is highly discouraged. It breaks composability, breaks support for smart wallets</span></span>
+<span class="line"><span style="color:#6A737D">     * like Gnosis Safe, and does not provide security since it can be circumvented by calling from a contract</span></span>
+<span class="line"><span style="color:#6A737D">     * constructor.</span></span>
+<span class="line"><span style="color:#6A737D">     * ====</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> isContract</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> account</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">internal</span><span style="color:#F97583"> view</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">bool</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">        // This method relies on extcodesize/address.code.length, which returns 0</span></span>
+<span class="line"><span style="color:#6A737D">        // for contracts in construction, since the code is only stored at the end</span></span>
+<span class="line"><span style="color:#6A737D">        // of the constructor execution.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> account.code.length </span><span style="color:#F97583">&gt;</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Replacement for Solidity's `transfer`: sends `amount` wei to</span></span>
+<span class="line"><span style="color:#6A737D">     * `recipient`, forwarding all available gas and reverting on errors.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * https://eips.ethereum.org/EIPS/eip-1884[EIP1884] increases the gas cost</span></span>
+<span class="line"><span style="color:#6A737D">     * of certain opcodes, possibly making contracts go over the 2300 gas limit</span></span>
+<span class="line"><span style="color:#6A737D">     * imposed by `transfer`, making them unable to receive funds via</span></span>
+<span class="line"><span style="color:#6A737D">     * `transfer`. {sendValue} removes this limitation.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * https://diligence.consensys.net/posts/2019/09/stop-using-soliditys-transfer-now/[Learn more].</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * IMPORTANT: because control is transferred to `recipient`, care must be</span></span>
+<span class="line"><span style="color:#6A737D">     * taken to not create reentrancy vulnerabilities. Consider using</span></span>
+<span class="line"><span style="color:#6A737D">     * {ReentrancyGuard} or the</span></span>
+<span class="line"><span style="color:#6A737D">     * https://solidity.readthedocs.io/en/v0.5.11/security-considerations.html#use-the-checks-effects-interactions-pattern[checks-effects-interactions pattern].</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> sendValue</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> payable</span><span style="color:#FFAB70"> recipient</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> amount</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">internal</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">        require</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">).balance </span><span style="color:#F97583">&gt;=</span><span style="color:#E1E4E8"> amount, </span><span style="color:#9ECBFF">"Address: insufficient balance"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">        (</span><span style="color:#79B8FF">bool</span><span style="color:#E1E4E8"> success, ) </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> recipient.call{value</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> amount}(</span><span style="color:#9ECBFF">""</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">        require</span><span style="color:#E1E4E8">(success, </span><span style="color:#9ECBFF">"Address: unable to send value, recipient may have reverted"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Performs a Solidity function call using a low level `call`. A</span></span>
+<span class="line"><span style="color:#6A737D">     * plain `call` is an unsafe replacement for a function call: use this</span></span>
+<span class="line"><span style="color:#6A737D">     * function instead.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * If `target` reverts with a revert reason, it is bubbled up by this</span></span>
+<span class="line"><span style="color:#6A737D">     * function (like regular Solidity function calls).</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Returns the raw returned data. To convert to the expected return value,</span></span>
+<span class="line"><span style="color:#6A737D">     * use https://solidity.readthedocs.io/en/latest/units-and-global-variables.html?highlight=abi.decode#abi-encoding-and-decoding-functions[`abi.decode`].</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Requirements:</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * - `target` must be a contract.</span></span>
+<span class="line"><span style="color:#6A737D">     * - calling `target` with `data` must not revert.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * _Available since v3.1._</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> functionCall</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> target</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">bytes</span><span style="color:#F97583"> memory</span><span style="color:#FFAB70"> data</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">internal</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">bytes</span><span style="color:#F97583"> memory</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#B392F0"> functionCall</span><span style="color:#E1E4E8">(target, data, </span><span style="color:#9ECBFF">"Address: low-level call failed"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Same as {xref-Address-functionCall-address-bytes-}[`functionCall`], but with</span></span>
+<span class="line"><span style="color:#6A737D">     * `errorMessage` as a fallback revert reason when `target` reverts.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * _Available since v3.1._</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> functionCall</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#79B8FF">        address</span><span style="color:#FFAB70"> target</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes</span><span style="color:#F97583"> memory</span><span style="color:#FFAB70"> data</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        string</span><span style="color:#F97583"> memory</span><span style="color:#FFAB70"> errorMessage</span></span>
+<span class="line"><span style="color:#E1E4E8">    ) </span><span style="color:#F97583">internal</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">bytes</span><span style="color:#F97583"> memory</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#B392F0"> functionCallWithValue</span><span style="color:#E1E4E8">(target, data, </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">, errorMessage);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Same as {xref-Address-functionCall-address-bytes-}[`functionCall`],</span></span>
+<span class="line"><span style="color:#6A737D">     * but also transferring `value` wei to `target`.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Requirements:</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * - the calling contract must have an ETH balance of at least `value`.</span></span>
+<span class="line"><span style="color:#6A737D">     * - the called Solidity function must be `payable`.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * _Available since v3.1._</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> functionCallWithValue</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#79B8FF">        address</span><span style="color:#FFAB70"> target</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes</span><span style="color:#F97583"> memory</span><span style="color:#FFAB70"> data</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#FFAB70"> value</span></span>
+<span class="line"><span style="color:#E1E4E8">    ) </span><span style="color:#F97583">internal</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">bytes</span><span style="color:#F97583"> memory</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#B392F0"> functionCallWithValue</span><span style="color:#E1E4E8">(target, data, value, </span><span style="color:#9ECBFF">"Address: low-level call with value failed"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Same as {xref-Address-functionCallWithValue-address-bytes-uint256-}[`functionCallWithValue`], but</span></span>
+<span class="line"><span style="color:#6A737D">     * with `errorMessage` as a fallback revert reason when `target` reverts.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * _Available since v3.1._</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> functionCallWithValue</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#79B8FF">        address</span><span style="color:#FFAB70"> target</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes</span><span style="color:#F97583"> memory</span><span style="color:#FFAB70"> data</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#FFAB70"> value</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        string</span><span style="color:#F97583"> memory</span><span style="color:#FFAB70"> errorMessage</span></span>
+<span class="line"><span style="color:#E1E4E8">    ) </span><span style="color:#F97583">internal</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">bytes</span><span style="color:#F97583"> memory</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        require</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">).balance </span><span style="color:#F97583">&gt;=</span><span style="color:#E1E4E8"> value, </span><span style="color:#9ECBFF">"Address: insufficient balance for call"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">        require</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">isContract</span><span style="color:#E1E4E8">(target), </span><span style="color:#9ECBFF">"Address: call to non-contract"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">        (</span><span style="color:#79B8FF">bool</span><span style="color:#E1E4E8"> success, </span><span style="color:#79B8FF">bytes</span><span style="color:#F97583"> memory</span><span style="color:#E1E4E8"> returndata) </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> target.call{value</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> value}(data);</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#B392F0"> verifyCallResult</span><span style="color:#E1E4E8">(success, returndata, errorMessage);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Same as {xref-Address-functionCall-address-bytes-}[`functionCall`],</span></span>
+<span class="line"><span style="color:#6A737D">     * but performing a static call.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * _Available since v3.3._</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> functionStaticCall</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> target</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">bytes</span><span style="color:#F97583"> memory</span><span style="color:#FFAB70"> data</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">internal</span><span style="color:#F97583"> view</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">bytes</span><span style="color:#F97583"> memory</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#B392F0"> functionStaticCall</span><span style="color:#E1E4E8">(target, data, </span><span style="color:#9ECBFF">"Address: low-level static call failed"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Same as {xref-Address-functionCall-address-bytes-string-}[`functionCall`],</span></span>
+<span class="line"><span style="color:#6A737D">     * but performing a static call.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * _Available since v3.3._</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> functionStaticCall</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#79B8FF">        address</span><span style="color:#FFAB70"> target</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes</span><span style="color:#F97583"> memory</span><span style="color:#FFAB70"> data</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        string</span><span style="color:#F97583"> memory</span><span style="color:#FFAB70"> errorMessage</span></span>
+<span class="line"><span style="color:#E1E4E8">    ) </span><span style="color:#F97583">internal</span><span style="color:#F97583"> view</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">bytes</span><span style="color:#F97583"> memory</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        require</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">isContract</span><span style="color:#E1E4E8">(target), </span><span style="color:#9ECBFF">"Address: static call to non-contract"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">        (</span><span style="color:#79B8FF">bool</span><span style="color:#E1E4E8"> success, </span><span style="color:#79B8FF">bytes</span><span style="color:#F97583"> memory</span><span style="color:#E1E4E8"> returndata) </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> target.</span><span style="color:#B392F0">staticcall</span><span style="color:#E1E4E8">(data);</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#B392F0"> verifyCallResult</span><span style="color:#E1E4E8">(success, returndata, errorMessage);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Same as {xref-Address-functionCall-address-bytes-}[`functionCall`],</span></span>
+<span class="line"><span style="color:#6A737D">     * but performing a delegate call.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * _Available since v3.4._</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> functionDelegateCall</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> target</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">bytes</span><span style="color:#F97583"> memory</span><span style="color:#FFAB70"> data</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">internal</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">bytes</span><span style="color:#F97583"> memory</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#B392F0"> functionDelegateCall</span><span style="color:#E1E4E8">(target, data, </span><span style="color:#9ECBFF">"Address: low-level delegate call failed"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Same as {xref-Address-functionCall-address-bytes-string-}[`functionCall`],</span></span>
+<span class="line"><span style="color:#6A737D">     * but performing a delegate call.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * _Available since v3.4._</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> functionDelegateCall</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#79B8FF">        address</span><span style="color:#FFAB70"> target</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes</span><span style="color:#F97583"> memory</span><span style="color:#FFAB70"> data</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        string</span><span style="color:#F97583"> memory</span><span style="color:#FFAB70"> errorMessage</span></span>
+<span class="line"><span style="color:#E1E4E8">    ) </span><span style="color:#F97583">internal</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">bytes</span><span style="color:#F97583"> memory</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        require</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">isContract</span><span style="color:#E1E4E8">(target), </span><span style="color:#9ECBFF">"Address: delegate call to non-contract"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">        (</span><span style="color:#79B8FF">bool</span><span style="color:#E1E4E8"> success, </span><span style="color:#79B8FF">bytes</span><span style="color:#F97583"> memory</span><span style="color:#E1E4E8"> returndata) </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> target.</span><span style="color:#B392F0">delegatecall</span><span style="color:#E1E4E8">(data);</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#B392F0"> verifyCallResult</span><span style="color:#E1E4E8">(success, returndata, errorMessage);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Tool to verifies that a low level call was successful, and revert if it wasn't, either by bubbling the</span></span>
+<span class="line"><span style="color:#6A737D">     * revert reason using the provided one.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * _Available since v4.3._</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> verifyCallResult</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#79B8FF">        bool</span><span style="color:#FFAB70"> success</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes</span><span style="color:#F97583"> memory</span><span style="color:#FFAB70"> returndata</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        string</span><span style="color:#F97583"> memory</span><span style="color:#FFAB70"> errorMessage</span></span>
+<span class="line"><span style="color:#E1E4E8">    ) </span><span style="color:#F97583">internal</span><span style="color:#F97583"> pure</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">bytes</span><span style="color:#F97583"> memory</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (success) {</span></span>
+<span class="line"><span style="color:#F97583">            return</span><span style="color:#E1E4E8"> returndata;</span></span>
+<span class="line"><span style="color:#E1E4E8">        } </span><span style="color:#F97583">else</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">            // Look for revert reason and bubble it up if present</span></span>
+<span class="line"><span style="color:#F97583">            if</span><span style="color:#E1E4E8"> (returndata.length </span><span style="color:#F97583">&gt;</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">                // The easiest way to bubble the revert reason is using memory via assembly</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">                assembly</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">                    let</span><span style="color:#E1E4E8"> returndata_size </span><span style="color:#F97583">:=</span><span style="color:#B392F0"> mload</span><span style="color:#E1E4E8">(returndata)</span></span>
+<span class="line"><span style="color:#F97583">                    revert</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">add</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">32</span><span style="color:#E1E4E8">, returndata), returndata_size)</span></span>
+<span class="line"><span style="color:#E1E4E8">                }</span></span>
+<span class="line"><span style="color:#E1E4E8">            } </span><span style="color:#F97583">else</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">                revert</span><span style="color:#E1E4E8">(errorMessage);</span></span>
+<span class="line"><span style="color:#E1E4E8">            }</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// File: workspaces/default_workspace/samuraisanta.sol</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * SPDX-License-Identifier: MIT</span></span>
+<span class="line"><span style="color:#6A737D"> *</span></span>
+<span class="line"><span style="color:#6A737D"> * Copyright (c) 2022 WYE Company</span></span>
+<span class="line"><span style="color:#6A737D"> *</span></span>
+<span class="line"><span style="color:#6A737D"> * Permission is hereby granted, free of charge, to any person obtaining a copy</span></span>
+<span class="line"><span style="color:#6A737D"> * of this software and associated documentation files (the "Software"), to deal</span></span>
+<span class="line"><span style="color:#6A737D"> * in the Software without restriction, including without limitation the rights</span></span>
+<span class="line"><span style="color:#6A737D"> * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell</span></span>
+<span class="line"><span style="color:#6A737D"> * copies of the Software, and to permit persons to whom the Software is</span></span>
+<span class="line"><span style="color:#6A737D"> * furnished to do so, subject to the following conditions:</span></span>
+<span class="line"><span style="color:#6A737D"> *</span></span>
+<span class="line"><span style="color:#6A737D"> * The above copyright notice and this permission notice shall be included in</span></span>
+<span class="line"><span style="color:#6A737D"> * copies or substantial portions of the Software.</span></span>
+<span class="line"><span style="color:#6A737D"> *</span></span>
+<span class="line"><span style="color:#6A737D"> * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span></span>
+<span class="line"><span style="color:#6A737D"> * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span></span>
+<span class="line"><span style="color:#6A737D"> * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</span></span>
+<span class="line"><span style="color:#6A737D"> * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</span></span>
+<span class="line"><span style="color:#6A737D"> * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,</span></span>
+<span class="line"><span style="color:#6A737D"> * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE</span></span>
+<span class="line"><span style="color:#6A737D"> * SOFTWARE.</span></span>
+<span class="line"><span style="color:#6A737D"> *</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">pragma</span><span style="color:#85E89D"> solidity</span><span style="color:#79B8FF"> 0.8.13</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">interface</span><span style="color:#B392F0"> akuNFT</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> airdropProgress</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">external</span><span style="color:#F97583"> view</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">contract</span><span style="color:#B392F0"> AkuAuction</span><span style="color:#F97583"> is</span><span style="color:#B392F0"> Ownable</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    using</span><span style="color:#B392F0"> Strings</span><span style="color:#F97583"> for</span><span style="color:#B392F0"> uint256</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF">    address</span><span style="color:#F97583"> payable</span><span style="color:#F97583"> immutable</span><span style="color:#E1E4E8"> project;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#F97583"> public</span><span style="color:#E1E4E8"> maxNFTs </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 15000</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#F97583"> public</span><span style="color:#E1E4E8"> totalForAuction </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 5495</span><span style="color:#E1E4E8">; </span><span style="color:#6A737D">//529 + 2527 + 6449</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    struct</span><span style="color:#B392F0"> bids</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">        address</span><span style="color:#E1E4E8"> bidder;</span></span>
+<span class="line"><span style="color:#79B8FF">        uint80</span><span style="color:#E1E4E8"> price;</span></span>
+<span class="line"><span style="color:#79B8FF">        uint8</span><span style="color:#E1E4E8"> bidsPlaced;</span></span>
+<span class="line"><span style="color:#79B8FF">        uint8</span><span style="color:#E1E4E8"> finalProcess; </span><span style="color:#6A737D">//0: Not processed, 1: refunded, 2: withdrawn</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#F97583"> private</span><span style="color:#F97583"> constant</span><span style="color:#E1E4E8"> DURATION </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 126</span><span style="color:#79B8FF"> minutes</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#F97583"> public</span><span style="color:#F97583"> immutable</span><span style="color:#E1E4E8"> startingPrice;</span></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#F97583"> public</span><span style="color:#F97583"> immutable</span><span style="color:#E1E4E8"> startAt;</span></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#F97583"> public</span><span style="color:#E1E4E8"> expiresAt;</span></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#F97583"> public</span><span style="color:#F97583"> immutable</span><span style="color:#E1E4E8"> discountRate;</span></span>
+<span class="line"><span style="color:#F97583">    mapping</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#F97583">=&gt;</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">public</span><span style="color:#E1E4E8"> mintPassOwner;</span></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#F97583"> public</span><span style="color:#F97583"> constant</span><span style="color:#E1E4E8"> mintPassDiscount </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0.5</span><span style="color:#79B8FF"> ether</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">    mapping</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#F97583"> =&gt;</span><span style="color:#79B8FF"> uint256</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">public</span><span style="color:#E1E4E8"> personalBids;</span></span>
+<span class="line"><span style="color:#F97583">    mapping</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint256</span><span style="color:#F97583"> =&gt;</span><span style="color:#E1E4E8"> bids) </span><span style="color:#F97583">public</span><span style="color:#E1E4E8"> allBids;</span></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#F97583"> public</span><span style="color:#E1E4E8"> bidIndex </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#F97583"> public</span><span style="color:#E1E4E8"> totalBids;</span></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#F97583"> public</span><span style="color:#E1E4E8"> totalBidValue;</span></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#F97583"> public</span><span style="color:#E1E4E8"> maxBids </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 3</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#F97583"> public</span><span style="color:#E1E4E8"> refundProgress </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    akuNFT </span><span style="color:#F97583">public</span><span style="color:#E1E4E8"> akuNFTs;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    constructor</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8"> _project, </span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#FFAB70"> startingTime</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#E1E4E8"> _startingPrice,</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#E1E4E8"> _discountRate)</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#E1E4E8">        project </span><span style="color:#F97583">=</span><span style="color:#F97583"> payable</span><span style="color:#E1E4E8">(_project);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">        startingPrice </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> _startingPrice;</span></span>
+<span class="line"><span style="color:#E1E4E8">        startAt </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> startingTime;</span></span>
+<span class="line"><span style="color:#E1E4E8">        expiresAt </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> startAt </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> DURATION;</span></span>
+<span class="line"><span style="color:#E1E4E8">        discountRate </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> _discountRate;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">        require</span><span style="color:#E1E4E8">(_startingPrice </span><span style="color:#F97583">&gt;=</span><span style="color:#E1E4E8"> _discountRate </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> (DURATION</span><span style="color:#F97583">/</span><span style="color:#79B8FF">6</span><span style="color:#79B8FF"> minutes</span><span style="color:#E1E4E8">), </span><span style="color:#9ECBFF">"Starting price less than minimum"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> getPrice</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">public</span><span style="color:#F97583"> view</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">uint80</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#E1E4E8"> currentTime </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> block</span><span style="color:#E1E4E8">.timestamp;</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8">(currentTime </span><span style="color:#F97583">&gt;</span><span style="color:#E1E4E8"> expiresAt) currentTime </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> expiresAt;</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#E1E4E8"> timeElapsed </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> (currentTime </span><span style="color:#F97583">-</span><span style="color:#E1E4E8"> startAt) </span><span style="color:#F97583">/</span><span style="color:#79B8FF"> 6</span><span style="color:#79B8FF"> minutes</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#E1E4E8"> discount </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> discountRate </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> timeElapsed;</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#79B8FF"> uint80</span><span style="color:#E1E4E8">(startingPrice </span><span style="color:#F97583">-</span><span style="color:#E1E4E8"> discount);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> bid</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint8</span><span style="color:#FFAB70"> amount</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">external</span><span style="color:#F97583"> payable</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">        _bid</span><span style="color:#E1E4E8">(amount, </span><span style="color:#79B8FF">msg</span><span style="color:#E1E4E8">.value);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">    receive</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">external</span><span style="color:#F97583"> payable</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">        revert</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"Please use the bid function"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> _bid</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint8</span><span style="color:#FFAB70"> amount</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> value</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">internal</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">        require</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">block</span><span style="color:#E1E4E8">.timestamp </span><span style="color:#F97583">&gt;</span><span style="color:#E1E4E8"> startAt, </span><span style="color:#9ECBFF">"Auction not started yet"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">        require</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">block</span><span style="color:#E1E4E8">.timestamp </span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8"> expiresAt, </span><span style="color:#9ECBFF">"Auction expired"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#79B8FF">        uint80</span><span style="color:#E1E4E8"> price </span><span style="color:#F97583">=</span><span style="color:#B392F0"> getPrice</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#E1E4E8"> totalPrice </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> price </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> amount;</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (value </span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8"> totalPrice) {</span></span>
+<span class="line"><span style="color:#F97583">            revert</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"Bid not high enough"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#E1E4E8"> myBidIndex </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> personalBids[</span><span style="color:#79B8FF">msg.sender</span><span style="color:#E1E4E8">];</span></span>
+<span class="line"><span style="color:#E1E4E8">        bids </span><span style="color:#F97583">memory</span><span style="color:#E1E4E8"> myBids;</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#E1E4E8"> refund;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (myBidIndex </span><span style="color:#F97583">&gt;</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">            myBids </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> allBids[myBidIndex];</span></span>
+<span class="line"><span style="color:#E1E4E8">            refund </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> myBids.bidsPlaced </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> (myBids.price </span><span style="color:#F97583">-</span><span style="color:#E1E4E8"> price);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#E1E4E8"> _totalBids </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> totalBids </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> amount;</span></span>
+<span class="line"><span style="color:#E1E4E8">        myBids.bidsPlaced </span><span style="color:#F97583">+=</span><span style="color:#E1E4E8"> amount;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (myBids.bidsPlaced </span><span style="color:#F97583">&gt;</span><span style="color:#E1E4E8"> maxBids) {</span></span>
+<span class="line"><span style="color:#F97583">            revert</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"Bidding limits exceeded"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8">(_totalBids </span><span style="color:#F97583">&gt;</span><span style="color:#E1E4E8"> totalForAuction) {</span></span>
+<span class="line"><span style="color:#F97583">            revert</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"Auction Full"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">        } </span><span style="color:#F97583">else</span><span style="color:#F97583"> if</span><span style="color:#E1E4E8"> (_totalBids </span><span style="color:#F97583">==</span><span style="color:#E1E4E8"> totalForAuction) {</span></span>
+<span class="line"><span style="color:#E1E4E8">            expiresAt </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> block</span><span style="color:#E1E4E8">.timestamp; </span><span style="color:#6A737D">//Auction filled</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">        myBids.price </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> price;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (myBidIndex </span><span style="color:#F97583">&gt;</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">            allBids[myBidIndex] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> myBids;</span></span>
+<span class="line"><span style="color:#E1E4E8">        } </span><span style="color:#F97583">else</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">            myBids.bidder </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> msg.sender</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">            personalBids[</span><span style="color:#79B8FF">msg.sender</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> bidIndex;</span></span>
+<span class="line"><span style="color:#E1E4E8">            allBids[bidIndex] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> myBids;</span></span>
+<span class="line"><span style="color:#E1E4E8">            bidIndex</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span></span>
+<span class="line"><span style="color:#E1E4E8">        totalBids </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> _totalBids;</span></span>
+<span class="line"><span style="color:#E1E4E8">        totalBidValue </span><span style="color:#F97583">+=</span><span style="color:#E1E4E8"> totalPrice;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">        refund </span><span style="color:#F97583">+=</span><span style="color:#E1E4E8"> value </span><span style="color:#F97583">-</span><span style="color:#E1E4E8"> totalPrice;</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (refund </span><span style="color:#F97583">&gt;</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">            (</span><span style="color:#79B8FF">bool</span><span style="color:#E1E4E8"> sent, ) </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> msg.sender</span><span style="color:#E1E4E8">.call{value</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> refund}(</span><span style="color:#9ECBFF">""</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">            require</span><span style="color:#E1E4E8">(sent, </span><span style="color:#9ECBFF">"Failed to refund bidder"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> loadMintPassOwners</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">calldata</span><span style="color:#FFAB70"> owners</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">calldata</span><span style="color:#FFAB70"> amounts</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">external</span><span style="color:#B392F0"> onlyOwner</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">        for</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">; i </span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8"> owners.length; i</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">            mintPassOwner[owners[i]] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> amounts[i];</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> myBidCount</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> user</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">public</span><span style="color:#F97583"> view</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> allBids[personalBids[user]].bidsPlaced;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> myBidData</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> user</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">external</span><span style="color:#F97583"> view</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">bids</span><span style="color:#F97583"> memory</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> allBids[personalBids[user]];</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> setNFTContract</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8"> _contract) </span><span style="color:#F97583">external</span><span style="color:#B392F0"> onlyOwner</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">        akuNFTs </span><span style="color:#F97583">=</span><span style="color:#B392F0"> akuNFT</span><span style="color:#E1E4E8">(_contract);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> emergencyWithdraw</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">external</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">        require</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">block</span><span style="color:#E1E4E8">.timestamp </span><span style="color:#F97583">&gt;</span><span style="color:#E1E4E8"> expiresAt </span><span style="color:#F97583">+</span><span style="color:#79B8FF"> 3</span><span style="color:#79B8FF"> days</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"Please wait for airdrop period."</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span></span>
+<span class="line"><span style="color:#E1E4E8">        bids </span><span style="color:#F97583">memory</span><span style="color:#E1E4E8"> bidData </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> allBids[personalBids[</span><span style="color:#79B8FF">msg.sender</span><span style="color:#E1E4E8">]];</span></span>
+<span class="line"><span style="color:#F97583">        require</span><span style="color:#E1E4E8">(bidData.bidsPlaced </span><span style="color:#F97583">&gt;</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"No bids placed"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">        require</span><span style="color:#E1E4E8">(bidData.finalProcess </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"Refund already processed"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">        allBids[personalBids[</span><span style="color:#79B8FF">msg.sender</span><span style="color:#E1E4E8">]].finalProcess </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 2</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">        (</span><span style="color:#79B8FF">bool</span><span style="color:#E1E4E8"> sent, ) </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> bidData.bidder.call{value</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> bidData.price </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> bidData.bidsPlaced}(</span><span style="color:#9ECBFF">""</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">        require</span><span style="color:#E1E4E8">(sent, </span><span style="color:#9ECBFF">"Failed to refund bidder"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> processRefunds</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">external</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">      require</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">block</span><span style="color:#E1E4E8">.timestamp </span><span style="color:#F97583">&gt;</span><span style="color:#E1E4E8"> expiresAt, </span><span style="color:#9ECBFF">"Auction still in progress"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#79B8FF">      uint256</span><span style="color:#E1E4E8"> _refundProgress </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> refundProgress;</span></span>
+<span class="line"><span style="color:#79B8FF">      uint256</span><span style="color:#E1E4E8"> _bidIndex </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> bidIndex;</span></span>
+<span class="line"><span style="color:#F97583">      require</span><span style="color:#E1E4E8">(_refundProgress </span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8"> _bidIndex, </span><span style="color:#9ECBFF">"Refunds already processed"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">      </span></span>
+<span class="line"><span style="color:#79B8FF">      uint256</span><span style="color:#E1E4E8"> gasUsed;</span></span>
+<span class="line"><span style="color:#79B8FF">      uint256</span><span style="color:#E1E4E8"> gasLeft </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> gasleft</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#79B8FF">      uint256</span><span style="color:#E1E4E8"> price </span><span style="color:#F97583">=</span><span style="color:#B392F0"> getPrice</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">      </span></span>
+<span class="line"><span style="color:#F97583">      for</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8"> i</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">_refundProgress; gasUsed </span><span style="color:#F97583">&lt;</span><span style="color:#79B8FF"> 5000000</span><span style="color:#F97583"> &amp;&amp;</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8"> _bidIndex; i</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">          bids </span><span style="color:#F97583">memory</span><span style="color:#E1E4E8"> bidData </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> allBids[i];</span></span>
+<span class="line"><span style="color:#F97583">          if</span><span style="color:#E1E4E8"> (bidData.finalProcess </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#79B8FF">            uint256</span><span style="color:#E1E4E8"> refund </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> (bidData.price </span><span style="color:#F97583">-</span><span style="color:#E1E4E8"> price) </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> bidData.bidsPlaced;</span></span>
+<span class="line"><span style="color:#79B8FF">            uint256</span><span style="color:#E1E4E8"> passes </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> mintPassOwner[bidData.bidder];</span></span>
+<span class="line"><span style="color:#F97583">            if</span><span style="color:#E1E4E8"> (passes </span><span style="color:#F97583">&gt;</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">                refund </span><span style="color:#F97583">+=</span><span style="color:#E1E4E8"> mintPassDiscount </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> (bidData.bidsPlaced </span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8"> passes </span><span style="color:#F97583">?</span><span style="color:#E1E4E8"> bidData.bidsPlaced </span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> passes);</span></span>
+<span class="line"><span style="color:#E1E4E8">            }</span></span>
+<span class="line"><span style="color:#E1E4E8">            allBids[i].finalProcess </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">            if</span><span style="color:#E1E4E8"> (refund </span><span style="color:#F97583">&gt;</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">                (</span><span style="color:#79B8FF">bool</span><span style="color:#E1E4E8"> sent, ) </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> bidData.bidder.call{value</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> refund}(</span><span style="color:#9ECBFF">""</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">                require</span><span style="color:#E1E4E8">(sent, </span><span style="color:#9ECBFF">"Failed to refund bidder"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">            }</span></span>
+<span class="line"><span style="color:#E1E4E8">          }</span></span>
+<span class="line"><span style="color:#E1E4E8">          </span></span>
+<span class="line"><span style="color:#E1E4E8">          gasUsed </span><span style="color:#F97583">+=</span><span style="color:#E1E4E8"> gasLeft </span><span style="color:#F97583">-</span><span style="color:#79B8FF"> gasleft</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">          gasLeft </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> gasleft</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">          _refundProgress</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">      refundProgress </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> _refundProgress;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> claimProjectFunds</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">external</span><span style="color:#B392F0"> onlyOwner</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">        require</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">block</span><span style="color:#E1E4E8">.timestamp </span><span style="color:#F97583">&gt;</span><span style="color:#E1E4E8"> expiresAt, </span><span style="color:#9ECBFF">"Auction still in progress"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">        require</span><span style="color:#E1E4E8">(refundProgress </span><span style="color:#F97583">&gt;=</span><span style="color:#E1E4E8"> totalBids, </span><span style="color:#9ECBFF">"Refunds not yet processed"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">        require</span><span style="color:#E1E4E8">(akuNFTs.</span><span style="color:#B392F0">airdropProgress</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">&gt;=</span><span style="color:#E1E4E8"> totalBids, </span><span style="color:#9ECBFF">"Airdrop not complete"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">        (</span><span style="color:#79B8FF">bool</span><span style="color:#E1E4E8"> sent, ) </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> project.call{value</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">).balance}(</span><span style="color:#9ECBFF">""</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">        require</span><span style="color:#E1E4E8">(sent, </span><span style="color:#9ECBFF">"Failed to withdraw"</span><span style="color:#E1E4E8">);        </span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> getAuctionDetails</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> user</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">external</span><span style="color:#F97583"> view</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> remainingNFTs</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> expires</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> currentPrice</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> userBids</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">        remainingNFTs </span><span style="color:#F97583">=</span><span style="color:#E1E4E8">  totalForAuction </span><span style="color:#F97583">-</span><span style="color:#E1E4E8"> totalBids;</span></span>
+<span class="line"><span style="color:#E1E4E8">        expires </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> expiresAt;</span></span>
+<span class="line"><span style="color:#E1E4E8">        currentPrice </span><span style="color:#F97583">=</span><span style="color:#B392F0"> getPrice</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8">(user </span><span style="color:#F97583">!=</span><span style="color:#79B8FF"> address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">))</span></span>
+<span class="line"><span style="color:#E1E4E8">            userBids </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> allBids[personalBids[user]].bidsPlaced;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="小结">小结</h3>
+<ul>
+<li>Web3 DoS ≠ 传统流量型 DDoS，核心是<strong>逻辑让服务停摆</strong></li>
+<li>Akutar：<code>processRefunds</code> 的 push+require 可被 grief；<code>claimProjectFunds</code> 条件错误导致 <strong>ETH 永久锁定</strong></li>
+<li>生产实践：退款/分账尽量 <strong>pull</strong>；外部调用失败隔离；条件变量语义写对并审计</li>
+</ul>
+</div><script type="module">function e(e){let t=e.getAttribute(`data-language`)?.trim();if(t)return t===`text`||t===`plaintext`||t===`txt`?`text`:t;let n=e.querySelector(`code`)?.className||e.className||``,r=/language-([a-z0-9_+-]+)/i.exec(n);return r?.[1]?r[1]:`code`}function t(t){if(t.closest(`[data-mac-window]`)||t.dataset.macEnhanced===`1`)return;t.dataset.macEnhanced=`1`;let n=document.createElement(`figure`);n.className=`mac-window`,n.setAttribute(`data-mac-window`,``);let r=document.createElement(`div`);r.className=`mac-titlebar`,r.innerHTML=`
+      <div class="mac-dots" aria-hidden="true">
+        <span class="dot red"></span>
+        <span class="dot yellow"></span>
+        <span class="dot green"></span>
+      </div>
+      <span class="mac-title"></span>
+      <button type="button" class="mac-copy" data-mac-copy aria-label="复制代码">复制</button>
+    `;let i=r.querySelector(`.mac-title`);i&&(i.textContent=e(t));let a=document.createElement(`div`);a.className=`mac-body`,t.parentNode?.insertBefore(n,t),a.appendChild(t),n.appendChild(r),n.appendChild(a)}async function n(e){if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(e);return}let t=document.createElement(`textarea`);t.value=e,t.style.position=`fixed`,t.style.opacity=`0`,document.body.appendChild(t),t.select(),document.execCommand(`copy`),t.remove()}function r(e=document){e.querySelectorAll(`[data-mac-copy]`).forEach(e=>{e.dataset.bound!==`1`&&(e.dataset.bound=`1`,e.addEventListener(`click`,async()=>{let t=e.closest(`[data-mac-window]`)?.querySelector(`pre`)?.textContent??``;try{await n(t);let r=e.textContent;e.textContent=`已复制`,e.classList.add(`is-copied`),window.setTimeout(()=>{e.textContent=r||`复制`,e.classList.remove(`is-copied`)},1600)}catch{e.textContent=`失败`,window.setTimeout(()=>{e.textContent=`复制`},1600)}}))})}function i(){document.querySelectorAll(`.prose pre`).forEach(t),r()}i(),document.addEventListener(`astro:page-load`,i);</script></article><nav class="pager wrap-narrow" aria-label="上下篇" data-astro-cid-tldeq5d5><p data-astro-cid-tldeq5d5>上一篇：<a href="/web3/dutch-auction/" data-astro-cid-tldeq5d5>荷兰拍卖</a></p><p data-astro-cid-tldeq5d5>下一篇：<a href="/web3/cross-chain-bridge/" data-astro-cid-tldeq5d5>跨链桥</a></p></nav><section class="related" data-astro-cid-tldeq5d5><div class="wrap" data-astro-cid-tldeq5d5><h2 data-astro-cid-tldeq5d5>继续阅读</h2><ol class="related-grid" data-astro-cid-tldeq5d5><li data-astro-cid-tldeq5d5><a class="related-topic" href="/web3/" data-astro-cid-tldeq5d5>区块链</a><a class="related-title" href="/web3/airdrop/" data-astro-cid-tldeq5d5>空投</a><p data-astro-cid-tldeq5d5>空投</p></li><li data-astro-cid-tldeq5d5><a class="related-topic" href="/web3/" data-astro-cid-tldeq5d5>区块链</a><a class="related-title" href="/web3/cross-chain-bridge/" data-astro-cid-tldeq5d5>跨链桥</a><p data-astro-cid-tldeq5d5>跨链桥</p></li><li data-astro-cid-tldeq5d5><a class="related-topic" href="/web3/" data-astro-cid-tldeq5d5>区块链</a><a class="related-title" href="/web3/dutch-auction/" data-astro-cid-tldeq5d5>荷兰拍卖</a><p data-astro-cid-tldeq5d5>荷兰拍卖</p></li></ol></div></section></main><footer class="site-footer" data-astro-cid-jo6i4kqk><div class="wrap bar" data-astro-cid-jo6i4kqk><a class="brand" href="/" data-astro-cid-jo6i4kqk>rty</a><div class="social" aria-label="社交链接" data-astro-cid-jo6i4kqk><a href="mailto:peonyfoals@gmail.com" aria-label="Email" data-astro-cid-jo6i4kqk><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" data-astro-cid-jo6i4kqk><path fill="currentColor" d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5L4 8V6l8 5 8-5v2z" data-astro-cid-jo6i4kqk></path></svg></a><a href="/rss.xml" aria-label="RSS" data-astro-cid-jo6i4kqk><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" data-astro-cid-jo6i4kqk><path fill="currentColor" d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20 5 20 4 19 4 17.82c0-1.2.98-2.18 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27zm0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93z" data-astro-cid-jo6i4kqk></path></svg></a><a href="/archive/" aria-label="归档" data-astro-cid-jo6i4kqk><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" data-astro-cid-jo6i4kqk><path fill="currentColor" d="M4 6h16v2H4zm0 5h16v2H4zm0 5h10v2H4z" data-astro-cid-jo6i4kqk></path></svg></a></div><p class="meta" data-astro-cid-jo6i4kqk>© 2026 peony</p></div></footer></body></html>

@@ -1,0 +1,464 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="浏览器&amp;网络"><meta name="author" content="peony"><meta name="generator" content="Astro v7.1.1"><meta name="theme-color" content="#ffffff"><link rel="canonical" href="https://langzyw.xyz/web/%E6%B5%8F%E8%A7%88%E5%99%A8-%E7%BD%91%E7%BB%9C/"><link rel="alternate" type="application/rss+xml" title="rty" href="/rss.xml"><meta property="og:type" content="website"><meta property="og:site_name" content="rty"><meta property="og:title" content="浏览器&amp;网络 · rty"><meta property="og:description" content="浏览器&amp;网络"><meta property="og:url" content="https://langzyw.xyz/web/%E6%B5%8F%E8%A7%88%E5%99%A8-%E7%BD%91%E7%BB%9C/"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><title>浏览器&amp;网络 · rty</title><link rel="stylesheet" href="/_astro/Footer.C9xAhOzk.css"><link rel="stylesheet" href="/_astro/_..B6QWlgH6.css"></head><body><header class="site-header" data-astro-cid-nen7h5rs><div class="wrap bar" data-astro-cid-nen7h5rs><div class="bar-flex" data-astro-cid-nen7h5rs><a class="brand" href="/" data-astro-cid-nen7h5rs>rty</a><nav class="nav" aria-label="主导航" data-astro-cid-nen7h5rs><a class="nav-link" href="/" data-astro-cid-nen7h5rs>首页</a><a class="nav-link active" href="/web/" aria-current="page" data-astro-cid-nen7h5rs>前端</a><a class="nav-link" href="/python/" data-astro-cid-nen7h5rs>python</a><a class="nav-link" href="/llm/" data-astro-cid-nen7h5rs>llm</a><a class="nav-link" href="/web3/" data-astro-cid-nen7h5rs>区块链</a><a class="nav-link" href="/about/" data-astro-cid-nen7h5rs>关于</a></nav></div><button class="search-btn" type="button" aria-label="搜索" data-search-open data-astro-cid-nen7h5rs><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" data-astro-cid-nen7h5rs><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="1.6" data-astro-cid-nen7h5rs></circle><path d="M16.5 16.5L21 21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" data-astro-cid-nen7h5rs></path></svg></button></div></header><dialog class="search-dialog" data-search-dialog data-astro-cid-nen7h5rs><form class="search-panel" method="dialog" data-astro-cid-nen7h5rs><label class="sr-only" for="site-search" data-astro-cid-nen7h5rs>搜索文章</label><input id="site-search" class="search-input" type="search" placeholder="搜索文章…" autocomplete="off" data-search-input data-astro-cid-nen7h5rs><button class="search-close" value="cancel" type="submit" aria-label="关闭" data-astro-cid-nen7h5rs>×</button></form><ul class="search-results" data-search-results data-astro-cid-nen7h5rs></ul></dialog><script>(function(){const searchIndexUrl = "/search-index.json";
+
+  const openBtn = document.querySelector("[data-search-open]");
+  const dialog = document.querySelector("[data-search-dialog]");
+  const input = document.querySelector("[data-search-input]");
+  const results = document.querySelector("[data-search-results]");
+
+  if (
+    openBtn &&
+    dialog instanceof HTMLDialogElement &&
+    input instanceof HTMLInputElement &&
+    results
+  ) {
+    let index = [];
+    let loaded = false;
+
+    async function ensureIndex() {
+      if (loaded) return;
+      const res = await fetch(searchIndexUrl);
+      index = await res.json();
+      loaded = true;
+    }
+
+    function render(q) {
+      const query = q.trim().toLowerCase();
+      if (!query) {
+        results.innerHTML = "";
+        return;
+      }
+      const hits = index
+        .filter((item) =>
+          `${item.title} ${item.description} ${item.topic}`
+            .toLowerCase()
+            .includes(query),
+        )
+        .slice(0, 8);
+      results.innerHTML = hits.length
+        ? hits
+            .map(
+              (item) =>
+                `<li><a href="${item.href}"><strong>${item.title}</strong><span>${item.description}</span></a></li>`,
+            )
+            .join("")
+        : `<li class="empty">没有匹配结果</li>`;
+    }
+
+    openBtn.addEventListener("click", async () => {
+      await ensureIndex();
+      dialog.showModal();
+      input.value = "";
+      results.innerHTML = "";
+      input.focus();
+    });
+
+    input.addEventListener("input", () => render(input.value));
+
+    dialog.addEventListener("click", (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+  }
+})();</script><main class="post-page" data-astro-cid-tldeq5d5><article data-astro-cid-tldeq5d5><header class="header wrap-narrow" data-astro-cid-tldeq5d5><a class="topic" href="/web/" data-astro-cid-tldeq5d5>前端</a><h1 data-astro-cid-tldeq5d5>浏览器&amp;网络</h1><p class="meta" data-astro-cid-tldeq5d5><time datetime="2026-07-17T00:00:00.000Z" data-astro-cid-tldeq5d5>2026年7月17日</time><span aria-hidden="true" data-astro-cid-tldeq5d5>·</span><span data-astro-cid-tldeq5d5>约 19 分钟</span></p><p class="tags" data-astro-cid-tldeq5d5><a href="/tags/浏览器&amp;网络/" data-astro-cid-tldeq5d5>浏览器&amp;网络</a><span data-astro-cid-tldeq5d5> · </span><a href="/tags/面试/" data-astro-cid-tldeq5d5>面试</a><span data-astro-cid-tldeq5d5> · </span><a href="/tags/前端/" data-astro-cid-tldeq5d5>前端</a></p></header><div class="hero-image wrap" data-astro-cid-tldeq5d5><img src="/images/covers/code-laptop.jpg" alt="" data-astro-cid-tldeq5d5></div><div class="prose wrap-narrow" data-astro-cid-tldeq5d5><h2 id="模块一浏览器原理与渲染机制">模块一：浏览器原理与渲染机制</h2>
+<h3 id="1-浏览器是多进程多线程架构吗请描述现代浏览器以-chrome-为例的进程模型">1. 浏览器是多进程多线程架构吗？请描述现代浏览器（以 Chrome 为例）的进程模型</h3>
+<p><strong>是的，现代浏览器是多进程且多线程的架构。</strong></p>
+<ul>
+<li><strong>浏览器主进程 (Browser Process)</strong>：负责界面显示（地址栏、书签）、前后进后退、网络请求、文件访问等。包含 UI 线程、网络线程、存储线程等。</li>
+<li><strong>渲染进程 (Renderer Process)</strong>：每个 Tab 页通常对应一个独立的渲染进程（保证隔离性，一个 Tab 崩溃不影响其他）。负责 HTML/CSS 解析、JS 执行、页面渲染。包含 GUI 渲染线程、JS 引擎线程、事件触发线程、定时器线程等。</li>
+<li><strong>GPU 进程 (GPU Process)</strong>：负责 3D 绘制、CSS 动画合成、硬件加速。</li>
+<li><strong>网络进程 (Network Process)</strong>：负责所有的网络请求（Chrome 后期从主进程剥离出来）。</li>
+<li><strong>插件/扩展进程</strong>：独立运行，防止插件崩溃影响浏览器。</li>
+</ul>
+<h3 id="2-从输入-url-到页面展示完整发生了什么">2. 从输入 URL 到页面展示，完整发生了什么？</h3>
+<ol>
+<li><strong>URL 解析与判断</strong>：判断是搜索还是 URL，补全协议（如 <code>http://</code>）。</li>
+<li><strong>查找缓存</strong>：依次查找浏览器缓存 -&gt; 操作系统缓存 -&gt; 路由器缓存 -&gt; ISP DNS 缓存。</li>
+<li><strong>DNS 解析</strong>：若缓存未命中，向 DNS 服务器发起查询，获取 IP 地址。</li>
+<li><strong>TCP 连接</strong>：与服务器进行 TCP 三次握手（若是 HTTPS 还需进行 TLS 握手）。</li>
+<li><strong>发送 HTTP 请求</strong>：构建请求报文（请求行、请求头、请求体），发送给服务器。</li>
+<li><strong>服务器处理与响应</strong>：服务器处理请求，返回 HTTP 响应报文（状态码、响应头、HTML 内容）。</li>
+<li><strong>浏览器解析与渲染</strong>：
+<ul>
+<li>解析 HTML 构建 <strong>DOM 树</strong>。</li>
+<li>解析 CSS 构建 <strong>CSSOM 树</strong>。</li>
+<li>合并生成 <strong>渲染树 (Render Tree)</strong>。</li>
+<li><strong>布局 (Layout)</strong>：计算节点几何信息（位置、大小）。</li>
+<li><strong>绘制 (Paint)</strong>：绘制像素。</li>
+<li><strong>合成 (Composite)</strong>：将图层合成为屏幕上的最终图像（GPU 加速）。</li>
+</ul>
+</li>
+<li><strong>JS 执行</strong>：遇到 <code>&lt;script&gt;</code> 标签时，暂停 DOM 构建，下载并执行 JS（可能修改 DOM/CSSOM）。</li>
+<li><strong>TCP 四次挥手</strong>：请求完成且连接空闲后，断开 TCP 连接（若是 Keep-Alive 则保持连接）。</li>
+</ol>
+<h3 id="3-dns-解析的完整过程与优化手段">3. DNS 解析的完整过程与优化手段</h3>
+<ul>
+<li><strong>过程</strong>：浏览器缓存 -&gt; OS 缓存 (<code>hosts</code> 文件) -&gt; 本地 DNS 服务器（递归查询） -&gt; 根域名服务器 -&gt; 顶级域名服务器（如 <code>.com</code>） -&gt; 权威域名服务器（返回最终 IP）。</li>
+<li><strong>优化手段</strong>：
+<ul>
+<li><strong>DNS 预解析</strong>：<code>&lt;link rel="dns-prefetch" href="//example.com"&gt;</code>。</li>
+<li><strong>HTTPDNS</strong>：使用 HTTP 协议直接向阿里云/腾讯云等 DNS 服务器请求解析，绕过运营商 LocalDNS，防劫持、防缓存不生效。</li>
+<li><strong>DNS-over-HTTPS (DoH)</strong>：加密 DNS 请求，防窃听和劫持。</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-浏览器的渲染流程关键渲染路径">4. 浏览器的渲染流程（关键渲染路径）</h3>
+<p><strong>关键渲染路径 (Critical Rendering Path)</strong> 是指从接收 HTML/CSS/JS 到像素渲染到屏幕上的全过程。</p>
+<ol>
+<li><strong>构建 DOM</strong>：解析 HTML，遇到标签创建节点，遇到 <code>&lt;script&gt;</code> 阻塞解析。</li>
+<li><strong>构建 CSSOM</strong>：解析 CSS，构建样式规则树。</li>
+<li><strong>构建 Render Tree</strong>：将 DOM 和 CSSOM 结合，忽略不可见元素（如 <code>display: none</code>，但 <code>visibility: hidden</code> 会保留）。</li>
+<li><strong>Layout (回流)</strong>：计算 Render Tree 中每个节点的精确位置和大小。</li>
+<li><strong>Paint (重绘)</strong>：根据 Layout 结果，绘制节点的背景、颜色、边框、阴影等像素。</li>
+<li><strong>Composite (合成)</strong>：将节点分层，由 GPU 将图层合成为最终页面。</li>
+</ol>
+<h3 id="5-重排reflow和重绘repaint的区别触发与优化">5. 重排（Reflow）和重绘（Repaint）的区别？触发与优化</h3>
+<ul>
+<li><strong>重排 (Reflow/Layout)</strong>：元素的尺寸、位置发生变化，浏览器需要重新计算 Render Tree。<strong>必定触发重绘</strong>。</li>
+<li><strong>重绘 (Repaint)</strong>：元素外观（如颜色、背景）变化，但尺寸位置不变。浏览器重新绘制像素。<strong>不一定触发重排</strong>。</li>
+<li><strong>触发重排</strong>：添加/删除可见 DOM、改变元素位置/尺寸、读取 <code>offsetHeight/Width</code>、窗口 resize。</li>
+<li><strong>触发重绘</strong>：改变 <code>color</code>、<code>background-color</code>、<code>visibility</code>。</li>
+<li><strong>优化</strong>：批量修改 DOM（使用 <code>DocumentFragment</code> 或 <code>cssText</code>）、避免频繁读取布局信息、将复杂动画元素设置为绝对定位或固定定位（脱离文档流）。</li>
+</ul>
+<h3 id="6-什么是布局抖动layout-thrashing怎么解决">6. 什么是布局抖动（Layout Thrashing）？怎么解决？</h3>
+<ul>
+<li><strong>本质</strong>：在 JS 中<strong>交替进行</strong>“修改 DOM 样式”和“读取 DOM 布局信息（如 <code>offsetTop</code>）”。这会导致浏览器被迫中断渲染流水线，进行<strong>强制同步布局（Forced Synchronous Layout）</strong>，极大消耗性能。</li>
+<li><strong>解决</strong>：<strong>读写分离</strong>。先批量读取所有布局信息并缓存到变量中，然后再批量修改 DOM 样式。</li>
+</ul>
+<h3 id="7-什么是合成层compositing-layergpu-加速是怎么回事">7. 什么是合成层（Compositing Layer）？GPU 加速是怎么回事？</h3>
+<ul>
+<li><strong>合成层</strong>：浏览器在渲染时，会将页面拆分成多个图层（Layer）。某些特定的 CSS 属性（如 <code>transform</code>, <code>opacity</code>, <code>filter</code>）或特定元素（如 <code>&lt;video&gt;</code>, <code>&lt;iframe&gt;</code>, 设置了 <code>will-change</code> 的元素）会被提升为<strong>独立的合成层</strong>。</li>
+<li><strong>GPU 加速原理</strong>：独立的合成层会交由 GPU 进行合成（Composite）。当这些元素的 <code>transform</code> 或 <code>opacity</code> 改变时，<strong>不需要经过 Layout 和 Paint 阶段</strong>，直接在 GPU 中进行图层变换，性能极高。</li>
+</ul>
+<h3 id="8-script-标签的-defer-和-async-有什么区别">8. script 标签的 defer 和 async 有什么区别？</h3>
+<ul>
+<li><strong>无属性</strong>：阻塞 DOM 解析，下载并立即执行。</li>
+<li><strong>async (异步)</strong>：下载不阻塞 DOM 解析，<strong>下载完成后立即执行</strong>（会阻塞 DOM 解析），执行顺序不保证。适合独立脚本（如统计代码）。</li>
+<li><strong>defer (延迟)</strong>：下载不阻塞 DOM 解析，<strong>延迟到 DOM 解析完成后（DOMContentLoaded 之前）按顺序执行</strong>。适合有依赖关系的业务脚本。</li>
+</ul>
+<h3 id="9-domcontentloaded-和-load-事件的区别">9. DOMContentLoaded 和 load 事件的区别？</h3>
+<ul>
+<li><strong>DOMContentLoaded</strong>：HTML 文档被完全加载和解析完成，<strong>DOM 树构建完毕</strong>，无需等待样式表、图片、iframe 等子资源加载。</li>
+<li><strong>load</strong>：页面<strong>所有资源</strong>（包括图片、CSS、iframe 等）全部加载完毕。触发时间晚于前者。</li>
+</ul>
+<h3 id="10-事件的冒泡和捕获机制是什么事件委托如何实现">10. 事件的冒泡和捕获机制是什么？事件委托如何实现？</h3>
+<ul>
+<li><strong>机制</strong>：W3C 规定事件流分为三阶段：<strong>捕获阶段</strong>（从 window 到目标元素） -&gt; <strong>目标阶段</strong> -&gt; <strong>冒泡阶段</strong>（从目标元素到 window）。</li>
+<li><strong>事件委托</strong>：利用事件冒泡机制，将子元素的事件监听器绑定在<strong>父元素</strong>上。通过 <code>event.target</code> 判断实际触发事件的子元素。</li>
+<li><strong>优势</strong>：减少内存消耗（减少监听器数量）；动态添加的子元素自动拥有事件处理能力。</li>
+</ul>
+<h3 id="11-浏览器的事件循环event-loop和-node-的有什么不同">11. 浏览器的事件循环（Event Loop）和 Node 的有什么不同？</h3>
+<ul>
+<li><strong>浏览器</strong>：
+<ul>
+<li>执行同步代码（宏任务）。</li>
+<li>清空<strong>微任务队列</strong>（Promise.then, MutationObserver）。</li>
+<li>尝试渲染 UI（RequestAnimationFrame）。</li>
+<li>执行下一个<strong>宏任务</strong>（setTimeout, setInterval, I/O, UI rendering）。</li>
+</ul>
+</li>
+<li><strong>Node.js</strong>：基于 libuv，分为 <strong>6 个阶段</strong>（timers -&gt; pending callbacks -&gt; idle/prepare -&gt; poll -&gt; check -&gt; close callbacks）。微任务在<strong>每个阶段切换时</strong>执行，而不是像浏览器那样在宏任务执行完后执行。</li>
+</ul>
+<h3 id="12-requestanimationframe-和-requestidlecallback-的作用与区别">12. requestAnimationFrame 和 requestIdleCallback 的作用与区别？</h3>
+<ul>
+<li><strong>rAF</strong>：在浏览器<strong>下一次重绘之前</strong>执行回调，频率与屏幕刷新率同步（通常 60Hz/16.6ms）。用于<strong>平滑动画</strong>。</li>
+<li><strong>rIC</strong>：在浏览器<strong>空闲时间</strong>执行回调。用于执行低优先级任务（如非关键日志上报、长列表预计算），不阻塞用户交互和动画。</li>
+<li><strong>对比 setTimeout</strong>：<code>setTimeout</code> 只是将任务加入宏任务队列，不关心浏览器渲染状态，可能导致掉帧；<code>rAF</code> 与渲染管线绑定，性能更好。</li>
+</ul>
+<h3 id="13-浏览器渲染与-js-执行的时机关系为什么先-promise-后渲染">13. 浏览器渲染与 JS 执行的时机关系？为什么“先 Promise 后渲染”？</h3>
+<ul>
+<li><strong>关系</strong>：JS 是单线程的，且可以修改 DOM。如果 JS 执行和渲染并行，会导致渲染状态不一致。因此，<strong>JS 执行会阻塞渲染</strong>。</li>
+<li><strong>先 Promise 后渲染</strong>：Promise 的回调属于<strong>微任务</strong>。浏览器在每次执行完一个宏任务（或同步代码）后，会<strong>先清空所有微任务</strong>，然后再进行 UI 渲染。这保证了 JS 对 DOM 的多次修改能在渲染前合并，避免中间状态被用户看到。</li>
+</ul>
+<hr>
+<h2 id="模块二缓存机制">模块二：缓存机制</h2>
+<h3 id="14-浏览器缓存的整体机制强缓存和协商缓存的区别">14. 浏览器缓存的整体机制？强缓存和协商缓存的区别？</h3>
+<ul>
+<li><strong>强缓存</strong>：不发请求，直接使用本地缓存。通过 <code>Cache-Control</code> (max-age) 或 <code>Expires</code> 控制。命中时状态码为 <code>200 (from memory/disk cache)</code>。</li>
+<li><strong>协商缓存</strong>：强缓存失效后，向服务器发请求，带上缓存标识（<code>If-None-Match</code> 或 <code>If-Modified-Since</code>）。服务器对比后，若未修改返回 <code>304 Not Modified</code>（使用本地缓存）；若修改了返回 <code>200</code> 及新资源。</li>
+</ul>
+<h3 id="15-cache-control-常用指令">15. Cache-Control 常用指令？</h3>
+<ul>
+<li><code>max-age=&lt;seconds&gt;</code>：缓存最大有效时间（相对时间）。</li>
+<li><code>no-cache</code>：不使用强缓存，每次都要走<strong>协商缓存</strong>。</li>
+<li><code>no-store</code>：绝对不缓存，每次都要重新下载。</li>
+<li><code>immutable</code>：在 max-age 内，内容绝对不变，连协商缓存都不走（常用于带 Hash 的静态资源）。</li>
+</ul>
+<h3 id="16-etag-和-last-modified-的优缺点为什么有了后者还要-etag">16. ETag 和 Last-Modified 的优缺点？为什么有了后者还要 ETag？</h3>
+<ul>
+<li><strong>Last-Modified</strong>：文件最后修改时间。<strong>缺点</strong>：精度只到秒；文件内容没变但修改时间变了（如 <code>touch</code> 命令），会导致缓存失效。</li>
+<li><strong>ETag</strong>：文件内容的哈希值（如 inode + 修改时间 + 大小，或内容 hash）。<strong>优点</strong>：更精确，只要内容不变，ETag 就不变。优先级高于 Last-Modified。</li>
+</ul>
+<h3 id="17-memory-cache-和-disk-cache-的区别">17. memory cache 和 disk cache 的区别？</h3>
+<ul>
+<li><strong>memory cache</strong>：内存缓存。速度极快，但容量小，<strong>Tab 页关闭即清除</strong>。通常缓存小体积、刚加载过的资源。</li>
+<li><strong>disk cache</strong>：磁盘缓存。速度较慢，容量大，<strong>持久化存储</strong>。通常缓存大文件或跨 Tab 共享的资源。</li>
+<li><strong>选择</strong>：浏览器优先查找 memory cache，未命中再找 disk cache。</li>
+</ul>
+<h3 id="18-service-worker-与-pwa">18. Service Worker 与 PWA</h3>
+<ul>
+<li><strong>Service Worker</strong>：运行在浏览器背后的独立线程，可以拦截和处理网络请求，管理缓存（Cache API），支持推送通知。</li>
+<li><strong>PWA (Progressive Web App)</strong>：一种 Web 技术集合，旨在提供类似原生 App 的体验。核心技术包括：Service Worker（离线缓存）、Web App Manifest（添加到主屏幕）、Push API。</li>
+</ul>
+<h3 id="19-用户刷新页面对缓存的影响">19. 用户刷新页面对缓存的影响？</h3>
+<ul>
+<li><strong>地址栏回车 / 点击链接</strong>：正常走缓存（强缓存 -&gt; 协商缓存）。</li>
+<li><strong>F5 / 点击刷新按钮</strong>：<strong>跳过强缓存</strong>，直接走协商缓存（带上 <code>Cache-Control: max-age=0</code>）。</li>
+<li><strong>Ctrl + F5 / 强制刷新</strong>：<strong>跳过所有缓存</strong>（强缓存和协商缓存都跳过），请求头带上 <code>Cache-Control: no-cache</code> 和 <code>Pragma: no-cache</code>。</li>
+</ul>
+<hr>
+<h2 id="模块三本地存储">模块三：本地存储</h2>
+<h3 id="20-cookielocalstoragesessionstorageindexeddb-的区别">20. Cookie、localStorage、sessionStorage、IndexedDB 的区别？</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left">特性</th>
+<th style="text-align: left">Cookie</th>
+<th style="text-align: left">localStorage</th>
+<th style="text-align: left">sessionStorage</th>
+<th style="text-align: left">IndexedDB</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left"><strong>容量</strong></td>
+<td style="text-align: left">4KB</td>
+<td style="text-align: left">5MB - 10MB</td>
+<td style="text-align: left">5MB - 10MB</td>
+<td style="text-align: left">极大 (通常 &gt; 50MB)</td>
+</tr>
+<tr>
+<td style="text-align: left"><strong>生命周期</strong></td>
+<td style="text-align: left">设定的过期时间</td>
+<td style="text-align: left">永久（需手动清除）</td>
+<td style="text-align: left">会话级（关闭 Tab 即清）</td>
+<td style="text-align: left">永久（需手动清除）</td>
+</tr>
+<tr>
+<td style="text-align: left"><strong>服务端通信</strong></td>
+<td style="text-align: left">每次请求自动携带</td>
+<td style="text-align: left">不参与</td>
+<td style="text-align: left">不参与</td>
+<td style="text-align: left">不参与</td>
+</tr>
+<tr>
+<td style="text-align: left"><strong>API</strong></td>
+<td style="text-align: left">需手动解析字符串</td>
+<td style="text-align: left">简单的 key-value</td>
+<td style="text-align: left">简单的 key-value</td>
+<td style="text-align: left">异步 API，支持索引/事务</td>
+</tr>
+</tbody>
+</table>
+<h3 id="21-cookie-的重要属性及作用">21. Cookie 的重要属性及作用？</h3>
+<ul>
+<li><code>Domain</code> / <code>Path</code>：限制 Cookie 的发送范围（域名和路径）。</li>
+<li><code>Expires</code> / <code>Max-Age</code>：设置过期时间。</li>
+<li><code>Secure</code>：仅在使用 HTTPS 时发送。</li>
+<li><code>HttpOnly</code>：<strong>禁止 JS 通过 <code>document.cookie</code> 访问</strong>，有效防御 XSS 攻击窃取 Cookie。</li>
+<li><code>SameSite</code>：限制跨站请求携带 Cookie（<code>Strict</code>, <code>Lax</code>, <code>None</code>），防御 CSRF。</li>
+</ul>
+<h3 id="22-localstorage-存-token-安全吗和-cookie-怎么选">22. localStorage 存 Token 安全吗？和 Cookie 怎么选？</h3>
+<ul>
+<li><strong>不安全</strong>：<code>localStorage</code> 无法设置 <code>HttpOnly</code>，一旦发生 <strong>XSS 攻击</strong>，Token 会被直接窃取。</li>
+<li><strong>选择</strong>：
+<ul>
+<li><strong>推荐方案</strong>：将 Access Token 存入 <strong>HttpOnly Cookie</strong>（防 XSS），结合 <code>SameSite</code> 和 CSRF Token（防 CSRF）。</li>
+<li><strong>折中方案</strong>：若必须用 <code>localStorage</code>（如跨域场景），需严格防范 XSS，并使用短效 Access Token + 长效 Refresh Token。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="模块四跨域与安全">模块四：跨域与安全</h2>
+<h3 id="23-什么是同源策略限制了什么">23. 什么是同源策略？限制了什么？</h3>
+<ul>
+<li><strong>同源</strong>：协议、域名、端口完全一致。</li>
+<li><strong>限制</strong>：1) 无法读取跨域的 Cookie/LocalStorage；2) 无法操作跨域的 DOM；3) 无法发送跨域的 XHR/Fetch 请求（受 CORS 限制）。</li>
+</ul>
+<h3 id="24-cors-跨域原理简单请求和预检请求">24. CORS 跨域原理？简单请求和预检请求？</h3>
+<ul>
+<li><strong>原理</strong>：浏览器在请求头中加入 <code>Origin</code>，服务器通过响应头 <code>Access-Control-Allow-Origin</code> 决定是否允许。</li>
+<li><strong>简单请求</strong>：方法为 GET/POST/HEAD，且 Content-Type 仅限 <code>text/plain</code>, <code>multipart/form-data</code>, <code>application/x-www-form-urlencoded</code>。直接发送请求。</li>
+<li><strong>预检请求 (Preflight)</strong>：非简单请求（如 PUT/DELETE，或 Content-Type 为 <code>application/json</code>）。浏览器会先发送一个 <strong>OPTIONS</strong> 请求，询问服务器是否允许（检查 <code>Access-Control-Allow-Methods/Headers</code>），允许后再发送真实请求。</li>
+</ul>
+<h3 id="25-其他跨域解决方案">25. 其他跨域解决方案？</h3>
+<ul>
+<li><strong>JSONP</strong>：利用 <code>&lt;script&gt;</code> 标签不受同源策略限制，仅支持 GET。</li>
+<li><strong>postMessage</strong>：用于 iframe、Web Worker、跨 Tab 通信。</li>
+<li><strong>Nginx 反向代理</strong>：最常用，前端请求同源 Nginx，Nginx 转发到目标服务器（彻底绕过浏览器限制）。</li>
+<li><strong>WebSocket</strong>：WS 协议不受同源策略限制。</li>
+</ul>
+<h3 id="26-csrf-攻击原理与防御">26. CSRF 攻击原理与防御？</h3>
+<ul>
+<li><strong>原理</strong>：攻击者诱导用户访问恶意网站，该网站自动向目标网站发起请求。由于浏览器会<strong>自动携带目标网站的 Cookie</strong>，导致请求被目标网站认为是合法用户发起的。</li>
+<li><strong>防御</strong>：1) 设置 Cookie 的 <code>SameSite</code> 属性；2) 验证 <code>Origin</code> / <code>Referer</code> 请求头；3) 在表单或请求头中加入随机生成的 <strong>CSRF Token</strong> 并校验。</li>
+</ul>
+<h3 id="27-点击劫持与-csp">27. 点击劫持与 CSP？</h3>
+<ul>
+<li><strong>点击劫持</strong>：攻击者用透明的 <code>&lt;iframe&gt;</code> 将目标网站覆盖在诱导页面上，用户以为点击的是诱导页按钮，实际点击了 iframe 里的目标网站按钮。</li>
+<li><strong>防御</strong>：设置响应头 <code>X-Frame-Options: DENY/SAMEORIGIN</code>，或 CSP 的 <code>frame-ancestors</code> 指令。</li>
+<li><strong>CSP (内容安全策略)</strong>：通过白名单机制，严格限制浏览器可以加载和执行的外部资源（JS/CSS/图片），是<strong>防御 XSS 的终极手段</strong>。</li>
+</ul>
+<h3 id="28-中间人攻击-mitm-与-sql-注入">28. 中间人攻击 (MITM) 与 SQL 注入？</h3>
+<ul>
+<li><strong>MITM</strong>：攻击者在客户端和服务器之间拦截、篡改通信。<strong>防御</strong>：使用 HTTPS，并严格校验数字证书。</li>
+<li><strong>SQL 注入</strong>：后端未对用户输入进行过滤，导致恶意 SQL 被执行。<strong>前端职责</strong>：前端无法彻底防御，但需做<strong>输入校验和特殊字符转义</strong>，减轻后端压力，配合后端使用参数化查询。</li>
+</ul>
+<hr>
+<h2 id="模块五网络与-http">模块五：网络与 HTTP</h2>
+<h3 id="29-http-报文结构与常见状态码方法">29. HTTP 报文结构与常见状态码/方法</h3>
+<ul>
+<li><strong>结构</strong>：起始行（请求行/状态行）、请求头/响应头、空行、请求体/响应体。</li>
+<li><strong>状态码</strong>：<code>200</code> OK, <code>301</code> 永久重定向, <code>302</code> 临时重定向, <code>304</code> 协商缓存命中, <code>400</code> 坏请求, <code>401</code> 未授权, <code>403</code> 禁止, <code>404</code> 未找到, <code>500</code> 服务器内部错误, <code>502</code> 网关错误, <code>504</code> 网关超时。</li>
+<li><strong>幂等性</strong>：执行一次和执行多次结果相同。GET、PUT、DELETE 是幂等的；POST 不是。</li>
+</ul>
+<h3 id="30-http-版本演进-10---11---2---3">30. HTTP 版本演进 (1.0 -&gt; 1.1 -&gt; 2 -&gt; 3)</h3>
+<ul>
+<li><strong>1.0</strong>：短连接，每次请求都要 TCP 握手。</li>
+<li><strong>1.1</strong>：长连接（<code>Connection: keep-alive</code>），管线化（仍有队头阻塞）。</li>
+<li><strong>2.0</strong>：二进制分帧、<strong>多路复用</strong>（解决 HTTP 层队头阻塞）、头部压缩 (HPACK)、服务器推送。</li>
+<li><strong>3.0</strong>：基于 UDP (QUIC 协议)，彻底解决 TCP 层队头阻塞，0-RTT 建连，连接迁移。</li>
+</ul>
+<h3 id="31-http2-的多路复用与队头阻塞">31. HTTP/2 的多路复用与队头阻塞？</h3>
+<ul>
+<li><strong>多路复用</strong>：HTTP/2 将请求和响应拆分为多个二进制帧，在同一个 TCP 连接上<strong>交替、并行</strong>传输，解决了 HTTP 1.1 中“同一时间只能处理一个请求”的队头阻塞。</li>
+<li><strong>为什么仍有队头阻塞</strong>：HTTP/2 解决了<strong>应用层</strong>的队头阻塞，但底层仍依赖 <strong>TCP 协议</strong>。TCP 是可靠传输，如果某个 TCP 包丢失，整个 TCP 连接都会阻塞等待重传，导致其上所有的 HTTP/2 流都被阻塞（TCP 层队头阻塞）。这就是 HTTP/3 引入 QUIC (UDP) 的原因。</li>
+</ul>
+<h3 id="32-https-与-tls-握手过程对称与非对称加密">32. HTTPS 与 TLS 握手过程？对称与非对称加密？</h3>
+<ul>
+<li><strong>区别</strong>：HTTP 明文传输，HTTPS = HTTP + TLS/SSL（加密传输）。</li>
+<li><strong>加密方式</strong>：
+<ul>
+<li><strong>对称加密</strong>（如 AES）：加密解密用同一把密钥。速度快，但密钥分发不安全。</li>
+<li><strong>非对称加密</strong>（如 RSA）：公钥加密，私钥解密。安全性高，但速度慢。</li>
+<li><strong>HTTPS 结合</strong>：使用<strong>非对称加密</strong>安全地协商出“会话密钥”，后续通信使用<strong>对称加密</strong>（兼顾安全与性能）。</li>
+</ul>
+</li>
+<li><strong>TLS 握手</strong>：ClientHello (支持加密算法) -&gt; ServerHello (确定算法) + 证书 -&gt; 客户端验证证书 -&gt; 客户端生成随机数，用服务器公钥加密发送 -&gt; 服务器用私钥解密得到随机数 -&gt; 双方用该随机数生成<strong>对称会话密钥</strong> -&gt; 开始加密通信。</li>
+</ul>
+<h3 id="33-tcp-三次握手与四次挥手">33. TCP 三次握手与四次挥手？</h3>
+<ul>
+<li><strong>三次握手</strong>：Client SYN -&gt; Server SYN+ACK -&gt; Client ACK。<strong>为什么3次</strong>：防止已失效的连接请求报文段突然又传送到了服务端，产生错误连接（浪费资源）。</li>
+<li><strong>四次挥手</strong>：Client FIN -&gt; Server ACK -&gt; Server FIN -&gt; Client ACK。<strong>为什么4次</strong>：TCP 是全双工的，Server 收到 FIN 时可能还有数据要发，所以先回 ACK，等数据发完再发 FIN。</li>
+<li><strong>TIME_WAIT (2MSL)</strong>：Client 收到 Server 的 FIN 后进入。作用：1) 确保最后一个 ACK 能到达 Server（若丢失可重传）；2) 等待网络中该连接的残留报文消失，防止新连接收到旧数据。</li>
+</ul>
+<h3 id="34-tcp-可靠传输流量控制与拥塞控制">34. TCP 可靠传输、流量控制与拥塞控制？</h3>
+<ul>
+<li><strong>可靠传输</strong>：通过序列号、确认应答 (ACK)、超时重传、滑动窗口保证数据不丢、不乱序。</li>
+<li><strong>流量控制</strong>：<strong>端到端</strong>。接收方通过滑动窗口告诉发送方自己的接收能力，防止发送方发得太快撑爆接收方缓冲区。</li>
+<li><strong>拥塞控制</strong>：<strong>网络端</strong>。发送方探测网络拥堵情况（慢开始、拥塞避免、快重传、快恢复），防止发得太快导致路由器丢包。</li>
+</ul>
+<h3 id="35-websocket-与-sse">35. WebSocket 与 SSE？</h3>
+<ul>
+<li><strong>WebSocket</strong>：全双工通信，独立协议（通过 HTTP 升级），开销小，适合高频双向交互（如聊天、游戏）。需自己做心跳保活。</li>
+<li><strong>SSE (Server-Sent Events)</strong>：服务端单向推送，基于 HTTP 协议，自带断线重连，适合单向通知（如股票行情、日志流）。</li>
+</ul>
+<h3 id="36-cdn-原理与前端利用">36. CDN 原理与前端利用？</h3>
+<ul>
+<li><strong>原理</strong>：内容分发网络。通过智能调度系统，将用户请求路由到距离最近、负载最轻的边缘节点，从缓存中获取资源。</li>
+<li><strong>前端利用</strong>：静态资源（JS/CSS/图片）全部上 CDN；动态 API 请求走源站（或配置动态路由回源）。</li>
+</ul>
+<hr>
+<h2 id="模块六性能优化">模块六：性能优化</h2>
+<h3 id="37-core-web-vitals-核心指标">37. Core Web Vitals 核心指标？</h3>
+<ul>
+<li><strong>LCP (Largest Contentful Paint)</strong>：最大内容绘制，衡量<strong>加载性能</strong>。应 &lt; 2.5s。</li>
+<li><strong>INP (Interaction to Next Paint)</strong>：交互到下一帧绘制，衡量<strong>交互响应性</strong>（替代了 FID）。应 &lt; 200ms。</li>
+<li><strong>CLS (Cumulative Layout Shift)</strong>：累积布局偏移，衡量<strong>视觉稳定性</strong>。应 &lt; 0.1。</li>
+</ul>
+<h3 id="38-如何优化-lcp--cls--inp">38. 如何优化 LCP / CLS / INP？</h3>
+<ul>
+<li><strong>优化 LCP</strong>：优化关键资源（图片 WebP/AVIF、预加载 <code>&lt;link rel="preload"&gt;</code>）、减少关键渲染路径、使用 CDN、SSR/SSG。</li>
+<li><strong>优化 CLS</strong>：为图片/视频设置明确的 <code>width/height</code>；为广告/嵌入内容预留空间；避免在现有内容上方动态插入 DOM（使用 <code>transform</code> 代替 <code>top/left</code> 动画）。</li>
+<li><strong>优化 INP</strong>：拆分长任务（Long Tasks &lt; 50ms）；使用 <code>requestIdleCallback</code> 或 Web Worker 处理非关键计算；优化事件监听器（防抖/节流）。</li>
+</ul>
+<h3 id="39-前端性能优化大方向归纳">39. 前端性能优化大方向归纳？</h3>
+<ol>
+<li><strong>网络层</strong>：DNS 预解析、HTTP/2、CDN、减少请求数、减小资源体积（Gzip/Brotli）。</li>
+<li><strong>资源层</strong>：代码分割、懒加载、图片/字体优化、缓存策略。</li>
+<li><strong>渲染层</strong>：避免重排重绘、GPU 加速、虚拟列表、Web Worker。</li>
+<li><strong>架构层</strong>：SSR/SSG、骨架屏、微前端按需加载。</li>
+</ol>
+<h3 id="40-图片与字体优化手段">40. 图片与字体优化手段？</h3>
+<ul>
+<li><strong>图片</strong>：使用 WebP/AVIF；响应式图片 (<code>srcset</code>)；懒加载 (<code>loading="lazy"</code>)；小图标使用 SVG 或 IconFont；雪碧图（HTTP/1.1 下）。</li>
+<li><strong>字体</strong>：字体子集化（Fontmin，只保留用到的字符）；使用 <code>font-display: swap</code> 防止 FOIT（字体加载时文本不可见）；优先使用系统默认字体。</li>
+</ul>
+<h3 id="41-内存泄漏排查与-performance-api">41. 内存泄漏排查与 Performance API？</h3>
+<ul>
+<li><strong>排查</strong>：Chrome DevTools -&gt; Memory 面板 -&gt; 拍摄 Heap Snapshot。对比操作前后的快照，查找 “Detached DOM tree”（分离的 DOM）或被闭包意外引用的大对象。</li>
+<li><strong>常见原因</strong>：未清理的 <code>setInterval</code>/<code>addEventListener</code>；闭包引用；全局变量；脱离 DOM 树的引用。</li>
+<li><strong>Performance API</strong>：使用 <code>PerformanceObserver</code> 监听 <code>largest-contentful-paint</code>、<code>layout-shift</code> 等条目，精准采集 Web Vitals 数据。</li>
+</ul>
+<h3 id="42-防抖-debounce-和节流-throttle">42. 防抖 (debounce) 和节流 (throttle)？</h3>
+<ul>
+<li><strong>防抖</strong>：事件触发后 n 秒才执行，若 n 秒内再次触发，重新计时。<strong>场景</strong>：搜索框输入、窗口 resize 后计算。</li>
+<li><strong>节流</strong>：事件触发后，保证 n 秒内只执行一次。<strong>场景</strong>：滚动加载、鼠标连续点击、高频拖拽。</li>
+</ul>
+<h3 id="43-csrssrssg同构的区别与选型">43. CSR、SSR、SSG、同构的区别与选型？</h3>
+<ul>
+<li><strong>CSR (客户端渲染)</strong>：首屏慢，SEO 差。适合后台管理系统、强交互应用。</li>
+<li><strong>SSR (服务端渲染)</strong>：首屏快，SEO 好，服务器压力大。适合 C 端首屏要求高、SEO 要求高的页面（如电商首页）。</li>
+<li><strong>SSG (静态站点生成)</strong>：构建时生成 HTML，速度最快。适合博客、文档、官网。</li>
+<li><strong>同构</strong>：一套 React/Vue 代码，既能在服务端渲染出 HTML，又能在客户端接管（Hydration）实现交互。</li>
+</ul>
+<h3 id="44-资源预加载-link-rel-的区别">44. 资源预加载 link rel 的区别？</h3>
+<ul>
+<li><code>preload</code>：<strong>当前页面</strong>必需的关键资源，高优先级立即加载。</li>
+<li><code>prefetch</code>：<strong>未来导航</strong>可能需要的资源，低优先级，在浏览器空闲时加载。</li>
+<li><code>preconnect</code>：提前与第三方域名建立 TCP/TLS 连接。</li>
+<li><code>dns-prefetch</code>：提前进行 DNS 解析。</li>
+</ul>
+<h3 id="45-减少-http-请求与-http2-的变化">45. 减少 HTTP 请求与 HTTP/2 的变化？</h3>
+<ul>
+<li><strong>HTTP/1.1 时代</strong>：合并 JS/CSS 文件、雪碧图、内联小图片（Base64）。</li>
+<li><strong>HTTP/2 时代</strong>：由于<strong>多路复用</strong>，不再需要合并文件。反而应该<strong>拆分文件</strong>（按需加载），避免单个大文件阻塞，且能更好地利用浏览器缓存。</li>
+</ul>
+<hr>
+<h2 id="模块七补充遗漏的高频深度核心考点2024-2026-必备">模块七：补充遗漏的高频/深度核心考点（2024-2026 必备）</h2>
+<h3 id="46-v8-引擎的垃圾回收机制-gc-是怎样的">46. V8 引擎的垃圾回收机制 (GC) 是怎样的？</h3>
+<ul>
+<li><strong>分代回收</strong>：V8 将内存分为<strong>新生代</strong>（存活时间短的小对象，如临时变量）和<strong>老生代</strong>（存活时间长的大对象，如全局配置）。</li>
+<li><strong>新生代 (Scavenge 算法)</strong>：分为 From 和 To 两个空间。对象先在 From 分配，GC 时将存活对象复制到 To，然后清空 From，两者角色互换。效率高，但浪费一半内存。</li>
+<li><strong>老生代 (Mark-Sweep &amp; Mark-Compact)</strong>：
+<ul>
+<li><strong>标记清除</strong>：遍历所有对象，标记存活对象，清除未标记对象。会产生内存碎片。</li>
+<li><strong>标记整理</strong>：在清除后，将存活对象向一端移动，清理边界外的内存。解决碎片问题，但耗时。</li>
+</ul>
+</li>
+</ul>
+<h3 id="47-跨域-cookie-丢失问题与-samesite-深度解析">47. 跨域 Cookie 丢失问题与 SameSite 深度解析</h3>
+<ul>
+<li><strong>痛点</strong>：前端跨域请求（如 <code>a.com</code> 请求 <code>api.b.com</code>），即使设置了 <code>withCredentials: true</code>，Cookie 也可能带不上。</li>
+<li><strong>原因与解决</strong>：
+<ol>
+<li>后端 Cookie 必须设置 <code>SameSite=None</code> 且 <code>Secure=true</code>。</li>
+<li>前端请求必须设置 <code>credentials: 'include'</code> (Fetch) 或 <code>withCredentials: true</code> (XHR)。</li>
+<li><strong>注意</strong>：Chrome 80+ 默认将 <code>SameSite</code> 设为 <code>Lax</code>，且正在逐步淘汰第三方 Cookie。现代架构更推荐将前端和 API 部署在<strong>同主域</strong>下（如 <code>web.app.com</code> 和 <code>api.app.com</code>），通过设置 <code>Domain=.app.com</code> 来共享 Cookie，彻底避开跨域 Cookie 限制。</li>
+</ol>
+</li>
+</ul>
+<h3 id="48-brotli-br-压缩与-gzip-的区别">48. Brotli (br) 压缩与 Gzip 的区别？</h3>
+<ul>
+<li><strong>Brotli</strong>：Google 推出的压缩算法。相比 Gzip，在<strong>相同压缩率下速度更快</strong>，在<strong>相同速度下压缩率更高</strong>（通常比 Gzip 小 15%-20%）。</li>
+<li><strong>前端应用</strong>：Nginx 开启 <code>brotli</code> 模块；构建工具（如 Webpack/Vite）使用 <code>compression-webpack-plugin</code> 预生成 <code>.br</code> 文件，配合 Nginx 的 <code>gzip_static</code> / <code>brotli_static</code> 直接返回，避免服务器实时压缩消耗 CPU。</li>
+</ul>
+<h3 id="49-service-worker-的生命周期与更新机制易踩坑点">49. Service Worker 的生命周期与更新机制（易踩坑点）</h3>
+<ul>
+<li><strong>生命周期</strong>：<code>register</code> -&gt; <code>install</code> (可 <code>skipWaiting</code>) -&gt; <code>waiting</code> -&gt; <code>activate</code> (可 <code>clients.claim</code>) -&gt; <code>activated</code> -&gt; <code>redundant</code>。</li>
+<li><strong>更新机制</strong>：浏览器会对比 SW 文件的字节（哪怕只改了一个空格）。新 SW 安装后，会进入 <code>waiting</code> 状态，<strong>必须等旧 SW 控制的页面全部关闭</strong>，新 SW 才会 <code>activate</code>。</li>
+<li><strong>强制更新</strong>：开发时勾选 DevTools 的 “Update on reload”，或在代码中调用 <code>registration.update()</code>，并在 <code>install</code> 中调用 <code>self.skipWaiting()</code>，在 <code>activate</code> 中调用 <code>self.clients.claim()</code> 实现立即接管。</li>
+</ul>
+<h3 id="50-前端工程化中的-tree-shaking-原理">50. 前端工程化中的 Tree-shaking 原理？</h3>
+<ul>
+<li><strong>原理</strong>：基于 ES6 Module 的<strong>静态结构</strong>特性（<code>import/export</code> 在编译时确定，不能动态引入）。</li>
+<li><strong>过程</strong>：Webpack/Rollup 在打包时，通过 AST 分析，标记出所有未被使用的 <code>export</code> 变量（标记为 <code>/* unused harmony export */</code>），然后在代码压缩阶段（Terser）将这些死代码剔除。</li>
+<li><strong>注意</strong>：必须使用 ESM 语法；避免在 <code>import</code> 时引入带有副作用的模块（若有，需在 <code>package.json</code> 中配置 <code>sideEffects</code> 字段声明）。</li>
+</ul>
+</div><script type="module">function e(e){let t=e.getAttribute(`data-language`)?.trim();if(t)return t===`text`||t===`plaintext`||t===`txt`?`text`:t;let n=e.querySelector(`code`)?.className||e.className||``,r=/language-([a-z0-9_+-]+)/i.exec(n);return r?.[1]?r[1]:`code`}function t(t){if(t.closest(`[data-mac-window]`)||t.dataset.macEnhanced===`1`)return;t.dataset.macEnhanced=`1`;let n=document.createElement(`figure`);n.className=`mac-window`,n.setAttribute(`data-mac-window`,``);let r=document.createElement(`div`);r.className=`mac-titlebar`,r.innerHTML=`
+      <div class="mac-dots" aria-hidden="true">
+        <span class="dot red"></span>
+        <span class="dot yellow"></span>
+        <span class="dot green"></span>
+      </div>
+      <span class="mac-title"></span>
+      <button type="button" class="mac-copy" data-mac-copy aria-label="复制代码">复制</button>
+    `;let i=r.querySelector(`.mac-title`);i&&(i.textContent=e(t));let a=document.createElement(`div`);a.className=`mac-body`,t.parentNode?.insertBefore(n,t),a.appendChild(t),n.appendChild(r),n.appendChild(a)}async function n(e){if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(e);return}let t=document.createElement(`textarea`);t.value=e,t.style.position=`fixed`,t.style.opacity=`0`,document.body.appendChild(t),t.select(),document.execCommand(`copy`),t.remove()}function r(e=document){e.querySelectorAll(`[data-mac-copy]`).forEach(e=>{e.dataset.bound!==`1`&&(e.dataset.bound=`1`,e.addEventListener(`click`,async()=>{let t=e.closest(`[data-mac-window]`)?.querySelector(`pre`)?.textContent??``;try{await n(t);let r=e.textContent;e.textContent=`已复制`,e.classList.add(`is-copied`),window.setTimeout(()=>{e.textContent=r||`复制`,e.classList.remove(`is-copied`)},1600)}catch{e.textContent=`失败`,window.setTimeout(()=>{e.textContent=`复制`},1600)}}))})}function i(){document.querySelectorAll(`.prose pre`).forEach(t),r()}i(),document.addEventListener(`astro:page-load`,i);</script></article><nav class="pager wrap-narrow" aria-label="上下篇" data-astro-cid-tldeq5d5><p data-astro-cid-tldeq5d5>下一篇：<a href="/web/场景设计/" data-astro-cid-tldeq5d5>场景设计</a></p></nav><section class="related" data-astro-cid-tldeq5d5><div class="wrap" data-astro-cid-tldeq5d5><h2 data-astro-cid-tldeq5d5>继续阅读</h2><ol class="related-grid" data-astro-cid-tldeq5d5><li data-astro-cid-tldeq5d5><a class="related-topic" href="/web/" data-astro-cid-tldeq5d5>前端</a><a class="related-title" href="/web/html/" data-astro-cid-tldeq5d5>HTML</a><p data-astro-cid-tldeq5d5>HTML</p></li><li data-astro-cid-tldeq5d5><a class="related-topic" href="/web/" data-astro-cid-tldeq5d5>前端</a><a class="related-title" href="/web/react/" data-astro-cid-tldeq5d5>react</a><p data-astro-cid-tldeq5d5>react</p></li><li data-astro-cid-tldeq5d5><a class="related-topic" href="/web/" data-astro-cid-tldeq5d5>前端</a><a class="related-title" href="/web/typescript/" data-astro-cid-tldeq5d5>typescript</a><p data-astro-cid-tldeq5d5>typescript</p></li></ol></div></section></main><footer class="site-footer" data-astro-cid-jo6i4kqk><div class="wrap bar" data-astro-cid-jo6i4kqk><a class="brand" href="/" data-astro-cid-jo6i4kqk>rty</a><div class="social" aria-label="社交链接" data-astro-cid-jo6i4kqk><a href="mailto:peonyfoals@gmail.com" aria-label="Email" data-astro-cid-jo6i4kqk><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" data-astro-cid-jo6i4kqk><path fill="currentColor" d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5L4 8V6l8 5 8-5v2z" data-astro-cid-jo6i4kqk></path></svg></a><a href="/rss.xml" aria-label="RSS" data-astro-cid-jo6i4kqk><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" data-astro-cid-jo6i4kqk><path fill="currentColor" d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20 5 20 4 19 4 17.82c0-1.2.98-2.18 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27zm0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93z" data-astro-cid-jo6i4kqk></path></svg></a><a href="/archive/" aria-label="归档" data-astro-cid-jo6i4kqk><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" data-astro-cid-jo6i4kqk><path fill="currentColor" d="M4 6h16v2H4zm0 5h16v2H4zm0 5h10v2H4z" data-astro-cid-jo6i4kqk></path></svg></a></div><p class="meta" data-astro-cid-jo6i4kqk>© 2026 peony</p></div></footer></body></html>

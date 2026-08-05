@@ -1,0 +1,435 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="荷兰拍卖"><meta name="author" content="peony"><meta name="generator" content="Astro v7.1.1"><meta name="theme-color" content="#ffffff"><link rel="canonical" href="https://langzyw.xyz/web3/dutch-auction/"><link rel="alternate" type="application/rss+xml" title="rty" href="/rss.xml"><meta property="og:type" content="website"><meta property="og:site_name" content="rty"><meta property="og:title" content="荷兰拍卖 · rty"><meta property="og:description" content="荷兰拍卖"><meta property="og:url" content="https://langzyw.xyz/web3/dutch-auction/"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><title>荷兰拍卖 · rty</title><link rel="stylesheet" href="/_astro/Footer.C9xAhOzk.css"><link rel="stylesheet" href="/_astro/_..B6QWlgH6.css"></head><body><header class="site-header" data-astro-cid-nen7h5rs><div class="wrap bar" data-astro-cid-nen7h5rs><div class="bar-flex" data-astro-cid-nen7h5rs><a class="brand" href="/" data-astro-cid-nen7h5rs>rty</a><nav class="nav" aria-label="主导航" data-astro-cid-nen7h5rs><a class="nav-link" href="/" data-astro-cid-nen7h5rs>首页</a><a class="nav-link" href="/web/" data-astro-cid-nen7h5rs>前端</a><a class="nav-link" href="/python/" data-astro-cid-nen7h5rs>python</a><a class="nav-link" href="/llm/" data-astro-cid-nen7h5rs>llm</a><a class="nav-link active" href="/web3/" aria-current="page" data-astro-cid-nen7h5rs>区块链</a><a class="nav-link" href="/about/" data-astro-cid-nen7h5rs>关于</a></nav></div><button class="search-btn" type="button" aria-label="搜索" data-search-open data-astro-cid-nen7h5rs><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" data-astro-cid-nen7h5rs><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="1.6" data-astro-cid-nen7h5rs></circle><path d="M16.5 16.5L21 21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" data-astro-cid-nen7h5rs></path></svg></button></div></header><dialog class="search-dialog" data-search-dialog data-astro-cid-nen7h5rs><form class="search-panel" method="dialog" data-astro-cid-nen7h5rs><label class="sr-only" for="site-search" data-astro-cid-nen7h5rs>搜索文章</label><input id="site-search" class="search-input" type="search" placeholder="搜索文章…" autocomplete="off" data-search-input data-astro-cid-nen7h5rs><button class="search-close" value="cancel" type="submit" aria-label="关闭" data-astro-cid-nen7h5rs>×</button></form><ul class="search-results" data-search-results data-astro-cid-nen7h5rs></ul></dialog><script>(function(){const searchIndexUrl = "/search-index.json";
+
+  const openBtn = document.querySelector("[data-search-open]");
+  const dialog = document.querySelector("[data-search-dialog]");
+  const input = document.querySelector("[data-search-input]");
+  const results = document.querySelector("[data-search-results]");
+
+  if (
+    openBtn &&
+    dialog instanceof HTMLDialogElement &&
+    input instanceof HTMLInputElement &&
+    results
+  ) {
+    let index = [];
+    let loaded = false;
+
+    async function ensureIndex() {
+      if (loaded) return;
+      const res = await fetch(searchIndexUrl);
+      index = await res.json();
+      loaded = true;
+    }
+
+    function render(q) {
+      const query = q.trim().toLowerCase();
+      if (!query) {
+        results.innerHTML = "";
+        return;
+      }
+      const hits = index
+        .filter((item) =>
+          `${item.title} ${item.description} ${item.topic}`
+            .toLowerCase()
+            .includes(query),
+        )
+        .slice(0, 8);
+      results.innerHTML = hits.length
+        ? hits
+            .map(
+              (item) =>
+                `<li><a href="${item.href}"><strong>${item.title}</strong><span>${item.description}</span></a></li>`,
+            )
+            .join("")
+        : `<li class="empty">没有匹配结果</li>`;
+    }
+
+    openBtn.addEventListener("click", async () => {
+      await ensureIndex();
+      dialog.showModal();
+      input.value = "";
+      results.innerHTML = "";
+      input.focus();
+    });
+
+    input.addEventListener("input", () => render(input.value));
+
+    dialog.addEventListener("click", (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+  }
+})();</script><main class="post-page" data-astro-cid-tldeq5d5><article data-astro-cid-tldeq5d5><header class="header wrap-narrow" data-astro-cid-tldeq5d5><a class="topic" href="/web3/" data-astro-cid-tldeq5d5>区块链</a><h1 data-astro-cid-tldeq5d5>荷兰拍卖</h1><p class="meta" data-astro-cid-tldeq5d5><time datetime="2026-07-18T00:00:00.000Z" data-astro-cid-tldeq5d5>2026年7月18日</time><span aria-hidden="true" data-astro-cid-tldeq5d5>·</span><span data-astro-cid-tldeq5d5>约 1.5 小时</span></p><p class="tags" data-astro-cid-tldeq5d5><a href="/tags/区块链/" data-astro-cid-tldeq5d5>区块链</a><span data-astro-cid-tldeq5d5> · </span><a href="/tags/智能合约/" data-astro-cid-tldeq5d5>智能合约</a></p></header><div class="hero-image wrap" data-astro-cid-tldeq5d5><img src="/images/covers/web3-trading.jpg" alt="" data-astro-cid-tldeq5d5></div><div class="prose wrap-narrow" data-astro-cid-tldeq5d5><h3 id="荷兰拍卖是什么">荷兰拍卖是什么</h3>
+<p>荷兰拍卖（Dutch Auction）又称减价拍卖：从高价开始，随时间阶梯降价，买家按<strong>当时价格</strong>买入成交。</p>
+<p>Azuki、World of Women 等项目用它发售 NFT。项目方常见动机：</p>
+<ol>
+<li><strong>定价发现 / 收入</strong>：愿出高价的人先买，整体收入通常好于一口价</li>
+<li><strong>拉长销售窗口</strong>：拍卖持续数小时，减轻开售瞬间 gas war</li>
+</ol>
+<h3 id="线上价格曲线azuki-实参">线上价格曲线（Azuki 实参）</h3>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>值</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>AUCTION_START_PRICE</code></td>
+<td><code>1 ether</code></td>
+<td>起拍最高价</td>
+</tr>
+<tr>
+<td><code>AUCTION_END_PRICE</code></td>
+<td><code>0.15 ether</code></td>
+<td>地板价</td>
+</tr>
+<tr>
+<td><code>AUCTION_PRICE_CURVE_LENGTH</code></td>
+<td><code>340 minutes</code></td>
+<td>价格曲线总时长</td>
+</tr>
+<tr>
+<td><code>AUCTION_DROP_INTERVAL</code></td>
+<td><code>20 minutes</code></td>
+<td>每隔多久降一次</td>
+</tr>
+<tr>
+<td><code>AUCTION_DROP_PER_STEP</code></td>
+<td>自动计算</td>
+<td>每步降幅</td>
+</tr>
+</tbody>
+</table>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>DROP_PER_STEP = (1e18 - 0.15e18) / (340 / 20)</span></span></code></pre>
+<p><code>getAuctionPrice(startTime)</code>：</p>
+<ul>
+<li><code>now &lt; start</code> → <code>1 ETH</code></li>
+<li><code>now &gt;= start + 340min</code> → <code>0.15 ETH</code></li>
+<li>中间 → <code>1 ETH - steps * DROP_PER_STEP</code></li>
+</ul>
+<h3 id="发售阶段完整线上流程">发售阶段（完整线上流程）</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>荷兰拍卖 auctionMint</span></span>
+<span class="line"><span>    ↓ owner: endAuctionAndSetupNonAuctionSaleInfo</span></span>
+<span class="line"><span>白名单 allowlistMint（可选）</span></span>
+<span class="line"><span>    ↓</span></span>
+<span class="line"><span>公售 publicSaleMint（需 publicSaleKey）</span></span></code></pre>
+<table>
+<thead>
+<tr>
+<th>能力</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>callerIsUser</code></td>
+<td><code>tx.origin == msg.sender</code>，禁止合约代 mint</td>
+</tr>
+<tr>
+<td><code>maxPerAddressDuringMint</code></td>
+<td>单地址 mint 上限</td>
+</tr>
+<tr>
+<td><code>amountForAuctionAndDev</code></td>
+<td>拍卖 + 开发者预留总量上限</td>
+</tr>
+<tr>
+<td><code>amountForDevs</code></td>
+<td>团队 <code>devMint</code> 上限</td>
+</tr>
+<tr>
+<td><code>allowlist</code></td>
+<td>白名单额度</td>
+</tr>
+<tr>
+<td><code>refundIfOver</code></td>
+<td>多付 ETH 退回</td>
+</tr>
+<tr>
+<td><code>withdrawMoney</code></td>
+<td>owner 提款，带 <code>nonReentrant</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="azuki-主网完整合约">Azuki 主网完整合约</h3>
+<p>依赖：<code>./ERC721A.sol</code>、OpenZeppelin <code>Ownable</code> / <code>ReentrancyGuard</code> / <code>Strings</code>。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#6A737D">// SPDX-License-Identifier: MIT</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">pragma</span><span style="color:#85E89D"> solidity</span><span style="color:#79B8FF"> ^0.8.0</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#9ECBFF"> "@openzeppelin/contracts/access/Ownable.sol"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#9ECBFF"> "@openzeppelin/contracts/security/ReentrancyGuard.sol"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#9ECBFF"> "./ERC721A.sol"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#9ECBFF"> "@openzeppelin/contracts/utils/Strings.sol"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">contract</span><span style="color:#B392F0"> Azuki</span><span style="color:#F97583"> is</span><span style="color:#B392F0"> Ownable</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">ERC721A</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">ReentrancyGuard</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">  uint256</span><span style="color:#F97583"> public</span><span style="color:#F97583"> immutable</span><span style="color:#E1E4E8"> maxPerAddressDuringMint;</span></span>
+<span class="line"><span style="color:#79B8FF">  uint256</span><span style="color:#F97583"> public</span><span style="color:#F97583"> immutable</span><span style="color:#E1E4E8"> amountForDevs;</span></span>
+<span class="line"><span style="color:#79B8FF">  uint256</span><span style="color:#F97583"> public</span><span style="color:#F97583"> immutable</span><span style="color:#E1E4E8"> amountForAuctionAndDev;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  struct</span><span style="color:#B392F0"> SaleConfig</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">    uint32</span><span style="color:#E1E4E8"> auctionSaleStartTime;</span></span>
+<span class="line"><span style="color:#79B8FF">    uint32</span><span style="color:#E1E4E8"> publicSaleStartTime;</span></span>
+<span class="line"><span style="color:#79B8FF">    uint64</span><span style="color:#E1E4E8"> mintlistPrice;</span></span>
+<span class="line"><span style="color:#79B8FF">    uint64</span><span style="color:#E1E4E8"> publicPrice;</span></span>
+<span class="line"><span style="color:#79B8FF">    uint32</span><span style="color:#E1E4E8"> publicSaleKey;</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">  SaleConfig </span><span style="color:#F97583">public</span><span style="color:#E1E4E8"> saleConfig;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  mapping</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#F97583"> =&gt;</span><span style="color:#79B8FF"> uint256</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">public</span><span style="color:#E1E4E8"> allowlist;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  constructor</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#FFAB70"> maxBatchSize_</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#FFAB70"> collectionSize_</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#FFAB70"> amountForAuctionAndDev_</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#FFAB70"> amountForDevs_</span></span>
+<span class="line"><span style="color:#E1E4E8">  ) </span><span style="color:#B392F0">ERC721A</span><span style="color:#E1E4E8">("Azuki", "AZUKI", maxBatchSize_, collectionSize_) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    maxPerAddressDuringMint </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> maxBatchSize_;</span></span>
+<span class="line"><span style="color:#E1E4E8">    amountForAuctionAndDev </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> amountForAuctionAndDev_;</span></span>
+<span class="line"><span style="color:#E1E4E8">    amountForDevs </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> amountForDevs_;</span></span>
+<span class="line"><span style="color:#F97583">    require</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#E1E4E8">      amountForAuctionAndDev_ </span><span style="color:#F97583">&lt;=</span><span style="color:#E1E4E8"> collectionSize_,</span></span>
+<span class="line"><span style="color:#9ECBFF">      "larger collection size needed"</span></span>
+<span class="line"><span style="color:#E1E4E8">    );</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  modifier</span><span style="color:#B392F0"> callerIsUser</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">    require</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">tx</span><span style="color:#E1E4E8">.origin </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> msg.sender</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"The caller is another contract"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#79B8FF">    _</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  function</span><span style="color:#B392F0"> auctionMint</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> quantity</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">external</span><span style="color:#F97583"> payable</span><span style="color:#B392F0"> callerIsUser</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#E1E4E8"> _saleStartTime </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> uint256</span><span style="color:#E1E4E8">(saleConfig.auctionSaleStartTime);</span></span>
+<span class="line"><span style="color:#F97583">    require</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#E1E4E8">      _saleStartTime </span><span style="color:#F97583">!=</span><span style="color:#79B8FF"> 0</span><span style="color:#F97583"> &amp;&amp;</span><span style="color:#79B8FF"> block</span><span style="color:#E1E4E8">.timestamp </span><span style="color:#F97583">&gt;=</span><span style="color:#E1E4E8"> _saleStartTime,</span></span>
+<span class="line"><span style="color:#9ECBFF">      "sale has not started yet"</span></span>
+<span class="line"><span style="color:#E1E4E8">    );</span></span>
+<span class="line"><span style="color:#F97583">    require</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#B392F0">      totalSupply</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> quantity </span><span style="color:#F97583">&lt;=</span><span style="color:#E1E4E8"> amountForAuctionAndDev,</span></span>
+<span class="line"><span style="color:#9ECBFF">      "not enough remaining reserved for auction to support desired mint amount"</span></span>
+<span class="line"><span style="color:#E1E4E8">    );</span></span>
+<span class="line"><span style="color:#F97583">    require</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#B392F0">      numberMinted</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">msg.sender</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> quantity </span><span style="color:#F97583">&lt;=</span><span style="color:#E1E4E8"> maxPerAddressDuringMint,</span></span>
+<span class="line"><span style="color:#9ECBFF">      "can not mint this many"</span></span>
+<span class="line"><span style="color:#E1E4E8">    );</span></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#E1E4E8"> totalCost </span><span style="color:#F97583">=</span><span style="color:#B392F0"> getAuctionPrice</span><span style="color:#E1E4E8">(_saleStartTime) </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> quantity;</span></span>
+<span class="line"><span style="color:#B392F0">    _safeMint</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">msg.sender</span><span style="color:#E1E4E8">, quantity);</span></span>
+<span class="line"><span style="color:#B392F0">    refundIfOver</span><span style="color:#E1E4E8">(totalCost);</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  function</span><span style="color:#B392F0"> allowlistMint</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">external</span><span style="color:#F97583"> payable</span><span style="color:#B392F0"> callerIsUser</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#E1E4E8"> price </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> uint256</span><span style="color:#E1E4E8">(saleConfig.mintlistPrice);</span></span>
+<span class="line"><span style="color:#F97583">    require</span><span style="color:#E1E4E8">(price </span><span style="color:#F97583">!=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"allowlist sale has not begun yet"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">    require</span><span style="color:#E1E4E8">(allowlist[</span><span style="color:#79B8FF">msg.sender</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">&gt;</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"not eligible for allowlist mint"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">    require</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">totalSupply</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">+</span><span style="color:#79B8FF"> 1</span><span style="color:#F97583"> &lt;=</span><span style="color:#E1E4E8"> collectionSize, </span><span style="color:#9ECBFF">"reached max supply"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    allowlist[</span><span style="color:#79B8FF">msg.sender</span><span style="color:#E1E4E8">]</span><span style="color:#F97583">--</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#B392F0">    _safeMint</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">msg.sender</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#B392F0">    refundIfOver</span><span style="color:#E1E4E8">(price);</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  function</span><span style="color:#B392F0"> publicSaleMint</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> quantity</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> callerPublicSaleKey</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">    external</span></span>
+<span class="line"><span style="color:#F97583">    payable</span></span>
+<span class="line"><span style="color:#B392F0">    callerIsUser</span></span>
+<span class="line"><span style="color:#E1E4E8">  {</span></span>
+<span class="line"><span style="color:#E1E4E8">    SaleConfig </span><span style="color:#F97583">memory</span><span style="color:#E1E4E8"> config </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> saleConfig;</span></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#E1E4E8"> publicSaleKey </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> uint256</span><span style="color:#E1E4E8">(config.publicSaleKey);</span></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#E1E4E8"> publicPrice </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> uint256</span><span style="color:#E1E4E8">(config.publicPrice);</span></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#E1E4E8"> publicSaleStartTime </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> uint256</span><span style="color:#E1E4E8">(config.publicSaleStartTime);</span></span>
+<span class="line"><span style="color:#F97583">    require</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#E1E4E8">      publicSaleKey </span><span style="color:#F97583">==</span><span style="color:#E1E4E8"> callerPublicSaleKey,</span></span>
+<span class="line"><span style="color:#9ECBFF">      "called with incorrect public sale key"</span></span>
+<span class="line"><span style="color:#E1E4E8">    );</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    require</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#B392F0">      isPublicSaleOn</span><span style="color:#E1E4E8">(publicPrice, publicSaleKey, publicSaleStartTime),</span></span>
+<span class="line"><span style="color:#9ECBFF">      "public sale has not begun yet"</span></span>
+<span class="line"><span style="color:#E1E4E8">    );</span></span>
+<span class="line"><span style="color:#F97583">    require</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">totalSupply</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> quantity </span><span style="color:#F97583">&lt;=</span><span style="color:#E1E4E8"> collectionSize, </span><span style="color:#9ECBFF">"reached max supply"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">    require</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#B392F0">      numberMinted</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">msg.sender</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> quantity </span><span style="color:#F97583">&lt;=</span><span style="color:#E1E4E8"> maxPerAddressDuringMint,</span></span>
+<span class="line"><span style="color:#9ECBFF">      "can not mint this many"</span></span>
+<span class="line"><span style="color:#E1E4E8">    );</span></span>
+<span class="line"><span style="color:#B392F0">    _safeMint</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">msg.sender</span><span style="color:#E1E4E8">, quantity);</span></span>
+<span class="line"><span style="color:#B392F0">    refundIfOver</span><span style="color:#E1E4E8">(publicPrice </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> quantity);</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  function</span><span style="color:#B392F0"> refundIfOver</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> price</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">private</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    require</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">msg</span><span style="color:#E1E4E8">.value </span><span style="color:#F97583">&gt;=</span><span style="color:#E1E4E8"> price, </span><span style="color:#9ECBFF">"Need to send more ETH."</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">msg</span><span style="color:#E1E4E8">.value </span><span style="color:#F97583">&gt;</span><span style="color:#E1E4E8"> price) {</span></span>
+<span class="line"><span style="color:#F97583">      payable</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">msg.sender</span><span style="color:#E1E4E8">).</span><span style="color:#B392F0">transfer</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">msg</span><span style="color:#E1E4E8">.value </span><span style="color:#F97583">-</span><span style="color:#E1E4E8"> price);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  function</span><span style="color:#B392F0"> isPublicSaleOn</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#FFAB70"> publicPriceWei</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#FFAB70"> publicSaleKey</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#FFAB70"> publicSaleStartTime</span></span>
+<span class="line"><span style="color:#E1E4E8">  ) </span><span style="color:#F97583">public</span><span style="color:#F97583"> view</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">bool</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">    return</span></span>
+<span class="line"><span style="color:#E1E4E8">      publicPriceWei </span><span style="color:#F97583">!=</span><span style="color:#79B8FF"> 0</span><span style="color:#F97583"> &amp;&amp;</span></span>
+<span class="line"><span style="color:#E1E4E8">      publicSaleKey </span><span style="color:#F97583">!=</span><span style="color:#79B8FF"> 0</span><span style="color:#F97583"> &amp;&amp;</span></span>
+<span class="line"><span style="color:#79B8FF">      block</span><span style="color:#E1E4E8">.timestamp </span><span style="color:#F97583">&gt;=</span><span style="color:#E1E4E8"> publicSaleStartTime;</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF">  uint256</span><span style="color:#F97583"> public</span><span style="color:#F97583"> constant</span><span style="color:#E1E4E8"> AUCTION_START_PRICE </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 1</span><span style="color:#79B8FF"> ether</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#79B8FF">  uint256</span><span style="color:#F97583"> public</span><span style="color:#F97583"> constant</span><span style="color:#E1E4E8"> AUCTION_END_PRICE </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0.15</span><span style="color:#79B8FF"> ether</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#79B8FF">  uint256</span><span style="color:#F97583"> public</span><span style="color:#F97583"> constant</span><span style="color:#E1E4E8"> AUCTION_PRICE_CURVE_LENGTH </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 340</span><span style="color:#79B8FF"> minutes</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#79B8FF">  uint256</span><span style="color:#F97583"> public</span><span style="color:#F97583"> constant</span><span style="color:#E1E4E8"> AUCTION_DROP_INTERVAL </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 20</span><span style="color:#79B8FF"> minutes</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#79B8FF">  uint256</span><span style="color:#F97583"> public</span><span style="color:#F97583"> constant</span><span style="color:#E1E4E8"> AUCTION_DROP_PER_STEP </span><span style="color:#F97583">=</span></span>
+<span class="line"><span style="color:#E1E4E8">    (AUCTION_START_PRICE </span><span style="color:#F97583">-</span><span style="color:#E1E4E8"> AUCTION_END_PRICE) </span><span style="color:#F97583">/</span></span>
+<span class="line"><span style="color:#E1E4E8">      (AUCTION_PRICE_CURVE_LENGTH </span><span style="color:#F97583">/</span><span style="color:#E1E4E8"> AUCTION_DROP_INTERVAL);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  function</span><span style="color:#B392F0"> getAuctionPrice</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8"> _saleStartTime)</span></span>
+<span class="line"><span style="color:#F97583">    public</span></span>
+<span class="line"><span style="color:#F97583">    view</span></span>
+<span class="line"><span style="color:#F97583">    returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">  {</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">block</span><span style="color:#E1E4E8">.timestamp </span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8"> _saleStartTime) {</span></span>
+<span class="line"><span style="color:#F97583">      return</span><span style="color:#E1E4E8"> AUCTION_START_PRICE;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">block</span><span style="color:#E1E4E8">.timestamp </span><span style="color:#F97583">-</span><span style="color:#E1E4E8"> _saleStartTime </span><span style="color:#F97583">&gt;=</span><span style="color:#E1E4E8"> AUCTION_PRICE_CURVE_LENGTH) {</span></span>
+<span class="line"><span style="color:#F97583">      return</span><span style="color:#E1E4E8"> AUCTION_END_PRICE;</span></span>
+<span class="line"><span style="color:#E1E4E8">    } </span><span style="color:#F97583">else</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">      uint256</span><span style="color:#E1E4E8"> steps </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">block</span><span style="color:#E1E4E8">.timestamp </span><span style="color:#F97583">-</span><span style="color:#E1E4E8"> _saleStartTime) </span><span style="color:#F97583">/</span></span>
+<span class="line"><span style="color:#E1E4E8">        AUCTION_DROP_INTERVAL;</span></span>
+<span class="line"><span style="color:#F97583">      return</span><span style="color:#E1E4E8"> AUCTION_START_PRICE </span><span style="color:#F97583">-</span><span style="color:#E1E4E8"> (steps </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> AUCTION_DROP_PER_STEP);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  function</span><span style="color:#B392F0"> endAuctionAndSetupNonAuctionSaleInfo</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#79B8FF">    uint64</span><span style="color:#FFAB70"> mintlistPriceWei</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">    uint64</span><span style="color:#FFAB70"> publicPriceWei</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">    uint32</span><span style="color:#FFAB70"> publicSaleStartTime</span></span>
+<span class="line"><span style="color:#E1E4E8">  ) </span><span style="color:#F97583">external</span><span style="color:#B392F0"> onlyOwner</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    saleConfig </span><span style="color:#F97583">=</span><span style="color:#B392F0"> SaleConfig</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#79B8FF">      0</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      publicSaleStartTime,</span></span>
+<span class="line"><span style="color:#E1E4E8">      mintlistPriceWei,</span></span>
+<span class="line"><span style="color:#E1E4E8">      publicPriceWei,</span></span>
+<span class="line"><span style="color:#E1E4E8">      saleConfig.publicSaleKey</span></span>
+<span class="line"><span style="color:#E1E4E8">    );</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  function</span><span style="color:#B392F0"> setAuctionSaleStartTime</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint32</span><span style="color:#FFAB70"> timestamp</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">external</span><span style="color:#B392F0"> onlyOwner</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    saleConfig.auctionSaleStartTime </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> timestamp;</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  function</span><span style="color:#B392F0"> setPublicSaleKey</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint32</span><span style="color:#FFAB70"> key</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">external</span><span style="color:#B392F0"> onlyOwner</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    saleConfig.publicSaleKey </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> key;</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  function</span><span style="color:#B392F0"> seedAllowlist</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">memory</span><span style="color:#FFAB70"> addresses</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">memory</span><span style="color:#FFAB70"> numSlots</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">    external</span></span>
+<span class="line"><span style="color:#B392F0">    onlyOwner</span></span>
+<span class="line"><span style="color:#E1E4E8">  {</span></span>
+<span class="line"><span style="color:#F97583">    require</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#E1E4E8">      addresses.length </span><span style="color:#F97583">==</span><span style="color:#E1E4E8"> numSlots.length,</span></span>
+<span class="line"><span style="color:#9ECBFF">      "addresses does not match numSlots length"</span></span>
+<span class="line"><span style="color:#E1E4E8">    );</span></span>
+<span class="line"><span style="color:#F97583">    for</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">; i </span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8"> addresses.length; i</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">      allowlist[addresses[i]] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> numSlots[i];</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">  // For marketing etc.</span></span>
+<span class="line"><span style="color:#F97583">  function</span><span style="color:#B392F0"> devMint</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> quantity</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">external</span><span style="color:#B392F0"> onlyOwner</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    require</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#B392F0">      totalSupply</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> quantity </span><span style="color:#F97583">&lt;=</span><span style="color:#E1E4E8"> amountForDevs,</span></span>
+<span class="line"><span style="color:#9ECBFF">      "too many already minted before dev mint"</span></span>
+<span class="line"><span style="color:#E1E4E8">    );</span></span>
+<span class="line"><span style="color:#F97583">    require</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#E1E4E8">      quantity % maxBatchSize </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">      "can only mint a multiple of the maxBatchSize"</span></span>
+<span class="line"><span style="color:#E1E4E8">    );</span></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#E1E4E8"> numChunks </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> quantity </span><span style="color:#F97583">/</span><span style="color:#E1E4E8"> maxBatchSize;</span></span>
+<span class="line"><span style="color:#F97583">    for</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">; i </span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8"> numChunks; i</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#B392F0">      _safeMint</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">msg.sender</span><span style="color:#E1E4E8">, maxBatchSize);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF">  string</span><span style="color:#F97583"> private</span><span style="color:#E1E4E8"> _baseTokenURI;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  function</span><span style="color:#B392F0"> _baseURI</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">internal</span><span style="color:#F97583"> view</span><span style="color:#F97583"> virtual</span><span style="color:#F97583"> override</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">string</span><span style="color:#F97583"> memory</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> _baseTokenURI;</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  function</span><span style="color:#B392F0"> setBaseURI</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">string</span><span style="color:#F97583"> calldata</span><span style="color:#FFAB70"> baseURI</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">external</span><span style="color:#B392F0"> onlyOwner</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    _baseTokenURI </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> baseURI;</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  function</span><span style="color:#B392F0"> withdrawMoney</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">external</span><span style="color:#B392F0"> onlyOwner</span><span style="color:#B392F0"> nonReentrant</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    (</span><span style="color:#79B8FF">bool</span><span style="color:#E1E4E8"> success, ) </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> msg.sender</span><span style="color:#E1E4E8">.call{value</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">).balance}(</span><span style="color:#9ECBFF">""</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">    require</span><span style="color:#E1E4E8">(success, </span><span style="color:#9ECBFF">"Transfer failed."</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  function</span><span style="color:#B392F0"> setOwnersExplicit</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> quantity</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">external</span><span style="color:#B392F0"> onlyOwner</span><span style="color:#B392F0"> nonReentrant</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">    _setOwnersExplicit</span><span style="color:#E1E4E8">(quantity);</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  function</span><span style="color:#B392F0"> numberMinted</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> owner</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">public</span><span style="color:#F97583"> view</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#B392F0"> _numberMinted</span><span style="color:#E1E4E8">(owner);</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  function</span><span style="color:#B392F0"> getOwnershipData</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> tokenId</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">    external</span></span>
+<span class="line"><span style="color:#F97583">    view</span></span>
+<span class="line"><span style="color:#F97583">    returns</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">TokenOwnership</span><span style="color:#F97583"> memory</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">  {</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#B392F0"> ownershipOf</span><span style="color:#E1E4E8">(tokenId);</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p><code>ERC721A.sol</code> 全文见 Etherscan 同源验证代码，或 <a href="https://github.com/chiru-labs/ERC721A">chiru-labs/ERC721A</a>。</p>
+<h3 id="关键函数">关键函数</h3>
+<h4 id="auctionmint"><code>auctionMint</code></h4>
+<ol>
+<li>拍卖已开始（<code>auctionSaleStartTime != 0</code> 且时间到达）</li>
+<li><code>totalSupply + quantity &lt;= amountForAuctionAndDev</code></li>
+<li>单地址累计 mint ≤ <code>maxPerAddressDuringMint</code></li>
+<li><code>_safeMint</code>（ERC721A 批量 mint）后 <code>refundIfOver</code></li>
+</ol>
+<h4 id="getauctionprice"><code>getAuctionPrice</code></h4>
+<p>按真实 340 分钟曲线计算当前单价；前端展示价与上链价可能因出块时间略有偏差，用户通常多付，合约退差额。</p>
+<h4 id="endauctionandsetupnonauctionsaleinfo"><code>endAuctionAndSetupNonAuctionSaleInfo</code></h4>
+<p>结束拍卖（把 <code>auctionSaleStartTime</code> 置 0），写入白名单价、公售价与公售开始时间。</p>
+<h4 id="allowlistmint--publicsalemint"><code>allowlistMint</code> / <code>publicSaleMint</code></h4>
+<p>拍卖结束后的后续销售；公售还要求正确的 <code>publicSaleKey</code>，降低脚本扫链抢跑的便利性。</p>
+<h4 id="devmint"><code>devMint</code></h4>
+<p>团队预留；<code>quantity</code> 必须是 <code>maxBatchSize</code> 的倍数，按 chunk 调用 <code>_safeMint</code>。</p>
+<h4 id="withdrawmoney"><code>withdrawMoney</code></h4>
+<p><code>onlyOwner</code> + <code>nonReentrant</code>，用 <code>call</code> 提取合约全部 ETH。</p>
+<h3 id="部署与运营顺序线上">部署与运营顺序（线上）</h3>
+<ol>
+<li>部署：传入 <code>maxBatchSize</code>、<code>collectionSize</code>、<code>amountForAuctionAndDev</code>、<code>amountForDevs</code></li>
+<li><code>setBaseURI</code> 设置元数据</li>
+<li>（可选）<code>seedAllowlist</code>、<code>setPublicSaleKey</code></li>
+<li><code>setAuctionSaleStartTime</code> 设定开拍时间</li>
+<li>用户 <code>auctionMint</code></li>
+<li>拍卖结束后 <code>endAuctionAndSetupNonAuctionSaleInfo</code>，进入白名单 / 公售</li>
+<li><code>withdrawMoney</code> 提取募集资金</li>
+<li>（可选）<code>setOwnersExplicit</code> 优化后续 <code>ownerOf</code> 查询 gas</li>
+</ol>
+<h3 id="安全与设计要点">安全与设计要点</h3>
+<ol>
+<li><strong><code>callerIsUser</code></strong>：防合约批量代打；不能防 EOA 多地址</li>
+<li><strong>先 mint 再退款</strong>：状态已更新；提款路径另有 <code>nonReentrant</code></li>
+<li><strong>供应切分</strong>：拍卖额度与 <code>devMint</code> 额度分开，避免团队与公售抢同一池子时逻辑含糊</li>
+<li><strong>ERC721A</strong>：批量 mint 相对 OZ ERC721 循环 <code>_mint</code> 显著省 gas，这是 Azuki 能扛高并发公售的关键</li>
+</ol>
+<h3 id="小结">小结</h3>
+<ul>
+<li>荷兰拍卖只是发售第一阶段；完整产品还包括白名单、公售、限额、团队 mint 与提款</li>
+<li>复用时需一并部署对应版本的 <code>ERC721A</code>，并按项目参数调整供应量与价格曲线</li>
+</ul>
+</div><script type="module">function e(e){let t=e.getAttribute(`data-language`)?.trim();if(t)return t===`text`||t===`plaintext`||t===`txt`?`text`:t;let n=e.querySelector(`code`)?.className||e.className||``,r=/language-([a-z0-9_+-]+)/i.exec(n);return r?.[1]?r[1]:`code`}function t(t){if(t.closest(`[data-mac-window]`)||t.dataset.macEnhanced===`1`)return;t.dataset.macEnhanced=`1`;let n=document.createElement(`figure`);n.className=`mac-window`,n.setAttribute(`data-mac-window`,``);let r=document.createElement(`div`);r.className=`mac-titlebar`,r.innerHTML=`
+      <div class="mac-dots" aria-hidden="true">
+        <span class="dot red"></span>
+        <span class="dot yellow"></span>
+        <span class="dot green"></span>
+      </div>
+      <span class="mac-title"></span>
+      <button type="button" class="mac-copy" data-mac-copy aria-label="复制代码">复制</button>
+    `;let i=r.querySelector(`.mac-title`);i&&(i.textContent=e(t));let a=document.createElement(`div`);a.className=`mac-body`,t.parentNode?.insertBefore(n,t),a.appendChild(t),n.appendChild(r),n.appendChild(a)}async function n(e){if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(e);return}let t=document.createElement(`textarea`);t.value=e,t.style.position=`fixed`,t.style.opacity=`0`,document.body.appendChild(t),t.select(),document.execCommand(`copy`),t.remove()}function r(e=document){e.querySelectorAll(`[data-mac-copy]`).forEach(e=>{e.dataset.bound!==`1`&&(e.dataset.bound=`1`,e.addEventListener(`click`,async()=>{let t=e.closest(`[data-mac-window]`)?.querySelector(`pre`)?.textContent??``;try{await n(t);let r=e.textContent;e.textContent=`已复制`,e.classList.add(`is-copied`),window.setTimeout(()=>{e.textContent=r||`复制`,e.classList.remove(`is-copied`)},1600)}catch{e.textContent=`失败`,window.setTimeout(()=>{e.textContent=`复制`},1600)}}))})}function i(){document.querySelectorAll(`.prose pre`).forEach(t),r()}i(),document.addEventListener(`astro:page-load`,i);</script></article><nav class="pager wrap-narrow" aria-label="上下篇" data-astro-cid-tldeq5d5><p data-astro-cid-tldeq5d5>上一篇：<a href="/web3/erc1155/" data-astro-cid-tldeq5d5>ERC1155</a></p><p data-astro-cid-tldeq5d5>下一篇：<a href="/web3/ddos/" data-astro-cid-tldeq5d5>DDOS攻击</a></p></nav><section class="related" data-astro-cid-tldeq5d5><div class="wrap" data-astro-cid-tldeq5d5><h2 data-astro-cid-tldeq5d5>继续阅读</h2><ol class="related-grid" data-astro-cid-tldeq5d5><li data-astro-cid-tldeq5d5><a class="related-topic" href="/web3/" data-astro-cid-tldeq5d5>区块链</a><a class="related-title" href="/web3/airdrop/" data-astro-cid-tldeq5d5>空投</a><p data-astro-cid-tldeq5d5>空投</p></li><li data-astro-cid-tldeq5d5><a class="related-topic" href="/web3/" data-astro-cid-tldeq5d5>区块链</a><a class="related-title" href="/web3/cross-chain-bridge/" data-astro-cid-tldeq5d5>跨链桥</a><p data-astro-cid-tldeq5d5>跨链桥</p></li><li data-astro-cid-tldeq5d5><a class="related-topic" href="/web3/" data-astro-cid-tldeq5d5>区块链</a><a class="related-title" href="/web3/ddos/" data-astro-cid-tldeq5d5>DDOS攻击</a><p data-astro-cid-tldeq5d5>DDOS攻击</p></li></ol></div></section></main><footer class="site-footer" data-astro-cid-jo6i4kqk><div class="wrap bar" data-astro-cid-jo6i4kqk><a class="brand" href="/" data-astro-cid-jo6i4kqk>rty</a><div class="social" aria-label="社交链接" data-astro-cid-jo6i4kqk><a href="mailto:peonyfoals@gmail.com" aria-label="Email" data-astro-cid-jo6i4kqk><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" data-astro-cid-jo6i4kqk><path fill="currentColor" d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5L4 8V6l8 5 8-5v2z" data-astro-cid-jo6i4kqk></path></svg></a><a href="/rss.xml" aria-label="RSS" data-astro-cid-jo6i4kqk><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" data-astro-cid-jo6i4kqk><path fill="currentColor" d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20 5 20 4 19 4 17.82c0-1.2.98-2.18 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27zm0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93z" data-astro-cid-jo6i4kqk></path></svg></a><a href="/archive/" aria-label="归档" data-astro-cid-jo6i4kqk><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" data-astro-cid-jo6i4kqk><path fill="currentColor" d="M4 6h16v2H4zm0 5h16v2H4zm0 5h10v2H4z" data-astro-cid-jo6i4kqk></path></svg></a></div><p class="meta" data-astro-cid-jo6i4kqk>© 2026 peony</p></div></footer></body></html>

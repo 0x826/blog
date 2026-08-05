@@ -1,0 +1,615 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="闪电贷"><meta name="author" content="peony"><meta name="generator" content="Astro v7.1.1"><meta name="theme-color" content="#ffffff"><link rel="canonical" href="https://langzyw.xyz/web3/flashloan/"><link rel="alternate" type="application/rss+xml" title="rty" href="/rss.xml"><meta property="og:type" content="website"><meta property="og:site_name" content="rty"><meta property="og:title" content="闪电贷 · rty"><meta property="og:description" content="闪电贷"><meta property="og:url" content="https://langzyw.xyz/web3/flashloan/"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><title>闪电贷 · rty</title><link rel="stylesheet" href="/_astro/Footer.C9xAhOzk.css"><link rel="stylesheet" href="/_astro/_..B6QWlgH6.css"></head><body><header class="site-header" data-astro-cid-nen7h5rs><div class="wrap bar" data-astro-cid-nen7h5rs><div class="bar-flex" data-astro-cid-nen7h5rs><a class="brand" href="/" data-astro-cid-nen7h5rs>rty</a><nav class="nav" aria-label="主导航" data-astro-cid-nen7h5rs><a class="nav-link" href="/" data-astro-cid-nen7h5rs>首页</a><a class="nav-link" href="/web/" data-astro-cid-nen7h5rs>前端</a><a class="nav-link" href="/python/" data-astro-cid-nen7h5rs>python</a><a class="nav-link" href="/llm/" data-astro-cid-nen7h5rs>llm</a><a class="nav-link active" href="/web3/" aria-current="page" data-astro-cid-nen7h5rs>区块链</a><a class="nav-link" href="/about/" data-astro-cid-nen7h5rs>关于</a></nav></div><button class="search-btn" type="button" aria-label="搜索" data-search-open data-astro-cid-nen7h5rs><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" data-astro-cid-nen7h5rs><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="1.6" data-astro-cid-nen7h5rs></circle><path d="M16.5 16.5L21 21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" data-astro-cid-nen7h5rs></path></svg></button></div></header><dialog class="search-dialog" data-search-dialog data-astro-cid-nen7h5rs><form class="search-panel" method="dialog" data-astro-cid-nen7h5rs><label class="sr-only" for="site-search" data-astro-cid-nen7h5rs>搜索文章</label><input id="site-search" class="search-input" type="search" placeholder="搜索文章…" autocomplete="off" data-search-input data-astro-cid-nen7h5rs><button class="search-close" value="cancel" type="submit" aria-label="关闭" data-astro-cid-nen7h5rs>×</button></form><ul class="search-results" data-search-results data-astro-cid-nen7h5rs></ul></dialog><script>(function(){const searchIndexUrl = "/search-index.json";
+
+  const openBtn = document.querySelector("[data-search-open]");
+  const dialog = document.querySelector("[data-search-dialog]");
+  const input = document.querySelector("[data-search-input]");
+  const results = document.querySelector("[data-search-results]");
+
+  if (
+    openBtn &&
+    dialog instanceof HTMLDialogElement &&
+    input instanceof HTMLInputElement &&
+    results
+  ) {
+    let index = [];
+    let loaded = false;
+
+    async function ensureIndex() {
+      if (loaded) return;
+      const res = await fetch(searchIndexUrl);
+      index = await res.json();
+      loaded = true;
+    }
+
+    function render(q) {
+      const query = q.trim().toLowerCase();
+      if (!query) {
+        results.innerHTML = "";
+        return;
+      }
+      const hits = index
+        .filter((item) =>
+          `${item.title} ${item.description} ${item.topic}`
+            .toLowerCase()
+            .includes(query),
+        )
+        .slice(0, 8);
+      results.innerHTML = hits.length
+        ? hits
+            .map(
+              (item) =>
+                `<li><a href="${item.href}"><strong>${item.title}</strong><span>${item.description}</span></a></li>`,
+            )
+            .join("")
+        : `<li class="empty">没有匹配结果</li>`;
+    }
+
+    openBtn.addEventListener("click", async () => {
+      await ensureIndex();
+      dialog.showModal();
+      input.value = "";
+      results.innerHTML = "";
+      input.focus();
+    });
+
+    input.addEventListener("input", () => render(input.value));
+
+    dialog.addEventListener("click", (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+  }
+})();</script><main class="post-page" data-astro-cid-tldeq5d5><article data-astro-cid-tldeq5d5><header class="header wrap-narrow" data-astro-cid-tldeq5d5><a class="topic" href="/web3/" data-astro-cid-tldeq5d5>区块链</a><h1 data-astro-cid-tldeq5d5>闪电贷</h1><p class="meta" data-astro-cid-tldeq5d5><time datetime="2026-07-18T00:00:00.000Z" data-astro-cid-tldeq5d5>2026年7月18日</time><span aria-hidden="true" data-astro-cid-tldeq5d5>·</span><span data-astro-cid-tldeq5d5>约 3 小时</span></p><p class="tags" data-astro-cid-tldeq5d5><a href="/tags/区块链/" data-astro-cid-tldeq5d5>区块链</a><span data-astro-cid-tldeq5d5> · </span><a href="/tags/智能合约/" data-astro-cid-tldeq5d5>智能合约</a></p></header><div class="hero-image wrap" data-astro-cid-tldeq5d5><img src="/images/covers/web3-circuit.jpg" alt="" data-astro-cid-tldeq5d5></div><div class="prose wrap-narrow" data-astro-cid-tldeq5d5><h3 id="闪电贷">闪电贷</h3>
+<p>闪电贷（Flash Loan）：在<strong>同一笔交易</strong>内借出资产，执行任意逻辑后必须连本带手续费还清；否则整笔交易 revert。无需抵押。</p>
+<p>典型用途：套利、抵押品置换、清算、再融资。主流协议：<strong>Aave V3</strong>、<strong>Balancer Vault</strong> 等。</p>
+<ul>
+<li>Aave V3 Core：<a href="https://github.com/aave/aave-v3-core">aave-v3-core</a></li>
+<li>主网 Pool 示例：<a href="https://etherscan.io/address/0x87870Bca3F3fD6335C3F4ce8392D69350B4fA4E2">0x87870Bca3F3fD6335C3F4ce8392D69350B4fA4E2</a></li>
+<li>Balancer V2：<a href="https://github.com/balancer/balancer-v2-monorepo">balancer-v2-monorepo</a></li>
+</ul>
+<h3 id="执行流程aave-simple">执行流程（Aave Simple）</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>1. 调用 Pool.flashLoanSimple(receiver, asset, amount, params, referral)</span></span>
+<span class="line"><span>2. Pool 把 asset 转给 receiver</span></span>
+<span class="line"><span>3. 回调 receiver.executeOperation(...)</span></span>
+<span class="line"><span>4. receiver 业务逻辑结束后 approve Pool 拉回 amount + premium</span></span>
+<span class="line"><span>5. Pool 校验余额；不足则整笔 revert</span></span></code></pre>
+<h3 id="aave收款方接口与基类">Aave：收款方接口与基类</h3>
+<h4 id="iflashloansimplereceiver">IFlashLoanSimpleReceiver</h4>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#6A737D">// SPDX-License-Identifier: AGPL-3.0</span></span>
+<span class="line"><span style="color:#F97583">pragma</span><span style="color:#85E89D"> solidity</span><span style="color:#79B8FF"> ^0.8.0</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> {</span><span style="color:#B392F0">IPoolAddressesProvider</span><span style="color:#E1E4E8">} </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> '../../interfaces/IPoolAddressesProvider.sol'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> {</span><span style="color:#B392F0">IPool</span><span style="color:#E1E4E8">} </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> '../../interfaces/IPool.sol'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@title</span><span style="color:#6A737D"> IFlashLoanSimpleReceiver</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@author</span><span style="color:#6A737D"> Aave</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@notice</span><span style="color:#6A737D"> Defines the basic interface of a flashloan-receiver contract.</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Implement this interface to develop a flashloan-compatible flashLoanReceiver contract</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#F97583">interface</span><span style="color:#B392F0"> IFlashLoanSimpleReceiver</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">  /**</span></span>
+<span class="line"><span style="color:#6A737D">   * </span><span style="color:#F97583">@notice</span><span style="color:#6A737D"> Executes an operation after receiving the flash-borrowed asset</span></span>
+<span class="line"><span style="color:#6A737D">   * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Ensure that the contract can return the debt + premium, e.g., has</span></span>
+<span class="line"><span style="color:#6A737D">   *      enough funds to repay and has approved the Pool to pull the total amount</span></span>
+<span class="line"><span style="color:#6A737D">   * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> asset</span><span style="color:#6A737D"> The address of the flash-borrowed asset</span></span>
+<span class="line"><span style="color:#6A737D">   * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> amount</span><span style="color:#6A737D"> The amount of the flash-borrowed asset</span></span>
+<span class="line"><span style="color:#6A737D">   * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> premium</span><span style="color:#6A737D"> The fee of the flash-borrowed asset</span></span>
+<span class="line"><span style="color:#6A737D">   * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> initiator</span><span style="color:#6A737D"> The address of the flashloan initiator</span></span>
+<span class="line"><span style="color:#6A737D">   * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> params</span><span style="color:#6A737D"> The byte-encoded params passed when initiating the flashloan</span></span>
+<span class="line"><span style="color:#6A737D">   * </span><span style="color:#F97583">@return</span><span style="color:#E1E4E8"> True</span><span style="color:#6A737D"> if the execution of the operation succeeds, false otherwise</span></span>
+<span class="line"><span style="color:#6A737D">   */</span></span>
+<span class="line"><span style="color:#F97583">  function</span><span style="color:#B392F0"> executeOperation</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#79B8FF">    address</span><span style="color:#FFAB70"> asset</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#FFAB70"> amount</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#FFAB70"> premium</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">    address</span><span style="color:#FFAB70"> initiator</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">    bytes</span><span style="color:#F97583"> calldata</span><span style="color:#FFAB70"> params</span></span>
+<span class="line"><span style="color:#E1E4E8">  ) </span><span style="color:#F97583">external</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">bool</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  function</span><span style="color:#B392F0"> ADDRESSES_PROVIDER</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">external</span><span style="color:#F97583"> view</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">IPoolAddressesProvider</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  function</span><span style="color:#B392F0"> POOL</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">external</span><span style="color:#F97583"> view</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">IPool</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h4 id="flashloansimplereceiverbase">FlashLoanSimpleReceiverBase</h4>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#6A737D">// SPDX-License-Identifier: AGPL-3.0</span></span>
+<span class="line"><span style="color:#F97583">pragma</span><span style="color:#85E89D"> solidity</span><span style="color:#79B8FF"> ^0.8.0</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> {</span><span style="color:#B392F0">IFlashLoanSimpleReceiver</span><span style="color:#E1E4E8">} </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> '../interfaces/IFlashLoanSimpleReceiver.sol'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> {</span><span style="color:#B392F0">IPoolAddressesProvider</span><span style="color:#E1E4E8">} </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> '../../interfaces/IPoolAddressesProvider.sol'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> {</span><span style="color:#B392F0">IPool</span><span style="color:#E1E4E8">} </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> '../../interfaces/IPool.sol'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@title</span><span style="color:#6A737D"> FlashLoanSimpleReceiverBase</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@author</span><span style="color:#6A737D"> Aave</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@notice</span><span style="color:#6A737D"> Base contract to develop a flashloan-receiver contract.</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#F97583">abstract</span><span style="color:#F97583"> contract</span><span style="color:#B392F0"> FlashLoanSimpleReceiverBase</span><span style="color:#F97583"> is</span><span style="color:#B392F0"> IFlashLoanSimpleReceiver</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  IPoolAddressesProvider </span><span style="color:#F97583">public</span><span style="color:#F97583"> immutable</span><span style="color:#F97583"> override</span><span style="color:#E1E4E8"> ADDRESSES_PROVIDER;</span></span>
+<span class="line"><span style="color:#E1E4E8">  IPool </span><span style="color:#F97583">public</span><span style="color:#F97583"> immutable</span><span style="color:#F97583"> override</span><span style="color:#E1E4E8"> POOL;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  constructor</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">IPoolAddressesProvider</span><span style="color:#FFAB70"> provider</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    ADDRESSES_PROVIDER </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> provider;</span></span>
+<span class="line"><span style="color:#E1E4E8">    POOL </span><span style="color:#F97583">=</span><span style="color:#B392F0"> IPool</span><span style="color:#E1E4E8">(provider.</span><span style="color:#B392F0">getPool</span><span style="color:#E1E4E8">());</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>继承基类后实现 <code>executeOperation</code>，在其中完成套利/清算等，并保证能偿还 <code>amount + premium</code>。</p>
+<h3 id="aave-pool发起闪电贷">Aave Pool：发起闪电贷</h3>
+<p>主网 Pool 上的入口（源码节选自官方 <code>Pool.sol</code>）：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> flashLoan</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#79B8FF">    address</span><span style="color:#FFAB70"> receiverAddress</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">    address</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">calldata</span><span style="color:#FFAB70"> assets</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">calldata</span><span style="color:#FFAB70"> amounts</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">calldata</span><span style="color:#FFAB70"> interestRateModes</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">    address</span><span style="color:#FFAB70"> onBehalfOf</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">    bytes</span><span style="color:#F97583"> calldata</span><span style="color:#FFAB70"> params</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">    uint16</span><span style="color:#FFAB70"> referralCode</span></span>
+<span class="line"><span style="color:#E1E4E8">  ) </span><span style="color:#F97583">public</span><span style="color:#F97583"> virtual</span><span style="color:#F97583"> override</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    DataTypes.FlashloanParams </span><span style="color:#F97583">memory</span><span style="color:#E1E4E8"> flashParams </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> DataTypes.</span><span style="color:#B392F0">FlashloanParams</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">      receiverAddress</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> receiverAddress,</span></span>
+<span class="line"><span style="color:#E1E4E8">      assets</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> assets,</span></span>
+<span class="line"><span style="color:#E1E4E8">      amounts</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> amounts,</span></span>
+<span class="line"><span style="color:#E1E4E8">      interestRateModes</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> interestRateModes,</span></span>
+<span class="line"><span style="color:#E1E4E8">      onBehalfOf</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> onBehalfOf,</span></span>
+<span class="line"><span style="color:#E1E4E8">      params</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> params,</span></span>
+<span class="line"><span style="color:#E1E4E8">      referralCode</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> referralCode,</span></span>
+<span class="line"><span style="color:#E1E4E8">      flashLoanPremiumToProtocol</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> _flashLoanPremiumToProtocol,</span></span>
+<span class="line"><span style="color:#E1E4E8">      flashLoanPremiumTotal</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> _flashLoanPremiumTotal,</span></span>
+<span class="line"><span style="color:#E1E4E8">      maxStableRateBorrowSizePercent</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> _maxStableRateBorrowSizePercent,</span></span>
+<span class="line"><span style="color:#E1E4E8">      reservesCount</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> _reservesCount,</span></span>
+<span class="line"><span style="color:#E1E4E8">      addressesProvider</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> address</span><span style="color:#E1E4E8">(ADDRESSES_PROVIDER),</span></span>
+<span class="line"><span style="color:#E1E4E8">      userEModeCategory</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> _usersEModeCategory[onBehalfOf],</span></span>
+<span class="line"><span style="color:#E1E4E8">      isAuthorizedFlashBorrower</span><span style="color:#F97583">:</span><span style="color:#B392F0"> IACLManager</span><span style="color:#E1E4E8">(ADDRESSES_PROVIDER.</span><span style="color:#B392F0">getACLManager</span><span style="color:#E1E4E8">()).</span><span style="color:#B392F0">isFlashBorrower</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#79B8FF">        msg.sender</span></span>
+<span class="line"><span style="color:#E1E4E8">      )</span></span>
+<span class="line"><span style="color:#E1E4E8">    });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    FlashLoanLogic.</span><span style="color:#B392F0">executeFlashLoan</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#E1E4E8">      _reserves,</span></span>
+<span class="line"><span style="color:#E1E4E8">      _reservesList,</span></span>
+<span class="line"><span style="color:#E1E4E8">      _eModeCategories,</span></span>
+<span class="line"><span style="color:#E1E4E8">      _usersConfig[onBehalfOf],</span></span>
+<span class="line"><span style="color:#E1E4E8">      flashParams</span></span>
+<span class="line"><span style="color:#E1E4E8">    );</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">  /// </span><span style="color:#F97583">@inheritdoc</span><span style="color:#6A737D"> IPool</span></span>
+<span class="line"><span style="color:#F97583">  function</span><span style="color:#B392F0"> flashLoanSimple</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#79B8FF">    address</span><span style="color:#FFAB70"> receiverAddress</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">    address</span><span style="color:#FFAB70"> asset</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#FFAB70"> amount</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">    bytes</span><span style="color:#F97583"> calldata</span><span style="color:#FFAB70"> params</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">    uint16</span><span style="color:#FFAB70"> referralCode</span></span>
+<span class="line"><span style="color:#E1E4E8">  ) </span><span style="color:#F97583">public</span><span style="color:#F97583"> virtual</span><span style="color:#F97583"> override</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    DataTypes.FlashloanSimpleParams </span><span style="color:#F97583">memory</span><span style="color:#E1E4E8"> flashParams </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> DataTypes.</span><span style="color:#B392F0">FlashloanSimpleParams</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">      receiverAddress</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> receiverAddress,</span></span>
+<span class="line"><span style="color:#E1E4E8">      asset</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> asset,</span></span>
+<span class="line"><span style="color:#E1E4E8">      amount</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> amount,</span></span>
+<span class="line"><span style="color:#E1E4E8">      params</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> params,</span></span>
+<span class="line"><span style="color:#E1E4E8">      referralCode</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> referralCode,</span></span>
+<span class="line"><span style="color:#E1E4E8">      flashLoanPremiumToProtocol</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> _flashLoanPremiumToProtocol,</span></span>
+<span class="line"><span style="color:#E1E4E8">      flashLoanPremiumTotal</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> _flashLoanPremiumTotal</span></span>
+<span class="line"><span style="color:#E1E4E8">    });</span></span>
+<span class="line"><span style="color:#E1E4E8">    FlashLoanLogic.</span><span style="color:#B392F0">executeFlashLoanSimple</span><span style="color:#E1E4E8">(_reserves[asset], flashParams);</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span></code></pre>
+<ul>
+<li><code>flashLoan</code>：多资产，可选择是否将借款转为普通债务（<code>interestRateModes</code>）</li>
+<li><code>flashLoanSimple</code>：单资产，一笔还清型闪电贷（最常用）</li>
+</ul>
+<h3 id="aave核心执行逻辑-flashloanlogic">Aave：核心执行逻辑 FlashLoanLogic</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#6A737D">// SPDX-License-Identifier: BUSL-1.1</span></span>
+<span class="line"><span style="color:#F97583">pragma</span><span style="color:#85E89D"> solidity</span><span style="color:#79B8FF"> ^0.8.10</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> {</span><span style="color:#B392F0">GPv2SafeERC20</span><span style="color:#E1E4E8">} </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> '../../../dependencies/gnosis/contracts/GPv2SafeERC20.sol'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> {</span><span style="color:#B392F0">SafeCast</span><span style="color:#E1E4E8">} </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> '../../../dependencies/openzeppelin/contracts/SafeCast.sol'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> {</span><span style="color:#B392F0">IERC20</span><span style="color:#E1E4E8">} </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> '../../../dependencies/openzeppelin/contracts/IERC20.sol'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> {</span><span style="color:#B392F0">IAToken</span><span style="color:#E1E4E8">} </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> '../../../interfaces/IAToken.sol'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> {</span><span style="color:#B392F0">IFlashLoanReceiver</span><span style="color:#E1E4E8">} </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> '../../../flashloan/interfaces/IFlashLoanReceiver.sol'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> {</span><span style="color:#B392F0">IFlashLoanSimpleReceiver</span><span style="color:#E1E4E8">} </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> '../../../flashloan/interfaces/IFlashLoanSimpleReceiver.sol'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> {</span><span style="color:#B392F0">IPoolAddressesProvider</span><span style="color:#E1E4E8">} </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> '../../../interfaces/IPoolAddressesProvider.sol'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> {</span><span style="color:#B392F0">UserConfiguration</span><span style="color:#E1E4E8">} </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> '../configuration/UserConfiguration.sol'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> {</span><span style="color:#B392F0">ReserveConfiguration</span><span style="color:#E1E4E8">} </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> '../configuration/ReserveConfiguration.sol'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> {</span><span style="color:#B392F0">Errors</span><span style="color:#E1E4E8">} </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> '../helpers/Errors.sol'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> {</span><span style="color:#B392F0">WadRayMath</span><span style="color:#E1E4E8">} </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> '../math/WadRayMath.sol'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> {</span><span style="color:#B392F0">PercentageMath</span><span style="color:#E1E4E8">} </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> '../math/PercentageMath.sol'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> {</span><span style="color:#B392F0">DataTypes</span><span style="color:#E1E4E8">} </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> '../types/DataTypes.sol'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> {</span><span style="color:#B392F0">ValidationLogic</span><span style="color:#E1E4E8">} </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> './ValidationLogic.sol'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> {</span><span style="color:#B392F0">BorrowLogic</span><span style="color:#E1E4E8">} </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> './BorrowLogic.sol'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> {</span><span style="color:#B392F0">ReserveLogic</span><span style="color:#E1E4E8">} </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> './ReserveLogic.sol'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@title</span><span style="color:#6A737D"> FlashLoanLogic library</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@author</span><span style="color:#6A737D"> Aave</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@notice</span><span style="color:#6A737D"> Implements the logic for the flash loans</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#F97583">library</span><span style="color:#B392F0"> FlashLoanLogic</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  using</span><span style="color:#B392F0"> ReserveLogic</span><span style="color:#F97583"> for</span><span style="color:#B392F0"> DataTypes</span><span style="color:#E1E4E8">.ReserveCache;</span></span>
+<span class="line"><span style="color:#F97583">  using</span><span style="color:#B392F0"> ReserveLogic</span><span style="color:#F97583"> for</span><span style="color:#B392F0"> DataTypes</span><span style="color:#E1E4E8">.ReserveData;</span></span>
+<span class="line"><span style="color:#F97583">  using</span><span style="color:#B392F0"> GPv2SafeERC20</span><span style="color:#F97583"> for</span><span style="color:#B392F0"> IERC20</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">  using</span><span style="color:#B392F0"> ReserveConfiguration</span><span style="color:#F97583"> for</span><span style="color:#B392F0"> DataTypes</span><span style="color:#E1E4E8">.ReserveConfigurationMap;</span></span>
+<span class="line"><span style="color:#F97583">  using</span><span style="color:#B392F0"> WadRayMath</span><span style="color:#F97583"> for</span><span style="color:#B392F0"> uint256</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">  using</span><span style="color:#B392F0"> PercentageMath</span><span style="color:#F97583"> for</span><span style="color:#B392F0"> uint256</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">  using</span><span style="color:#B392F0"> SafeCast</span><span style="color:#F97583"> for</span><span style="color:#B392F0"> uint256</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">  // See `IPool` for descriptions</span></span>
+<span class="line"><span style="color:#F97583">  event</span><span style="color:#B392F0"> FlashLoan</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#79B8FF">    address</span><span style="color:#F97583"> indexed</span><span style="color:#FFAB70"> target</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">    address</span><span style="color:#FFAB70"> initiator</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">    address</span><span style="color:#F97583"> indexed</span><span style="color:#FFAB70"> asset</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#FFAB70"> amount</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#FFAB70">    DataTypes</span><span style="color:#E1E4E8">.</span><span style="color:#FFAB70">InterestRateMode</span><span style="color:#FFAB70"> interestRateMode</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#FFAB70"> premium</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">    uint16</span><span style="color:#F97583"> indexed</span><span style="color:#FFAB70"> referralCode</span></span>
+<span class="line"><span style="color:#E1E4E8">  );</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">  // Helper struct for internal variables used in the `executeFlashLoan` function</span></span>
+<span class="line"><span style="color:#F97583">  struct</span><span style="color:#B392F0"> FlashLoanLocalVars</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    IFlashLoanReceiver receiver;</span></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#E1E4E8"> i;</span></span>
+<span class="line"><span style="color:#79B8FF">    address</span><span style="color:#E1E4E8"> currentAsset;</span></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#E1E4E8"> currentAmount;</span></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#E1E4E8">[] totalPremiums;</span></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#E1E4E8"> flashloanPremiumTotal;</span></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#E1E4E8"> flashloanPremiumToProtocol;</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">  /**</span></span>
+<span class="line"><span style="color:#6A737D">   * </span><span style="color:#F97583">@notice</span><span style="color:#6A737D"> Implements the flashloan feature that allow users to access liquidity of the pool for one transaction</span></span>
+<span class="line"><span style="color:#6A737D">   * as long as the amount taken plus fee is returned or debt is opened.</span></span>
+<span class="line"><span style="color:#6A737D">   * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> For authorized flashborrowers the fee is waived</span></span>
+<span class="line"><span style="color:#6A737D">   * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> At the end of the transaction the pool will pull amount borrowed + fee from the receiver,</span></span>
+<span class="line"><span style="color:#6A737D">   * if the receiver have not approved the pool the transaction will revert.</span></span>
+<span class="line"><span style="color:#6A737D">   * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Emits the `FlashLoan()` event</span></span>
+<span class="line"><span style="color:#6A737D">   * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> reservesData</span><span style="color:#6A737D"> The state of all the reserves</span></span>
+<span class="line"><span style="color:#6A737D">   * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> reservesList</span><span style="color:#6A737D"> The addresses of all the active reserves</span></span>
+<span class="line"><span style="color:#6A737D">   * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> eModeCategories</span><span style="color:#6A737D"> The configuration of all the efficiency mode categories</span></span>
+<span class="line"><span style="color:#6A737D">   * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> userConfig</span><span style="color:#6A737D"> The user configuration mapping that tracks the supplied/borrowed assets</span></span>
+<span class="line"><span style="color:#6A737D">   * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> params</span><span style="color:#6A737D"> The additional parameters needed to execute the flashloan function</span></span>
+<span class="line"><span style="color:#6A737D">   */</span></span>
+<span class="line"><span style="color:#F97583">  function</span><span style="color:#B392F0"> executeFlashLoan</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#FFAB70">    mapping</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8"> =&gt; </span><span style="color:#F97583">DataTypes</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">ReserveData</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">storage</span><span style="color:#B392F0"> reservesData</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#B392F0">    mapping</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">uint256</span><span style="color:#E1E4E8"> =&gt; </span><span style="color:#B392F0">address</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">storage</span><span style="color:#B392F0"> reservesList</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#B392F0">    mapping</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">uint8</span><span style="color:#E1E4E8"> =&gt; </span><span style="color:#B392F0">DataTypes</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">EModeCategory</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">storage</span><span style="color:#B392F0"> eModeCategories</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#B392F0">    DataTypes</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">UserConfigurationMap</span><span style="color:#F97583"> storage</span><span style="color:#B392F0"> userConfig</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#B392F0">    DataTypes</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">FlashloanParams</span><span style="color:#F97583"> memory</span><span style="color:#B392F0"> params</span></span>
+<span class="line"><span style="color:#E1E4E8">  ) </span><span style="color:#F97583">external</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">    // The usual action flow (cache -&gt; updateState -&gt; validation -&gt; changeState -&gt; updateRates)</span></span>
+<span class="line"><span style="color:#6A737D">    // is altered to (validation -&gt; user payload -&gt; cache -&gt; updateState -&gt; changeState -&gt; updateRates) for flashloans.</span></span>
+<span class="line"><span style="color:#6A737D">    // This is done to protect against reentrance and rate manipulation within the user specified payload.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    ValidationLogic.</span><span style="color:#B392F0">validateFlashloan</span><span style="color:#E1E4E8">(reservesData, params.assets, params.amounts);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    FlashLoanLocalVars </span><span style="color:#F97583">memory</span><span style="color:#E1E4E8"> vars;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    vars.totalPremiums </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#79B8FF"> uint256</span><span style="color:#E1E4E8">[](</span><span style="color:#FFAB70">params</span><span style="color:#E1E4E8">.</span><span style="color:#FFAB70">assets</span><span style="color:#E1E4E8">.</span><span style="color:#FFAB70">length</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    vars.receiver </span><span style="color:#F97583">=</span><span style="color:#B392F0"> IFlashLoanReceiver</span><span style="color:#E1E4E8">(params.receiverAddress);</span></span>
+<span class="line"><span style="color:#E1E4E8">    (vars.flashloanPremiumTotal, vars.flashloanPremiumToProtocol) </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> params.isAuthorizedFlashBorrower</span></span>
+<span class="line"><span style="color:#F97583">      ?</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">      :</span><span style="color:#E1E4E8"> (params.flashLoanPremiumTotal, params.flashLoanPremiumToProtocol);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    for</span><span style="color:#E1E4E8"> (vars.i </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">; vars.i </span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8"> params.assets.length; vars.i</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">      vars.currentAmount </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> params.amounts[vars.i];</span></span>
+<span class="line"><span style="color:#E1E4E8">      vars.totalPremiums[vars.i] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> DataTypes.</span><span style="color:#B392F0">InterestRateMode</span><span style="color:#E1E4E8">(params.interestRateModes[vars.i]) </span><span style="color:#F97583">==</span></span>
+<span class="line"><span style="color:#E1E4E8">        DataTypes.InterestRateMode.NONE</span></span>
+<span class="line"><span style="color:#F97583">        ?</span><span style="color:#E1E4E8"> vars.currentAmount.</span><span style="color:#B392F0">percentMul</span><span style="color:#E1E4E8">(vars.flashloanPremiumTotal)</span></span>
+<span class="line"><span style="color:#F97583">        :</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#B392F0">      IAToken</span><span style="color:#E1E4E8">(reservesData[params.assets[vars.i]].aTokenAddress).</span><span style="color:#B392F0">transferUnderlyingTo</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#E1E4E8">        params.receiverAddress,</span></span>
+<span class="line"><span style="color:#E1E4E8">        vars.currentAmount</span></span>
+<span class="line"><span style="color:#E1E4E8">      );</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    require</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#E1E4E8">      vars.receiver.</span><span style="color:#B392F0">executeOperation</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#E1E4E8">        params.assets,</span></span>
+<span class="line"><span style="color:#E1E4E8">        params.amounts,</span></span>
+<span class="line"><span style="color:#E1E4E8">        vars.totalPremiums,</span></span>
+<span class="line"><span style="color:#79B8FF">        msg.sender</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">        params.params</span></span>
+<span class="line"><span style="color:#E1E4E8">      ),</span></span>
+<span class="line"><span style="color:#E1E4E8">      Errors.INVALID_FLASHLOAN_EXECUTOR_RETURN</span></span>
+<span class="line"><span style="color:#E1E4E8">    );</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    for</span><span style="color:#E1E4E8"> (vars.i </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">; vars.i </span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8"> params.assets.length; vars.i</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">      vars.currentAsset </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> params.assets[vars.i];</span></span>
+<span class="line"><span style="color:#E1E4E8">      vars.currentAmount </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> params.amounts[vars.i];</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">      if</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">        DataTypes.</span><span style="color:#B392F0">InterestRateMode</span><span style="color:#E1E4E8">(params.interestRateModes[vars.i]) </span><span style="color:#F97583">==</span></span>
+<span class="line"><span style="color:#E1E4E8">        DataTypes.InterestRateMode.NONE</span></span>
+<span class="line"><span style="color:#E1E4E8">      ) {</span></span>
+<span class="line"><span style="color:#B392F0">        _handleFlashLoanRepayment</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#E1E4E8">          reservesData[vars.currentAsset],</span></span>
+<span class="line"><span style="color:#E1E4E8">          DataTypes.</span><span style="color:#B392F0">FlashLoanRepaymentParams</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">            asset</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> vars.currentAsset,</span></span>
+<span class="line"><span style="color:#E1E4E8">            receiverAddress</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> params.receiverAddress,</span></span>
+<span class="line"><span style="color:#E1E4E8">            amount</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> vars.currentAmount,</span></span>
+<span class="line"><span style="color:#E1E4E8">            totalPremium</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> vars.totalPremiums[vars.i],</span></span>
+<span class="line"><span style="color:#E1E4E8">            flashLoanPremiumToProtocol</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> vars.flashloanPremiumToProtocol,</span></span>
+<span class="line"><span style="color:#E1E4E8">            referralCode</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> params.referralCode</span></span>
+<span class="line"><span style="color:#E1E4E8">          })</span></span>
+<span class="line"><span style="color:#E1E4E8">        );</span></span>
+<span class="line"><span style="color:#E1E4E8">      } </span><span style="color:#F97583">else</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">        // If the user chose to not return the funds, the system checks if there is enough collateral and</span></span>
+<span class="line"><span style="color:#6A737D">        // eventually opens a debt position</span></span>
+<span class="line"><span style="color:#E1E4E8">        BorrowLogic.</span><span style="color:#B392F0">executeBorrow</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#E1E4E8">          reservesData,</span></span>
+<span class="line"><span style="color:#E1E4E8">          reservesList,</span></span>
+<span class="line"><span style="color:#E1E4E8">          eModeCategories,</span></span>
+<span class="line"><span style="color:#E1E4E8">          userConfig,</span></span>
+<span class="line"><span style="color:#E1E4E8">          DataTypes.</span><span style="color:#B392F0">ExecuteBorrowParams</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">            asset</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> vars.currentAsset,</span></span>
+<span class="line"><span style="color:#E1E4E8">            user</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> msg.sender</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">            onBehalfOf</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> params.onBehalfOf,</span></span>
+<span class="line"><span style="color:#E1E4E8">            amount</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> vars.currentAmount,</span></span>
+<span class="line"><span style="color:#E1E4E8">            interestRateMode</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> DataTypes.</span><span style="color:#B392F0">InterestRateMode</span><span style="color:#E1E4E8">(params.interestRateModes[vars.i]),</span></span>
+<span class="line"><span style="color:#E1E4E8">            referralCode</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> params.referralCode,</span></span>
+<span class="line"><span style="color:#E1E4E8">            releaseUnderlying</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> false</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">            maxStableRateBorrowSizePercent</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> params.maxStableRateBorrowSizePercent,</span></span>
+<span class="line"><span style="color:#E1E4E8">            reservesCount</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> params.reservesCount,</span></span>
+<span class="line"><span style="color:#E1E4E8">            oracle</span><span style="color:#F97583">:</span><span style="color:#B392F0"> IPoolAddressesProvider</span><span style="color:#E1E4E8">(params.addressesProvider).</span><span style="color:#B392F0">getPriceOracle</span><span style="color:#E1E4E8">(),</span></span>
+<span class="line"><span style="color:#E1E4E8">            userEModeCategory</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> params.userEModeCategory,</span></span>
+<span class="line"><span style="color:#E1E4E8">            priceOracleSentinel</span><span style="color:#F97583">:</span><span style="color:#B392F0"> IPoolAddressesProvider</span><span style="color:#E1E4E8">(params.addressesProvider)</span></span>
+<span class="line"><span style="color:#E1E4E8">              .</span><span style="color:#B392F0">getPriceOracleSentinel</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#E1E4E8">          })</span></span>
+<span class="line"><span style="color:#E1E4E8">        );</span></span>
+<span class="line"><span style="color:#6A737D">        // no premium is paid when taking on the flashloan as debt</span></span>
+<span class="line"><span style="color:#F97583">        emit</span><span style="color:#B392F0"> FlashLoan</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#E1E4E8">          params.receiverAddress,</span></span>
+<span class="line"><span style="color:#79B8FF">          msg.sender</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">          vars.currentAsset,</span></span>
+<span class="line"><span style="color:#E1E4E8">          vars.currentAmount,</span></span>
+<span class="line"><span style="color:#E1E4E8">          DataTypes.</span><span style="color:#B392F0">InterestRateMode</span><span style="color:#E1E4E8">(params.interestRateModes[vars.i]),</span></span>
+<span class="line"><span style="color:#79B8FF">          0</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">          params.referralCode</span></span>
+<span class="line"><span style="color:#E1E4E8">        );</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">  /**</span></span>
+<span class="line"><span style="color:#6A737D">   * </span><span style="color:#F97583">@notice</span><span style="color:#6A737D"> Implements the simple flashloan feature that allow users to access liquidity of ONE reserve for one</span></span>
+<span class="line"><span style="color:#6A737D">   * transaction as long as the amount taken plus fee is returned.</span></span>
+<span class="line"><span style="color:#6A737D">   * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Does not waive fee for approved flashborrowers nor allow taking on debt instead of repaying to save gas</span></span>
+<span class="line"><span style="color:#6A737D">   * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> At the end of the transaction the pool will pull amount borrowed + fee from the receiver,</span></span>
+<span class="line"><span style="color:#6A737D">   * if the receiver have not approved the pool the transaction will revert.</span></span>
+<span class="line"><span style="color:#6A737D">   * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Emits the `FlashLoan()` event</span></span>
+<span class="line"><span style="color:#6A737D">   * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> reserve</span><span style="color:#6A737D"> The state of the flashloaned reserve</span></span>
+<span class="line"><span style="color:#6A737D">   * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> params</span><span style="color:#6A737D"> The additional parameters needed to execute the simple flashloan function</span></span>
+<span class="line"><span style="color:#6A737D">   */</span></span>
+<span class="line"><span style="color:#F97583">  function</span><span style="color:#B392F0"> executeFlashLoanSimple</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#F97583">    DataTypes</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">ReserveData</span><span style="color:#F97583"> storage</span><span style="color:#FFAB70"> reserve</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#F97583">    DataTypes</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">FlashloanSimpleParams</span><span style="color:#F97583"> memory</span><span style="color:#FFAB70"> params</span></span>
+<span class="line"><span style="color:#E1E4E8">  ) </span><span style="color:#F97583">external</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">    // The usual action flow (cache -&gt; updateState -&gt; validation -&gt; changeState -&gt; updateRates)</span></span>
+<span class="line"><span style="color:#6A737D">    // is altered to (validation -&gt; user payload -&gt; cache -&gt; updateState -&gt; changeState -&gt; updateRates) for flashloans.</span></span>
+<span class="line"><span style="color:#6A737D">    // This is done to protect against reentrance and rate manipulation within the user specified payload.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    ValidationLogic.</span><span style="color:#B392F0">validateFlashloanSimple</span><span style="color:#E1E4E8">(reserve);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    IFlashLoanSimpleReceiver receiver </span><span style="color:#F97583">=</span><span style="color:#B392F0"> IFlashLoanSimpleReceiver</span><span style="color:#E1E4E8">(params.receiverAddress);</span></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#E1E4E8"> totalPremium </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> params.amount.</span><span style="color:#B392F0">percentMul</span><span style="color:#E1E4E8">(params.flashLoanPremiumTotal);</span></span>
+<span class="line"><span style="color:#B392F0">    IAToken</span><span style="color:#E1E4E8">(reserve.aTokenAddress).</span><span style="color:#B392F0">transferUnderlyingTo</span><span style="color:#E1E4E8">(params.receiverAddress, params.amount);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    require</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#E1E4E8">      receiver.</span><span style="color:#B392F0">executeOperation</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#E1E4E8">        params.asset,</span></span>
+<span class="line"><span style="color:#E1E4E8">        params.amount,</span></span>
+<span class="line"><span style="color:#E1E4E8">        totalPremium,</span></span>
+<span class="line"><span style="color:#79B8FF">        msg.sender</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">        params.params</span></span>
+<span class="line"><span style="color:#E1E4E8">      ),</span></span>
+<span class="line"><span style="color:#E1E4E8">      Errors.INVALID_FLASHLOAN_EXECUTOR_RETURN</span></span>
+<span class="line"><span style="color:#E1E4E8">    );</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">    _handleFlashLoanRepayment</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#E1E4E8">      reserve,</span></span>
+<span class="line"><span style="color:#E1E4E8">      DataTypes.</span><span style="color:#B392F0">FlashLoanRepaymentParams</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">        asset</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> params.asset,</span></span>
+<span class="line"><span style="color:#E1E4E8">        receiverAddress</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> params.receiverAddress,</span></span>
+<span class="line"><span style="color:#E1E4E8">        amount</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> params.amount,</span></span>
+<span class="line"><span style="color:#E1E4E8">        totalPremium</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> totalPremium,</span></span>
+<span class="line"><span style="color:#E1E4E8">        flashLoanPremiumToProtocol</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> params.flashLoanPremiumToProtocol,</span></span>
+<span class="line"><span style="color:#E1E4E8">        referralCode</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> params.referralCode</span></span>
+<span class="line"><span style="color:#E1E4E8">      })</span></span>
+<span class="line"><span style="color:#E1E4E8">    );</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">  /**</span></span>
+<span class="line"><span style="color:#6A737D">   * </span><span style="color:#F97583">@notice</span><span style="color:#6A737D"> Handles repayment of flashloaned assets + premium</span></span>
+<span class="line"><span style="color:#6A737D">   * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Will pull the amount + premium from the receiver, so must have approved pool</span></span>
+<span class="line"><span style="color:#6A737D">   * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> reserve</span><span style="color:#6A737D"> The state of the flashloaned reserve</span></span>
+<span class="line"><span style="color:#6A737D">   * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> params</span><span style="color:#6A737D"> The additional parameters needed to execute the repayment function</span></span>
+<span class="line"><span style="color:#6A737D">   */</span></span>
+<span class="line"><span style="color:#F97583">  function</span><span style="color:#B392F0"> _handleFlashLoanRepayment</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#F97583">    DataTypes</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">ReserveData</span><span style="color:#F97583"> storage</span><span style="color:#FFAB70"> reserve</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#F97583">    DataTypes</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">FlashLoanRepaymentParams</span><span style="color:#F97583"> memory</span><span style="color:#FFAB70"> params</span></span>
+<span class="line"><span style="color:#E1E4E8">  ) </span><span style="color:#F97583">internal</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#E1E4E8"> premiumToProtocol </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> params.totalPremium.</span><span style="color:#B392F0">percentMul</span><span style="color:#E1E4E8">(params.flashLoanPremiumToProtocol);</span></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#E1E4E8"> premiumToLP </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> params.totalPremium </span><span style="color:#F97583">-</span><span style="color:#E1E4E8"> premiumToProtocol;</span></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#E1E4E8"> amountPlusPremium </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> params.amount </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> params.totalPremium;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    DataTypes.ReserveCache </span><span style="color:#F97583">memory</span><span style="color:#E1E4E8"> reserveCache </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> reserve.</span><span style="color:#B392F0">cache</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    reserve.</span><span style="color:#B392F0">updateState</span><span style="color:#E1E4E8">(reserveCache);</span></span>
+<span class="line"><span style="color:#E1E4E8">    reserveCache.nextLiquidityIndex </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> reserve.</span><span style="color:#B392F0">cumulateToLiquidityIndex</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#B392F0">      IERC20</span><span style="color:#E1E4E8">(reserveCache.aTokenAddress).</span><span style="color:#B392F0">totalSupply</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">+</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#E1E4E8">(reserve.accruedToTreasury).</span><span style="color:#B392F0">rayMul</span><span style="color:#E1E4E8">(reserveCache.nextLiquidityIndex),</span></span>
+<span class="line"><span style="color:#E1E4E8">      premiumToLP</span></span>
+<span class="line"><span style="color:#E1E4E8">    );</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    reserve.accruedToTreasury </span><span style="color:#F97583">+=</span><span style="color:#E1E4E8"> premiumToProtocol</span></span>
+<span class="line"><span style="color:#E1E4E8">      .</span><span style="color:#B392F0">rayDiv</span><span style="color:#E1E4E8">(reserveCache.nextLiquidityIndex)</span></span>
+<span class="line"><span style="color:#E1E4E8">      .</span><span style="color:#B392F0">toUint128</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    reserve.</span><span style="color:#B392F0">updateInterestRates</span><span style="color:#E1E4E8">(reserveCache, params.asset, amountPlusPremium, </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">    IERC20</span><span style="color:#E1E4E8">(params.asset).</span><span style="color:#B392F0">safeTransferFrom</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#E1E4E8">      params.receiverAddress,</span></span>
+<span class="line"><span style="color:#E1E4E8">      reserveCache.aTokenAddress,</span></span>
+<span class="line"><span style="color:#E1E4E8">      amountPlusPremium</span></span>
+<span class="line"><span style="color:#E1E4E8">    );</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">    IAToken</span><span style="color:#E1E4E8">(reserveCache.aTokenAddress).</span><span style="color:#B392F0">handleRepayment</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#E1E4E8">      params.receiverAddress,</span></span>
+<span class="line"><span style="color:#E1E4E8">      params.receiverAddress,</span></span>
+<span class="line"><span style="color:#E1E4E8">      amountPlusPremium</span></span>
+<span class="line"><span style="color:#E1E4E8">    );</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    emit</span><span style="color:#B392F0"> FlashLoan</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#E1E4E8">      params.receiverAddress,</span></span>
+<span class="line"><span style="color:#79B8FF">      msg.sender</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      params.asset,</span></span>
+<span class="line"><span style="color:#E1E4E8">      params.amount,</span></span>
+<span class="line"><span style="color:#E1E4E8">      DataTypes.</span><span style="color:#B392F0">InterestRateMode</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">),</span></span>
+<span class="line"><span style="color:#E1E4E8">      params.totalPremium,</span></span>
+<span class="line"><span style="color:#E1E4E8">      params.referralCode</span></span>
+<span class="line"><span style="color:#E1E4E8">    );</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="balancer-vault-闪电贷">Balancer Vault 闪电贷</h3>
+<p>Balancer 在 Vault 内提供多代币闪电贷；收款方实现 <code>IFlashLoanRecipient.receiveFlashLoan</code>，归还 <code>amounts + feeAmounts</code>。</p>
+<h4 id="iflashloanrecipient">IFlashLoanRecipient</h4>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#6A737D">// SPDX-License-Identifier: GPL-3.0-or-later</span></span>
+<span class="line"><span style="color:#6A737D">// This program is free software: you can redistribute it and/or modify</span></span>
+<span class="line"><span style="color:#6A737D">// it under the terms of the GNU General Public License as published by</span></span>
+<span class="line"><span style="color:#6A737D">// the Free Software Foundation, either version 3 of the License, or</span></span>
+<span class="line"><span style="color:#6A737D">// (at your option) any later version.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// This program is distributed in the hope that it will be useful,</span></span>
+<span class="line"><span style="color:#6A737D">// but WITHOUT ANY WARRANTY; without even the implied warranty of</span></span>
+<span class="line"><span style="color:#6A737D">// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span></span>
+<span class="line"><span style="color:#6A737D">// GNU General Public License for more details.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// You should have received a copy of the GNU General Public License</span></span>
+<span class="line"><span style="color:#6A737D">// along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">pragma</span><span style="color:#85E89D"> solidity</span><span style="color:#79B8FF"> &gt;=0.7.0</span><span style="color:#F97583"> &lt;</span><span style="color:#79B8FF">0.9</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// Inspired by Aave Protocol's IFlashLoanReceiver.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#9ECBFF"> "../solidity-utils/openzeppelin/IERC20.sol"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">interface</span><span style="color:#B392F0"> IFlashLoanRecipient</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> When `flashLoan` is called on the Vault, it invokes the `receiveFlashLoan` hook on the recipient.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * At the time of the call, the Vault will have transferred `amounts` for `tokens` to the recipient. Before this</span></span>
+<span class="line"><span style="color:#6A737D">     * call returns, the recipient must have transferred `amounts` plus `feeAmounts` for each token back to the</span></span>
+<span class="line"><span style="color:#6A737D">     * Vault, or else the entire flash loan will revert.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * `userData` is the same value passed in the `IVault.flashLoan` call.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> receiveFlashLoan</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#F97583">        IERC20</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">memory</span><span style="color:#FFAB70"> tokens</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">memory</span><span style="color:#FFAB70"> amounts</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">memory</span><span style="color:#FFAB70"> feeAmounts</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes</span><span style="color:#F97583"> memory</span><span style="color:#FFAB70"> userData</span></span>
+<span class="line"><span style="color:#E1E4E8">    ) </span><span style="color:#F97583">external</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h4 id="flashloansvault-模块">FlashLoans（Vault 模块）</h4>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#6A737D">// SPDX-License-Identifier: GPL-3.0-or-later</span></span>
+<span class="line"><span style="color:#6A737D">// This program is free software: you can redistribute it and/or modify</span></span>
+<span class="line"><span style="color:#6A737D">// it under the terms of the GNU General Public License as published by</span></span>
+<span class="line"><span style="color:#6A737D">// the Free Software Foundation, either version 3 of the License, or</span></span>
+<span class="line"><span style="color:#6A737D">// (at your option) any later version.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// This program is distributed in the hope that it will be useful,</span></span>
+<span class="line"><span style="color:#6A737D">// but WITHOUT ANY WARRANTY; without even the implied warranty of</span></span>
+<span class="line"><span style="color:#6A737D">// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span></span>
+<span class="line"><span style="color:#6A737D">// GNU General Public License for more details.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// You should have received a copy of the GNU General Public License</span></span>
+<span class="line"><span style="color:#6A737D">// along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// This flash loan provider was based on the Aave protocol's open source</span></span>
+<span class="line"><span style="color:#6A737D">// implementation and terminology and interfaces are intentionally kept</span></span>
+<span class="line"><span style="color:#6A737D">// similar</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">pragma</span><span style="color:#85E89D"> solidity</span><span style="color:#79B8FF"> ^0.7.0</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">pragma</span><span style="color:#85E89D"> experimental</span><span style="color:#79B8FF"> ABIEncoderV2</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#9ECBFF"> "@balancer-labs/v2-interfaces/contracts/solidity-utils/helpers/BalancerErrors.sol"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#9ECBFF"> "@balancer-labs/v2-interfaces/contracts/solidity-utils/openzeppelin/IERC20.sol"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#9ECBFF"> "@balancer-labs/v2-interfaces/contracts/vault/IFlashLoanRecipient.sol"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#9ECBFF"> "@balancer-labs/v2-solidity-utils/contracts/openzeppelin/ReentrancyGuard.sol"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#9ECBFF"> "@balancer-labs/v2-solidity-utils/contracts/openzeppelin/SafeERC20.sol"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#9ECBFF"> "./Fees.sol"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Handles Flash Loans through the Vault. Calls the `receiveFlashLoan` hook on the flash loan recipient</span></span>
+<span class="line"><span style="color:#6A737D"> * contract, which implements the `IFlashLoanRecipient` interface.</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#F97583">abstract</span><span style="color:#F97583"> contract</span><span style="color:#B392F0"> FlashLoans</span><span style="color:#F97583"> is</span><span style="color:#B392F0"> Fees</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">ReentrancyGuard</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">TemporarilyPausable</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    using</span><span style="color:#B392F0"> SafeERC20</span><span style="color:#F97583"> for</span><span style="color:#B392F0"> IERC20</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> flashLoan</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#F97583">        IFlashLoanRecipient</span><span style="color:#FFAB70"> recipient</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#F97583">        IERC20</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">memory</span><span style="color:#FFAB70"> tokens</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">memory</span><span style="color:#FFAB70"> amounts</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes</span><span style="color:#F97583"> memory</span><span style="color:#FFAB70"> userData</span></span>
+<span class="line"><span style="color:#E1E4E8">    ) </span><span style="color:#F97583">external</span><span style="color:#F97583"> override</span><span style="color:#B392F0"> nonReentrant</span><span style="color:#B392F0"> whenNotPaused</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">        InputHelpers.</span><span style="color:#B392F0">ensureInputLengthMatch</span><span style="color:#E1E4E8">(tokens.length, amounts.length);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">memory</span><span style="color:#E1E4E8"> feeAmounts </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#79B8FF"> uint256</span><span style="color:#E1E4E8">[](</span><span style="color:#FFAB70">tokens</span><span style="color:#E1E4E8">.</span><span style="color:#FFAB70">length</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">memory</span><span style="color:#E1E4E8"> preLoanBalances </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#79B8FF"> uint256</span><span style="color:#E1E4E8">[](</span><span style="color:#FFAB70">tokens</span><span style="color:#E1E4E8">.</span><span style="color:#FFAB70">length</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">        // Used to ensure `tokens` is sorted in ascending order, which ensures token uniqueness.</span></span>
+<span class="line"><span style="color:#E1E4E8">        IERC20 previousToken </span><span style="color:#F97583">=</span><span style="color:#B392F0"> IERC20</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">        for</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">; i </span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8"> tokens.length; </span><span style="color:#F97583">++</span><span style="color:#E1E4E8">i) {</span></span>
+<span class="line"><span style="color:#E1E4E8">            IERC20 token </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> tokens[i];</span></span>
+<span class="line"><span style="color:#79B8FF">            uint256</span><span style="color:#E1E4E8"> amount </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> amounts[i];</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">            _require</span><span style="color:#E1E4E8">(token </span><span style="color:#F97583">&gt;</span><span style="color:#E1E4E8"> previousToken, token </span><span style="color:#F97583">==</span><span style="color:#B392F0"> IERC20</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">?</span><span style="color:#E1E4E8"> Errors.ZERO_TOKEN </span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> Errors.UNSORTED_TOKENS);</span></span>
+<span class="line"><span style="color:#E1E4E8">            previousToken </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> token;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">            preLoanBalances[i] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> token.</span><span style="color:#B392F0">balanceOf</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">));</span></span>
+<span class="line"><span style="color:#E1E4E8">            feeAmounts[i] </span><span style="color:#F97583">=</span><span style="color:#B392F0"> _calculateFlashLoanFeeAmount</span><span style="color:#E1E4E8">(amount);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">            _require</span><span style="color:#E1E4E8">(preLoanBalances[i] </span><span style="color:#F97583">&gt;=</span><span style="color:#E1E4E8"> amount, Errors.INSUFFICIENT_FLASH_LOAN_BALANCE);</span></span>
+<span class="line"><span style="color:#E1E4E8">            token.</span><span style="color:#B392F0">safeTransfer</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8">(recipient), amount);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">        recipient.</span><span style="color:#B392F0">receiveFlashLoan</span><span style="color:#E1E4E8">(tokens, amounts, feeAmounts, userData);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">        for</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">; i </span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8"> tokens.length; </span><span style="color:#F97583">++</span><span style="color:#E1E4E8">i) {</span></span>
+<span class="line"><span style="color:#E1E4E8">            IERC20 token </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> tokens[i];</span></span>
+<span class="line"><span style="color:#79B8FF">            uint256</span><span style="color:#E1E4E8"> preLoanBalance </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> preLoanBalances[i];</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">            // Checking for loan repayment first (without accounting for fees) makes for simpler debugging, and results</span></span>
+<span class="line"><span style="color:#6A737D">            // in more accurate revert reasons if the flash loan protocol fee percentage is zero.</span></span>
+<span class="line"><span style="color:#79B8FF">            uint256</span><span style="color:#E1E4E8"> postLoanBalance </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> token.</span><span style="color:#B392F0">balanceOf</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">));</span></span>
+<span class="line"><span style="color:#B392F0">            _require</span><span style="color:#E1E4E8">(postLoanBalance </span><span style="color:#F97583">&gt;=</span><span style="color:#E1E4E8"> preLoanBalance, Errors.INVALID_POST_LOAN_BALANCE);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">            // No need for checked arithmetic since we know the loan was fully repaid.</span></span>
+<span class="line"><span style="color:#79B8FF">            uint256</span><span style="color:#E1E4E8"> receivedFeeAmount </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> postLoanBalance </span><span style="color:#F97583">-</span><span style="color:#E1E4E8"> preLoanBalance;</span></span>
+<span class="line"><span style="color:#B392F0">            _require</span><span style="color:#E1E4E8">(receivedFeeAmount </span><span style="color:#F97583">&gt;=</span><span style="color:#E1E4E8"> feeAmounts[i], Errors.INSUFFICIENT_FLASH_LOAN_FEE_AMOUNT);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">            _payFeeAmount</span><span style="color:#E1E4E8">(token, receivedFeeAmount);</span></span>
+<span class="line"><span style="color:#F97583">            emit</span><span style="color:#B392F0"> FlashLoan</span><span style="color:#E1E4E8">(recipient, token, amounts[i], receivedFeeAmount);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="注意点">注意点</h3>
+<ol>
+<li>同一交易内必须还清，失败全部回滚——这是原子性，不是“无息长期借款”</li>
+<li>回调里务必 <code>approve</code> 贷方合约足够额度（Aave）或把代币转回 Vault（Balancer）</li>
+<li>手续费、流动性、暂停状态以各链 Pool/Vault 配置为准</li>
+<li>安全：校验 <code>msg.sender</code> 为 Pool/Vault；防重入；勿把未校验的 <code>params</code> 当信任输入</li>
+</ol>
+<h3 id="小结">小结</h3>
+<ul>
+<li>闪电贷 = 无抵押、同交易借还</li>
+<li>生产集成优先用 <strong>Aave V3</strong> <code>flashLoanSimple</code> + <code>IFlashLoanSimpleReceiver</code>，或 <strong>Balancer</strong> <code>flashLoan</code></li>
+</ul>
+</div><script type="module">function e(e){let t=e.getAttribute(`data-language`)?.trim();if(t)return t===`text`||t===`plaintext`||t===`txt`?`text`:t;let n=e.querySelector(`code`)?.className||e.className||``,r=/language-([a-z0-9_+-]+)/i.exec(n);return r?.[1]?r[1]:`code`}function t(t){if(t.closest(`[data-mac-window]`)||t.dataset.macEnhanced===`1`)return;t.dataset.macEnhanced=`1`;let n=document.createElement(`figure`);n.className=`mac-window`,n.setAttribute(`data-mac-window`,``);let r=document.createElement(`div`);r.className=`mac-titlebar`,r.innerHTML=`
+      <div class="mac-dots" aria-hidden="true">
+        <span class="dot red"></span>
+        <span class="dot yellow"></span>
+        <span class="dot green"></span>
+      </div>
+      <span class="mac-title"></span>
+      <button type="button" class="mac-copy" data-mac-copy aria-label="复制代码">复制</button>
+    `;let i=r.querySelector(`.mac-title`);i&&(i.textContent=e(t));let a=document.createElement(`div`);a.className=`mac-body`,t.parentNode?.insertBefore(n,t),a.appendChild(t),n.appendChild(r),n.appendChild(a)}async function n(e){if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(e);return}let t=document.createElement(`textarea`);t.value=e,t.style.position=`fixed`,t.style.opacity=`0`,document.body.appendChild(t),t.select(),document.execCommand(`copy`),t.remove()}function r(e=document){e.querySelectorAll(`[data-mac-copy]`).forEach(e=>{e.dataset.bound!==`1`&&(e.dataset.bound=`1`,e.addEventListener(`click`,async()=>{let t=e.closest(`[data-mac-window]`)?.querySelector(`pre`)?.textContent??``;try{await n(t);let r=e.textContent;e.textContent=`已复制`,e.classList.add(`is-copied`),window.setTimeout(()=>{e.textContent=r||`复制`,e.classList.remove(`is-copied`)},1600)}catch{e.textContent=`失败`,window.setTimeout(()=>{e.textContent=`复制`},1600)}}))})}function i(){document.querySelectorAll(`.prose pre`).forEach(t),r()}i(),document.addEventListener(`astro:page-load`,i);</script></article><nav class="pager wrap-narrow" aria-label="上下篇" data-astro-cid-tldeq5d5><p data-astro-cid-tldeq5d5>上一篇：<a href="/web3/merkle-tree/" data-astro-cid-tldeq5d5>默克尔树</a></p><p data-astro-cid-tldeq5d5>下一篇：<a href="/web3/faucet/" data-astro-cid-tldeq5d5>代币水龙头</a></p></nav><section class="related" data-astro-cid-tldeq5d5><div class="wrap" data-astro-cid-tldeq5d5><h2 data-astro-cid-tldeq5d5>继续阅读</h2><ol class="related-grid" data-astro-cid-tldeq5d5><li data-astro-cid-tldeq5d5><a class="related-topic" href="/web3/" data-astro-cid-tldeq5d5>区块链</a><a class="related-title" href="/web3/airdrop/" data-astro-cid-tldeq5d5>空投</a><p data-astro-cid-tldeq5d5>空投</p></li><li data-astro-cid-tldeq5d5><a class="related-topic" href="/web3/" data-astro-cid-tldeq5d5>区块链</a><a class="related-title" href="/web3/cross-chain-bridge/" data-astro-cid-tldeq5d5>跨链桥</a><p data-astro-cid-tldeq5d5>跨链桥</p></li><li data-astro-cid-tldeq5d5><a class="related-topic" href="/web3/" data-astro-cid-tldeq5d5>区块链</a><a class="related-title" href="/web3/ddos/" data-astro-cid-tldeq5d5>DDOS攻击</a><p data-astro-cid-tldeq5d5>DDOS攻击</p></li></ol></div></section></main><footer class="site-footer" data-astro-cid-jo6i4kqk><div class="wrap bar" data-astro-cid-jo6i4kqk><a class="brand" href="/" data-astro-cid-jo6i4kqk>rty</a><div class="social" aria-label="社交链接" data-astro-cid-jo6i4kqk><a href="mailto:peonyfoals@gmail.com" aria-label="Email" data-astro-cid-jo6i4kqk><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" data-astro-cid-jo6i4kqk><path fill="currentColor" d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5L4 8V6l8 5 8-5v2z" data-astro-cid-jo6i4kqk></path></svg></a><a href="/rss.xml" aria-label="RSS" data-astro-cid-jo6i4kqk><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" data-astro-cid-jo6i4kqk><path fill="currentColor" d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20 5 20 4 19 4 17.82c0-1.2.98-2.18 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27zm0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93z" data-astro-cid-jo6i4kqk></path></svg></a><a href="/archive/" aria-label="归档" data-astro-cid-jo6i4kqk><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" data-astro-cid-jo6i4kqk><path fill="currentColor" d="M4 6h16v2H4zm0 5h16v2H4zm0 5h10v2H4z" data-astro-cid-jo6i4kqk></path></svg></a></div><p class="meta" data-astro-cid-jo6i4kqk>© 2026 peony</p></div></footer></body></html>

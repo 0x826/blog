@@ -1,0 +1,460 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="react"><meta name="author" content="peony"><meta name="generator" content="Astro v7.1.1"><meta name="theme-color" content="#ffffff"><link rel="canonical" href="https://langzyw.xyz/web/react/"><link rel="alternate" type="application/rss+xml" title="rty" href="/rss.xml"><meta property="og:type" content="website"><meta property="og:site_name" content="rty"><meta property="og:title" content="react · rty"><meta property="og:description" content="react"><meta property="og:url" content="https://langzyw.xyz/web/react/"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><title>react · rty</title><link rel="stylesheet" href="/_astro/Footer.C9xAhOzk.css"><link rel="stylesheet" href="/_astro/_..B6QWlgH6.css"></head><body><header class="site-header" data-astro-cid-nen7h5rs><div class="wrap bar" data-astro-cid-nen7h5rs><div class="bar-flex" data-astro-cid-nen7h5rs><a class="brand" href="/" data-astro-cid-nen7h5rs>rty</a><nav class="nav" aria-label="主导航" data-astro-cid-nen7h5rs><a class="nav-link" href="/" data-astro-cid-nen7h5rs>首页</a><a class="nav-link active" href="/web/" aria-current="page" data-astro-cid-nen7h5rs>前端</a><a class="nav-link" href="/python/" data-astro-cid-nen7h5rs>python</a><a class="nav-link" href="/llm/" data-astro-cid-nen7h5rs>llm</a><a class="nav-link" href="/web3/" data-astro-cid-nen7h5rs>区块链</a><a class="nav-link" href="/about/" data-astro-cid-nen7h5rs>关于</a></nav></div><button class="search-btn" type="button" aria-label="搜索" data-search-open data-astro-cid-nen7h5rs><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" data-astro-cid-nen7h5rs><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="1.6" data-astro-cid-nen7h5rs></circle><path d="M16.5 16.5L21 21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" data-astro-cid-nen7h5rs></path></svg></button></div></header><dialog class="search-dialog" data-search-dialog data-astro-cid-nen7h5rs><form class="search-panel" method="dialog" data-astro-cid-nen7h5rs><label class="sr-only" for="site-search" data-astro-cid-nen7h5rs>搜索文章</label><input id="site-search" class="search-input" type="search" placeholder="搜索文章…" autocomplete="off" data-search-input data-astro-cid-nen7h5rs><button class="search-close" value="cancel" type="submit" aria-label="关闭" data-astro-cid-nen7h5rs>×</button></form><ul class="search-results" data-search-results data-astro-cid-nen7h5rs></ul></dialog><script>(function(){const searchIndexUrl = "/search-index.json";
+
+  const openBtn = document.querySelector("[data-search-open]");
+  const dialog = document.querySelector("[data-search-dialog]");
+  const input = document.querySelector("[data-search-input]");
+  const results = document.querySelector("[data-search-results]");
+
+  if (
+    openBtn &&
+    dialog instanceof HTMLDialogElement &&
+    input instanceof HTMLInputElement &&
+    results
+  ) {
+    let index = [];
+    let loaded = false;
+
+    async function ensureIndex() {
+      if (loaded) return;
+      const res = await fetch(searchIndexUrl);
+      index = await res.json();
+      loaded = true;
+    }
+
+    function render(q) {
+      const query = q.trim().toLowerCase();
+      if (!query) {
+        results.innerHTML = "";
+        return;
+      }
+      const hits = index
+        .filter((item) =>
+          `${item.title} ${item.description} ${item.topic}`
+            .toLowerCase()
+            .includes(query),
+        )
+        .slice(0, 8);
+      results.innerHTML = hits.length
+        ? hits
+            .map(
+              (item) =>
+                `<li><a href="${item.href}"><strong>${item.title}</strong><span>${item.description}</span></a></li>`,
+            )
+            .join("")
+        : `<li class="empty">没有匹配结果</li>`;
+    }
+
+    openBtn.addEventListener("click", async () => {
+      await ensureIndex();
+      dialog.showModal();
+      input.value = "";
+      results.innerHTML = "";
+      input.focus();
+    });
+
+    input.addEventListener("input", () => render(input.value));
+
+    dialog.addEventListener("click", (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+  }
+})();</script><main class="post-page" data-astro-cid-tldeq5d5><article data-astro-cid-tldeq5d5><header class="header wrap-narrow" data-astro-cid-tldeq5d5><a class="topic" href="/web/" data-astro-cid-tldeq5d5>前端</a><h1 data-astro-cid-tldeq5d5>react</h1><p class="meta" data-astro-cid-tldeq5d5><time datetime="2026-07-17T00:00:00.000Z" data-astro-cid-tldeq5d5>2026年7月17日</time><span aria-hidden="true" data-astro-cid-tldeq5d5>·</span><span data-astro-cid-tldeq5d5>约 30 分钟</span></p><p class="tags" data-astro-cid-tldeq5d5><a href="/tags/react/" data-astro-cid-tldeq5d5>react</a><span data-astro-cid-tldeq5d5> · </span><a href="/tags/面试/" data-astro-cid-tldeq5d5>面试</a><span data-astro-cid-tldeq5d5> · </span><a href="/tags/前端/" data-astro-cid-tldeq5d5>前端</a></p></header><div class="hero-image wrap" data-astro-cid-tldeq5d5><img src="/images/covers/code-react.jpg" alt="" data-astro-cid-tldeq5d5></div><div class="prose wrap-narrow" data-astro-cid-tldeq5d5><h2 id="模块一基础与编译机制">模块一：基础与编译机制</h2>
+<p><strong>1. JSX 是什么？它是如何被编译的？</strong>
+JSX 是 JavaScript 的语法扩展，用于声明式地描述 UI。</p>
+<ul>
+<li><strong>传统编译（React 17 前）</strong>：Babel 将其编译为 <code>React.createElement(type, props, ...children)</code>，因此文件顶部必须手动 <code>import React</code>。</li>
+<li><strong>新 JSX 转换（React 17+）</strong>：编译为自动引入的 <code>_jsx</code> 函数（如 <code>import { jsx as _jsx } from 'react/jsx-runtime'</code>）。这免去了手动引入 React，并减少了运行时的辅助函数调用，提升了性能。</li>
+</ul>
+<p><strong>2. 为什么 JSX 中组件名必须大写？</strong>
+React 在编译时通过<strong>首字母大小写</strong>来区分原生标签和自定义组件。小写（如 <code>div</code>）会被编译为字符串 <code>'div'</code>，交由 Renderer 创建原生 DOM；大写（如 <code>MyComponent</code>）会被编译为变量引用，交由 React 实例化组件。</p>
+<p><strong>3. 什么是虚拟 DOM？它真的更快吗？</strong>
+虚拟 DOM 是描述真实 DOM 结构的轻量级 JS 对象。<strong>它不一定比直接操作原生 DOM 快</strong>。它的核心价值在于：1) 保证性能下限，避免极端慢的 DOM 操作；2) 实现跨平台（Web、Native、Canvas）；3) 支持声明式编程和 Diff 算法。</p>
+<p><strong>4. React 的 Diff 算法做了哪些优化？复杂度如何？</strong>
+通过三大策略将传统树对比的 O(n^3) 复杂度降为 <strong>O(n)</strong>：</p>
+<ol>
+<li><strong>同层比较</strong>：只对比同一层级的节点，不跨层级移动。</li>
+<li><strong>类型判断</strong>：若节点类型（type）不同，直接销毁旧树，构建新树，不再深度对比。</li>
+<li><strong>Key 标识</strong>：通过 <code>key</code> 识别节点的稳定性，实现精准的节点复用和移动。</li>
+</ol>
+<p><strong>5. 为什么列表渲染需要 key？为什么不推荐用 index 作为 key？</strong></p>
+<ul>
+<li><strong>作用</strong>：Key 帮助 React 在 Diff 算法的 Map 查找阶段，识别哪些元素被添加、删除或移动，从而复用 DOM 节点和其内部状态。</li>
+<li><strong>Index 的坑</strong>：如果在列表头部插入新元素，使用 index 会导致 React 误判后续所有元素的 key 都变了，从而触发不必要的 Update。更严重的是，如果列表项包含 <code>&lt;input&gt;</code> 等带有内部状态的组件，状态会发生<strong>错位</strong>（旧状态被错误地保留在新数据对应的 DOM 上）。</li>
+</ul>
+<p><strong>6. React 的设计哲学：单向数据流和不可变性</strong></p>
+<ul>
+<li><strong>单向数据流</strong>：数据只能从父组件通过 props 流向子组件。子组件不能直接修改父组件的状态，必须通过父组件传递的回调函数来触发更新。这使得数据流向可预测，易于调试。</li>
+<li><strong>不可变性（Immutability）</strong>：状态更新时，不直接修改原对象，而是返回一个新对象（如使用扩展运算符 <code>...</code> 或 Immer）。这使得 React 可以通过简单的<strong>浅比较（Shallow Compare）</strong> 快速判断状态是否发生变化，从而优化渲染。</li>
+</ul>
+<hr>
+<h2 id="模块二核心渲染原理-fiber-与调度">模块二：核心渲染原理 (Fiber 与调度)</h2>
+<p><strong>7. Fiber 架构是什么？它解决了什么问题？</strong>
+Fiber 既是<strong>数据结构</strong>，也是<strong>执行单元</strong>。</p>
+<ul>
+<li><strong>数据结构</strong>：将传统的树形结构转为<strong>链表结构</strong>（包含 <code>child</code>, <code>sibling</code>, <code>return</code> 指针），使得遍历可以通过循环而非递归实现。</li>
+<li><strong>解决问题</strong>：解决了旧版 Stack Reconciler 递归渲染<strong>不可中断</strong>的问题。Fiber 让渲染过程变得可中断、可恢复、可分配优先级，是实现并发渲染（Concurrent Mode）的基石。</li>
+</ul>
+<p><strong>8. 解释 Fiber 的两大阶段：Render 阶段和 Commit 阶段</strong></p>
+<ul>
+<li><strong>Render 阶段（可中断）</strong>：纯内存操作。构建 <code>workInProgress</code> Fiber 树，执行 Diff 算法，计算状态更新，并将产生的副作用（DOM 变更、Effect 调用）标记并收集到 Effect 链表中。此阶段可随时被高优先级任务打断。</li>
+<li><strong>Commit 阶段（不可中断）</strong>：分为 Before Mutation、Mutation（真正操作 DOM）、Layout 三个子阶段。将 Render 阶段收集的副作用同步应用到真实 DOM 上，并执行 <code>useLayoutEffect</code> 等生命周期。</li>
+</ul>
+<p><strong>9. 什么是双缓存（Double Buffering）机制？</strong>
+React 内存中始终维护两棵 Fiber 树：<code>current</code> 树（当前屏幕显示）和 <code>workInProgress</code> 树（正在构建）。在构建时，React 会尽可能复用 <code>current</code> 树中未变化的 Fiber 节点（通过 <code>alternate</code> 指针互相引用）。当 Commit 阶段完成后，只需执行 <code>root.current = finishedWork</code> 切换根指针，即可瞬间完成 UI 更新，避免页面闪烁。</p>
+<p><strong>10. Lane 模型（优先级车道）是什么？</strong>
+取代了旧的 <code>expirationTime</code>。它使用 32 位二进制（Bitset）来表示优先级，每一位代表一个“车道”（如 <code>SyncLane=1</code>, <code>DefaultLane=16</code>）。通过位运算（<code>&amp;</code>, <code>|</code>），React 可以极快地判断优先级高低、合并优先级，并支持同一个任务属于多个优先级车道。</p>
+<p><strong>11. 时间切片（Time Slicing）和可中断渲染如何实现？</strong>
+React 没有使用不稳定的 <code>requestIdleCallback</code>，而是通过 <strong><code>MessageChannel</code></strong> 模拟宏任务。在 <code>Scheduler</code> 中设定默认 <strong>5ms</strong> 的时间切片阈值。每处理完一个 Fiber 节点，检查当前时间是否超时。若超时，则通过 MessageChannel 让出主线程（Yield），等浏览器处理完高优先级任务（如用户输入）后，再恢复执行下一个 Fiber 节点。</p>
+<p><strong>12. Reconciliation（协调）的完整流程是怎样的？</strong></p>
+<ol>
+<li>触发更新，创建 Update 对象并入队。</li>
+<li>调度器（Scheduler）安排任务，进入 Render 阶段。</li>
+<li>从根节点开始，深度优先遍历构建 <code>workInProgress</code> 树。</li>
+<li>对比新旧 Fiber 节点（Diff），复用或创建新节点，计算最新的 state。</li>
+<li>将产生的 DOM 变更和 Hook 副作用打上标签（Flags），收集到 Effect 链表中。</li>
+<li>进入 Commit 阶段，同步执行 Effect 链表，更新真实 DOM。</li>
+</ol>
+<p><strong>13. Reconciler 与 Renderer 的分层设计是怎样的？</strong></p>
+<ul>
+<li><strong>Reconciler（协调器）</strong>：平台无关的核心算法层。负责调度、Diff 算法、构建 Fiber 树和收集副作用。</li>
+<li><strong>Renderer（渲染器）</strong>：平台特定的执行层。如 <code>react-dom</code> 负责将副作用操作到浏览器 DOM，<code>react-native</code> 负责操作原生视图。两者通过宿主配置（Host Config）进行通信。</li>
+</ul>
+<hr>
+<h2 id="模块三hooks-深度解析">模块三：Hooks 深度解析</h2>
+<p><strong>14. Hooks 的原理是什么？为什么不能在条件/循环中调用？</strong>
+Hooks 的状态存储在函数组件对应的 Fiber 节点的 <code>memoizedState</code> 属性上，它是一个<strong>单向链表</strong>。每次调用 Hook，React 会在链表尾部追加一个 Hook 对象。在更新阶段，React 严格按照<strong>调用顺序</strong>遍历链表来匹配状态。如果在条件或循环中调用，会导致某次渲染时链表指针错位，从而获取到错误的状态或引发崩溃。</p>
+<p><strong>15. useState 的原理是什么？状态是怎么存储的？</strong>
+调用 <code>useState</code> 时，React 在当前 Fiber 节点的 <code>memoizedState</code> 链表中创建一个 Hook 对象。该对象包含 <code>memoizedState</code>（当前值）和 <code>queue</code>（更新队列，是一个环形链表）。<code>setState</code> 会创建一个 Update 对象加入队列，并在下次 Render 阶段遍历队列计算出最新状态。</p>
+<p><strong>16. setState 是同步还是异步？React 18 的自动批处理有何变化？</strong></p>
+<ul>
+<li><strong>React 17 及以前</strong>：在合成事件中是异步且批处理的；但在 <code>setTimeout</code>、<code>Promise</code> 或原生事件中是同步且逐个渲染的。</li>
+<li><strong>React 18</strong>：引入了<strong>自动批处理（Automatic Batching）</strong>。无论在何处（包括 setTimeout、Promise、原生事件）调用 <code>setState</code>，React 都会将其收集起来，统一调度一次渲染，大幅提升性能。</li>
+</ul>
+<p><strong>17. 为什么推荐用函数式更新 setState(prev =&gt; …)？</strong></p>
+<ol>
+<li><strong>解决闭包陷阱</strong>：直接读取 state 可能会读到旧闭包中的值，而函数式更新的参数 <code>prev</code> 保证是最新的状态。</li>
+<li><strong>批量更新安全</strong>：当多个 <code>setState</code> 在同一个事件循环中被批处理时，函数式更新能确保每次更新都基于前一次的正确结果，而不是基于过时的初始值。</li>
+</ol>
+<p><strong>18. 什么是 useState 的惰性初始化？</strong>
+当初始 state 需要通过复杂计算得出时，可以传入一个函数：<code>useState(() =&gt; expensiveComputation())</code>。这样该计算<strong>只在组件首次渲染时执行一次</strong>，后续重渲染会直接跳过该函数，避免性能浪费。</p>
+<p><strong>19. useEffect 的执行时机？与 useLayoutEffect 有何区别？</strong></p>
+<ul>
+<li><strong>useEffect</strong>：在 Commit 阶段（DOM 更新）完成后，作为<strong>异步任务</strong>执行。不阻塞浏览器绘制，适用于数据请求、订阅等。</li>
+<li><strong>useLayoutEffect</strong>：在 Commit 阶段的 Layout 子阶段（DOM 已更新，但浏览器<strong>尚未绘制</strong>前）<strong>同步</strong>执行。适用于读取 DOM 布局（如宽高）或同步修改 DOM 以避免视觉闪烁。会阻塞渲染。</li>
+</ul>
+<p><strong>20. useEffect 的依赖数组和清理函数怎么理解？</strong></p>
+<ul>
+<li><strong>依赖数组</strong>：决定 Effect 何时重新执行。只有当数组中的值发生浅比较变化时，Effect 才会重新运行。空数组 <code>[]</code> 表示仅在挂载和卸载时执行。</li>
+<li><strong>清理函数（Return Function）</strong>：在 Effect 重新执行前，或组件卸载时调用。用于清除副作用（如清除定时器、取消网络请求、移除事件监听），防止内存泄漏。</li>
+</ul>
+<p><strong>21. 什么是闭包陷阱（Stale Closure）？如何解决？</strong></p>
+<ul>
+<li><strong>本质</strong>：函数组件每次渲染都有独立的闭包。如果 <code>useEffect</code> 或 <code>useCallback</code> 的依赖数组遗漏了某个 state，回调函数捕获的将是<strong>首次渲染时的旧 state</strong>。</li>
+<li><strong>解决</strong>：1) 严格使用 <code>eslint-plugin-react-hooks</code> 补全依赖；2) 使用 <code>useRef</code> 保存最新值（<code>ref.current</code> 可变且不依赖闭包）；3) 使用函数式更新 <code>setState(prev =&gt; ...)</code>；4) 改用 <code>useReducer</code>（<code>dispatch</code> 引用永远稳定）。</li>
+</ul>
+<p><strong>22. useRef 有哪些用途？它和 useState 有何区别？</strong></p>
+<ul>
+<li><strong>用途</strong>：1) 获取 DOM 节点或类组件实例；2) 保存跨渲染周期的可变变量（修改 <code>ref.current</code> <strong>不会触发重渲染</strong>）。</li>
+<li><strong>区别</strong>：<code>useState</code> 更新会触发组件重渲染，且每次渲染有独立的闭包；<code>useRef</code> 更新不触发重渲染，且在整个组件生命周期内保持同一个对象引用。</li>
+</ul>
+<p><strong>23. useMemo 和 useCallback 的区别？什么时候该用？</strong></p>
+<ul>
+<li><strong>区别</strong>：<code>useMemo</code> 缓存的是<strong>计算结果</strong>（值）；<code>useCallback(fn, deps)</code> 本质上是 <code>useMemo(() =&gt; fn, deps)</code>，缓存的是<strong>函数引用</strong>。</li>
+<li><strong>使用时机</strong>：仅在两种情况下使用：1) 计算非常昂贵，需要避免每次渲染都重新计算；2) 将该值/函数作为 props 传递给被 <code>React.memo</code> 包裹的子组件，以保持引用稳定，避免子组件不必要的重渲染。<strong>切忌滥用</strong>，因为 Hook 本身也有开销。</li>
+</ul>
+<p><strong>24. useContext 有什么性能问题？如何优化？</strong></p>
+<ul>
+<li><strong>问题</strong>：当 Context 的 <code>value</code> 发生变化时，<strong>所有</strong>消费该 Context 的组件（无论其是否使用了 value 中改变的部分）都会强制重渲染。</li>
+<li><strong>优化</strong>：1) <strong>拆分 Context</strong>：将高频更新的状态和低频更新的状态拆分为不同的 Context；2) 结合 <code>useMemo</code> 缓存 Provider 的 <code>value</code> 对象，避免引用变化导致无谓更新；3) 对于复杂全局状态，考虑使用 Zustand/Jotai 等支持细粒度更新的库。</li>
+</ul>
+<p><strong>25. useReducer 适合什么场景？和 useState 怎么选？</strong></p>
+<ul>
+<li><strong>场景</strong>：1) 状态逻辑复杂，包含多个子值；2) 下一个状态依赖于上一个状态；3) 需要集中管理复杂的业务逻辑（类似小型 Redux）。</li>
+<li><strong>选择</strong>：简单、独立的标量状态用 <code>useState</code>；复杂对象状态或复杂状态转换逻辑用 <code>useReducer</code>。</li>
+</ul>
+<p><strong>26. useImperativeHandle 的作用是什么？</strong>
+配合 <code>forwardRef</code> 使用。允许子组件自定义暴露给父组件 <code>ref</code> 的实例对象。通常用于限制父组件只能调用子组件暴露的特定方法，而不是获取完整的 DOM 或组件实例，提高了封装性。</p>
+<p><strong>27. useTransition 和 useDeferredValue 有什么用？（并发特性）</strong>
+两者都用于将非紧急更新标记为<strong>低优先级</strong>，保持 UI 响应。</p>
+<ul>
+<li><strong>useTransition</strong>：主动标记某段 <code>setState</code> 为过渡状态。在过渡期间，UI 保持响应（如输入框可继续打字），并可通过 <code>isPending</code> 显示 Loading。</li>
+<li><strong>useDeferredValue</strong>：被动延迟某个值的更新。适用于接收高频更新的 prop，先渲染旧值保持流畅，在后台空闲时再渲染新值（类似防抖，但不阻塞渲染）。</li>
+</ul>
+<p><strong>28. useId 解决了什么问题？</strong>
+生成在 SSR（服务端渲染）和 CSR（客户端渲染）中<strong>保持一致</strong>的唯一 ID。解决了 React 18 并发渲染下，传统的自增 ID 在两端生成顺序可能不一致，从而导致 Hydration Mismatch（注水不匹配）的问题。常用于表单的 <code>label</code> 和 <code>input</code> 的 <code>htmlFor</code>/<code>id</code> 关联。</p>
+<p><strong>29. 自定义 Hook 是什么？有什么约定和好处？</strong></p>
+<ul>
+<li><strong>是什么</strong>：以 <code>use</code> 开头的 JavaScript 函数，内部可以调用其他 Hook。</li>
+<li><strong>好处</strong>：实现<strong>状态逻辑的复用</strong>，且不会像 HOC 或 Render Props 那样增加组件嵌套层级（避免“嵌套地狱”）。</li>
+<li><strong>约定</strong>：1) 必须以 <code>use</code> 开头（便于 ESLint 检查 Hook 规则）；2) 只能在 React 函数组件或其他自定义 Hook 的顶层调用。</li>
+</ul>
+<hr>
+<h2 id="模块四组件设计与模式">模块四：组件设计与模式</h2>
+<p><strong>30. 类组件的生命周期有哪些？分几个阶段？</strong></p>
+<ul>
+<li><strong>挂载（Mount）</strong>：<code>constructor</code> -&gt; <code>static getDerivedStateFromProps</code> -&gt; <code>render</code> -&gt; <code>componentDidMount</code></li>
+<li><strong>更新（Update）</strong>：<code>static getDerivedStateFromProps</code> -&gt; <code>shouldComponentUpdate</code> -&gt; <code>render</code> -&gt; <code>getSnapshotBeforeUpdate</code> -&gt; <code>componentDidUpdate</code></li>
+<li><strong>卸载（Unmount）</strong>：<code>componentWillUnmount</code></li>
+<li><strong>错误处理</strong>：<code>static getDerivedStateFromError</code>, <code>componentDidCatch</code></li>
+</ul>
+<p><strong>31. 哪些生命周期被废弃了？为什么？</strong>
+<code>componentWillMount</code>、<code>componentWillReceiveProps</code>、<code>componentWillUpdate</code> 被废弃（加 <code>UNSAFE_</code> 前缀）。
+<strong>原因</strong>：在 Fiber 架构的异步 Render 阶段，组件的渲染可能会被中断并多次重试。这些生命周期如果在其中被调用，可能会导致<strong>被多次执行</strong>，若在其中发起网络请求或产生副作用，将引发严重的 Bug。</p>
+<p><strong>32. 函数组件和类组件有什么区别？</strong></p>
+<ul>
+<li><strong>类组件</strong>：基于 ES6 Class，有实例（<code>this</code>），生命周期复杂，状态可变，<strong>不支持并发特性</strong>（中断恢复时实例状态可能不一致）。</li>
+<li><strong>函数组件</strong>：无实例，基于 Hooks，每次渲染都是独立的闭包（快照机制），代码更简洁，<strong>完美支持并发渲染</strong>。</li>
+</ul>
+<p><strong>33. 组件间有哪些通信方式？</strong></p>
+<ol>
+<li>父子：Props 下发，回调函数上传。</li>
+<li>兄弟/跨级：状态提升、Context API。</li>
+<li>全局：Redux、Zustand 等状态管理库。</li>
+<li>任意：事件总线（EventEmitter）、URL 参数。</li>
+</ol>
+<p><strong>34. 什么是状态提升（Lifting State Up）？</strong>
+当多个组件需要共享相同的变化数据时，将共享的状态<strong>移动到它们最近的共同祖先组件</strong>中管理。祖先组件通过 props 将状态和更新函数下发给子组件。这是 React 单向数据流的核心实践。</p>
+<p><strong>35. forwardRef 是什么？解决了什么问题？</strong>
+默认情况下，函数组件不能接收 <code>ref</code> 属性。<code>forwardRef</code> 是一个高阶函数，它允许父组件将 <code>ref</code> <strong>穿透</strong>函数组件，直接绑定到其内部的 DOM 节点或子组件实例上，解决了函数组件无法暴露内部引用的问题。</p>
+<p><strong>36. 什么是高阶组件（HOC）？有哪些坑？</strong></p>
+<ul>
+<li><strong>是什么</strong>：一个接收组件并返回新组件的函数（如 <code>connect</code>），用于复用组件逻辑。</li>
+<li><strong>坑</strong>：1) Props 来源不清晰（不知道 props 是哪里注入的）；2) 命名冲突（HOC 注入的 props 可能与组件原有 props 重名）；3) 嵌套地狱（多个 HOC 包裹导致调试困难，组件树过深）；4) 静态方法丢失。</li>
+</ul>
+<p><strong>37. render props 模式是什么？和 HOC、Hooks 怎么对比？</strong></p>
+<ul>
+<li><strong>是什么</strong>：组件接收一个返回 React 元素的函数作为 prop（通常叫 <code>render</code> 或 <code>children</code>），并在其内部调用该函数来共享状态。</li>
+<li><strong>对比</strong>：比 HOC 解决了嵌套地狱和命名冲突问题，但仍会导致 JSX 层级过深。<strong>Hooks 是目前最优解</strong>，它既实现了逻辑复用，又保持了扁平的组件结构，且无额外性能开销。</li>
+</ul>
+<p><strong>38. 什么是 Context？适合存什么、不适合存什么？</strong></p>
+<ul>
+<li><strong>是什么</strong>：提供一种在组件树中传递数据的方法，无需手动逐层传递 props。</li>
+<li><strong>适合</strong>：低频更新的全局数据（如主题 Theme、语言 Locale、当前认证用户）。</li>
+<li><strong>不适合</strong>：高频更新的状态（如表单输入、实时计数器），因为 Context 值改变会导致所有消费者无条件重渲染，引发性能问题。</li>
+</ul>
+<hr>
+<h2 id="模块五性能优化">模块五：性能优化</h2>
+<p><strong>39. React.memo 是什么？和 PureComponent、shouldComponentUpdate 的关系？</strong>
+它们的目的都是<strong>避免不必要的重渲染</strong>。</p>
+<ul>
+<li><code>shouldComponentUpdate</code>：类组件生命周期，手动返回 boolean 控制是否更新。</li>
+<li><code>PureComponent</code>：类组件，自动对 props 和 state 进行<strong>浅比较</strong>，无变化则跳过渲染。</li>
+<li><code>React.memo</code>：函数组件的高阶组件，作用同 <code>PureComponent</code>，默认对 props 进行浅比较。可传入自定义比较函数作为第二个参数。</li>
+</ul>
+<p><strong>40. React 性能优化有哪些常用手段？</strong></p>
+<ol>
+<li>避免不必要的渲染（<code>React.memo</code>, <code>useCallback</code>, <code>useMemo</code>）。</li>
+<li>状态管理优化（状态下沉、拆分 Context）。</li>
+<li>列表优化（使用唯一 key、虚拟列表）。</li>
+<li>代码分割（<code>React.lazy</code> + <code>Suspense</code>）。</li>
+<li>避免内联对象/函数作为 props。</li>
+<li>将重度计算移至 Web Worker。</li>
+</ol>
+<p><strong>41. 什么是状态下沉？为什么能优化性能？</strong>
+将状态从父组件<strong>移动到真正需要它的子组件</strong>内部。这样，当该状态更新时，只有该子组件会重渲染，而父组件和其他不需要该状态的兄弟组件不会受到牵连，从而减少了渲染范围。</p>
+<p><strong>42. 虚拟列表（长列表优化）的原理是什么？</strong>
+对于成千上万条数据的列表，不一次性渲染所有 DOM。只渲染<strong>可视区域</strong>（及上下少量缓冲区）的 DOM 节点。通过监听滚动事件，动态计算当前可视范围，并使用 CSS <code>transform</code> 或 <code>padding</code> 来模拟整体列表的高度，从而将 DOM 节点数量控制在常数级别，解决卡顿。</p>
+<p><strong>43. React.lazy 和 Suspense 如何实现代码分割？</strong>
+<code>React.lazy</code> 接收一个动态 <code>import()</code> 函数，返回一个 Promise，在组件首次渲染时才加载该组件的代码。<code>Suspense</code> 组件包裹 <code>lazy</code> 组件，在 Promise resolve（代码加载完成）之前，展示其 <code>fallback</code> 属性指定的 Loading UI。结合 Webpack/Vite 可实现按路由或按组件的代码分割。</p>
+<p><strong>44. 为什么内联函数/对象作为 prop 会影响性能？</strong>
+每次组件渲染时，内联函数（如 <code>onClick={() =&gt; {}}</code>）或内联对象（如 <code>style={{ color: 'red' }}</code>）都会在内存中创建<strong>全新的引用</strong>。如果将其传给被 <code>React.memo</code> 包裹的子组件，浅比较会认为 props 发生了变化，从而导致子组件发生不必要的重渲染。</p>
+<hr>
+<h2 id="模块六高级特性与边界">模块六：高级特性与边界</h2>
+<p><strong>45. 合成事件（SyntheticEvent）是什么？React 17 前后的事件委托有何变化？</strong>
+React 实现了跨浏览器的统一事件系统，事件对象是原生事件的包装器（合成事件），具有相同接口，并在事件回调结束后被池化回收（React 17 后已移除事件池化）。</p>
+<ul>
+<li><strong>React 16 及以前</strong>：所有事件委托绑定在 <code>document</code> 上。</li>
+<li><strong>React 17+</strong>：事件委托绑定在 <strong>React 渲染的根容器（root）</strong> 上。这使得 React 应用可以更安全地嵌入到其他框架（如 jQuery、Vue）中，避免了全局事件冲突。</li>
+</ul>
+<p><strong>46. 严格模式 StrictMode 有什么作用？</strong>
+仅在开发环境生效。它通过<strong>故意双重调用</strong>组件的渲染函数、类组件的生命周期（如 <code>constructor</code>, <code>render</code>）以及某些 Hook（如 <code>useState</code>, <code>useEffect</code>），来帮助开发者发现不纯的渲染逻辑、意外的副作用以及过时的 API。</p>
+<p><strong>47. 错误边界（Error Boundary）是什么？能捕获哪些错误？</strong></p>
+<ul>
+<li><strong>是什么</strong>：一种特殊的类组件，通过实现 <code>static getDerivedStateFromError()</code> 或 <code>componentDidCatch()</code> 来捕获子组件树中的 JavaScript 错误，并渲染降级 UI，防止整个应用白屏。</li>
+<li><strong>能捕获</strong>：渲染期间、生命周期方法中、构造函数中的错误。</li>
+<li><strong>不能捕获</strong>：事件处理函数中的错误、异步代码（setTimeout/Promise）中的错误、SSR 中的错误、错误边界自身抛出的错误。</li>
+</ul>
+<p><strong>48. Portal 是什么？事件冒泡如何处理？</strong></p>
+<ul>
+<li><strong>是什么</strong>：<code>ReactDOM.createPortal</code> 允许将子组件渲染到 DOM 树中父组件之外的节点（如 <code>document.body</code>），常用于 Modal、Tooltip。</li>
+<li><strong>事件冒泡</strong>：尽管 DOM 节点在物理上脱离了父组件，但 React 的<strong>事件冒泡依然遵循 React 组件树的结构</strong>。即 Portal 内部的事件依然会冒泡到包含它的 React 父组件中。</li>
+</ul>
+<p><strong>49. Suspense 除了懒加载还能做什么?</strong>
+在 React 18 的并发特性下，Suspense 被设计为处理<strong>任何异步操作</strong>的通用边界。结合支持 Suspense 的数据获取库（如 React Query 的 experimental 特性或 Relay），可以在数据请求“挂起（Suspend）”时，直接展示 fallback UI，实现声明式的数据加载状态管理。</p>
+<p><strong>50. React 18 并发渲染（Concurrent Rendering）带来了什么？</strong></p>
+<ol>
+<li><strong>可中断渲染</strong>：Render 阶段可被高优先级任务打断。</li>
+<li><strong>新的 Root API</strong>：<code>createRoot</code> 替代 <code>ReactDOM.render</code>。</li>
+<li><strong>自动批处理</strong>：所有环境下的 <code>setState</code> 默认批处理。</li>
+<li><strong>并发 Hooks</strong>：<code>useTransition</code> 和 <code>useDeferredValue</code>，用于区分紧急和非紧急更新。</li>
+<li><strong>Suspense 增强</strong>：支持服务端组件和数据获取挂起。</li>
+</ol>
+<hr>
+<h2 id="模块七状态管理生态">模块七：状态管理生态</h2>
+<p><strong>51. Redux 的核心原理和三大原则是什么？</strong></p>
+<ul>
+<li><strong>原则</strong>：1) 单一数据源（Single Source of Truth）；2) State 是只读的，只能通过 dispatch action 修改；3) 使用纯函数（Reducer）来执行状态转换。</li>
+<li><strong>原理</strong>：组件 dispatch action -&gt; 中间件拦截处理 -&gt; Reducer 接收旧 state 和 action，返回新 state -&gt; Store 更新并通知订阅者（组件）重新渲染。</li>
+</ul>
+<p><strong>52. Redux 中间件的原理是什么？</strong>
+基于<strong>洋葱模型</strong>（函数组合 <code>compose</code>）。中间件包装了原生的 <code>dispatch</code> 方法。当 action 被 dispatch 时，它会依次穿过多个中间件（如 logger -&gt; thunk -&gt; saga），每个中间件可以访问 action、执行异步操作、修改 action，或决定是否将其传递给下一个中间件，最终到达 Reducer。</p>
+<p><strong>53. redux-thunk 和 redux-saga 的区别？</strong></p>
+<ul>
+<li><strong>redux-thunk</strong>：允许 action creator 返回一个函数（而非对象）。该函数接收 <code>dispatch</code> 和 <code>getState</code>，适合处理简单的异步逻辑（如单个 API 请求）。</li>
+<li><strong>redux-saga</strong>：使用 ES6 Generator 函数（<code>function*</code>）来管理副作用。将异步流程视为同步代码编写，极其适合处理复杂的异步流（如并发请求、竞态条件取消、轮询、防抖）。</li>
+</ul>
+<p><strong>54. Redux Toolkit（RTK）解决了什么问题？</strong>
+解决了传统 Redux <strong>样板代码过多</strong>、配置繁琐的问题。它内置了：1) <code>configureStore</code>（自动配置 Redux DevTools 和常用中间件）；2) <code>createSlice</code>（自动生成 action 和 reducer）；3) <strong>Immer.js</strong>（允许在 reducer 中编写“可变”代码，底层自动转换为不可变更新）。</p>
+<p><strong>55. Zustand、Jotai、Recoil 各有什么特点？</strong></p>
+<ul>
+<li><strong>Zustand</strong>：极简主义，基于 Hooks，无需 Provider 包裹，API 简单，支持细粒度更新（组件只订阅其使用的 state 片段）。</li>
+<li><strong>Jotai</strong>：原子化（Atom）状态管理，<strong>自下而上</strong>的组合方式。状态派生自然，极度优化了细粒度渲染，适合复杂表单或图形编辑器。</li>
+<li><strong>Recoil</strong>：Meta 推出的原子化状态库，概念与 Jotai 类似，但 API 更重，且官方已宣布停止积极开发（归档），不推荐新项目使用。</li>
+</ul>
+<p><strong>56. Context 能替代 Redux 吗？</strong>
+<strong>不能完美替代</strong>。Context 适合低频全局状态，但缺乏：1) 细粒度更新机制（会导致不必要的重渲染）；2) 强大的中间件生态；3) 时间旅行调试（Redux DevTools）；4) 处理复杂异步逻辑的标准模式。对于复杂应用，Redux/Zustand 仍是首选。</p>
+<p><strong>57. 服务端状态和客户端状态的区别？为什么用 React Query / SWR？</strong></p>
+<ul>
+<li><strong>区别</strong>：客户端状态（如 UI 开关、表单输入）完全由前端控制；服务端状态（如 API 返回的数据）由服务器控制，前端只是缓存。</li>
+<li><strong>为什么用 RQ/SWR</strong>：它们专为服务端状态设计，开箱即用地提供了<strong>缓存、后台静默重新验证（Revalidation）、焦点重新获取、分页、乐观更新</strong>等功能。将它们从 Redux 中剥离，可大幅减少全局状态的复杂度和样板代码。</li>
+</ul>
+<hr>
+<h2 id="模块八路由与-ssrnextjs">模块八：路由与 SSR/Next.js</h2>
+<p><strong>58. 前端路由的原理是什么？history 和 hash 两种模式有何区别？</strong>
+前端路由通过改变 URL 而不刷新页面来实现视图切换。</p>
+<ul>
+<li><strong>Hash 模式</strong>：URL 带 <code>#</code>（如 <code>/#/about</code>）。利用 <code>window.onhashchange</code> 事件监听变化。兼容性极好，无需后端配置。</li>
+<li><strong>History 模式</strong>：利用 HTML5 <code>history.pushState</code> 和 <code>replaceState</code> API 改变 URL（如 <code>/about</code>）。URL 更美观，但<strong>需要后端配置</strong>（如 Nginx），将所有未知路径重定向到 <code>index.html</code>，否则刷新会报 404。</li>
+</ul>
+<p><strong>59. React Router 的核心实现机制是怎样的？</strong>
+底层依赖 <code>history</code> 库监听 URL 变化。当 URL 改变时，Router 组件更新其内部 state，触发重新渲染。<code>Route</code> 组件通过 <code>matchPath</code> 算法对比当前 URL 和配置的 <code>path</code>，若匹配则渲染其 <code>element</code>（v6 语法）。</p>
+<p><strong>60. 动态路由、嵌套路由、路由守卫怎么实现？</strong></p>
+<ul>
+<li><strong>动态路由</strong>：路径中使用 <code>:id</code>（如 <code>/user/:id</code>），在组件内通过 <code>useParams()</code> 获取参数。</li>
+<li><strong>嵌套路由</strong>：父路由组件内部使用 <code>&lt;Outlet /&gt;</code> 组件作为占位符，子路由匹配时，其元素将渲染在 <code>&lt;Outlet /&gt;</code> 的位置。</li>
+<li><strong>路由守卫</strong>：
+<ul>
+<li><em>v5</em>：自定义 <code>&lt;PrivateRoute&gt;</code> 组件，判断权限后决定渲染 <code>&lt;Route&gt;</code> 还是 <code>&lt;Navigate to="/login" /&gt;</code>。</li>
+<li><em>v6.4+ (Data Router)</em>：在 <code>loader</code> 函数中检查权限，若无权限则 <code>throw new Response("", { status: 401 })</code>，配合 <code>errorElement</code> 或重定向处理。</li>
+</ul>
+</li>
+</ul>
+<p><strong>61. SSR、CSR、SSG、ISR 有什么区别？</strong></p>
+<ul>
+<li><strong>CSR (客户端渲染)</strong>：浏览器下载空 HTML 和 JS 包，JS 执行后请求数据并渲染 DOM。首屏慢，SEO 差。</li>
+<li><strong>SSR (服务端渲染)</strong>：服务器接收到请求时，实时拉取数据并生成完整的 HTML 返回。首屏快，SEO 好，但服务器压力大，TTFB（首字节时间）较长。</li>
+<li><strong>SSG (静态站点生成)</strong>：在<strong>构建时（Build Time）</strong> 预先拉取数据并生成静态 HTML 文件。部署到 CDN，访问速度极快，SEO 极好。适合内容不频繁变动的页面（如博客、文档）。</li>
+<li><strong>ISR (增量静态再生)</strong>：SSG 的升级版。允许在运行时，按设定的时间间隔（<code>revalidate</code>）在后台异步重新生成特定页面的静态 HTML，兼顾了 SSG 的速度和 SSR 的实时性。</li>
+</ul>
+<p><strong>62. 什么是 Hydration（注水）？有哪些常见问题？</strong></p>
+<ul>
+<li><strong>本质</strong>：SSR 返回纯 HTML 后，客户端下载并执行 React JS。React 会生成虚拟 DOM，并与服务端下发的真实 DOM 进行对比。如果一致，React <strong>不会重新创建 DOM</strong>，而是直接为这些现有 DOM 节点<strong>绑定事件监听器</strong>，并激活组件的内部状态，使其变为可交互。</li>
+<li><strong>常见问题（Hydration Mismatch）</strong>：如果客户端首次渲染的虚拟 DOM 与服务端 HTML 不一致（例如在渲染时使用了 <code>window</code> 对象、<code>Date.now()</code> 或 <code>Math.random()</code>），React 会认为注水失败。为了保证 UI 正确性，React 会<strong>丢弃服务端的 DOM</strong>，在客户端重新执行一次完整的 CSR，并在控制台抛出 Warning。这会导致 SSR 丧失首屏性能优势。</li>
+<li><strong>解决</strong>：确保两端首次渲染输出绝对一致。将依赖浏览器环境的逻辑移至 <code>useEffect</code> 中，或使用 <code>useState</code> + <code>useEffect</code> 延迟渲染客户端专属组件。</li>
+</ul>
+<p><strong>63. Next.js 的渲染模式和 getServerSideProps/getStaticProps 怎么用？</strong></p>
+<ul>
+<li><strong>Pages Router (传统)</strong>：
+<ul>
+<li><code>getServerSideProps</code>：在<strong>每次请求时</strong>于服务端执行，获取数据后作为 props 传给组件。适用于 SEO 要求高且数据实时性强的页面（SSR）。</li>
+<li><code>getStaticProps</code>：在<strong>构建时</strong>执行，生成静态 HTML。可配合 <code>revalidate</code> 参数实现 ISR。适用于数据不常变的页面（SSG）。</li>
+</ul>
+</li>
+<li><strong>App Router (Next.js 13+)</strong>：
+<ul>
+<li>默认所有组件都是 <strong>React Server Components (RSC)</strong>。</li>
+<li>无需上述特殊函数，直接在异步组件中使用 <code>async/await</code> 获取数据（如直接查询数据库或 fetch API）。</li>
+<li>通过 <code>'use client'</code> 指令显式声明客户端组件（用于使用 Hooks 或事件监听）。这种架构极大减少了发送到客户端的 JS 体积。</li>
+</ul>
+</li>
+</ul>
+<p><strong>64. React 19 引入了哪些改变游戏规则的新特性？</strong></p>
+<ul>
+<li><strong>Actions (表单与服务端动作)</strong>：原生支持异步操作。<code>&lt;form action={asyncFn}&gt;</code> 会自动处理 pending 状态、错误处理和表单重置，无需手动写 <code>onSubmit</code> 和 <code>useState</code> 控制 loading。</li>
+<li><strong><code>use</code> Hook</strong>：一个全新的通用 Hook，可以读取 Promise 或 Context 的值。它打破了 <code>useEffect</code> 获取数据的限制，允许在渲染过程中直接 <code>use(promise)</code>，配合 Suspense 实现更优雅的数据获取。</li>
+<li><strong><code>useActionState</code> (原 <code>useFormState</code>)</strong>：专门用于处理表单提交的 Hook。接收一个异步 action 函数和初始状态，返回 <code>[state, formAction, isPending]</code>，极大简化了表单状态管理。</li>
+<li><strong><code>useFormStatus</code></strong>：在子组件中获取父级 <code>&lt;form&gt;</code> 的提交状态（如 <code>pending</code>），无需通过 props 逐层传递。</li>
+<li><strong>React Compiler (原 React Forget)</strong>：官方推出的自动编译优化插件。它能自动分析组件的依赖关系，<strong>自动包裹 <code>useMemo</code> 和 <code>useCallback</code></strong>，开发者不再需要手动编写这些优化代码，彻底告别“依赖数组地狱”和过度优化。</li>
+</ul>
+<p><strong>65. React 19 中 <code>use</code> Hook 和 <code>useEffect</code> 获取数据有什么本质区别？</strong></p>
+<ul>
+<li><code>useEffect</code> 获取数据会导致 <strong>Waterfall（瀑布流）</strong>：组件先渲染一次（展示 Loading），Effect 执行发起请求，请求回来后触发第二次渲染。</li>
+<li><code>use</code> Hook 允许在渲染阶段直接读取 Promise。如果 Promise 未 resolve，组件会 <strong>Suspend（挂起）</strong>，交由外层的 <code>&lt;Suspense&gt;</code> 捕获并展示 fallback。一旦数据就绪，直接渲染最终 UI，<strong>只需一次渲染</strong>，且能更好地配合 React 的并发调度和服务端组件。</li>
+</ul>
+<hr>
+<h2 id="模块二react-server-components-rsc-深度机制">模块二：React Server Components (RSC) 深度机制</h2>
+<p><strong>66. 什么是 RSC (React Server Components)？它与 SSR 有什么本质区别？</strong></p>
+<ul>
+<li><strong>SSR (服务端渲染)</strong>：在服务端生成 HTML 字符串发给客户端，<strong>客户端仍需下载完整的 JS bundle</strong> 来进行 Hydration（注水）和事件绑定。</li>
+<li><strong>RSC</strong>：组件<strong>完全</strong>在服务端运行。它<strong>不会</strong>被打包到客户端的 JS bundle 中。服务端直接将组件的渲染结果序列化为一种特殊的 JSON 格式（React Flight Protocol）发送给客户端，客户端直接复用这些结果。</li>
+<li><strong>本质区别</strong>：SSR 优化的是首屏 HTML 的到达时间（TTFB），但客户端 JS 体积依然很大；RSC 真正实现了 <strong>Zero-Bundle-Size（零客户端体积）</strong> 对于服务端组件，且可以直接在服务端安全地访问数据库、文件系统等后端资源。</li>
+</ul>
+<p><strong>67. RSC 中 Server Component 和 Client Component 的边界与通信规则是什么？</strong></p>
+<ul>
+<li><strong>规则 1</strong>：Server Component 可以渲染 Client Component（通过 <code>children</code> props 传入，这叫 “Slot” 模式，避免了将 Client 组件序列化）。</li>
+<li><strong>规则 2</strong>：Client Component <strong>不能</strong>直接 import 并渲染 Server Component（会破坏边界）。</li>
+<li><strong>规则 3</strong>：两者之间传递的数据必须是<strong>可序列化的</strong>（如 JSON、Date、Map、Set 等 React 支持的类型），不能传递函数、类实例或包含循环引用的对象。</li>
+<li><strong>规则 4</strong>：Server Component 中不能使用任何 Hook（<code>useState</code>, <code>useEffect</code> 等）或浏览器 API。</li>
+</ul>
+<p><strong>68. 什么是 React Flight Protocol (React 飞行协议)？</strong>
+这是 RSC 中服务端向客户端传输数据的底层格式。它不是纯 HTML，也不是纯 JSON，而是一种定制的、支持流式传输的序列化格式。它能够高效地传输 React 元素树、Promise 的引用（用于 Suspense 边界）以及服务端特有的数据类型，客户端接收到后由特殊的 Runtime 将其反序列化为虚拟 DOM 并复用。</p>
+<hr>
+<h2 id="模块三hooks-进阶与边缘场景">模块三：Hooks 进阶与边缘场景</h2>
+<p><strong>69. <code>useDeferredValue</code> 和传统的 <code>debounce</code> (防抖) 有什么本质区别？</strong></p>
+<ul>
+<li><strong>Debounce</strong>：是<strong>时间层面</strong>的延迟。在延迟期间，UI <strong>完全不会更新</strong>（输入框可能看起来卡顿，或者旧数据一直显示），直到延迟时间结束才触发一次更新。</li>
+<li><strong>useDeferredValue</strong>：是<strong>渲染优先级层面</strong>的延迟。它会<strong>立即</strong>以高优先级更新紧急部分（如输入框的 value，保持用户打字流畅），同时将依赖该值的昂贵计算/渲染标记为低优先级。浏览器会在空闲时渲染低优先级部分。如果用户持续输入，React 会不断中断并重新开始低优先级渲染，保证 UI 始终响应。</li>
+</ul>
+<p><strong>70. <code>useEffect</code> 的清理函数（Cleanup）在严格模式（Strict Mode）下为什么会执行两次？</strong>
+在 React 18+ 的开发环境中，Strict Mode 会模拟组件的 <strong>卸载 -&gt; 重新挂载</strong> 过程。因此，<code>useEffect</code> 会在挂载时执行一次，紧接着执行其清理函数，然后再重新执行一次 <code>useEffect</code>。
+<strong>目的</strong>：强制开发者编写健壮的清理逻辑，确保组件在频繁挂载/卸载（如快速切换 Tab、并发渲染中的中断恢复）时不会发生内存泄漏或状态错乱。</p>
+<p><strong>71. 为什么 <code>useRef</code> 修改 <code>.current</code> 不会触发渲染，但某些情况下看起来“生效”了？</strong>
+<code>useRef</code> 的设计初衷就是“可变但不触发渲染”。如果你在 <code>useEffect</code> 或事件处理函数中修改了 <code>ref.current</code>，组件不会重新渲染。但如果这个 <code>ref</code> 被传递给了原生 DOM 节点，或者在<strong>下一次</strong>因为其他 state 变化触发的渲染中被读取，它会显示出最新的值。它只是一个附着在组件实例上的“储物柜”。</p>
+<hr>
+<h2 id="模块四性能优化与工程化深度">模块四：性能优化与工程化深度</h2>
+<p><strong>72. 什么是 Fast Refresh (快速刷新)？它和 Hot Module Replacement (HMR) 有什么区别？</strong></p>
+<ul>
+<li><strong>HMR (Webpack)</strong>：替换模块代码，但通常会导致组件状态丢失（页面重置）。</li>
+<li><strong>Fast Refresh (React + 现代构建工具如 Vite/Next.js)</strong>：React 专属的 HMR 增强版。它不仅替换代码，还能<strong>智能地保留组件的本地状态（Hooks state）</strong>。只要你不修改 Hook 的调用顺序或导出签名，刷新后输入框里的文字、展开的菜单都会保留，极大提升开发体验。</li>
+</ul>
+<p><strong>73. 在 React 中，如何排查和解决“内存泄漏”？</strong></p>
+<ul>
+<li><strong>常见原因</strong>：1) <code>useEffect</code> 中订阅了事件或 WebSocket，但未在 cleanup 函数中取消订阅；2) 闭包引用了已卸载组件的大对象，导致垃圾回收（GC）无法释放；3) 使用了未清理的 <code>setInterval</code> 或 <code>setTimeout</code>。</li>
+<li><strong>排查工具</strong>：Chrome DevTools 的 <strong>Memory (内存) 面板</strong>，使用 “Heap snapshot” (堆快照) 对比组件挂载和卸载前后的内存差异，查找 “Detached HTML elements” (分离的 DOM 节点) 或保留的闭包引用。</li>
+</ul>
+<p><strong>74. 为什么有时候 <code>React.memo</code> 反而会降低性能？</strong>
+<code>React.memo</code> 并非免费。每次渲染时，React 都需要对新旧 props 执行一次<strong>浅比较（Shallow Compare）</strong>。如果组件的 props 极其简单（如只传了一个 string），或者组件本身渲染开销极小，那么执行浅比较的开销可能会<strong>大于</strong>直接重新渲染该组件的开销。此外，如果父组件传递了内联函数/对象，导致浅比较永远返回 <code>false</code>，<code>React.memo</code> 就完全失效，白白增加了代码复杂度。</p>
+<hr>
+<h2 id="模块五架构微前端与测试">模块五：架构、微前端与测试</h2>
+<p><strong>75. React 在微前端架构（如 qiankun）中会遇到哪些特有坑点？</strong></p>
+<ul>
+<li><strong>路由冲突</strong>：多个 React 应用共用 History API，需要严格配置 <code>basename</code> 或基座统一接管路由。</li>
+<li><strong>样式污染</strong>：React 组件的 CSS 容易泄漏。需借助 CSS Modules、Shadow DOM 或微前端框架的样式隔离方案。</li>
+<li><strong>全局变量/单例冲突</strong>：如果多个子应用使用了不同版本的 React 或 Redux，可能会导致全局单例冲突。现代方案倾向于将 React/ReactDOM 作为外部依赖（Externals）由基座统一提供，或使用 Module Federation (模块联邦)。</li>
+</ul>
+<p><strong>76. React Testing Library (RTL) 的核心测试哲学是什么？与 Enzyme 有何不同？</strong></p>
+<ul>
+<li><strong>核心哲学</strong>：<strong>“测试你的软件如何被用户使用，而不是测试实现细节。”</strong></li>
+<li><strong>具体表现</strong>：RTL 鼓励通过 <code>getByRole</code>, <code>getByText</code> 等类似真实用户交互的方式查询 DOM，并触发 <code>fireEvent</code> 或 <code>userEvent</code>。它<strong>不鼓励</strong>直接访问组件实例、state 或调用内部方法（这正是旧版 Enzyme 的做法）。这保证了重构组件内部逻辑（如将 Class 改为 Function，或更换状态管理库）时，测试用例无需修改。</li>
+</ul>
+<p><strong>77. 什么是“水合阻塞”（Hydration Blocking）？如何优化？</strong>
+当服务端返回的 HTML 极其庞大，或者客户端 JS bundle 过大时，浏览器下载并执行 JS 进行 Hydration 的过程会长时间占用主线程，导致页面虽然“看起来”渲染了，但<strong>无法响应任何点击或滚动</strong>（表现为长任务阻塞）。</p>
+<ul>
+<li><strong>优化方案</strong>：
+<ol>
+<li><strong>代码分割</strong>：按路由或组件懒加载 JS。</li>
+<li><strong>React 18 <code>useTransition</code> / <code>startTransition</code></strong>：将非紧急的 Hydration 标记为低优先级。</li>
+<li><strong>Selective Hydration (选择性注水)</strong>：React 18 的新特性，如果用户在 Hydration 完成前点击了某个按钮，React 会优先注水该按钮所在的事件路径，使其立即响应，而不是等待整棵树注水完成。</li>
+<li>** islands architecture (岛屿架构)**：如 Astro 框架，默认只发送静态 HTML，仅对需要交互的“岛屿”组件发送 JS 并进行注水。</li>
+</ol>
+</li>
+</ul>
+</div><script type="module">function e(e){let t=e.getAttribute(`data-language`)?.trim();if(t)return t===`text`||t===`plaintext`||t===`txt`?`text`:t;let n=e.querySelector(`code`)?.className||e.className||``,r=/language-([a-z0-9_+-]+)/i.exec(n);return r?.[1]?r[1]:`code`}function t(t){if(t.closest(`[data-mac-window]`)||t.dataset.macEnhanced===`1`)return;t.dataset.macEnhanced=`1`;let n=document.createElement(`figure`);n.className=`mac-window`,n.setAttribute(`data-mac-window`,``);let r=document.createElement(`div`);r.className=`mac-titlebar`,r.innerHTML=`
+      <div class="mac-dots" aria-hidden="true">
+        <span class="dot red"></span>
+        <span class="dot yellow"></span>
+        <span class="dot green"></span>
+      </div>
+      <span class="mac-title"></span>
+      <button type="button" class="mac-copy" data-mac-copy aria-label="复制代码">复制</button>
+    `;let i=r.querySelector(`.mac-title`);i&&(i.textContent=e(t));let a=document.createElement(`div`);a.className=`mac-body`,t.parentNode?.insertBefore(n,t),a.appendChild(t),n.appendChild(r),n.appendChild(a)}async function n(e){if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(e);return}let t=document.createElement(`textarea`);t.value=e,t.style.position=`fixed`,t.style.opacity=`0`,document.body.appendChild(t),t.select(),document.execCommand(`copy`),t.remove()}function r(e=document){e.querySelectorAll(`[data-mac-copy]`).forEach(e=>{e.dataset.bound!==`1`&&(e.dataset.bound=`1`,e.addEventListener(`click`,async()=>{let t=e.closest(`[data-mac-window]`)?.querySelector(`pre`)?.textContent??``;try{await n(t);let r=e.textContent;e.textContent=`已复制`,e.classList.add(`is-copied`),window.setTimeout(()=>{e.textContent=r||`复制`,e.classList.remove(`is-copied`)},1600)}catch{e.textContent=`失败`,window.setTimeout(()=>{e.textContent=`复制`},1600)}}))})}function i(){document.querySelectorAll(`.prose pre`).forEach(t),r()}i(),document.addEventListener(`astro:page-load`,i);</script></article><nav class="pager wrap-narrow" aria-label="上下篇" data-astro-cid-tldeq5d5><p data-astro-cid-tldeq5d5>上一篇：<a href="/web/typescript/" data-astro-cid-tldeq5d5>typescript</a></p><p data-astro-cid-tldeq5d5>下一篇：<a href="/web/javascript/" data-astro-cid-tldeq5d5>javaScript</a></p></nav><section class="related" data-astro-cid-tldeq5d5><div class="wrap" data-astro-cid-tldeq5d5><h2 data-astro-cid-tldeq5d5>继续阅读</h2><ol class="related-grid" data-astro-cid-tldeq5d5><li data-astro-cid-tldeq5d5><a class="related-topic" href="/web/" data-astro-cid-tldeq5d5>前端</a><a class="related-title" href="/web/html/" data-astro-cid-tldeq5d5>HTML</a><p data-astro-cid-tldeq5d5>HTML</p></li><li data-astro-cid-tldeq5d5><a class="related-topic" href="/web/" data-astro-cid-tldeq5d5>前端</a><a class="related-title" href="/web/typescript/" data-astro-cid-tldeq5d5>typescript</a><p data-astro-cid-tldeq5d5>typescript</p></li><li data-astro-cid-tldeq5d5><a class="related-topic" href="/web/" data-astro-cid-tldeq5d5>前端</a><a class="related-title" href="/web/vue/" data-astro-cid-tldeq5d5>vue</a><p data-astro-cid-tldeq5d5>vue</p></li></ol></div></section></main><footer class="site-footer" data-astro-cid-jo6i4kqk><div class="wrap bar" data-astro-cid-jo6i4kqk><a class="brand" href="/" data-astro-cid-jo6i4kqk>rty</a><div class="social" aria-label="社交链接" data-astro-cid-jo6i4kqk><a href="mailto:peonyfoals@gmail.com" aria-label="Email" data-astro-cid-jo6i4kqk><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" data-astro-cid-jo6i4kqk><path fill="currentColor" d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5L4 8V6l8 5 8-5v2z" data-astro-cid-jo6i4kqk></path></svg></a><a href="/rss.xml" aria-label="RSS" data-astro-cid-jo6i4kqk><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" data-astro-cid-jo6i4kqk><path fill="currentColor" d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20 5 20 4 19 4 17.82c0-1.2.98-2.18 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27zm0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93z" data-astro-cid-jo6i4kqk></path></svg></a><a href="/archive/" aria-label="归档" data-astro-cid-jo6i4kqk><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" data-astro-cid-jo6i4kqk><path fill="currentColor" d="M4 6h16v2H4zm0 5h16v2H4zm0 5h10v2H4z" data-astro-cid-jo6i4kqk></path></svg></a></div><p class="meta" data-astro-cid-jo6i4kqk>© 2026 peony</p></div></footer></body></html>

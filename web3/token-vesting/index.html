@@ -1,0 +1,280 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="线性释放"><meta name="author" content="peony"><meta name="generator" content="Astro v7.1.1"><meta name="theme-color" content="#ffffff"><link rel="canonical" href="https://langzyw.xyz/web3/token-vesting/"><link rel="alternate" type="application/rss+xml" title="rty" href="/rss.xml"><meta property="og:type" content="website"><meta property="og:site_name" content="rty"><meta property="og:title" content="线性释放 · rty"><meta property="og:description" content="线性释放"><meta property="og:url" content="https://langzyw.xyz/web3/token-vesting/"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><title>线性释放 · rty</title><link rel="stylesheet" href="/_astro/Footer.C9xAhOzk.css"><link rel="stylesheet" href="/_astro/_..B6QWlgH6.css"></head><body><header class="site-header" data-astro-cid-nen7h5rs><div class="wrap bar" data-astro-cid-nen7h5rs><div class="bar-flex" data-astro-cid-nen7h5rs><a class="brand" href="/" data-astro-cid-nen7h5rs>rty</a><nav class="nav" aria-label="主导航" data-astro-cid-nen7h5rs><a class="nav-link" href="/" data-astro-cid-nen7h5rs>首页</a><a class="nav-link" href="/web/" data-astro-cid-nen7h5rs>前端</a><a class="nav-link" href="/python/" data-astro-cid-nen7h5rs>python</a><a class="nav-link" href="/llm/" data-astro-cid-nen7h5rs>llm</a><a class="nav-link active" href="/web3/" aria-current="page" data-astro-cid-nen7h5rs>区块链</a><a class="nav-link" href="/about/" data-astro-cid-nen7h5rs>关于</a></nav></div><button class="search-btn" type="button" aria-label="搜索" data-search-open data-astro-cid-nen7h5rs><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" data-astro-cid-nen7h5rs><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="1.6" data-astro-cid-nen7h5rs></circle><path d="M16.5 16.5L21 21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" data-astro-cid-nen7h5rs></path></svg></button></div></header><dialog class="search-dialog" data-search-dialog data-astro-cid-nen7h5rs><form class="search-panel" method="dialog" data-astro-cid-nen7h5rs><label class="sr-only" for="site-search" data-astro-cid-nen7h5rs>搜索文章</label><input id="site-search" class="search-input" type="search" placeholder="搜索文章…" autocomplete="off" data-search-input data-astro-cid-nen7h5rs><button class="search-close" value="cancel" type="submit" aria-label="关闭" data-astro-cid-nen7h5rs>×</button></form><ul class="search-results" data-search-results data-astro-cid-nen7h5rs></ul></dialog><script>(function(){const searchIndexUrl = "/search-index.json";
+
+  const openBtn = document.querySelector("[data-search-open]");
+  const dialog = document.querySelector("[data-search-dialog]");
+  const input = document.querySelector("[data-search-input]");
+  const results = document.querySelector("[data-search-results]");
+
+  if (
+    openBtn &&
+    dialog instanceof HTMLDialogElement &&
+    input instanceof HTMLInputElement &&
+    results
+  ) {
+    let index = [];
+    let loaded = false;
+
+    async function ensureIndex() {
+      if (loaded) return;
+      const res = await fetch(searchIndexUrl);
+      index = await res.json();
+      loaded = true;
+    }
+
+    function render(q) {
+      const query = q.trim().toLowerCase();
+      if (!query) {
+        results.innerHTML = "";
+        return;
+      }
+      const hits = index
+        .filter((item) =>
+          `${item.title} ${item.description} ${item.topic}`
+            .toLowerCase()
+            .includes(query),
+        )
+        .slice(0, 8);
+      results.innerHTML = hits.length
+        ? hits
+            .map(
+              (item) =>
+                `<li><a href="${item.href}"><strong>${item.title}</strong><span>${item.description}</span></a></li>`,
+            )
+            .join("")
+        : `<li class="empty">没有匹配结果</li>`;
+    }
+
+    openBtn.addEventListener("click", async () => {
+      await ensureIndex();
+      dialog.showModal();
+      input.value = "";
+      results.innerHTML = "";
+      input.focus();
+    });
+
+    input.addEventListener("input", () => render(input.value));
+
+    dialog.addEventListener("click", (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+  }
+})();</script><main class="post-page" data-astro-cid-tldeq5d5><article data-astro-cid-tldeq5d5><header class="header wrap-narrow" data-astro-cid-tldeq5d5><a class="topic" href="/web3/" data-astro-cid-tldeq5d5>区块链</a><h1 data-astro-cid-tldeq5d5>线性释放</h1><p class="meta" data-astro-cid-tldeq5d5><time datetime="2026-07-18T00:00:00.000Z" data-astro-cid-tldeq5d5>2026年7月18日</time><span aria-hidden="true" data-astro-cid-tldeq5d5>·</span><span data-astro-cid-tldeq5d5>约 53 分钟</span></p><p class="tags" data-astro-cid-tldeq5d5><a href="/tags/区块链/" data-astro-cid-tldeq5d5>区块链</a><span data-astro-cid-tldeq5d5> · </span><a href="/tags/智能合约/" data-astro-cid-tldeq5d5>智能合约</a></p></header><div class="hero-image wrap" data-astro-cid-tldeq5d5><img src="/images/covers/web3-bitcoin.jpg" alt="" data-astro-cid-tldeq5d5></div><div class="prose wrap-narrow" data-astro-cid-tldeq5d5><h3 id="线性释放">线性释放</h3>
+<p>代币/ETH 按时间线性解锁给受益人，常见于团队、顾问、投资人归属（vesting）。</p>
+<ul>
+<li>源码：<a href="https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v5.0.2/contracts/finance/VestingWallet.sol">VestingWallet.sol</a></li>
+<li>文档：<a href="https://docs.openzeppelin.com/contracts/5.x/api/finance#VestingWallet">OpenZeppelin VestingWallet</a></li>
+</ul>
+<h3 id="机制">机制</h3>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>beneficiary</code></td>
+<td>受益人（构造时设为 <code>Ownable</code> owner）</td>
+</tr>
+<tr>
+<td><code>start</code></td>
+<td>开始时间戳</td>
+</tr>
+<tr>
+<td><code>duration</code></td>
+<td>释放总时长（秒）</td>
+</tr>
+</tbody>
+</table>
+<p>公式（<code>start &lt;= t &lt; end</code>）：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>vested = totalAllocation * (t - start) / duration</span></span>
+<span class="line"><span>releasable = vested - alreadyReleased</span></span></code></pre>
+<ul>
+<li><code>t &lt; start</code>：可释放为 0</li>
+<li><code>t &gt;= end</code>：全部可释放</li>
+<li><code>duration == 0</code>：可当作到期一次解锁的时间锁用法</li>
+</ul>
+<p>资产转入本合约后，按<strong>从一开始就锁定</strong>的假设参与归属；若归属已开始再转入，可能有一部分立刻可 <code>release</code>。</p>
+<h3 id="vestingwallet完整源码">VestingWallet（完整源码）</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#6A737D">// SPDX-License-Identifier: MIT</span></span>
+<span class="line"><span style="color:#6A737D">// OpenZeppelin Contracts (last updated v5.0.0) (finance/VestingWallet.sol)</span></span>
+<span class="line"><span style="color:#F97583">pragma</span><span style="color:#85E89D"> solidity</span><span style="color:#79B8FF"> ^0.8.20</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> {</span><span style="color:#B392F0">IERC20</span><span style="color:#E1E4E8">} </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "../token/ERC20/IERC20.sol"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> {</span><span style="color:#B392F0">SafeERC20</span><span style="color:#E1E4E8">} </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "../token/ERC20/utils/SafeERC20.sol"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> {</span><span style="color:#B392F0">Address</span><span style="color:#E1E4E8">} </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "../utils/Address.sol"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> {</span><span style="color:#B392F0">Context</span><span style="color:#E1E4E8">} </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "../utils/Context.sol"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> {</span><span style="color:#B392F0">Ownable</span><span style="color:#E1E4E8">} </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "../access/Ownable.sol"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> A vesting wallet is an ownable contract that can receive native currency and ERC20 tokens, and release these</span></span>
+<span class="line"><span style="color:#6A737D"> * assets to the wallet owner, also referred to as "beneficiary", according to a vesting schedule.</span></span>
+<span class="line"><span style="color:#6A737D"> *</span></span>
+<span class="line"><span style="color:#6A737D"> * Any assets transferred to this contract will follow the vesting schedule as if they were locked from the beginning.</span></span>
+<span class="line"><span style="color:#6A737D"> * Consequently, if the vesting has already started, any amount of tokens sent to this contract will (at least partly)</span></span>
+<span class="line"><span style="color:#6A737D"> * be immediately releasable.</span></span>
+<span class="line"><span style="color:#6A737D"> *</span></span>
+<span class="line"><span style="color:#6A737D"> * By setting the duration to 0, one can configure this contract to behave like an asset timelock that hold tokens for</span></span>
+<span class="line"><span style="color:#6A737D"> * a beneficiary until a specified time.</span></span>
+<span class="line"><span style="color:#6A737D"> *</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">NOTE</span><span style="color:#6A737D">: Since the wallet is {Ownable}, and ownership can be transferred, it is possible to sell unvested tokens.</span></span>
+<span class="line"><span style="color:#6A737D"> * Preventing this in a smart contract is difficult, considering that: 1) a beneficiary address could be a</span></span>
+<span class="line"><span style="color:#6A737D"> * counterfactually deployed contract, 2) there is likely to be a migration path for EOAs to become contracts in the</span></span>
+<span class="line"><span style="color:#6A737D"> * near future.</span></span>
+<span class="line"><span style="color:#6A737D"> *</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">NOTE</span><span style="color:#6A737D">: When using this contract with any token whose balance is adjusted automatically (i.e. a rebase token), make</span></span>
+<span class="line"><span style="color:#6A737D"> * sure to account the supply/balance adjustment in the vesting schedule to ensure the vested amount is as intended.</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#F97583">contract</span><span style="color:#B392F0"> VestingWallet</span><span style="color:#F97583"> is</span><span style="color:#B392F0"> Context</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">Ownable</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    event</span><span style="color:#B392F0"> EtherReleased</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> amount</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">    event</span><span style="color:#B392F0"> ERC20Released</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#F97583"> indexed</span><span style="color:#FFAB70"> token</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> amount</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#F97583"> private</span><span style="color:#E1E4E8"> _released;</span></span>
+<span class="line"><span style="color:#F97583">    mapping</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8"> token </span><span style="color:#F97583">=&gt;</span><span style="color:#79B8FF"> uint256</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">private</span><span style="color:#E1E4E8"> _erc20Released;</span></span>
+<span class="line"><span style="color:#79B8FF">    uint64</span><span style="color:#F97583"> private</span><span style="color:#F97583"> immutable</span><span style="color:#E1E4E8"> _start;</span></span>
+<span class="line"><span style="color:#79B8FF">    uint64</span><span style="color:#F97583"> private</span><span style="color:#F97583"> immutable</span><span style="color:#E1E4E8"> _duration;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Sets the sender as the initial owner, the beneficiary as the pending owner, the start timestamp and the</span></span>
+<span class="line"><span style="color:#6A737D">     * vesting duration of the vesting wallet.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    constructor</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> beneficiary</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint64</span><span style="color:#FFAB70"> startTimestamp</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint64</span><span style="color:#FFAB70"> durationSeconds</span><span style="color:#E1E4E8">) payable </span><span style="color:#B392F0">Ownable</span><span style="color:#E1E4E8">(beneficiary) {</span></span>
+<span class="line"><span style="color:#E1E4E8">        _start </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> startTimestamp;</span></span>
+<span class="line"><span style="color:#E1E4E8">        _duration </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> durationSeconds;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> The contract should be able to receive Eth.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#B392F0">    receive</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">external</span><span style="color:#F97583"> payable</span><span style="color:#F97583"> virtual</span><span style="color:#E1E4E8"> {}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Getter for the start timestamp.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> start</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">public</span><span style="color:#F97583"> view</span><span style="color:#F97583"> virtual</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> _start;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Getter for the vesting duration.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> duration</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">public</span><span style="color:#F97583"> view</span><span style="color:#F97583"> virtual</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> _duration;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Getter for the end timestamp.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> end</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">public</span><span style="color:#F97583"> view</span><span style="color:#F97583"> virtual</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#B392F0"> start</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">+</span><span style="color:#B392F0"> duration</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Amount of eth already released</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> released</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">public</span><span style="color:#F97583"> view</span><span style="color:#F97583"> virtual</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> _released;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Amount of token already released</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> released</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> token</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">public</span><span style="color:#F97583"> view</span><span style="color:#F97583"> virtual</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> _erc20Released[token];</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Getter for the amount of releasable eth.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> releasable</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">public</span><span style="color:#F97583"> view</span><span style="color:#F97583"> virtual</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#B392F0"> vestedAmount</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint64</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">block</span><span style="color:#E1E4E8">.timestamp)) </span><span style="color:#F97583">-</span><span style="color:#B392F0"> released</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Getter for the amount of releasable `token` tokens. `token` should be the address of an</span></span>
+<span class="line"><span style="color:#6A737D">     * IERC20 contract.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> releasable</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> token</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">public</span><span style="color:#F97583"> view</span><span style="color:#F97583"> virtual</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#B392F0"> vestedAmount</span><span style="color:#E1E4E8">(token, </span><span style="color:#79B8FF">uint64</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">block</span><span style="color:#E1E4E8">.timestamp)) </span><span style="color:#F97583">-</span><span style="color:#B392F0"> released</span><span style="color:#E1E4E8">(token);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Release the native token (ether) that have already vested.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Emits a {EtherReleased} event.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> release</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">public</span><span style="color:#F97583"> virtual</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#E1E4E8"> amount </span><span style="color:#F97583">=</span><span style="color:#B392F0"> releasable</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">        _released </span><span style="color:#F97583">+=</span><span style="color:#E1E4E8"> amount;</span></span>
+<span class="line"><span style="color:#F97583">        emit</span><span style="color:#B392F0"> EtherReleased</span><span style="color:#E1E4E8">(amount);</span></span>
+<span class="line"><span style="color:#E1E4E8">        Address.</span><span style="color:#B392F0">sendValue</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">payable</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">owner</span><span style="color:#E1E4E8">()), amount);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Release the tokens that have already vested.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Emits a {ERC20Released} event.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> release</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> token</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">public</span><span style="color:#F97583"> virtual</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#E1E4E8"> amount </span><span style="color:#F97583">=</span><span style="color:#B392F0"> releasable</span><span style="color:#E1E4E8">(token);</span></span>
+<span class="line"><span style="color:#E1E4E8">        _erc20Released[token] </span><span style="color:#F97583">+=</span><span style="color:#E1E4E8"> amount;</span></span>
+<span class="line"><span style="color:#F97583">        emit</span><span style="color:#B392F0"> ERC20Released</span><span style="color:#E1E4E8">(token, amount);</span></span>
+<span class="line"><span style="color:#E1E4E8">        SafeERC20.</span><span style="color:#B392F0">safeTransfer</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">IERC20</span><span style="color:#E1E4E8">(token), </span><span style="color:#B392F0">owner</span><span style="color:#E1E4E8">(), amount);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Calculates the amount of ether that has already vested. Default implementation is a linear vesting curve.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> vestedAmount</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint64</span><span style="color:#FFAB70"> timestamp</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">public</span><span style="color:#F97583"> view</span><span style="color:#F97583"> virtual</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#B392F0"> _vestingSchedule</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">).balance </span><span style="color:#F97583">+</span><span style="color:#B392F0"> released</span><span style="color:#E1E4E8">(), timestamp);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Calculates the amount of tokens that has already vested. Default implementation is a linear vesting curve.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> vestedAmount</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> token</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint64</span><span style="color:#FFAB70"> timestamp</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">public</span><span style="color:#F97583"> view</span><span style="color:#F97583"> virtual</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#B392F0"> _vestingSchedule</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">IERC20</span><span style="color:#E1E4E8">(token).</span><span style="color:#B392F0">balanceOf</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">)) </span><span style="color:#F97583">+</span><span style="color:#B392F0"> released</span><span style="color:#E1E4E8">(token), timestamp);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Virtual implementation of the vesting formula. This returns the amount vested, as a function of time, for</span></span>
+<span class="line"><span style="color:#6A737D">     * an asset given its total historical allocation.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> _vestingSchedule</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> totalAllocation</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint64</span><span style="color:#FFAB70"> timestamp</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">internal</span><span style="color:#F97583"> view</span><span style="color:#F97583"> virtual</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (timestamp </span><span style="color:#F97583">&lt;</span><span style="color:#B392F0"> start</span><span style="color:#E1E4E8">()) {</span></span>
+<span class="line"><span style="color:#F97583">            return</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">        } </span><span style="color:#F97583">else</span><span style="color:#F97583"> if</span><span style="color:#E1E4E8"> (timestamp </span><span style="color:#F97583">&gt;=</span><span style="color:#B392F0"> end</span><span style="color:#E1E4E8">()) {</span></span>
+<span class="line"><span style="color:#F97583">            return</span><span style="color:#E1E4E8"> totalAllocation;</span></span>
+<span class="line"><span style="color:#E1E4E8">        } </span><span style="color:#F97583">else</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">            return</span><span style="color:#E1E4E8"> (totalAllocation </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> (timestamp </span><span style="color:#F97583">-</span><span style="color:#B392F0"> start</span><span style="color:#E1E4E8">())) </span><span style="color:#F97583">/</span><span style="color:#B392F0"> duration</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="使用方式">使用方式</h3>
+<ol>
+<li>部署：<code>beneficiary</code>、<code>startTimestamp</code>、<code>durationSeconds</code></li>
+<li>向合约转入 ETH 或 ERC20</li>
+<li>任何人可调用 <code>release()</code> / <code>release(token)</code>，资产打给 <code>owner()</code>（受益人）</li>
+<li>用 <code>releasable()</code> / <code>vestedAmount</code> 查询</li>
+</ol>
+<h3 id="注意">注意</h3>
+<ol>
+<li>Owner 可转移，等于可转让“未归属权益”——设计上需知情</li>
+<li>Rebase / 扣费代币可能导致归属数量与预期不符</li>
+<li>与 <code>TokenTimelock</code>（到期一次全取）不同：本合约是<strong>随时间线性</strong>可取</li>
+</ol>
+<h3 id="小结">小结</h3>
+<ul>
+<li>线性释放 = 按时间比例解锁</li>
+<li>生产直接用 OZ <code>VestingWallet</code>；需要悬崖（cliff）可继承并重写 <code>_vestingSchedule</code></li>
+</ul>
+</div><script type="module">function e(e){let t=e.getAttribute(`data-language`)?.trim();if(t)return t===`text`||t===`plaintext`||t===`txt`?`text`:t;let n=e.querySelector(`code`)?.className||e.className||``,r=/language-([a-z0-9_+-]+)/i.exec(n);return r?.[1]?r[1]:`code`}function t(t){if(t.closest(`[data-mac-window]`)||t.dataset.macEnhanced===`1`)return;t.dataset.macEnhanced=`1`;let n=document.createElement(`figure`);n.className=`mac-window`,n.setAttribute(`data-mac-window`,``);let r=document.createElement(`div`);r.className=`mac-titlebar`,r.innerHTML=`
+      <div class="mac-dots" aria-hidden="true">
+        <span class="dot red"></span>
+        <span class="dot yellow"></span>
+        <span class="dot green"></span>
+      </div>
+      <span class="mac-title"></span>
+      <button type="button" class="mac-copy" data-mac-copy aria-label="复制代码">复制</button>
+    `;let i=r.querySelector(`.mac-title`);i&&(i.textContent=e(t));let a=document.createElement(`div`);a.className=`mac-body`,t.parentNode?.insertBefore(n,t),a.appendChild(t),n.appendChild(r),n.appendChild(a)}async function n(e){if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(e);return}let t=document.createElement(`textarea`);t.value=e,t.style.position=`fixed`,t.style.opacity=`0`,document.body.appendChild(t),t.select(),document.execCommand(`copy`),t.remove()}function r(e=document){e.querySelectorAll(`[data-mac-copy]`).forEach(e=>{e.dataset.bound!==`1`&&(e.dataset.bound=`1`,e.addEventListener(`click`,async()=>{let t=e.closest(`[data-mac-window]`)?.querySelector(`pre`)?.textContent??``;try{await n(t);let r=e.textContent;e.textContent=`已复制`,e.classList.add(`is-copied`),window.setTimeout(()=>{e.textContent=r||`复制`,e.classList.remove(`is-copied`)},1600)}catch{e.textContent=`失败`,window.setTimeout(()=>{e.textContent=`复制`},1600)}}))})}function i(){document.querySelectorAll(`.prose pre`).forEach(t),r()}i(),document.addEventListener(`astro:page-load`,i);</script></article><nav class="pager wrap-narrow" aria-label="上下篇" data-astro-cid-tldeq5d5><p data-astro-cid-tldeq5d5>下一篇：<a href="/web3/token-locker/" data-astro-cid-tldeq5d5>代币锁</a></p></nav><section class="related" data-astro-cid-tldeq5d5><div class="wrap" data-astro-cid-tldeq5d5><h2 data-astro-cid-tldeq5d5>继续阅读</h2><ol class="related-grid" data-astro-cid-tldeq5d5><li data-astro-cid-tldeq5d5><a class="related-topic" href="/web3/" data-astro-cid-tldeq5d5>区块链</a><a class="related-title" href="/web3/airdrop/" data-astro-cid-tldeq5d5>空投</a><p data-astro-cid-tldeq5d5>空投</p></li><li data-astro-cid-tldeq5d5><a class="related-topic" href="/web3/" data-astro-cid-tldeq5d5>区块链</a><a class="related-title" href="/web3/cross-chain-bridge/" data-astro-cid-tldeq5d5>跨链桥</a><p data-astro-cid-tldeq5d5>跨链桥</p></li><li data-astro-cid-tldeq5d5><a class="related-topic" href="/web3/" data-astro-cid-tldeq5d5>区块链</a><a class="related-title" href="/web3/ddos/" data-astro-cid-tldeq5d5>DDOS攻击</a><p data-astro-cid-tldeq5d5>DDOS攻击</p></li></ol></div></section></main><footer class="site-footer" data-astro-cid-jo6i4kqk><div class="wrap bar" data-astro-cid-jo6i4kqk><a class="brand" href="/" data-astro-cid-jo6i4kqk>rty</a><div class="social" aria-label="社交链接" data-astro-cid-jo6i4kqk><a href="mailto:peonyfoals@gmail.com" aria-label="Email" data-astro-cid-jo6i4kqk><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" data-astro-cid-jo6i4kqk><path fill="currentColor" d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5L4 8V6l8 5 8-5v2z" data-astro-cid-jo6i4kqk></path></svg></a><a href="/rss.xml" aria-label="RSS" data-astro-cid-jo6i4kqk><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" data-astro-cid-jo6i4kqk><path fill="currentColor" d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20 5 20 4 19 4 17.82c0-1.2.98-2.18 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27zm0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93z" data-astro-cid-jo6i4kqk></path></svg></a><a href="/archive/" aria-label="归档" data-astro-cid-jo6i4kqk><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" data-astro-cid-jo6i4kqk><path fill="currentColor" d="M4 6h16v2H4zm0 5h16v2H4zm0 5h10v2H4z" data-astro-cid-jo6i4kqk></path></svg></a></div><p class="meta" data-astro-cid-jo6i4kqk>© 2026 peony</p></div></footer></body></html>

@@ -1,0 +1,543 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="时间锁"><meta name="author" content="peony"><meta name="generator" content="Astro v7.1.1"><meta name="theme-color" content="#ffffff"><link rel="canonical" href="https://langzyw.xyz/web3/timelock/"><link rel="alternate" type="application/rss+xml" title="rty" href="/rss.xml"><meta property="og:type" content="website"><meta property="og:site_name" content="rty"><meta property="og:title" content="时间锁 · rty"><meta property="og:description" content="时间锁"><meta property="og:url" content="https://langzyw.xyz/web3/timelock/"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><title>时间锁 · rty</title><link rel="stylesheet" href="/_astro/Footer.C9xAhOzk.css"><link rel="stylesheet" href="/_astro/_..B6QWlgH6.css"></head><body><header class="site-header" data-astro-cid-nen7h5rs><div class="wrap bar" data-astro-cid-nen7h5rs><div class="bar-flex" data-astro-cid-nen7h5rs><a class="brand" href="/" data-astro-cid-nen7h5rs>rty</a><nav class="nav" aria-label="主导航" data-astro-cid-nen7h5rs><a class="nav-link" href="/" data-astro-cid-nen7h5rs>首页</a><a class="nav-link" href="/web/" data-astro-cid-nen7h5rs>前端</a><a class="nav-link" href="/python/" data-astro-cid-nen7h5rs>python</a><a class="nav-link" href="/llm/" data-astro-cid-nen7h5rs>llm</a><a class="nav-link active" href="/web3/" aria-current="page" data-astro-cid-nen7h5rs>区块链</a><a class="nav-link" href="/about/" data-astro-cid-nen7h5rs>关于</a></nav></div><button class="search-btn" type="button" aria-label="搜索" data-search-open data-astro-cid-nen7h5rs><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" data-astro-cid-nen7h5rs><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="1.6" data-astro-cid-nen7h5rs></circle><path d="M16.5 16.5L21 21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" data-astro-cid-nen7h5rs></path></svg></button></div></header><dialog class="search-dialog" data-search-dialog data-astro-cid-nen7h5rs><form class="search-panel" method="dialog" data-astro-cid-nen7h5rs><label class="sr-only" for="site-search" data-astro-cid-nen7h5rs>搜索文章</label><input id="site-search" class="search-input" type="search" placeholder="搜索文章…" autocomplete="off" data-search-input data-astro-cid-nen7h5rs><button class="search-close" value="cancel" type="submit" aria-label="关闭" data-astro-cid-nen7h5rs>×</button></form><ul class="search-results" data-search-results data-astro-cid-nen7h5rs></ul></dialog><script>(function(){const searchIndexUrl = "/search-index.json";
+
+  const openBtn = document.querySelector("[data-search-open]");
+  const dialog = document.querySelector("[data-search-dialog]");
+  const input = document.querySelector("[data-search-input]");
+  const results = document.querySelector("[data-search-results]");
+
+  if (
+    openBtn &&
+    dialog instanceof HTMLDialogElement &&
+    input instanceof HTMLInputElement &&
+    results
+  ) {
+    let index = [];
+    let loaded = false;
+
+    async function ensureIndex() {
+      if (loaded) return;
+      const res = await fetch(searchIndexUrl);
+      index = await res.json();
+      loaded = true;
+    }
+
+    function render(q) {
+      const query = q.trim().toLowerCase();
+      if (!query) {
+        results.innerHTML = "";
+        return;
+      }
+      const hits = index
+        .filter((item) =>
+          `${item.title} ${item.description} ${item.topic}`
+            .toLowerCase()
+            .includes(query),
+        )
+        .slice(0, 8);
+      results.innerHTML = hits.length
+        ? hits
+            .map(
+              (item) =>
+                `<li><a href="${item.href}"><strong>${item.title}</strong><span>${item.description}</span></a></li>`,
+            )
+            .join("")
+        : `<li class="empty">没有匹配结果</li>`;
+    }
+
+    openBtn.addEventListener("click", async () => {
+      await ensureIndex();
+      dialog.showModal();
+      input.value = "";
+      results.innerHTML = "";
+      input.focus();
+    });
+
+    input.addEventListener("input", () => render(input.value));
+
+    dialog.addEventListener("click", (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+  }
+})();</script><main class="post-page" data-astro-cid-tldeq5d5><article data-astro-cid-tldeq5d5><header class="header wrap-narrow" data-astro-cid-tldeq5d5><a class="topic" href="/web3/" data-astro-cid-tldeq5d5>区块链</a><h1 data-astro-cid-tldeq5d5>时间锁</h1><p class="meta" data-astro-cid-tldeq5d5><time datetime="2026-07-18T00:00:00.000Z" data-astro-cid-tldeq5d5>2026年7月18日</time><span aria-hidden="true" data-astro-cid-tldeq5d5>·</span><span data-astro-cid-tldeq5d5>约 3 小时</span></p><p class="tags" data-astro-cid-tldeq5d5><a href="/tags/区块链/" data-astro-cid-tldeq5d5>区块链</a><span data-astro-cid-tldeq5d5> · </span><a href="/tags/智能合约/" data-astro-cid-tldeq5d5>智能合约</a></p></header><div class="hero-image wrap" data-astro-cid-tldeq5d5><img src="/images/covers/web3-mobile-secure.jpg" alt="" data-astro-cid-tldeq5d5></div><div class="prose wrap-narrow" data-astro-cid-tldeq5d5><h3 id="时间锁-timelockcontroller">时间锁 TimelockController</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#6A737D">// SPDX-License-Identifier: MIT</span></span>
+<span class="line"><span style="color:#6A737D">// OpenZeppelin Contracts (last updated v5.0.0) (governance/TimelockController.sol)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">pragma</span><span style="color:#85E89D"> solidity</span><span style="color:#79B8FF"> ^0.8.20</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> {</span><span style="color:#B392F0">AccessControl</span><span style="color:#E1E4E8">} </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "../access/AccessControl.sol"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> {</span><span style="color:#B392F0">ERC721Holder</span><span style="color:#E1E4E8">} </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "../token/ERC721/utils/ERC721Holder.sol"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> {</span><span style="color:#B392F0">ERC1155Holder</span><span style="color:#E1E4E8">} </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "../token/ERC1155/utils/ERC1155Holder.sol"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> {</span><span style="color:#B392F0">Address</span><span style="color:#E1E4E8">} </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "../utils/Address.sol"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Contract module which acts as a timelocked controller. When set as the</span></span>
+<span class="line"><span style="color:#6A737D"> * owner of an `Ownable` smart contract, it enforces a timelock on all</span></span>
+<span class="line"><span style="color:#6A737D"> * `onlyOwner` maintenance operations. This gives time for users of the</span></span>
+<span class="line"><span style="color:#6A737D"> * controlled contract to exit before a potentially dangerous maintenance</span></span>
+<span class="line"><span style="color:#6A737D"> * operation is applied.</span></span>
+<span class="line"><span style="color:#6A737D"> *</span></span>
+<span class="line"><span style="color:#6A737D"> * By default, this contract is self administered, meaning administration tasks</span></span>
+<span class="line"><span style="color:#6A737D"> * have to go through the timelock process. The proposer (resp executor) role</span></span>
+<span class="line"><span style="color:#6A737D"> * is in charge of proposing (resp executing) operations. A common use case is</span></span>
+<span class="line"><span style="color:#6A737D"> * to position this {TimelockController} as the owner of a smart contract, with</span></span>
+<span class="line"><span style="color:#6A737D"> * a multisig or a DAO as the sole proposer.</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#F97583">contract</span><span style="color:#B392F0"> TimelockController</span><span style="color:#F97583"> is</span><span style="color:#B392F0"> AccessControl</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">ERC721Holder</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">ERC1155Holder</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">    bytes32</span><span style="color:#F97583"> public</span><span style="color:#F97583"> constant</span><span style="color:#E1E4E8"> PROPOSER_ROLE </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> keccak256</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"PROPOSER_ROLE"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#79B8FF">    bytes32</span><span style="color:#F97583"> public</span><span style="color:#F97583"> constant</span><span style="color:#E1E4E8"> EXECUTOR_ROLE </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> keccak256</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"EXECUTOR_ROLE"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#79B8FF">    bytes32</span><span style="color:#F97583"> public</span><span style="color:#F97583"> constant</span><span style="color:#E1E4E8"> CANCELLER_ROLE </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> keccak256</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"CANCELLER_ROLE"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#F97583"> internal</span><span style="color:#F97583"> constant</span><span style="color:#E1E4E8"> _DONE_TIMESTAMP </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> uint256</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    mapping</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">bytes32</span><span style="color:#E1E4E8"> id </span><span style="color:#F97583">=&gt;</span><span style="color:#79B8FF"> uint256</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">private</span><span style="color:#E1E4E8"> _timestamps;</span></span>
+<span class="line"><span style="color:#79B8FF">    uint256</span><span style="color:#F97583"> private</span><span style="color:#E1E4E8"> _minDelay;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    enum</span><span style="color:#B392F0"> OperationState</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">        Unset</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        Waiting</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        Ready</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        Done</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Mismatch between the parameters length for an operation call.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    error</span><span style="color:#B392F0"> TimelockInvalidOperationLength</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8"> targets, </span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8"> payloads, </span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8"> values);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> The schedule operation doesn't meet the minimum delay.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    error</span><span style="color:#B392F0"> TimelockInsufficientDelay</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8"> delay, </span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8"> minDelay);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> The current state of an operation is not as required.</span></span>
+<span class="line"><span style="color:#6A737D">     * The `expectedStates` is a bitmap with the bits enabled for each OperationState enum position</span></span>
+<span class="line"><span style="color:#6A737D">     * counting from right to left.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * See {_encodeStateBitmap}.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    error</span><span style="color:#B392F0"> TimelockUnexpectedOperationState</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">bytes32</span><span style="color:#E1E4E8"> operationId, </span><span style="color:#79B8FF">bytes32</span><span style="color:#E1E4E8"> expectedStates);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> The predecessor to an operation not yet done.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    error</span><span style="color:#B392F0"> TimelockUnexecutedPredecessor</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">bytes32</span><span style="color:#E1E4E8"> predecessorId);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> The caller account is not authorized.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    error</span><span style="color:#B392F0"> TimelockUnauthorizedCaller</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8"> caller);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Emitted when a call is scheduled as part of operation `id`.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    event</span><span style="color:#B392F0"> CallScheduled</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes32</span><span style="color:#F97583"> indexed</span><span style="color:#FFAB70"> id</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#F97583"> indexed</span><span style="color:#FFAB70"> index</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        address</span><span style="color:#FFAB70"> target</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#FFAB70"> value</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes</span><span style="color:#FFAB70"> data</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes32</span><span style="color:#FFAB70"> predecessor</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#FFAB70"> delay</span></span>
+<span class="line"><span style="color:#E1E4E8">    );</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Emitted when a call is performed as part of operation `id`.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    event</span><span style="color:#B392F0"> CallExecuted</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">bytes32</span><span style="color:#F97583"> indexed</span><span style="color:#FFAB70"> id</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#F97583"> indexed</span><span style="color:#FFAB70"> index</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> target</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> value</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">bytes</span><span style="color:#FFAB70"> data</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Emitted when new proposal is scheduled with non-zero salt.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    event</span><span style="color:#B392F0"> CallSalt</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">bytes32</span><span style="color:#F97583"> indexed</span><span style="color:#FFAB70"> id</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">bytes32</span><span style="color:#FFAB70"> salt</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Emitted when operation `id` is cancelled.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    event</span><span style="color:#B392F0"> Cancelled</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">bytes32</span><span style="color:#F97583"> indexed</span><span style="color:#FFAB70"> id</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Emitted when the minimum delay for future operations is modified.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    event</span><span style="color:#B392F0"> MinDelayChange</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> oldDuration</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> newDuration</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Initializes the contract with the following parameters:</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * - `minDelay`: initial minimum delay in seconds for operations</span></span>
+<span class="line"><span style="color:#6A737D">     * - `proposers`: accounts to be granted proposer and canceller roles</span></span>
+<span class="line"><span style="color:#6A737D">     * - `executors`: accounts to be granted executor role</span></span>
+<span class="line"><span style="color:#6A737D">     * - `admin`: optional account to be granted admin role; disable with zero address</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * IMPORTANT: The optional admin can aid with initial configuration of roles after deployment</span></span>
+<span class="line"><span style="color:#6A737D">     * without being subject to delay, but this role should be subsequently renounced in favor of</span></span>
+<span class="line"><span style="color:#6A737D">     * administration through timelocked proposals. Previous versions of this contract would assign</span></span>
+<span class="line"><span style="color:#6A737D">     * this admin to the deployer automatically and should be renounced as well.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    constructor</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> minDelay</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">memory</span><span style="color:#FFAB70"> proposers</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">memory</span><span style="color:#FFAB70"> executors</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> admin</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">        // self administration</span></span>
+<span class="line"><span style="color:#B392F0">        _grantRole</span><span style="color:#E1E4E8">(DEFAULT_ADMIN_ROLE, </span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">));</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">        // optional admin</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (admin </span><span style="color:#F97583">!=</span><span style="color:#79B8FF"> address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">)) {</span></span>
+<span class="line"><span style="color:#B392F0">            _grantRole</span><span style="color:#E1E4E8">(DEFAULT_ADMIN_ROLE, admin);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">        // register proposers and cancellers</span></span>
+<span class="line"><span style="color:#F97583">        for</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">; i </span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8"> proposers.length; </span><span style="color:#F97583">++</span><span style="color:#E1E4E8">i) {</span></span>
+<span class="line"><span style="color:#B392F0">            _grantRole</span><span style="color:#E1E4E8">(PROPOSER_ROLE, proposers[i]);</span></span>
+<span class="line"><span style="color:#B392F0">            _grantRole</span><span style="color:#E1E4E8">(CANCELLER_ROLE, proposers[i]);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">        // register executors</span></span>
+<span class="line"><span style="color:#F97583">        for</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">; i </span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8"> executors.length; </span><span style="color:#F97583">++</span><span style="color:#E1E4E8">i) {</span></span>
+<span class="line"><span style="color:#B392F0">            _grantRole</span><span style="color:#E1E4E8">(EXECUTOR_ROLE, executors[i]);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">        _minDelay </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> minDelay;</span></span>
+<span class="line"><span style="color:#F97583">        emit</span><span style="color:#B392F0"> MinDelayChange</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">, minDelay);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Modifier to make a function callable only by a certain role. In</span></span>
+<span class="line"><span style="color:#6A737D">     * addition to checking the sender's role, `address(0)` 's role is also</span></span>
+<span class="line"><span style="color:#6A737D">     * considered. Granting a role to `address(0)` is equivalent to enabling</span></span>
+<span class="line"><span style="color:#6A737D">     * this role for everyone.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    modifier</span><span style="color:#B392F0"> onlyRoleOrOpenRole</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">bytes32</span><span style="color:#FFAB70"> role</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">!</span><span style="color:#B392F0">hasRole</span><span style="color:#E1E4E8">(role, </span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">))) {</span></span>
+<span class="line"><span style="color:#B392F0">            _checkRole</span><span style="color:#E1E4E8">(role, </span><span style="color:#B392F0">_msgSender</span><span style="color:#E1E4E8">());</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#79B8FF">        _</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Contract might receive/hold ETH as part of the maintenance process.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#B392F0">    receive</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">external</span><span style="color:#F97583"> payable</span><span style="color:#E1E4E8"> {}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> See {IERC165-supportsInterface}.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> supportsInterface</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes4</span><span style="color:#FFAB70"> interfaceId</span></span>
+<span class="line"><span style="color:#E1E4E8">    ) </span><span style="color:#F97583">public</span><span style="color:#F97583"> view</span><span style="color:#F97583"> virtual</span><span style="color:#F97583"> override</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">AccessControl</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">ERC1155Holder</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">bool</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#79B8FF"> super</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">supportsInterface</span><span style="color:#E1E4E8">(interfaceId);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Returns whether an id corresponds to a registered operation. This</span></span>
+<span class="line"><span style="color:#6A737D">     * includes both Waiting, Ready, and Done operations.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> isOperation</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">bytes32</span><span style="color:#FFAB70"> id</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">public</span><span style="color:#F97583"> view</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">bool</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#B392F0"> getOperationState</span><span style="color:#E1E4E8">(id) </span><span style="color:#F97583">!=</span><span style="color:#E1E4E8"> OperationState.Unset;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Returns whether an operation is pending or not. </span><span style="color:#F97583">Note</span><span style="color:#6A737D"> that a "pending" operation may also be "ready".</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> isOperationPending</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">bytes32</span><span style="color:#FFAB70"> id</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">public</span><span style="color:#F97583"> view</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">bool</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">        OperationState state </span><span style="color:#F97583">=</span><span style="color:#B392F0"> getOperationState</span><span style="color:#E1E4E8">(id);</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> state </span><span style="color:#F97583">==</span><span style="color:#E1E4E8"> OperationState.Waiting </span><span style="color:#F97583">||</span><span style="color:#E1E4E8"> state </span><span style="color:#F97583">==</span><span style="color:#E1E4E8"> OperationState.Ready;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Returns whether an operation is ready for execution. </span><span style="color:#F97583">Note</span><span style="color:#6A737D"> that a "ready" operation is also "pending".</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> isOperationReady</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">bytes32</span><span style="color:#FFAB70"> id</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">public</span><span style="color:#F97583"> view</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">bool</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#B392F0"> getOperationState</span><span style="color:#E1E4E8">(id) </span><span style="color:#F97583">==</span><span style="color:#E1E4E8"> OperationState.Ready;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Returns whether an operation is done or not.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> isOperationDone</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">bytes32</span><span style="color:#FFAB70"> id</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">public</span><span style="color:#F97583"> view</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">bool</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#B392F0"> getOperationState</span><span style="color:#E1E4E8">(id) </span><span style="color:#F97583">==</span><span style="color:#E1E4E8"> OperationState.Done;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Returns the timestamp at which an operation becomes ready (0 for</span></span>
+<span class="line"><span style="color:#6A737D">     * unset operations, 1 for done operations).</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> getTimestamp</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">bytes32</span><span style="color:#FFAB70"> id</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">public</span><span style="color:#F97583"> view</span><span style="color:#F97583"> virtual</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> _timestamps[id];</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Returns operation state.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> getOperationState</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">bytes32</span><span style="color:#FFAB70"> id</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">public</span><span style="color:#F97583"> view</span><span style="color:#F97583"> virtual</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">OperationState</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#E1E4E8"> timestamp </span><span style="color:#F97583">=</span><span style="color:#B392F0"> getTimestamp</span><span style="color:#E1E4E8">(id);</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (timestamp </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">            return</span><span style="color:#E1E4E8"> OperationState.Unset;</span></span>
+<span class="line"><span style="color:#E1E4E8">        } </span><span style="color:#F97583">else</span><span style="color:#F97583"> if</span><span style="color:#E1E4E8"> (timestamp </span><span style="color:#F97583">==</span><span style="color:#E1E4E8"> _DONE_TIMESTAMP) {</span></span>
+<span class="line"><span style="color:#F97583">            return</span><span style="color:#E1E4E8"> OperationState.Done;</span></span>
+<span class="line"><span style="color:#E1E4E8">        } </span><span style="color:#F97583">else</span><span style="color:#F97583"> if</span><span style="color:#E1E4E8"> (timestamp </span><span style="color:#F97583">&gt;</span><span style="color:#79B8FF"> block</span><span style="color:#E1E4E8">.timestamp) {</span></span>
+<span class="line"><span style="color:#F97583">            return</span><span style="color:#E1E4E8"> OperationState.Waiting;</span></span>
+<span class="line"><span style="color:#E1E4E8">        } </span><span style="color:#F97583">else</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">            return</span><span style="color:#E1E4E8"> OperationState.Ready;</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Returns the minimum delay in seconds for an operation to become valid.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * This value can be </span><span style="color:#F97583">changed</span><span style="color:#6A737D"> by executing an operation that calls `updateDelay`.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> getMinDelay</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">public</span><span style="color:#F97583"> view</span><span style="color:#F97583"> virtual</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> _minDelay;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Returns the identifier of an operation containing a single</span></span>
+<span class="line"><span style="color:#6A737D">     * transaction.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> hashOperation</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#79B8FF">        address</span><span style="color:#FFAB70"> target</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#FFAB70"> value</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes</span><span style="color:#F97583"> calldata</span><span style="color:#FFAB70"> data</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes32</span><span style="color:#FFAB70"> predecessor</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes32</span><span style="color:#FFAB70"> salt</span></span>
+<span class="line"><span style="color:#E1E4E8">    ) </span><span style="color:#F97583">public</span><span style="color:#F97583"> pure</span><span style="color:#F97583"> virtual</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">bytes32</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#79B8FF"> keccak256</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">abi</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">encode</span><span style="color:#E1E4E8">(target, value, data, predecessor, salt));</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Returns the identifier of an operation containing a batch of</span></span>
+<span class="line"><span style="color:#6A737D">     * transactions.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> hashOperationBatch</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#79B8FF">        address</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">calldata</span><span style="color:#FFAB70"> targets</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">calldata</span><span style="color:#FFAB70"> values</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">calldata</span><span style="color:#FFAB70"> payloads</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes32</span><span style="color:#FFAB70"> predecessor</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes32</span><span style="color:#FFAB70"> salt</span></span>
+<span class="line"><span style="color:#E1E4E8">    ) </span><span style="color:#F97583">public</span><span style="color:#F97583"> pure</span><span style="color:#F97583"> virtual</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">bytes32</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#79B8FF"> keccak256</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">abi</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">encode</span><span style="color:#E1E4E8">(targets, values, payloads, predecessor, salt));</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Schedule an operation containing a single transaction.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Emits {CallSalt} if salt is nonzero, and {CallScheduled}.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Requirements:</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * - the caller must have the 'proposer' role.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> schedule</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#79B8FF">        address</span><span style="color:#FFAB70"> target</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#FFAB70"> value</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes</span><span style="color:#F97583"> calldata</span><span style="color:#FFAB70"> data</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes32</span><span style="color:#FFAB70"> predecessor</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes32</span><span style="color:#FFAB70"> salt</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#FFAB70"> delay</span></span>
+<span class="line"><span style="color:#E1E4E8">    ) </span><span style="color:#F97583">public</span><span style="color:#F97583"> virtual</span><span style="color:#B392F0"> onlyRole</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">PROPOSER_ROLE</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes32</span><span style="color:#E1E4E8"> id </span><span style="color:#F97583">=</span><span style="color:#B392F0"> hashOperation</span><span style="color:#E1E4E8">(target, value, data, predecessor, salt);</span></span>
+<span class="line"><span style="color:#B392F0">        _schedule</span><span style="color:#E1E4E8">(id, delay);</span></span>
+<span class="line"><span style="color:#F97583">        emit</span><span style="color:#B392F0"> CallScheduled</span><span style="color:#E1E4E8">(id, </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">, target, value, data, predecessor, delay);</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (salt </span><span style="color:#F97583">!=</span><span style="color:#79B8FF"> bytes32</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">)) {</span></span>
+<span class="line"><span style="color:#F97583">            emit</span><span style="color:#B392F0"> CallSalt</span><span style="color:#E1E4E8">(id, salt);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Schedule an operation containing a batch of transactions.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Emits {CallSalt} if salt is nonzero, and one {CallScheduled} event per transaction in the batch.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Requirements:</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * - the caller must have the 'proposer' role.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> scheduleBatch</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#79B8FF">        address</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">calldata</span><span style="color:#FFAB70"> targets</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">calldata</span><span style="color:#FFAB70"> values</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">calldata</span><span style="color:#FFAB70"> payloads</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes32</span><span style="color:#FFAB70"> predecessor</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes32</span><span style="color:#FFAB70"> salt</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#FFAB70"> delay</span></span>
+<span class="line"><span style="color:#E1E4E8">    ) </span><span style="color:#F97583">public</span><span style="color:#F97583"> virtual</span><span style="color:#B392F0"> onlyRole</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">PROPOSER_ROLE</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (targets.length </span><span style="color:#F97583">!=</span><span style="color:#E1E4E8"> values.length </span><span style="color:#F97583">||</span><span style="color:#E1E4E8"> targets.length </span><span style="color:#F97583">!=</span><span style="color:#E1E4E8"> payloads.length) {</span></span>
+<span class="line"><span style="color:#F97583">            revert</span><span style="color:#B392F0"> TimelockInvalidOperationLength</span><span style="color:#E1E4E8">(targets.length, payloads.length, values.length);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF">        bytes32</span><span style="color:#E1E4E8"> id </span><span style="color:#F97583">=</span><span style="color:#B392F0"> hashOperationBatch</span><span style="color:#E1E4E8">(targets, values, payloads, predecessor, salt);</span></span>
+<span class="line"><span style="color:#B392F0">        _schedule</span><span style="color:#E1E4E8">(id, delay);</span></span>
+<span class="line"><span style="color:#F97583">        for</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">; i </span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8"> targets.length; </span><span style="color:#F97583">++</span><span style="color:#E1E4E8">i) {</span></span>
+<span class="line"><span style="color:#F97583">            emit</span><span style="color:#B392F0"> CallScheduled</span><span style="color:#E1E4E8">(id, i, targets[i], values[i], payloads[i], predecessor, delay);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (salt </span><span style="color:#F97583">!=</span><span style="color:#79B8FF"> bytes32</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">)) {</span></span>
+<span class="line"><span style="color:#F97583">            emit</span><span style="color:#B392F0"> CallSalt</span><span style="color:#E1E4E8">(id, salt);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Schedule an operation that is to become valid after a given delay.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> _schedule</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">bytes32</span><span style="color:#FFAB70"> id</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> delay</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">private</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (</span><span style="color:#B392F0">isOperation</span><span style="color:#E1E4E8">(id)) {</span></span>
+<span class="line"><span style="color:#F97583">            revert</span><span style="color:#B392F0"> TimelockUnexpectedOperationState</span><span style="color:#E1E4E8">(id, </span><span style="color:#B392F0">_encodeStateBitmap</span><span style="color:#E1E4E8">(OperationState.Unset));</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#E1E4E8"> minDelay </span><span style="color:#F97583">=</span><span style="color:#B392F0"> getMinDelay</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (delay </span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8"> minDelay) {</span></span>
+<span class="line"><span style="color:#F97583">            revert</span><span style="color:#B392F0"> TimelockInsufficientDelay</span><span style="color:#E1E4E8">(delay, minDelay);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">        _timestamps[id] </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> block</span><span style="color:#E1E4E8">.timestamp </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> delay;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Cancel an operation.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Requirements:</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * - the caller must have the 'canceller' role.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> cancel</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">bytes32</span><span style="color:#FFAB70"> id</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">public</span><span style="color:#F97583"> virtual</span><span style="color:#B392F0"> onlyRole</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">CANCELLER_ROLE</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">!</span><span style="color:#B392F0">isOperationPending</span><span style="color:#E1E4E8">(id)) {</span></span>
+<span class="line"><span style="color:#F97583">            revert</span><span style="color:#B392F0"> TimelockUnexpectedOperationState</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#E1E4E8">                id,</span></span>
+<span class="line"><span style="color:#B392F0">                _encodeStateBitmap</span><span style="color:#E1E4E8">(OperationState.Waiting) </span><span style="color:#F97583">|</span><span style="color:#B392F0"> _encodeStateBitmap</span><span style="color:#E1E4E8">(OperationState.Ready)</span></span>
+<span class="line"><span style="color:#E1E4E8">            );</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#F97583">        delete</span><span style="color:#E1E4E8"> _timestamps[id];</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">        emit</span><span style="color:#B392F0"> Cancelled</span><span style="color:#E1E4E8">(id);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Execute an (ready) operation containing a single transaction.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Emits a {CallExecuted} event.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Requirements:</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * - the caller must have the 'executor' role.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#6A737D">    // This function can reenter, but it doesn't pose a risk because _afterCall checks that the proposal is pending,</span></span>
+<span class="line"><span style="color:#6A737D">    // thus any modifications to the operation during reentrancy should be caught.</span></span>
+<span class="line"><span style="color:#6A737D">    // </span><span style="color:#F97583">slither-disable</span><span style="color:#6A737D">-next-line reentrancy-eth</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> execute</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#79B8FF">        address</span><span style="color:#FFAB70"> target</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#FFAB70"> value</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes</span><span style="color:#F97583"> calldata</span><span style="color:#FFAB70"> payload</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes32</span><span style="color:#FFAB70"> predecessor</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes32</span><span style="color:#FFAB70"> salt</span></span>
+<span class="line"><span style="color:#E1E4E8">    ) </span><span style="color:#F97583">public</span><span style="color:#F97583"> payable</span><span style="color:#F97583"> virtual</span><span style="color:#B392F0"> onlyRoleOrOpenRole</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">EXECUTOR_ROLE</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes32</span><span style="color:#E1E4E8"> id </span><span style="color:#F97583">=</span><span style="color:#B392F0"> hashOperation</span><span style="color:#E1E4E8">(target, value, payload, predecessor, salt);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">        _beforeCall</span><span style="color:#E1E4E8">(id, predecessor);</span></span>
+<span class="line"><span style="color:#B392F0">        _execute</span><span style="color:#E1E4E8">(target, value, payload);</span></span>
+<span class="line"><span style="color:#F97583">        emit</span><span style="color:#B392F0"> CallExecuted</span><span style="color:#E1E4E8">(id, </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">, target, value, payload);</span></span>
+<span class="line"><span style="color:#B392F0">        _afterCall</span><span style="color:#E1E4E8">(id);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Execute an (ready) operation containing a batch of transactions.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Emits one {CallExecuted} event per transaction in the batch.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Requirements:</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * - the caller must have the 'executor' role.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#6A737D">    // This function can reenter, but it doesn't pose a risk because _afterCall checks that the proposal is pending,</span></span>
+<span class="line"><span style="color:#6A737D">    // thus any modifications to the operation during reentrancy should be caught.</span></span>
+<span class="line"><span style="color:#6A737D">    // </span><span style="color:#F97583">slither-disable</span><span style="color:#6A737D">-next-line reentrancy-eth</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> executeBatch</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#79B8FF">        address</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">calldata</span><span style="color:#FFAB70"> targets</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">calldata</span><span style="color:#FFAB70"> values</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">calldata</span><span style="color:#FFAB70"> payloads</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes32</span><span style="color:#FFAB70"> predecessor</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes32</span><span style="color:#FFAB70"> salt</span></span>
+<span class="line"><span style="color:#E1E4E8">    ) </span><span style="color:#F97583">public</span><span style="color:#F97583"> payable</span><span style="color:#F97583"> virtual</span><span style="color:#B392F0"> onlyRoleOrOpenRole</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">EXECUTOR_ROLE</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (targets.length </span><span style="color:#F97583">!=</span><span style="color:#E1E4E8"> values.length </span><span style="color:#F97583">||</span><span style="color:#E1E4E8"> targets.length </span><span style="color:#F97583">!=</span><span style="color:#E1E4E8"> payloads.length) {</span></span>
+<span class="line"><span style="color:#F97583">            revert</span><span style="color:#B392F0"> TimelockInvalidOperationLength</span><span style="color:#E1E4E8">(targets.length, payloads.length, values.length);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF">        bytes32</span><span style="color:#E1E4E8"> id </span><span style="color:#F97583">=</span><span style="color:#B392F0"> hashOperationBatch</span><span style="color:#E1E4E8">(targets, values, payloads, predecessor, salt);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">        _beforeCall</span><span style="color:#E1E4E8">(id, predecessor);</span></span>
+<span class="line"><span style="color:#F97583">        for</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">; i </span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8"> targets.length; </span><span style="color:#F97583">++</span><span style="color:#E1E4E8">i) {</span></span>
+<span class="line"><span style="color:#79B8FF">            address</span><span style="color:#E1E4E8"> target </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> targets[i];</span></span>
+<span class="line"><span style="color:#79B8FF">            uint256</span><span style="color:#E1E4E8"> value </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> values[i];</span></span>
+<span class="line"><span style="color:#79B8FF">            bytes</span><span style="color:#F97583"> calldata</span><span style="color:#E1E4E8"> payload </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> payloads[i];</span></span>
+<span class="line"><span style="color:#B392F0">            _execute</span><span style="color:#E1E4E8">(target, value, payload);</span></span>
+<span class="line"><span style="color:#F97583">            emit</span><span style="color:#B392F0"> CallExecuted</span><span style="color:#E1E4E8">(id, i, target, value, payload);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#B392F0">        _afterCall</span><span style="color:#E1E4E8">(id);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Execute an operation's call.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> _execute</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> target</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> value</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">bytes</span><span style="color:#F97583"> calldata</span><span style="color:#FFAB70"> data</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">internal</span><span style="color:#F97583"> virtual</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">        (</span><span style="color:#79B8FF">bool</span><span style="color:#E1E4E8"> success, </span><span style="color:#79B8FF">bytes</span><span style="color:#F97583"> memory</span><span style="color:#E1E4E8"> returndata) </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> target.call{value</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> value}(data);</span></span>
+<span class="line"><span style="color:#E1E4E8">        Address.</span><span style="color:#B392F0">verifyCallResult</span><span style="color:#E1E4E8">(success, returndata);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Checks before execution of an operation's calls.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> _beforeCall</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">bytes32</span><span style="color:#FFAB70"> id</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">bytes32</span><span style="color:#FFAB70"> predecessor</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">private</span><span style="color:#F97583"> view</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">!</span><span style="color:#B392F0">isOperationReady</span><span style="color:#E1E4E8">(id)) {</span></span>
+<span class="line"><span style="color:#F97583">            revert</span><span style="color:#B392F0"> TimelockUnexpectedOperationState</span><span style="color:#E1E4E8">(id, </span><span style="color:#B392F0">_encodeStateBitmap</span><span style="color:#E1E4E8">(OperationState.Ready));</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (predecessor </span><span style="color:#F97583">!=</span><span style="color:#79B8FF"> bytes32</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">&amp;&amp;</span><span style="color:#F97583"> !</span><span style="color:#B392F0">isOperationDone</span><span style="color:#E1E4E8">(predecessor)) {</span></span>
+<span class="line"><span style="color:#F97583">            revert</span><span style="color:#B392F0"> TimelockUnexecutedPredecessor</span><span style="color:#E1E4E8">(predecessor);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Checks after execution of an operation's calls.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> _afterCall</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">bytes32</span><span style="color:#FFAB70"> id</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">private</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">!</span><span style="color:#B392F0">isOperationReady</span><span style="color:#E1E4E8">(id)) {</span></span>
+<span class="line"><span style="color:#F97583">            revert</span><span style="color:#B392F0"> TimelockUnexpectedOperationState</span><span style="color:#E1E4E8">(id, </span><span style="color:#B392F0">_encodeStateBitmap</span><span style="color:#E1E4E8">(OperationState.Ready));</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">        _timestamps[id] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> _DONE_TIMESTAMP;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Changes the minimum timelock duration for future operations.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Emits a {MinDelayChange} event.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Requirements:</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * - the caller must be the timelock itself. This can only be achieved by scheduling and later executing</span></span>
+<span class="line"><span style="color:#6A737D">     * an operation where the timelock is the target and the data is the ABI-encoded call to this function.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> updateDelay</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> newDelay</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">external</span><span style="color:#F97583"> virtual</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">        address</span><span style="color:#E1E4E8"> sender </span><span style="color:#F97583">=</span><span style="color:#B392F0"> _msgSender</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (sender </span><span style="color:#F97583">!=</span><span style="color:#79B8FF"> address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">)) {</span></span>
+<span class="line"><span style="color:#F97583">            revert</span><span style="color:#B392F0"> TimelockUnauthorizedCaller</span><span style="color:#E1E4E8">(sender);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#F97583">        emit</span><span style="color:#B392F0"> MinDelayChange</span><span style="color:#E1E4E8">(_minDelay, newDelay);</span></span>
+<span class="line"><span style="color:#E1E4E8">        _minDelay </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> newDelay;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Encodes a `OperationState` into a `bytes32` representation where each bit enabled corresponds to</span></span>
+<span class="line"><span style="color:#6A737D">     * the underlying position in the `OperationState` enum. For example:</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * 0x000...1000</span></span>
+<span class="line"><span style="color:#6A737D">     *   ^^^^^^----- ...</span></span>
+<span class="line"><span style="color:#6A737D">     *         ^---- Done</span></span>
+<span class="line"><span style="color:#6A737D">     *          ^--- Ready</span></span>
+<span class="line"><span style="color:#6A737D">     *           ^-- Waiting</span></span>
+<span class="line"><span style="color:#6A737D">     *            ^- Unset</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> _encodeStateBitmap</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">OperationState</span><span style="color:#FFAB70"> operationState</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">internal</span><span style="color:#F97583"> pure</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">bytes32</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#79B8FF"> bytes32</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">1</span><span style="color:#F97583"> &lt;&lt;</span><span style="color:#79B8FF"> uint8</span><span style="color:#E1E4E8">(operationState));</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>角色：<code>PROPOSER_ROLE</code> / <code>EXECUTOR_ROLE</code> / <code>CANCELLER_ROLE</code> / <code>DEFAULT_ADMIN_ROLE</code>。</p>
+</div><script type="module">function e(e){let t=e.getAttribute(`data-language`)?.trim();if(t)return t===`text`||t===`plaintext`||t===`txt`?`text`:t;let n=e.querySelector(`code`)?.className||e.className||``,r=/language-([a-z0-9_+-]+)/i.exec(n);return r?.[1]?r[1]:`code`}function t(t){if(t.closest(`[data-mac-window]`)||t.dataset.macEnhanced===`1`)return;t.dataset.macEnhanced=`1`;let n=document.createElement(`figure`);n.className=`mac-window`,n.setAttribute(`data-mac-window`,``);let r=document.createElement(`div`);r.className=`mac-titlebar`,r.innerHTML=`
+      <div class="mac-dots" aria-hidden="true">
+        <span class="dot red"></span>
+        <span class="dot yellow"></span>
+        <span class="dot green"></span>
+      </div>
+      <span class="mac-title"></span>
+      <button type="button" class="mac-copy" data-mac-copy aria-label="复制代码">复制</button>
+    `;let i=r.querySelector(`.mac-title`);i&&(i.textContent=e(t));let a=document.createElement(`div`);a.className=`mac-body`,t.parentNode?.insertBefore(n,t),a.appendChild(t),n.appendChild(r),n.appendChild(a)}async function n(e){if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(e);return}let t=document.createElement(`textarea`);t.value=e,t.style.position=`fixed`,t.style.opacity=`0`,document.body.appendChild(t),t.select(),document.execCommand(`copy`),t.remove()}function r(e=document){e.querySelectorAll(`[data-mac-copy]`).forEach(e=>{e.dataset.bound!==`1`&&(e.dataset.bound=`1`,e.addEventListener(`click`,async()=>{let t=e.closest(`[data-mac-window]`)?.querySelector(`pre`)?.textContent??``;try{await n(t);let r=e.textContent;e.textContent=`已复制`,e.classList.add(`is-copied`),window.setTimeout(()=>{e.textContent=r||`复制`,e.classList.remove(`is-copied`)},1600)}catch{e.textContent=`失败`,window.setTimeout(()=>{e.textContent=`复制`},1600)}}))})}function i(){document.querySelectorAll(`.prose pre`).forEach(t),r()}i(),document.addEventListener(`astro:page-load`,i);</script></article><nav class="pager wrap-narrow" aria-label="上下篇" data-astro-cid-tldeq5d5><p data-astro-cid-tldeq5d5>上一篇：<a href="/web3/token-locker/" data-astro-cid-tldeq5d5>代币锁</a></p><p data-astro-cid-tldeq5d5>下一篇：<a href="/web3/solidity/" data-astro-cid-tldeq5d5>solidity</a></p></nav><section class="related" data-astro-cid-tldeq5d5><div class="wrap" data-astro-cid-tldeq5d5><h2 data-astro-cid-tldeq5d5>继续阅读</h2><ol class="related-grid" data-astro-cid-tldeq5d5><li data-astro-cid-tldeq5d5><a class="related-topic" href="/web3/" data-astro-cid-tldeq5d5>区块链</a><a class="related-title" href="/web3/airdrop/" data-astro-cid-tldeq5d5>空投</a><p data-astro-cid-tldeq5d5>空投</p></li><li data-astro-cid-tldeq5d5><a class="related-topic" href="/web3/" data-astro-cid-tldeq5d5>区块链</a><a class="related-title" href="/web3/cross-chain-bridge/" data-astro-cid-tldeq5d5>跨链桥</a><p data-astro-cid-tldeq5d5>跨链桥</p></li><li data-astro-cid-tldeq5d5><a class="related-topic" href="/web3/" data-astro-cid-tldeq5d5>区块链</a><a class="related-title" href="/web3/ddos/" data-astro-cid-tldeq5d5>DDOS攻击</a><p data-astro-cid-tldeq5d5>DDOS攻击</p></li></ol></div></section></main><footer class="site-footer" data-astro-cid-jo6i4kqk><div class="wrap bar" data-astro-cid-jo6i4kqk><a class="brand" href="/" data-astro-cid-jo6i4kqk>rty</a><div class="social" aria-label="社交链接" data-astro-cid-jo6i4kqk><a href="mailto:peonyfoals@gmail.com" aria-label="Email" data-astro-cid-jo6i4kqk><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" data-astro-cid-jo6i4kqk><path fill="currentColor" d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5L4 8V6l8 5 8-5v2z" data-astro-cid-jo6i4kqk></path></svg></a><a href="/rss.xml" aria-label="RSS" data-astro-cid-jo6i4kqk><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" data-astro-cid-jo6i4kqk><path fill="currentColor" d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20 5 20 4 19 4 17.82c0-1.2.98-2.18 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27zm0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93z" data-astro-cid-jo6i4kqk></path></svg></a><a href="/archive/" aria-label="归档" data-astro-cid-jo6i4kqk><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" data-astro-cid-jo6i4kqk><path fill="currentColor" d="M4 6h16v2H4zm0 5h16v2H4zm0 5h10v2H4z" data-astro-cid-jo6i4kqk></path></svg></a></div><p class="meta" data-astro-cid-jo6i4kqk>© 2026 peony</p></div></footer></body></html>

@@ -1,0 +1,692 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="typescript"><meta name="author" content="peony"><meta name="generator" content="Astro v7.1.1"><meta name="theme-color" content="#ffffff"><link rel="canonical" href="https://langzyw.xyz/web/typescript/"><link rel="alternate" type="application/rss+xml" title="rty" href="/rss.xml"><meta property="og:type" content="website"><meta property="og:site_name" content="rty"><meta property="og:title" content="typescript · rty"><meta property="og:description" content="typescript"><meta property="og:url" content="https://langzyw.xyz/web/typescript/"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><title>typescript · rty</title><link rel="stylesheet" href="/_astro/Footer.C9xAhOzk.css"><link rel="stylesheet" href="/_astro/_..B6QWlgH6.css"></head><body><header class="site-header" data-astro-cid-nen7h5rs><div class="wrap bar" data-astro-cid-nen7h5rs><div class="bar-flex" data-astro-cid-nen7h5rs><a class="brand" href="/" data-astro-cid-nen7h5rs>rty</a><nav class="nav" aria-label="主导航" data-astro-cid-nen7h5rs><a class="nav-link" href="/" data-astro-cid-nen7h5rs>首页</a><a class="nav-link active" href="/web/" aria-current="page" data-astro-cid-nen7h5rs>前端</a><a class="nav-link" href="/python/" data-astro-cid-nen7h5rs>python</a><a class="nav-link" href="/llm/" data-astro-cid-nen7h5rs>llm</a><a class="nav-link" href="/web3/" data-astro-cid-nen7h5rs>区块链</a><a class="nav-link" href="/about/" data-astro-cid-nen7h5rs>关于</a></nav></div><button class="search-btn" type="button" aria-label="搜索" data-search-open data-astro-cid-nen7h5rs><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" data-astro-cid-nen7h5rs><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="1.6" data-astro-cid-nen7h5rs></circle><path d="M16.5 16.5L21 21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" data-astro-cid-nen7h5rs></path></svg></button></div></header><dialog class="search-dialog" data-search-dialog data-astro-cid-nen7h5rs><form class="search-panel" method="dialog" data-astro-cid-nen7h5rs><label class="sr-only" for="site-search" data-astro-cid-nen7h5rs>搜索文章</label><input id="site-search" class="search-input" type="search" placeholder="搜索文章…" autocomplete="off" data-search-input data-astro-cid-nen7h5rs><button class="search-close" value="cancel" type="submit" aria-label="关闭" data-astro-cid-nen7h5rs>×</button></form><ul class="search-results" data-search-results data-astro-cid-nen7h5rs></ul></dialog><script>(function(){const searchIndexUrl = "/search-index.json";
+
+  const openBtn = document.querySelector("[data-search-open]");
+  const dialog = document.querySelector("[data-search-dialog]");
+  const input = document.querySelector("[data-search-input]");
+  const results = document.querySelector("[data-search-results]");
+
+  if (
+    openBtn &&
+    dialog instanceof HTMLDialogElement &&
+    input instanceof HTMLInputElement &&
+    results
+  ) {
+    let index = [];
+    let loaded = false;
+
+    async function ensureIndex() {
+      if (loaded) return;
+      const res = await fetch(searchIndexUrl);
+      index = await res.json();
+      loaded = true;
+    }
+
+    function render(q) {
+      const query = q.trim().toLowerCase();
+      if (!query) {
+        results.innerHTML = "";
+        return;
+      }
+      const hits = index
+        .filter((item) =>
+          `${item.title} ${item.description} ${item.topic}`
+            .toLowerCase()
+            .includes(query),
+        )
+        .slice(0, 8);
+      results.innerHTML = hits.length
+        ? hits
+            .map(
+              (item) =>
+                `<li><a href="${item.href}"><strong>${item.title}</strong><span>${item.description}</span></a></li>`,
+            )
+            .join("")
+        : `<li class="empty">没有匹配结果</li>`;
+    }
+
+    openBtn.addEventListener("click", async () => {
+      await ensureIndex();
+      dialog.showModal();
+      input.value = "";
+      results.innerHTML = "";
+      input.focus();
+    });
+
+    input.addEventListener("input", () => render(input.value));
+
+    dialog.addEventListener("click", (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+  }
+})();</script><main class="post-page" data-astro-cid-tldeq5d5><article data-astro-cid-tldeq5d5><header class="header wrap-narrow" data-astro-cid-tldeq5d5><a class="topic" href="/web/" data-astro-cid-tldeq5d5>前端</a><h1 data-astro-cid-tldeq5d5>typescript</h1><p class="meta" data-astro-cid-tldeq5d5><time datetime="2026-07-17T00:00:00.000Z" data-astro-cid-tldeq5d5>2026年7月17日</time><span aria-hidden="true" data-astro-cid-tldeq5d5>·</span><span data-astro-cid-tldeq5d5>约 41 分钟</span></p><p class="tags" data-astro-cid-tldeq5d5><a href="/tags/typescript/" data-astro-cid-tldeq5d5>typescript</a><span data-astro-cid-tldeq5d5> · </span><a href="/tags/面试/" data-astro-cid-tldeq5d5>面试</a><span data-astro-cid-tldeq5d5> · </span><a href="/tags/前端/" data-astro-cid-tldeq5d5>前端</a></p></header><div class="hero-image wrap" data-astro-cid-tldeq5d5><img src="/images/covers/code-screen-close.jpg" alt="" data-astro-cid-tldeq5d5></div><div class="prose wrap-narrow" data-astro-cid-tldeq5d5><h3 id="为什么要用-typescript相比-js-有哪些核心优势">为什么要用 TypeScript？相比 JS 有哪些核心优势？</h3>
+<ol>
+<li><strong>静态类型检查</strong>：在编译期发现潜在错误，减少线上 Bug。</li>
+<li><strong>强大的 IDE 支持</strong>：提供精准的代码补全、跳转、重构提示，提升开发效率。</li>
+<li><strong>增强代码可读性与可维护性</strong>：类型即文档，降低团队协作和接手老项目的成本。</li>
+<li><strong>更好的工程化</strong>：配合现代构建工具，支持更高级的语法和模块化。</li>
+</ol>
+<h3 id="typescript-有哪些基础类型">TypeScript 有哪些基础类型？</h3>
+<ul>
+<li><strong>基本类型</strong>：<code>string</code>, <code>number</code>, <code>boolean</code>, <code>null</code>, <code>undefined</code>, <code>symbol</code>, <code>bigint</code>。</li>
+<li><strong>引用类型</strong>：<code>object</code>, <code>array</code> (或 <code>type[]</code>), <code>tuple</code> (元组), <code>enum</code> (枚举)。</li>
+<li><strong>特殊类型</strong>：<code>any</code>, <code>unknown</code>, <code>never</code>, <code>void</code>, <code>object</code>。</li>
+</ul>
+<h3 id="interface-与-type-有什么区别">interface 与 type 有什么区别？</h3>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th><code>interface</code></th>
+<th><code>type</code> (类型别名)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>扩展方式</strong></td>
+<td><code>extends</code> (接口继承)</td>
+<td><code>&amp;</code> (交叉类型)</td>
+</tr>
+<tr>
+<td><strong>声明合并</strong></td>
+<td>✅ 支持（同名接口会自动合并）</td>
+<td>❌ 不支持（会报重复定义错误）</td>
+</tr>
+<tr>
+<td><strong>表达能力</strong></td>
+<td>只能描述对象/函数形状</td>
+<td>更强大：支持联合类型、元组、映射类型等</td>
+</tr>
+<tr>
+<td><strong>报错提示</strong></td>
+<td>更友好，直接指出接口名</td>
+<td>有时展开后较难阅读</td>
+</tr>
+<tr>
+<td><strong>使用建议</strong></td>
+<td>定义对象结构、类、公共 API</td>
+<td>定义联合类型、工具类型、复杂组合类型</td>
+</tr>
+</tbody>
+</table>
+<h3 id="联合类型与交叉类型的区别">联合类型与交叉类型的区别？</h3>
+<ul>
+<li><strong>联合类型 (<code>|</code>)</strong>：表示“或”的关系。变量可以是其中<strong>任意一种</strong>类型。访问属性时只能访问共有属性。</li>
+<li><strong>交叉类型 (<code>&amp;</code>)</strong>：表示“且”的关系。将多种类型合并为一种，变量必须<strong>同时满足</strong>所有类型的约束（常用于组合 Mixin）。</li>
+</ul>
+<h3 id="字面量类型有什么用">字面量类型有什么用？</h3>
+<p>将类型限制为<strong>具体的值</strong>（如 <code>'success' | 'error'</code>，<code>42</code>）。
+<strong>作用</strong>：配合联合类型，可以构建极其精确的<strong>状态机</strong>或<strong>配置项</strong>，杜绝非法值传入。</p>
+<h3 id="枚举-enum-与-const-enum-有什么区别编译产物如何">枚举 enum 与 const enum 有什么区别？编译产物如何？</h3>
+<ul>
+<li><strong>普通 <code>enum</code></strong>：编译后会生成一个<strong>真实的 JS 对象</strong>（双向映射，既可通过键取值，也可通过值取键）。</li>
+<li><strong><code>const enum</code></strong>：编译时<strong>完全内联</strong>（不生成对象），在使用的地方直接替换为字面量值。</li>
+<li><strong>注意</strong>：<code>const enum</code> 在隔离编译（如 Babel、ts-node）中不支持，<strong>现代 TS 开发中已不推荐使用</strong>，推荐用 <code>as const</code> 断言联合类型替代。</li>
+</ul>
+<h3 id="anyunknownnevervoid-有什么区别">any、unknown、never、void 有什么区别？</h3>
+<ul>
+<li><strong><code>any</code></strong>：放弃类型检查，可以赋值给任何类型，也可以访问任何属性（<strong>极度危险，应避免</strong>）。</li>
+<li><strong><code>unknown</code></strong>：<strong>安全的 <code>any</code></strong>。可以接收任何类型，但<strong>必须经过类型收窄（Narrowing）后</strong>才能使用。</li>
+<li><strong><code>never</code></strong>：表示<strong>永远不存在</strong>的值。常用于：1. 永远抛出异常的函数返回值；2. 永远死循环的函数返回值；3. 联合类型过滤（如 <code>Exclude</code> 的底层原理）。</li>
+<li><strong><code>void</code></strong>：表示<strong>没有返回值</strong>（通常用于函数）。</li>
+</ul>
+<h3 id="类型断言-as-与非空断言--的使用与风险">类型断言 <code>as</code> 与非空断言 <code>!</code> 的使用与风险？</h3>
+<ul>
+<li><strong><code>as</code> (类型断言)</strong>：告诉编译器“我比你更懂这个变量的类型”。<strong>风险</strong>：如果断言错误，运行时会导致属性访问崩溃。</li>
+<li><strong><code>!</code> (非空断言)</strong>：告诉编译器“这个值绝对不是 <code>null</code> 或 <code>undefined</code>”。<strong>风险</strong>：如果实际运行中该值为空，会抛出 <code>TypeError</code>。</li>
+</ul>
+<h3 id="类型收窄narrowing是什么有哪些方式">类型收窄（Narrowing）是什么？有哪些方式？</h3>
+<p>TS 编译器通过<strong>控制流分析</strong>，在特定代码块中将宽泛的类型缩小为更精确的类型。
+<strong>方式</strong>：</p>
+<ol>
+<li><code>typeof</code> (针对基本类型)</li>
+<li><code>instanceof</code> (针对类实例)</li>
+<li><code>in</code> 操作符 (针对对象属性)</li>
+<li>相等性检查 (<code>===</code>, <code>!==</code>)</li>
+<li><strong>自定义类型守卫 (Type Guard)</strong></li>
+</ol>
+<h3 id="type-guard类型守卫有哪几种如何写自定义守卫">type guard（类型守卫）有哪几种？如何写自定义守卫？</h3>
+<p>自定义守卫用于让 TS 理解复杂的业务逻辑判断。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="typescript"><code><span class="line"><span style="color:#6A737D">// 1. 使用 `is` 关键字 (最常用)</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> isString</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">val</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> unknown</span><span style="color:#E1E4E8">)</span><span style="color:#F97583">:</span><span style="color:#FFAB70"> val</span><span style="color:#F97583"> is</span><span style="color:#79B8FF"> string</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#F97583"> typeof</span><span style="color:#E1E4E8"> val </span><span style="color:#F97583">===</span><span style="color:#9ECBFF"> 'string'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 2. 使用 `asserts` 关键字 (断言守卫，用于校验失败抛错的场景)</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> assertIsString</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">val</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> unknown</span><span style="color:#E1E4E8">)</span><span style="color:#F97583">:</span><span style="color:#F97583"> asserts</span><span style="color:#FFAB70"> val</span><span style="color:#F97583"> is</span><span style="color:#79B8FF"> string</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">typeof</span><span style="color:#E1E4E8"> val </span><span style="color:#F97583">!==</span><span style="color:#9ECBFF"> 'string'</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">throw</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Error</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'Not a string!'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="协变逆变双变是什么在-ts-中如何体现">协变、逆变、双变是什么？在 TS 中如何体现？</h3>
+<p>描述<strong>父子类型在复杂结构（如函数、数组）中的兼容性方向</strong>。</p>
+<ul>
+<li><strong>协变 (Covariance)</strong>：子类型可以赋值给父类型（如 <code>Dog</code>  assignable to <code>Animal</code>，数组元素默认协变）。</li>
+<li><strong>逆变 (Contravariance)</strong>：父类型可以赋值给子类型（<strong>TS 中函数的参数默认是逆变的</strong>，开启 <code>strictFunctionTypes</code> 后严格逆变）。</li>
+<li><strong>双变 (Bivariance)</strong>：父子类型可以互相赋值（TS 中方法语法 <code>method(): void</code> 默认双变，为了兼容旧代码）。</li>
+</ul>
+<h3 id="泛型是什么约束默认值多泛型如何使用">泛型是什么？约束、默认值、多泛型如何使用？</h3>
+<p>泛型是<strong>类型的变量</strong>，用于在定义函数/接口/类时不预先指定具体类型，在使用时再传入。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="typescript"><code><span class="line"><span style="color:#6A737D">// 约束 (extends)、默认值 (=)、多泛型</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> getProperty</span><span style="color:#E1E4E8">&lt;</span><span style="color:#B392F0">T</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">K</span><span style="color:#F97583"> extends</span><span style="color:#F97583"> keyof</span><span style="color:#B392F0"> T</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> 'id'</span><span style="color:#E1E4E8">&gt;(</span><span style="color:#FFAB70">obj</span><span style="color:#F97583">:</span><span style="color:#B392F0"> T</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">key</span><span style="color:#F97583">:</span><span style="color:#B392F0"> K</span><span style="color:#E1E4E8">)</span><span style="color:#F97583">:</span><span style="color:#B392F0"> T</span><span style="color:#E1E4E8">[</span><span style="color:#B392F0">K</span><span style="color:#E1E4E8">] {</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> obj[key];</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="手写常用工具类型内置-utility-types">手写常用工具类型（内置 Utility Types）</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="typescript"><code><span class="line"><span style="color:#6A737D">// Partial: 将所有属性变为可选</span></span>
+<span class="line"><span style="color:#F97583">type</span><span style="color:#B392F0"> Partial</span><span style="color:#E1E4E8">&lt;</span><span style="color:#B392F0">T</span><span style="color:#E1E4E8">&gt; </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> { [</span><span style="color:#B392F0">P</span><span style="color:#F97583"> in</span><span style="color:#F97583"> keyof</span><span style="color:#B392F0"> T</span><span style="color:#E1E4E8">]</span><span style="color:#F97583">?:</span><span style="color:#B392F0"> T</span><span style="color:#E1E4E8">[</span><span style="color:#B392F0">P</span><span style="color:#E1E4E8">] };</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// Required: 将所有属性变为必选</span></span>
+<span class="line"><span style="color:#F97583">type</span><span style="color:#B392F0"> Required</span><span style="color:#E1E4E8">&lt;</span><span style="color:#B392F0">T</span><span style="color:#E1E4E8">&gt; </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> { [</span><span style="color:#B392F0">P</span><span style="color:#F97583"> in</span><span style="color:#F97583"> keyof</span><span style="color:#B392F0"> T</span><span style="color:#E1E4E8">]</span><span style="color:#F97583">-?:</span><span style="color:#B392F0"> T</span><span style="color:#E1E4E8">[</span><span style="color:#B392F0">P</span><span style="color:#E1E4E8">] }; </span><span style="color:#6A737D">// -? 移除可选修饰符</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// Pick: 挑选部分属性</span></span>
+<span class="line"><span style="color:#F97583">type</span><span style="color:#B392F0"> Pick</span><span style="color:#E1E4E8">&lt;</span><span style="color:#B392F0">T</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">K</span><span style="color:#F97583"> extends</span><span style="color:#F97583"> keyof</span><span style="color:#B392F0"> T</span><span style="color:#E1E4E8">&gt; </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> { [</span><span style="color:#B392F0">P</span><span style="color:#F97583"> in</span><span style="color:#B392F0"> K</span><span style="color:#E1E4E8">]</span><span style="color:#F97583">:</span><span style="color:#B392F0"> T</span><span style="color:#E1E4E8">[</span><span style="color:#B392F0">P</span><span style="color:#E1E4E8">] };</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// Omit: 剔除部分属性</span></span>
+<span class="line"><span style="color:#F97583">type</span><span style="color:#B392F0"> Omit</span><span style="color:#E1E4E8">&lt;</span><span style="color:#B392F0">T</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">K</span><span style="color:#F97583"> extends</span><span style="color:#F97583"> keyof</span><span style="color:#79B8FF"> any</span><span style="color:#E1E4E8">&gt; </span><span style="color:#F97583">=</span><span style="color:#B392F0"> Pick</span><span style="color:#E1E4E8">&lt;</span><span style="color:#B392F0">T</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">Exclude</span><span style="color:#E1E4E8">&lt;</span><span style="color:#F97583">keyof</span><span style="color:#B392F0"> T</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">K</span><span style="color:#E1E4E8">&gt;&gt;;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// Record: 构造键值对类型</span></span>
+<span class="line"><span style="color:#F97583">type</span><span style="color:#B392F0"> Record</span><span style="color:#E1E4E8">&lt;</span><span style="color:#B392F0">K</span><span style="color:#F97583"> extends</span><span style="color:#F97583"> keyof</span><span style="color:#79B8FF"> any</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">T</span><span style="color:#E1E4E8">&gt; </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> { [</span><span style="color:#B392F0">P</span><span style="color:#F97583"> in</span><span style="color:#B392F0"> K</span><span style="color:#E1E4E8">]</span><span style="color:#F97583">:</span><span style="color:#B392F0"> T</span><span style="color:#E1E4E8"> };</span></span></code></pre>
+<h3 id="条件类型与-infer-是什么">条件类型与 infer 是什么？</h3>
+<ul>
+<li><strong>条件类型</strong>：<code>T extends U ? X : Y</code>，类似三元运算符。</li>
+<li><strong><code>infer</code></strong>：用于在条件类型的 <code>extends</code> 子句中<strong>声明并推导一个类型变量</strong>。</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="typescript"><code><span class="line"><span style="color:#6A737D">// 推导 Promise 内部的类型</span></span>
+<span class="line"><span style="color:#F97583">type</span><span style="color:#B392F0"> UnpackPromise</span><span style="color:#E1E4E8">&lt;</span><span style="color:#B392F0">T</span><span style="color:#E1E4E8">&gt; </span><span style="color:#F97583">=</span><span style="color:#B392F0"> T</span><span style="color:#F97583"> extends</span><span style="color:#B392F0"> Promise</span><span style="color:#E1E4E8">&lt;</span><span style="color:#F97583">infer</span><span style="color:#B392F0"> U</span><span style="color:#E1E4E8">&gt; </span><span style="color:#F97583">?</span><span style="color:#B392F0"> U</span><span style="color:#F97583"> :</span><span style="color:#B392F0"> T</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 推导函数的返回值类型</span></span>
+<span class="line"><span style="color:#F97583">type</span><span style="color:#B392F0"> ReturnType</span><span style="color:#E1E4E8">&lt;</span><span style="color:#B392F0">T</span><span style="color:#E1E4E8">&gt; </span><span style="color:#F97583">=</span><span style="color:#B392F0"> T</span><span style="color:#F97583"> extends</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">...</span><span style="color:#FFAB70">args</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> any</span><span style="color:#E1E4E8">[]) </span><span style="color:#F97583">=&gt;</span><span style="color:#F97583"> infer</span><span style="color:#B392F0"> R</span><span style="color:#F97583"> ?</span><span style="color:#B392F0"> R</span><span style="color:#F97583"> :</span><span style="color:#79B8FF"> any</span><span style="color:#E1E4E8">;</span></span></code></pre>
+<h3 id="映射类型详解key-remapping--修饰符">映射类型详解（key remapping / 修饰符）</h3>
+<ul>
+<li><strong>映射类型</strong>：基于旧类型创建新类型，如 <code>[K in keyof T]</code>。</li>
+<li><strong>键重映射 (Key Remapping)</strong>：使用 <code>as</code> 子句修改键名。
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="typescript"><code><span class="line"><span style="color:#6A737D">// 将所有键加上 'Prefix'</span></span>
+<span class="line"><span style="color:#F97583">type</span><span style="color:#B392F0"> AddPrefix</span><span style="color:#E1E4E8">&lt;</span><span style="color:#B392F0">T</span><span style="color:#E1E4E8">&gt; </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> { [</span><span style="color:#B392F0">K</span><span style="color:#F97583"> in</span><span style="color:#F97583"> keyof</span><span style="color:#B392F0"> T</span><span style="color:#F97583"> as</span><span style="color:#9ECBFF"> `Prefix${</span><span style="color:#B392F0">Capitalize</span><span style="color:#9ECBFF">&lt;</span><span style="color:#79B8FF">string</span><span style="color:#F97583"> &amp;</span><span style="color:#B392F0"> K</span><span style="color:#9ECBFF">&gt;</span><span style="color:#9ECBFF">}`</span><span style="color:#E1E4E8">]</span><span style="color:#F97583">:</span><span style="color:#B392F0"> T</span><span style="color:#E1E4E8">[</span><span style="color:#B392F0">K</span><span style="color:#E1E4E8">] };</span></span></code></pre>
+</li>
+<li><strong>修饰符</strong>：<code>+</code> (添加，默认), <code>-</code> (移除)。如 <code>-?</code> 移除可选，<code>-readonly</code> 移除只读。</li>
+</ul>
+<h3 id="模板字面量类型有什么用">模板字面量类型有什么用？</h3>
+<p>使用 <code>`${T}`</code> 语法操作字符串类型。常用于<strong>动态生成联合类型</strong>或<strong>解析路由路径</strong>。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="typescript"><code><span class="line"><span style="color:#F97583">type</span><span style="color:#B392F0"> EventName</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> 'click'</span><span style="color:#F97583"> |</span><span style="color:#9ECBFF"> 'focus'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">type</span><span style="color:#B392F0"> Handlers</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> `on${</span><span style="color:#B392F0">Capitalize</span><span style="color:#9ECBFF">&lt;</span><span style="color:#B392F0">EventName</span><span style="color:#9ECBFF">&gt;</span><span style="color:#9ECBFF">}`</span><span style="color:#E1E4E8">; </span><span style="color:#6A737D">// 'onClick' | 'onFocus'</span></span></code></pre>
+<h3 id="keyoftypeof索引访问类型分别是什么">keyof、typeof、索引访问类型分别是什么？</h3>
+<ul>
+<li><strong><code>keyof T</code></strong>：获取 T 所有键名组成的<strong>联合类型</strong>。</li>
+<li><strong><code>typeof v</code></strong>：获取变量/对象 <code>v</code> 的<strong>类型</strong>（常用于获取 JS 对象的类型）。</li>
+<li><strong><code>T[K]</code> (索引访问)</strong>：获取 T 中键 K 对应的<strong>属性类型</strong>（类似 JS 的 <code>obj[key]</code>）。</li>
+</ul>
+<h3 id="类型兼容性为什么是结构化类型">类型兼容性为什么是「结构化类型」？</h3>
+<p>TS 采用<strong>结构化类型系统 (Structural Type System)</strong>（又称鸭子类型）：只要两个类型的<strong>形状（属性结构）相同</strong>，就被认为是兼容的，<strong>不关心它们的名字是否相同</strong>。（对比 Java/C# 的名义类型系统 Nominal）。</p>
+<h3 id="装饰器decorator是什么">装饰器（Decorator）是什么？</h3>
+<p>一种特殊语法（<code>@decorator</code>），用于在<strong>不修改原代码</strong>的情况下，动态为类、方法、属性、参数添加元数据或包装逻辑（类似 AOP 面向切面编程）。TS 实现了 Stage 3 提案。</p>
+<h3 id="声明文件-dts-与-declare-的作用">声明文件 <code>.d.ts</code> 与 <code>declare</code> 的作用？</h3>
+<ul>
+<li><strong><code>.d.ts</code></strong>：为没有 TS 源码的 JS 库提供类型声明，让 TS 编译器知道该库的 API 形状。</li>
+<li><strong><code>declare</code></strong>：用于声明全局变量、模块或环境（如 <code>declare global {}</code>，<code>declare module 'xxx'</code>），告诉编译器“这些东西在运行时存在，你别报错”。</li>
+</ul>
+<h3 id="命名空间-namespace-与-es-模块如何选择">命名空间 namespace 与 ES 模块如何选择？</h3>
+<ul>
+<li><strong><code>namespace</code></strong>：TS 特有的内部模块机制，用于组织全局代码。<strong>已不推荐</strong>，正逐渐被淘汰。</li>
+<li><strong>ES Module (<code>import/export</code>)</strong>：语言标准，支持 Tree Shaking，<strong>绝对的首选</strong>。</li>
+</ul>
+<h3 id="函数重载与泛型函数如何取舍">函数重载与泛型函数如何取舍？</h3>
+<ul>
+<li><strong>函数重载</strong>：适用于入参和出参类型<strong>强相关且离散</strong>的场景（如 <code>createElement('div')</code> 返回 <code>HTMLDivElement</code>）。</li>
+<li><strong>泛型函数</strong>：适用于入参和出参类型<strong>需要保持一致传递</strong>的场景（如 <code>identity&lt;T&gt;(val: T): T</code>）。</li>
+</ul>
+<h3 id="一道类型体操实现-deepreadonly-和-元组转联合">一道类型体操：实现 DeepReadonly 和 元组转联合</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="typescript"><code><span class="line"><span style="color:#6A737D">// 1. DeepReadonly (递归映射)</span></span>
+<span class="line"><span style="color:#F97583">type</span><span style="color:#B392F0"> DeepReadonly</span><span style="color:#E1E4E8">&lt;</span><span style="color:#B392F0">T</span><span style="color:#E1E4E8">&gt; </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  readonly</span><span style="color:#E1E4E8"> [</span><span style="color:#B392F0">K</span><span style="color:#F97583"> in</span><span style="color:#F97583"> keyof</span><span style="color:#B392F0"> T</span><span style="color:#E1E4E8">]</span><span style="color:#F97583">:</span><span style="color:#B392F0"> T</span><span style="color:#E1E4E8">[</span><span style="color:#B392F0">K</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">extends</span><span style="color:#79B8FF"> object</span><span style="color:#F97583"> ?</span><span style="color:#B392F0"> DeepReadonly</span><span style="color:#E1E4E8">&lt;</span><span style="color:#B392F0">T</span><span style="color:#E1E4E8">[</span><span style="color:#B392F0">K</span><span style="color:#E1E4E8">]&gt; </span><span style="color:#F97583">:</span><span style="color:#B392F0"> T</span><span style="color:#E1E4E8">[</span><span style="color:#B392F0">K</span><span style="color:#E1E4E8">];</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 2. 元组转联合 (利用索引访问)</span></span>
+<span class="line"><span style="color:#F97583">type</span><span style="color:#B392F0"> TupleToUnion</span><span style="color:#E1E4E8">&lt;</span><span style="color:#B392F0">T</span><span style="color:#F97583"> extends</span><span style="color:#79B8FF"> any</span><span style="color:#E1E4E8">[]&gt; </span><span style="color:#F97583">=</span><span style="color:#B392F0"> T</span><span style="color:#E1E4E8">[</span><span style="color:#79B8FF">number</span><span style="color:#E1E4E8">]; </span></span>
+<span class="line"><span style="color:#6A737D">// 例: TupleToUnion&lt;[1, 2, 3]&gt; =&gt; 1 | 2 | 3</span></span></code></pre>
+<h3 id="tsconfig-中-strict-系列targetmodulepaths-等关键配置">tsconfig 中 strict 系列、target、module、paths 等关键配置</h3>
+<ul>
+<li><strong><code>strict</code></strong>：开启所有严格类型检查（包含 <code>strictNullChecks</code>, <code>noImplicitAny</code> 等），<strong>生产环境必须开启</strong>。</li>
+<li><strong><code>target</code></strong>：编译输出的 JS 版本（如 <code>ES2015</code>, <code>ESNext</code>），影响语法降级（如 <code>class</code> 转 <code>function</code>）。</li>
+<li><strong><code>module</code></strong>：编译输出的模块系统（如 <code>CommonJS</code>, <code>ESNext</code>, <code>NodeNext</code>）。</li>
+<li><strong><code>paths</code></strong>：配置路径别名（如 <code>@/*</code> 映射到 <code>src/*</code>），需配合构建工具（Webpack/Vite）的 alias 使用。</li>
+</ul>
+<h3 id="为什么类型只在编译期存在运行时如何保证类型安全">为什么类型只在编译期存在？运行时如何保证类型安全？</h3>
+<ul>
+<li><strong>原因</strong>：TS 是 JS 的超集，编译时会进行<strong>类型擦除 (Type Erasure)</strong>，生成的纯 JS 不包含任何类型信息，以保证运行性能和体积。</li>
+<li><strong>运行时保证</strong>：必须引入<strong>运行时校验库</strong>（如 <strong>Zod</strong>, <strong>Yup</strong>, <strong>Joi</strong>），在数据进入系统（如 API 响应、表单提交）时进行动态校验。</li>
+</ul>
+<p>💡 <strong>【补充高频考点】</strong></p>
+<ul>
+<li><strong><code>satisfies</code> 操作符 (TS 4.9+)</strong>：验证表达式是否匹配某种类型，但<strong>保留推导出的最精确类型</strong>（解决了 <code>as</code> 丢失类型或 <code>:</code> 限制过死的问题）。</li>
+<li><strong><code>as const</code> 断言</strong>：将变量断言为<strong>只读的字面量类型</strong>（常用于定义常量配置、路由表，配合 <code>typeof</code> 提取类型）。</li>
+</ul>
+<hr>
+<h1 id="️-构建工具-webpack--vite--rollup">🛠️ 构建工具 (Webpack / Vite / Rollup)</h1>
+<h3 id="webpack-的核心概念有哪些">webpack 的核心概念有哪些？</h3>
+<ul>
+<li><strong>Entry</strong>：入口，构建依赖图的起点。</li>
+<li><strong>Output</strong>：出口，打包产物的路径和文件名。</li>
+<li><strong>Loader</strong>：模块转换器，让 Webpack 能处理非 JS 文件（如 CSS, 图片, TS）。</li>
+<li><strong>Plugin</strong>：插件，扩展 Webpack 功能（如打包优化、资源管理、注入环境变量），监听生命周期钩子。</li>
+<li><strong>Module / Chunk</strong>：Module 是单个文件；Chunk 是 Webpack 打包后输出的代码块。</li>
+</ul>
+<h3 id="loader-与-plugin-的区别">loader 与 plugin 的区别？</h3>
+<ul>
+<li><strong>Loader</strong>：<strong>翻译官</strong>。负责将特定类型的文件转换为 Webpack 能理解的模块（如 <code>babel-loader</code>, <code>css-loader</code>）。在 <code>module.rules</code> 中配置，链式调用（从右到左/从下到上）。</li>
+<li><strong>Plugin</strong>：<strong>大管家</strong>。参与 Webpack 的整个生命周期，可以修改编译结果、注入资源、执行自定义任务（如 <code>HtmlWebpackPlugin</code>, <code>MiniCssExtractPlugin</code>）。</li>
+</ul>
+<h3 id="webpack-的构建流程是怎样的">webpack 的构建流程是怎样的？</h3>
+<ol>
+<li><strong>初始化参数</strong>：解析配置文件和 Shell 参数，合并出最终配置。</li>
+<li><strong>开始编译</strong>：创建 Compiler 对象，加载所有 Plugin。</li>
+<li><strong>确定入口</strong>：根据 Entry 找出所有依赖模块。</li>
+<li><strong>编译模块</strong>：从入口出发，调用 Loader 对模块进行翻译，找出依赖，递归编译。</li>
+<li><strong>完成模块编译</strong>：得到每个模块翻译后的最终代码和依赖关系。</li>
+<li><strong>输出资源</strong>：根据依赖关系，组装成 Chunk，转换为文件。</li>
+<li><strong>输出完成</strong>：根据 Output 配置，将文件写入文件系统。</li>
+</ol>
+<h3 id="hmr热模块替换的原理是什么">HMR（热模块替换）的原理是什么？</h3>
+<ol>
+<li>Webpack Dev Server 与浏览器通过 <strong>WebSocket</strong> 建立长连接。</li>
+<li>本地文件修改后，Webpack 重新编译受影响的模块，生成新的 hash。</li>
+<li>Dev Server 将 hash 发送给浏览器。</li>
+<li>浏览器发现 hash 不同，通过 Ajax 请求新的模块 JS 文件。</li>
+<li>浏览器拿到新模块后，<strong>替换掉内存中对应的旧模块</strong>，并执行更新回调，实现不刷新页面的热更新。</li>
+</ol>
+<h3 id="tree-shaking-的原理与生效条件">Tree Shaking 的原理与生效条件？</h3>
+<ul>
+<li><strong>原理</strong>：依赖 ES Module 的<strong>静态语法结构</strong>（<code>import/export</code>），在编译阶段分析出哪些导出的变量未被使用（Dead Code），在压缩阶段（Terser）将其剔除。</li>
+<li><strong>生效条件</strong>：
+<ol>
+<li>必须使用 <strong>ESM</strong>（<code>import/export</code>），不能用 CJS（<code>require</code> 是动态的）。</li>
+<li><code>mode</code> 必须为 <code>production</code>。</li>
+<li>代码的副作用必须可控（配置 <code>package.json</code> 的 <code>"sideEffects": false</code>，或保留有副作用的文件如 CSS/Polyfill）。</li>
+</ol>
+</li>
+</ul>
+<h3 id="代码分割code-splitting与-splitchunks-如何配置">代码分割（Code Splitting）与 splitChunks 如何配置？</h3>
+<ul>
+<li><strong>动态导入</strong>：使用 <code>import()</code> 语法，Webpack 会自动将其打包为独立的 Chunk。</li>
+<li><strong><code>splitChunks</code></strong>：提取公共依赖，避免重复打包。
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#B392F0">optimization</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#B392F0">  splitChunks</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#B392F0">    chunks</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">'all'</span><span style="color:#E1E4E8">, </span><span style="color:#6A737D">// 同步和异步 chunk 都提取</span></span>
+<span class="line"><span style="color:#B392F0">    cacheGroups</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#B392F0">      vendors</span><span style="color:#E1E4E8">: { </span><span style="color:#B392F0">test</span><span style="color:#E1E4E8">:</span><span style="color:#9ECBFF"> /</span><span style="color:#79B8FF">[</span><span style="color:#85E89D;font-weight:bold">\\</span><span style="color:#79B8FF">/]</span><span style="color:#DBEDFF">node_modules</span><span style="color:#79B8FF">[</span><span style="color:#85E89D;font-weight:bold">\\</span><span style="color:#79B8FF">/]</span><span style="color:#9ECBFF">/</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">name</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">'vendors'</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#B392F0">      commons</span><span style="color:#E1E4E8">: { </span><span style="color:#B392F0">minChunks</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">name</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">'commons'</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+</li>
+</ul>
+<h3 id="webpack-构建速度如何优化">webpack 构建速度如何优化？</h3>
+<ol>
+<li><strong>缩小范围</strong>：配置 <code>include/exclude</code>，限制 Loader 处理范围。</li>
+<li><strong>持久化缓存</strong>：Webpack 5 开启 <code>cache: { type: 'filesystem' }</code>（<strong>最有效</strong>）。</li>
+<li><strong>多线程</strong>：使用 <code>thread-loader</code> 或 <code>HappyPack</code>（Webpack 5 后收益降低）。</li>
+<li><strong>升级工具</strong>：使用 <code>esbuild-loader</code> 替代 <code>babel-loader</code> 进行转译。</li>
+<li><strong>减少 Resolve</strong>：配置 <code>resolve.extensions</code> 和 <code>resolve.alias</code>，减少文件查找时间。</li>
+</ol>
+<h3 id="产物体积如何优化">产物体积如何优化？</h3>
+<ol>
+<li><strong>Tree Shaking</strong> 剔除死代码。</li>
+<li><strong>代码分割</strong> (SplitChunks) 和 <strong>路由懒加载</strong>。</li>
+<li><strong>压缩</strong>：使用 <code>TerserPlugin</code> (JS) 和 <code>CssMinimizerPlugin</code> (CSS)。</li>
+<li><strong>图片优化</strong>：小图转 Base64，大图使用 WebP，配合 <code>image-minimizer-webpack-plugin</code>。</li>
+<li><strong>开启 Gzip / Brotli</strong> 压缩（配合 Nginx 或 <code>compression-webpack-plugin</code>）。</li>
+</ol>
+<h3 id="source-map-有哪些类型如何选择">source map 有哪些类型？如何选择？</h3>
+<ul>
+<li><strong>开发环境</strong>：推荐 <code>eval-cheap-module-source-map</code>（重构速度快，能定位到源码行列）。</li>
+<li><strong>生产环境</strong>：推荐 <code>hidden-source-map</code>（生成 map 文件但不包含引用注释，配合错误监控平台使用，<strong>不暴露源码给普通用户</strong>）或直接关闭。</li>
+</ul>
+<h3 id="babel-的原理是什么ast-在其中的作用">Babel 的原理是什么？AST 在其中的作用？</h3>
+<ol>
+<li><strong>Parsing（解析）</strong>：将源码字符串解析为 <strong>AST（抽象语法树）</strong>。</li>
+<li><strong>Transformation（转换）</strong>：遍历 AST，根据插件规则进行修改（如将 <code>class</code> 转为 <code>function</code>，将 JSX 转为 <code>React.createElement</code>）。</li>
+<li><strong>Generation（生成）</strong>：将修改后的 AST 重新生成源码字符串。
+<strong>AST 的作用</strong>：它是代码的结构化表示，让 Babel 能够像操作 JSON 一样精准地修改代码逻辑。</li>
+</ol>
+<h3 id="polyfill-与-core-jsbabelpreset-env-的关系">polyfill 与 core-js、@babel/preset-env 的关系？</h3>
+<ul>
+<li><strong>polyfill</strong>：垫片，用于在老浏览器中补齐新 API（如 <code>Promise</code>, <code>Array.from</code>）。</li>
+<li><strong>core-js</strong>：JavaScript 标准库的 polyfill 实现。</li>
+<li><strong><code>@babel/preset-env</code></strong>：Babel 的智能预设。配合 <code>browserslist</code> 和 <code>useBuiltIns: 'usage'</code>，它能<strong>按需</strong>自动引入 <code>core-js</code> 中缺失的 polyfill，避免全量引入导致体积爆炸。</li>
+</ul>
+<h3 id="vite-为什么快开发与生产模式有何不同">Vite 为什么快？开发与生产模式有何不同？</h3>
+<ul>
+<li><strong>开发环境快</strong>：
+<ol>
+<li><strong>原生 ESM</strong>：浏览器原生支持 <code>&lt;script type="module"&gt;</code>，Vite 无需打包，<strong>按需编译</strong>，只编译当前请求的模块。</li>
+<li><strong>esbuild 预构建</strong>：使用 Go 编写的 esbuild 将第三方依赖（如 React, Lodash）预构建为 ESM 格式，速度比 Babel 快 10-100 倍。</li>
+</ol>
+</li>
+<li><strong>生产环境</strong>：使用 <strong>Rollup</strong> 进行打包（因为 Rollup 的 Tree Shaking 和产物体积优化比 esbuild 更好）。</li>
+</ul>
+<h3 id="vite-与-webpack-的核心对比">Vite 与 webpack 的核心对比？</h3>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>Vite</th>
+<th>Webpack</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>开发启动速度</strong></td>
+<td>极快（按需编译，O(1)）</td>
+<td>慢（需全量打包，O(N)）</td>
+</tr>
+<tr>
+<td><strong>HMR 速度</strong></td>
+<td>极快（仅更新修改的模块）</td>
+<td>随项目体积增大而变慢</td>
+</tr>
+<tr>
+<td><strong>生产构建</strong></td>
+<td>Rollup（生态较好，但配置不如 Webpack 灵活）</td>
+<td>原生（极其强大，生态最丰富）</td>
+</tr>
+<tr>
+<td><strong>适用场景</strong></td>
+<td>中小型项目、Vue/React 现代框架项目</td>
+<td>大型复杂项目、需要深度定制构建流程的项目</td>
+</tr>
+</tbody>
+</table>
+<h3 id="rollup-和-esbuild-各自的定位">Rollup 和 esbuild 各自的定位？</h3>
+<ul>
+<li><strong>Rollup</strong>：专注于 <strong>JS 库</strong>的打包。Tree Shaking 能力极强，产物干净，支持多种输出格式（UMD, ESM, CJS）。不适合复杂的应用级打包（如代码分割、HMR）。</li>
+<li><strong>esbuild</strong>：用 Go 编写的<strong>极速打包/转译工具</strong>。定位是替代 Babel 和 Terser，速度极快，但功能相对基础，不支持部分 JS 特性（如 <code>const enum</code>）和复杂的插件生态。</li>
+</ul>
+<p>💡 <strong>【补充高频考点】</strong></p>
+<ul>
+<li><strong>Vite 的依赖预构建 (Pre-bundling)</strong>：第三方库通常是 CJS 或 UMD 格式，浏览器 ESM 加载会发出几百个请求。Vite 在启动时用 esbuild 将它们转为 ESM 并缓存到 <code>node_modules/.vite</code>，大幅减少请求数。</li>
+<li><strong>Webpack 持久化缓存 (Filesystem Cache)</strong>：Webpack 5 引入，将编译过程中的 AST、Module 信息序列化到磁盘。第二次构建时直接反序列化，跳过大量解析工作，使冷启动速度提升数倍。</li>
+</ul>
+<hr>
+<h1 id="-模块化与包管理">📦 模块化与包管理</h1>
+<h3 id="commonjsamdumdesm-有什么区别">CommonJS、AMD、UMD、ESM 有什么区别？</h3>
+<ul>
+<li><strong>CommonJS (CJS)</strong>：Node.js 标准。<strong>同步</strong>加载，运行时解析，输出的是<strong>值的拷贝</strong>。</li>
+<li><strong>AMD</strong>：RequireJS 推广。<strong>异步</strong>加载，浏览器端早期方案，回调地狱。</li>
+<li><strong>UMD</strong>：通用模块定义。兼容 CJS 和 AMD 的“缝合怪”，通过判断 <code>module</code> 和 <code>define</code> 存在与否来切换。</li>
+<li><strong>ES Module (ESM)</strong>：语言标准。<strong>静态</strong>编译，支持 Tree Shaking，输出的是<strong>值的引用</strong>。</li>
+</ul>
+<h3 id="npmyarnpnpm-有什么区别">npm、yarn、pnpm 有什么区别？</h3>
+<ul>
+<li><strong>npm</strong>：默认采用<strong>扁平化</strong> <code>node_modules</code>（依赖提升），容易产生幽灵依赖。</li>
+<li><strong>yarn (v1)</strong>：类似 npm，但引入了 lock 文件和并行安装。yarn v2+ 引入了 PnP（Plug’n’Play），彻底抛弃 <code>node_modules</code>。</li>
+<li><strong>pnpm</strong>：采用<strong>硬链接 + 符号链接</strong>机制，全局 store 共享，极致节省磁盘空间，且<strong>严格隔离</strong>，彻底解决幽灵依赖。</li>
+</ul>
+<h3 id="pnpm-的硬链接--符号链接机制详解为什么能省空间且避免幽灵依赖">pnpm 的硬链接 + 符号链接机制详解，为什么能省空间且避免幽灵依赖？</h3>
+<ul>
+<li><strong>省空间</strong>：pnpm 维护一个全局的 <code>store</code> 目录。安装依赖时，将文件通过<strong>硬链接 (Hard Link)</strong> 链接到项目的 <code>node_modules/.pnpm</code> 目录。同一份文件在磁盘上只存一份。</li>
+<li><strong>避免幽灵依赖</strong>：<code>.pnpm</code> 目录是扁平的，但项目的根 <code>node_modules</code> 是<strong>非扁平</strong>的。只有 <code>package.json</code> 中显式声明的依赖，才会通过<strong>符号链接 (Symlink)</strong> 提升到根 <code>node_modules</code>。未声明的依赖被锁在 <code>.pnpm</code> 深处，代码中 <code>require</code> 会直接报错。</li>
+</ul>
+<h3 id="语义化版本semver与-lock-文件的意义">语义化版本（SemVer）与 lock 文件的意义？</h3>
+<ul>
+<li><strong>SemVer</strong>：<code>主版本号.次版本号.修订号</code> (如 <code>1.2.3</code>)。
+<ul>
+<li><code>^1.2.3</code>：允许 minor 和 patch 更新（<code>&gt;=1.2.3 &lt;2.0.0</code>）。</li>
+<li><code>~1.2.3</code>：仅允许 patch 更新（<code>&gt;=1.2.3 &lt;1.3.0</code>）。</li>
+</ul>
+</li>
+<li><strong>Lock 文件 (<code>package-lock.json</code> / <code>pnpm-lock.yaml</code>)</strong>：锁定<strong>精确的版本号</strong>和<strong>完整的依赖树结构</strong>。确保团队所有成员和 CI/CD 环境安装的依赖<strong>绝对一致</strong>，避免“在我电脑上明明可以”的惨剧。</li>
+</ul>
+<h3 id="monorepo-是什么turborepolerna-的作用">Monorepo 是什么？turborepo、lerna 的作用？</h3>
+<ul>
+<li><strong>Monorepo</strong>：单一代码仓库，包含多个相互关联的子包（如 UI 库、Utils、App）。</li>
+<li><strong>Lerna</strong>：早期的 Monorepo 管理工具，负责依赖提升、版本发布。现多被 pnpm workspaces 替代。</li>
+<li><strong>Turborepo</strong>：现代的<strong>构建编排工具</strong>。核心优势是<strong>智能任务缓存</strong>（本地/远程）和<strong>并行执行</strong>，极大加速 Monorepo 的构建和 Lint 速度。</li>
+</ul>
+<h3 id="babel-与-eslintprettier-的职责边界">Babel 与 ESLint、Prettier 的职责边界？</h3>
+<ul>
+<li><strong>Babel</strong>：<strong>转译器</strong>。将新语法/TS 转为老版本 JS，不关心代码对错。</li>
+<li><strong>ESLint</strong>：<strong>代码质量检查</strong>。发现语法错误、潜在 Bug、不符合团队规范的代码（如未使用的变量）。</li>
+<li><strong>Prettier</strong>：<strong>代码格式化</strong>。统一代码风格（缩进、引号、换行），无脑覆盖，不关心逻辑。</li>
+</ul>
+<h3 id="cicd-是什么前端项目常见流水线">CI/CD 是什么？前端项目常见流水线？</h3>
+<ul>
+<li><strong>CI (持续集成)</strong>：代码合并后自动触发 Lint、Test、Build，尽早发现集成错误。</li>
+<li><strong>CD (持续交付/部署)</strong>：将构建产物自动部署到测试/生产环境。</li>
+<li><strong>前端流水线</strong>：<code>Checkout</code> -&gt; <code>Install Dependencies</code> -&gt; <code>Lint &amp; Type Check</code> -&gt; <code>Unit Test</code> -&gt; <code>Build</code> -&gt; <code>Deploy (OSS/CDN)</code>。</li>
+</ul>
+<h3 id="微前端是什么qiankunmicro-appmodule-federation-原理对比">微前端是什么？qiankun、micro-app、Module Federation 原理对比？</h3>
+<table>
+<thead>
+<tr>
+<th>方案</th>
+<th>核心原理</th>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>qiankun</strong></td>
+<td>基于 single-spa，<strong>JS 沙箱</strong> (Proxy/快照) + <strong>CSS 隔离</strong> (Shadow DOM/strictStyleIsolation)</td>
+<td>生态成熟，接入成本低，框架无关</td>
+<td>改造老项目有一定成本，CSS 隔离不完美</td>
+</tr>
+<tr>
+<td><strong>micro-app</strong></td>
+<td>借鉴 WebComponent 思想，通过 <strong>CustomElement</strong> 渲染子应用，内部使用 JS 沙箱</td>
+<td>接入极简（像用 <code>&lt;iframe&gt;</code> 一样），无侵入</td>
+<td>相对较新，复杂场景下的边界问题仍在完善</td>
+</tr>
+<tr>
+<td><strong>Module Federation</strong></td>
+<td>Webpack 5 原生支持，<strong>运行时模块共享</strong>，打破应用边界</td>
+<td>真正的模块级复用，无 JS 沙箱开销，性能最好</td>
+<td>强依赖 Webpack 5/Vite 插件，对技术栈有要求</td>
+</tr>
+</tbody>
+</table>
+<h3 id="组件库如何实现按需加载">组件库如何实现按需加载？</h3>
+<ol>
+<li><strong>早期 (Babel 插件)</strong>：使用 <code>babel-plugin-import</code>，在编译时将 <code>import { Button } from 'lib'</code> 转换为 <code>import Button from 'lib/es/button'</code>。</li>
+<li><strong>现代 (ESM + Tree Shaking)</strong>：组件库直接输出 ESM 格式，利用构建工具的 Tree Shaking 自动剔除未使用的组件（如 Ant Design 5.x, Element Plus）。</li>
+</ol>
+<h3 id="ssr-工程涉及哪些关键问题">SSR 工程涉及哪些关键问题？</h3>
+<ol>
+<li><strong>Hydration (注水)</strong>：服务端返回 HTML 后，客户端 JS 需要重新绑定事件并接管 DOM，此过程若不一致会导致报错或闪烁。</li>
+<li><strong>数据预取</strong>：在路由匹配后、渲染前，获取组件所需数据（如 <code>getServerSideProps</code>）。</li>
+<li><strong>路由同构</strong>：前后端需共享路由配置。</li>
+<li><strong>内存泄漏</strong>：Node 端是单例，全局变量或闭包未清理会导致内存泄漏。</li>
+<li><strong>环境差异</strong>：浏览器 API（<code>window</code>, <code>document</code>）在 Node 端不存在，需做兼容判断。</li>
+</ol>
+<h3 id="git-常用命令与协作工作流">Git 常用命令与协作工作流？</h3>
+<ul>
+<li><strong>常用命令</strong>：<code>rebase</code> (变基，保持提交线整洁), <code>cherry-pick</code> (摘取特定 commit), <code>stash</code> (暂存), <code>reset</code> (回退并丢弃), <code>revert</code> (生成新 commit 抵消旧 commit)。</li>
+<li><strong>工作流</strong>：
+<ul>
+<li><strong>Git Flow</strong>：适合版本发布周期长的项目（<code>main</code>, <code>develop</code>, <code>feature</code>, <code>release</code>, <code>hotfix</code>）。</li>
+<li><strong>GitHub Flow</strong>：适合持续部署的项目（只有 <code>main</code>，所有开发在 <code>feature</code> 分支，合并即部署）。</li>
+</ul>
+</li>
+</ul>
+<p>💡 <strong>【补充高频考点】</strong></p>
+<ul>
+<li><strong><code>peerDependencies</code> 的作用</strong>：声明“我的包运行需要宿主环境提供这些依赖”（如 React 组件库声明 <code>react</code> 为 peerDep）。防止打包时出现多个 React 实例导致 Hooks 报错。</li>
+<li><strong>Yarn PnP (Plug’n’Play)</strong>：彻底抛弃 <code>node_modules</code> 目录，通过生成 <code>.pnp.cjs</code> 文件，拦截 Node.js 的 <code>require</code> 解析逻辑，直接从 Zip 压缩包中读取依赖，解决幽灵依赖并提升安装速度。</li>
+</ul>
+<hr>
+<h1 id="-工程化进阶">🚀 工程化进阶</h1>
+<h3 id="为什么需要-browserslist它影响哪些工具">为什么需要 browserslist？它影响哪些工具？</h3>
+<p><code>browserslist</code> 是一个<strong>统一的目标环境配置</strong>（如 <code>&gt; 1%, last 2 versions</code>）。
+<strong>影响的工具</strong>：Babel (决定需要转译哪些语法)、Autoprefixer (决定需要加哪些 CSS 前缀)、ESLint (决定启用哪些环境特定的规则)。</p>
+<h3 id="eslint-flat-config-与传统-eslintrc-有什么区别">ESLint flat config 与传统 <code>.eslintrc</code> 有什么区别？</h3>
+<ul>
+<li><strong>传统 <code>.eslintrc</code></strong>：基于对象嵌套，配置合并逻辑复杂（<code>extends</code> 覆盖规则不直观），不支持原生 ESM。</li>
+<li><strong>Flat Config (<code>eslint.config.js</code>)</strong>：ESLint v9 默认。基于<strong>数组</strong>配置，合并逻辑清晰（后项覆盖前项），原生支持 ESM，彻底解决了配置文件嵌套和全局变量污染的痛点。</li>
+</ul>
+<h3 id="monorepo-中如何做版本管理与发布changesets-的作用">monorepo 中如何做版本管理与发布？changesets 的作用？</h3>
+<ul>
+<li><strong>Changesets</strong>：一个管理 Monorepo 版本和 Changelog 的工具。</li>
+<li><strong>工作流</strong>：开发者在 PR 中运行 <code>changeset</code> 命令，记录本次修改影响的包及版本变更类型（major/minor/patch）。CI 合并时，Changesets 自动计算版本号、更新 <code>package.json</code>、生成 Changelog 并触发发布。</li>
+</ul>
+<h3 id="什么是幽灵依赖phantom-dependency危害与解决">什么是幽灵依赖（phantom dependency）？危害与解决？</h3>
+<ul>
+<li><strong>定义</strong>：代码中 <code>import</code> 了一个包，但该包<strong>并未在 <code>package.json</code> 中声明</strong>。由于 npm 的扁平化机制，它恰好被提升到了 <code>node_modules</code> 根目录，导致代码能侥幸运行。</li>
+<li><strong>危害</strong>：一旦依赖树改变（如升级某个包），该幽灵依赖可能突然消失，导致线上崩溃。</li>
+<li><strong>解决</strong>：使用 <strong>pnpm</strong> 或 <strong>Yarn PnP</strong>，它们的严格隔离机制会直接报 <code>Module not found</code> 错误。</li>
+</ul>
+<h3 id="tscbabelswcesbuild-在转译-ts-上有什么区别">tsc、Babel、swc、esbuild 在转译 TS 上有什么区别？</h3>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>语言</th>
+<th>速度</th>
+<th>TS 特性支持</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>tsc</strong></td>
+<td>TS</td>
+<td>慢</td>
+<td>100% 支持（包括 <code>const enum</code>, <code>namespace</code>）</td>
+<td>需要生成 <code>.d.ts</code> 声明文件，或使用了冷门 TS 特性。</td>
+</tr>
+<tr>
+<td><strong>Babel</strong></td>
+<td>JS</td>
+<td>中</td>
+<td>剥离类型，不支持部分 TS 特性（如 <code>const enum</code>）</td>
+<td>需要结合庞大的 Babel 插件生态（如 JSX 转换、Polyfill）。</td>
+</tr>
+<tr>
+<td><strong>swc</strong></td>
+<td>Rust</td>
+<td>极快</td>
+<td>仅做类型擦除（剥离类型）</td>
+<td>替代 Babel 进行极速转译，Vite/Webpack 常用。</td>
+</tr>
+<tr>
+<td><strong>esbuild</strong></td>
+<td>Go</td>
+<td>极快</td>
+<td>仅做类型擦除</td>
+<td>替代 Babel/Terser，Vite 预构建和极速打包的核心。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="长期缓存long-term-caching如何通过-hash-实现">长期缓存（long-term caching）如何通过 hash 实现？</h3>
+<p>在 Webpack 的 <code>output.filename</code> 中使用 <code>[contenthash]</code>（如 <code>app.[contenthash:8].js</code>）。
+<strong>原理</strong>：只要文件<strong>内容不变</strong>，生成的 hash 就不变。配合 Nginx 设置 <code>Cache-Control: max-age=31536000</code>（强缓存），浏览器会直接读取本地缓存；内容改变时 hash 改变，浏览器会请求新文件，完美解决缓存更新问题。</p>
+<h3 id="动态-import-与魔法注释有什么作用">动态 import() 与魔法注释有什么作用？</h3>
+<ul>
+<li><strong>动态 <code>import()</code></strong>：实现<strong>路由懒加载</strong>和<strong>代码分割</strong>，返回一个 Promise。</li>
+<li><strong>魔法注释</strong>：Webpack 特有的注释，用于控制分包行为。
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#B392F0">import</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#6A737D">  /* webpackChunkName: "lodash" */</span><span style="color:#E1E4E8"> </span></span>
+<span class="line"><span style="color:#6A737D">  /* webpackPrefetch: true */</span><span style="color:#6A737D"> // 浏览器空闲时预拉取</span></span>
+<span class="line"><span style="color:#9ECBFF">  'lodash'</span></span>
+<span class="line"><span style="color:#E1E4E8">)</span></span></code></pre>
+</li>
+</ul>
+<h3 id="如何分析与优化首屏性能构建侧">如何分析与优化首屏性能（构建侧）？</h3>
+<ol>
+<li><strong>分析</strong>：使用 <code>webpack-bundle-analyzer</code> 分析产物体积，找出大文件。</li>
+<li><strong>优化</strong>：
+<ul>
+<li>路由懒加载，拆分 Chunk。</li>
+<li>提取公共 CSS/JS，避免重复加载。</li>
+<li>使用 <code>html-webpack-plugin</code> 内联关键 CSS (Critical CSS)。</li>
+<li>图片优化（WebP、小图 Base64、大图 CDN）。</li>
+<li>开启 Gzip/Brotli。</li>
+<li>考虑 SSR 或 SSG（预渲染）。</li>
+</ul>
+</li>
+</ol>
+<h3 id="esbuildswc-为什么比-babelwebpack-快这么多">esbuild/swc 为什么比 Babel/webpack 快这么多？</h3>
+<ol>
+<li><strong>语言优势</strong>：使用 Go / Rust 编写，天生支持<strong>多线程</strong>并发，内存管理高效。</li>
+<li><strong>AST 优化</strong>：重写了 AST 解析和遍历逻辑，避免了 JS 引擎的 GC 开销。</li>
+<li><strong>功能克制</strong>：esbuild/swc 仅做“语法降级”和“类型擦除”，<strong>不做复杂的类型检查</strong>（类型检查交给 tsc），大幅减少工作量。</li>
+</ol>
+<h3 id="如何为没有类型的第三方库补充类型">如何为没有类型的第三方库补充类型？</h3>
+<ol>
+<li><strong>优先寻找</strong>：<code>npm install @types/xxx -D</code>（DefinitelyTyped 社区维护）。</li>
+<li><strong>自己声明</strong>：在项目的 <code>typings</code> 目录下创建 <code>xxx.d.ts</code>：
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="typescript"><code><span class="line"><span style="color:#F97583">declare</span><span style="color:#F97583"> module</span><span style="color:#9ECBFF"> 'untyped-library'</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  export</span><span style="color:#F97583"> function</span><span style="color:#B392F0"> doSomething</span><span style="color:#E1E4E8">()</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> void</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+</li>
+</ol>
+<h3 id="css-工程化css-modulescss-in-js原子化-css-对比">CSS 工程化：CSS Modules、CSS-in-JS、原子化 CSS 对比？</h3>
+<table>
+<thead>
+<tr>
+<th>方案</th>
+<th>原理</th>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CSS Modules</strong></td>
+<td>构建时生成哈希类名，实现局部作用域</td>
+<td>零运行时开销，学习成本低，CSS 独立</td>
+<td>无法在 JS 中动态计算样式，跨组件复用需抽离变量</td>
+</tr>
+<tr>
+<td><strong>CSS-in-JS</strong></td>
+<td>在 JS 中写 CSS (如 Styled-components)</td>
+<td>动态样式极强，与组件逻辑强绑定，无全局污染</td>
+<td>运行时开销大，SSR 配置复杂，包体积增加</td>
+</tr>
+<tr>
+<td><strong>原子化 (Tailwind)</strong></td>
+<td>提供预定义的 utility class</td>
+<td>开发极快，无需命名，按需生成体积极小</td>
+<td>HTML 中 class 冗长，复杂动画/伪类维护困难</td>
+</tr>
+</tbody>
+</table>
+<h3 id="如何设计一个可发布的-npm-库打包与导出">如何设计一个可发布的 npm 库（打包与导出）？</h3>
+<ol>
+<li><strong><code>package.json</code> 核心字段</strong>：
+<ul>
+<li><code>main</code>: CJS 入口。</li>
+<li><code>module</code>: ESM 入口（供 Webpack/Rollup Tree Shaking）。</li>
+<li><code>types</code>: TS 声明文件入口。</li>
+<li><code>exports</code>: 现代 Node.js 的条件导出（精确控制不同环境加载不同文件）。</li>
+<li><code>files</code>: 指定发布到 npm 的文件（通常是 <code>dist</code>）。</li>
+</ul>
+</li>
+<li><strong>构建工具</strong>：使用 <strong>Rollup</strong> 或 <strong>tsup</strong>（基于 esbuild）打包，同时输出 CJS、ESM 和 <code>.d.ts</code>。</li>
+</ol>
+<h3 id="什么是-web-vitals工程上如何持续监控与防劣化">什么是 Web Vitals？工程上如何持续监控与防劣化？</h3>
+<ul>
+<li><strong>核心指标</strong>：
+<ul>
+<li><strong>LCP</strong> (Largest Contentful Paint)：最大内容绘制，衡量<strong>加载性能</strong>（&lt; 2.5s）。</li>
+<li><strong>INP</strong> (Interaction to Next Paint)：交互到下一帧绘制，衡量<strong>交互响应延迟</strong>（&lt; 200ms，替代了 FID）。</li>
+<li><strong>CLS</strong> (Cumulative Layout Shift)：累积布局偏移，衡量<strong>视觉稳定性</strong>（&lt; 0.1）。</li>
+</ul>
+</li>
+<li><strong>监控与防劣化</strong>：
+<ol>
+<li>使用 <code>web-vitals</code> 库在客户端采集数据，上报至监控平台（如 Sentry, 自建平台）。</li>
+<li><strong>防劣化</strong>：在 CI/CD 流水线中集成 <strong>Lighthouse CI</strong>，设置性能阈值（Budget），若 LCP 或 CLS 超标则<strong>阻断合并/发布</strong>。</li>
+</ol>
+</li>
+</ul>
+<p>💡 <strong>【补充高频考点】</strong></p>
+<ul>
+<li><strong>前端监控体系</strong>：分为<strong>错误监控</strong>（JS 报错 <code>window.onerror</code>、Promise 未捕获 <code>unhandledrejection</code>、资源加载失败）、<strong>性能监控</strong>（Web Vitals、FCP、TTFB）、<strong>行为监控</strong>（PV/UV、点击流、停留时长）。</li>
+<li><strong>Sentry 原理</strong>：通过 SDK 拦截全局错误，收集错误堆栈、Source Map（将压缩代码映射回源码）、用户环境信息，上报至服务端进行去重、聚合和告警。</li>
+<li><strong>BFF (Backend For Frontend)</strong>：Node.js 中间层。用于聚合多个微服务接口、裁剪数据、处理 SSR、实现鉴权前置，减轻前端请求压力，解耦前后端。</li>
+</ul>
+</div><script type="module">function e(e){let t=e.getAttribute(`data-language`)?.trim();if(t)return t===`text`||t===`plaintext`||t===`txt`?`text`:t;let n=e.querySelector(`code`)?.className||e.className||``,r=/language-([a-z0-9_+-]+)/i.exec(n);return r?.[1]?r[1]:`code`}function t(t){if(t.closest(`[data-mac-window]`)||t.dataset.macEnhanced===`1`)return;t.dataset.macEnhanced=`1`;let n=document.createElement(`figure`);n.className=`mac-window`,n.setAttribute(`data-mac-window`,``);let r=document.createElement(`div`);r.className=`mac-titlebar`,r.innerHTML=`
+      <div class="mac-dots" aria-hidden="true">
+        <span class="dot red"></span>
+        <span class="dot yellow"></span>
+        <span class="dot green"></span>
+      </div>
+      <span class="mac-title"></span>
+      <button type="button" class="mac-copy" data-mac-copy aria-label="复制代码">复制</button>
+    `;let i=r.querySelector(`.mac-title`);i&&(i.textContent=e(t));let a=document.createElement(`div`);a.className=`mac-body`,t.parentNode?.insertBefore(n,t),a.appendChild(t),n.appendChild(r),n.appendChild(a)}async function n(e){if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(e);return}let t=document.createElement(`textarea`);t.value=e,t.style.position=`fixed`,t.style.opacity=`0`,document.body.appendChild(t),t.select(),document.execCommand(`copy`),t.remove()}function r(e=document){e.querySelectorAll(`[data-mac-copy]`).forEach(e=>{e.dataset.bound!==`1`&&(e.dataset.bound=`1`,e.addEventListener(`click`,async()=>{let t=e.closest(`[data-mac-window]`)?.querySelector(`pre`)?.textContent??``;try{await n(t);let r=e.textContent;e.textContent=`已复制`,e.classList.add(`is-copied`),window.setTimeout(()=>{e.textContent=r||`复制`,e.classList.remove(`is-copied`)},1600)}catch{e.textContent=`失败`,window.setTimeout(()=>{e.textContent=`复制`},1600)}}))})}function i(){document.querySelectorAll(`.prose pre`).forEach(t),r()}i(),document.addEventListener(`astro:page-load`,i);</script></article><nav class="pager wrap-narrow" aria-label="上下篇" data-astro-cid-tldeq5d5><p data-astro-cid-tldeq5d5>上一篇：<a href="/web/vue/" data-astro-cid-tldeq5d5>vue</a></p><p data-astro-cid-tldeq5d5>下一篇：<a href="/web/react/" data-astro-cid-tldeq5d5>react</a></p></nav><section class="related" data-astro-cid-tldeq5d5><div class="wrap" data-astro-cid-tldeq5d5><h2 data-astro-cid-tldeq5d5>继续阅读</h2><ol class="related-grid" data-astro-cid-tldeq5d5><li data-astro-cid-tldeq5d5><a class="related-topic" href="/web/" data-astro-cid-tldeq5d5>前端</a><a class="related-title" href="/web/html/" data-astro-cid-tldeq5d5>HTML</a><p data-astro-cid-tldeq5d5>HTML</p></li><li data-astro-cid-tldeq5d5><a class="related-topic" href="/web/" data-astro-cid-tldeq5d5>前端</a><a class="related-title" href="/web/react/" data-astro-cid-tldeq5d5>react</a><p data-astro-cid-tldeq5d5>react</p></li><li data-astro-cid-tldeq5d5><a class="related-topic" href="/web/" data-astro-cid-tldeq5d5>前端</a><a class="related-title" href="/web/vue/" data-astro-cid-tldeq5d5>vue</a><p data-astro-cid-tldeq5d5>vue</p></li></ol></div></section></main><footer class="site-footer" data-astro-cid-jo6i4kqk><div class="wrap bar" data-astro-cid-jo6i4kqk><a class="brand" href="/" data-astro-cid-jo6i4kqk>rty</a><div class="social" aria-label="社交链接" data-astro-cid-jo6i4kqk><a href="mailto:peonyfoals@gmail.com" aria-label="Email" data-astro-cid-jo6i4kqk><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" data-astro-cid-jo6i4kqk><path fill="currentColor" d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5L4 8V6l8 5 8-5v2z" data-astro-cid-jo6i4kqk></path></svg></a><a href="/rss.xml" aria-label="RSS" data-astro-cid-jo6i4kqk><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" data-astro-cid-jo6i4kqk><path fill="currentColor" d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20 5 20 4 19 4 17.82c0-1.2.98-2.18 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27zm0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93z" data-astro-cid-jo6i4kqk></path></svg></a><a href="/archive/" aria-label="归档" data-astro-cid-jo6i4kqk><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" data-astro-cid-jo6i4kqk><path fill="currentColor" d="M4 6h16v2H4zm0 5h16v2H4zm0 5h10v2H4z" data-astro-cid-jo6i4kqk></path></svg></a></div><p class="meta" data-astro-cid-jo6i4kqk>© 2026 peony</p></div></footer></body></html>

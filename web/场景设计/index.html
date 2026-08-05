@@ -1,0 +1,337 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="场景设计"><meta name="author" content="peony"><meta name="generator" content="Astro v7.1.1"><meta name="theme-color" content="#ffffff"><link rel="canonical" href="https://langzyw.xyz/web/%E5%9C%BA%E6%99%AF%E8%AE%BE%E8%AE%A1/"><link rel="alternate" type="application/rss+xml" title="rty" href="/rss.xml"><meta property="og:type" content="website"><meta property="og:site_name" content="rty"><meta property="og:title" content="场景设计 · rty"><meta property="og:description" content="场景设计"><meta property="og:url" content="https://langzyw.xyz/web/%E5%9C%BA%E6%99%AF%E8%AE%BE%E8%AE%A1/"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><title>场景设计 · rty</title><link rel="stylesheet" href="/_astro/Footer.C9xAhOzk.css"><link rel="stylesheet" href="/_astro/_..B6QWlgH6.css"></head><body><header class="site-header" data-astro-cid-nen7h5rs><div class="wrap bar" data-astro-cid-nen7h5rs><div class="bar-flex" data-astro-cid-nen7h5rs><a class="brand" href="/" data-astro-cid-nen7h5rs>rty</a><nav class="nav" aria-label="主导航" data-astro-cid-nen7h5rs><a class="nav-link" href="/" data-astro-cid-nen7h5rs>首页</a><a class="nav-link active" href="/web/" aria-current="page" data-astro-cid-nen7h5rs>前端</a><a class="nav-link" href="/python/" data-astro-cid-nen7h5rs>python</a><a class="nav-link" href="/llm/" data-astro-cid-nen7h5rs>llm</a><a class="nav-link" href="/web3/" data-astro-cid-nen7h5rs>区块链</a><a class="nav-link" href="/about/" data-astro-cid-nen7h5rs>关于</a></nav></div><button class="search-btn" type="button" aria-label="搜索" data-search-open data-astro-cid-nen7h5rs><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" data-astro-cid-nen7h5rs><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="1.6" data-astro-cid-nen7h5rs></circle><path d="M16.5 16.5L21 21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" data-astro-cid-nen7h5rs></path></svg></button></div></header><dialog class="search-dialog" data-search-dialog data-astro-cid-nen7h5rs><form class="search-panel" method="dialog" data-astro-cid-nen7h5rs><label class="sr-only" for="site-search" data-astro-cid-nen7h5rs>搜索文章</label><input id="site-search" class="search-input" type="search" placeholder="搜索文章…" autocomplete="off" data-search-input data-astro-cid-nen7h5rs><button class="search-close" value="cancel" type="submit" aria-label="关闭" data-astro-cid-nen7h5rs>×</button></form><ul class="search-results" data-search-results data-astro-cid-nen7h5rs></ul></dialog><script>(function(){const searchIndexUrl = "/search-index.json";
+
+  const openBtn = document.querySelector("[data-search-open]");
+  const dialog = document.querySelector("[data-search-dialog]");
+  const input = document.querySelector("[data-search-input]");
+  const results = document.querySelector("[data-search-results]");
+
+  if (
+    openBtn &&
+    dialog instanceof HTMLDialogElement &&
+    input instanceof HTMLInputElement &&
+    results
+  ) {
+    let index = [];
+    let loaded = false;
+
+    async function ensureIndex() {
+      if (loaded) return;
+      const res = await fetch(searchIndexUrl);
+      index = await res.json();
+      loaded = true;
+    }
+
+    function render(q) {
+      const query = q.trim().toLowerCase();
+      if (!query) {
+        results.innerHTML = "";
+        return;
+      }
+      const hits = index
+        .filter((item) =>
+          `${item.title} ${item.description} ${item.topic}`
+            .toLowerCase()
+            .includes(query),
+        )
+        .slice(0, 8);
+      results.innerHTML = hits.length
+        ? hits
+            .map(
+              (item) =>
+                `<li><a href="${item.href}"><strong>${item.title}</strong><span>${item.description}</span></a></li>`,
+            )
+            .join("")
+        : `<li class="empty">没有匹配结果</li>`;
+    }
+
+    openBtn.addEventListener("click", async () => {
+      await ensureIndex();
+      dialog.showModal();
+      input.value = "";
+      results.innerHTML = "";
+      input.focus();
+    });
+
+    input.addEventListener("input", () => render(input.value));
+
+    dialog.addEventListener("click", (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+  }
+})();</script><main class="post-page" data-astro-cid-tldeq5d5><article data-astro-cid-tldeq5d5><header class="header wrap-narrow" data-astro-cid-tldeq5d5><a class="topic" href="/web/" data-astro-cid-tldeq5d5>前端</a><h1 data-astro-cid-tldeq5d5>场景设计</h1><p class="meta" data-astro-cid-tldeq5d5><time datetime="2026-07-17T00:00:00.000Z" data-astro-cid-tldeq5d5>2026年7月17日</time><span aria-hidden="true" data-astro-cid-tldeq5d5>·</span><span data-astro-cid-tldeq5d5>约 15 分钟</span></p><p class="tags" data-astro-cid-tldeq5d5><a href="/tags/场景设计/" data-astro-cid-tldeq5d5>场景设计</a><span data-astro-cid-tldeq5d5> · </span><a href="/tags/面试/" data-astro-cid-tldeq5d5>面试</a><span data-astro-cid-tldeq5d5> · </span><a href="/tags/前端/" data-astro-cid-tldeq5d5>前端</a></p></header><div class="hero-image wrap" data-astro-cid-tldeq5d5><img src="/images/covers/code-desk.jpg" alt="" data-astro-cid-tldeq5d5></div><div class="prose wrap-narrow" data-astro-cid-tldeq5d5><h2 id="模块一极致性能优化">模块一：极致性能优化</h2>
+<p><strong>1. 10 万条长列表渲染卡顿，如何优化到丝滑滚动？</strong></p>
+<ul>
+<li><strong>核心方案</strong>：虚拟滚动（Virtual Scrolling）。只渲染可视区域（Viewport）及上下缓冲区（Buffer）的 DOM 节点。</li>
+<li><strong>实现细节</strong>：监听 <code>scroll</code> 事件（需节流/<code>requestAnimationFrame</code>），计算 <code>startIndex</code> 和 <code>endIndex</code>。使用一个撑开总高度的“占位容器”，通过 <code>transform: translateY()</code> 或 <code>padding</code> 定位可视节点。</li>
+<li><strong>进阶优化</strong>：动态高度计算（预估高度+渲染后修正）、使用 <code>ResizeObserver</code> 监听尺寸变化、将滚动计算移至 Web Worker。</li>
+</ul>
+<p><strong>2. 首屏加载慢，系统性优化到 2 秒以内？</strong></p>
+<ul>
+<li><strong>网络层</strong>：开启 HTTP/2、Brotli 压缩、CDN 边缘缓存、DNS 预解析。</li>
+<li><strong>资源层</strong>：路由级/组件级代码分割（Lazy Loading）、图片 WebP/AVIF 格式及响应式图片、关键 CSS 内联（Critical CSS）、非关键资源 <code>defer/async</code>。</li>
+<li><strong>渲染层</strong>：SSR/SSG 直出 HTML、骨架屏（Skeleton）占位、预加载关键资源（<code>&lt;link rel="preload"&gt;</code>）、减少主线程阻塞（长任务切片）。</li>
+<li><strong>指标关注</strong>：优化 LCP（最大内容绘制）、FCP（首次内容绘制）、INP（交互到绘制延迟）。</li>
+</ul>
+<p><strong>3. 长任务导致页面卡顿，如何不阻塞主线程？</strong></p>
+<ul>
+<li><strong>时间切片</strong>：将长任务拆分为多个小于 50ms 的子任务，使用 <code>requestIdleCallback</code> 或 <code>MessageChannel</code> 在浏览器空闲时执行。</li>
+<li><strong>Web Worker</strong>：将纯计算（如大数据排序、JSON 解析、加密解密）移至 Worker 线程，通过 <code>postMessage</code> 通信。</li>
+<li><strong>并发控制</strong>：使用 <code>requestAnimationFrame</code> 处理动画，避免与主线程渲染竞争。</li>
+</ul>
+<p><strong>4. 图片懒加载与预加载策略设计</strong></p>
+<ul>
+<li><strong>懒加载</strong>：使用 <code>IntersectionObserver</code> 监听图片进入视口，再替换 <code>src</code>；或直接使用原生 <code>&lt;img loading="lazy"&gt;</code>。</li>
+<li><strong>预加载</strong>：对首屏关键图片使用 <code>&lt;link rel="preload" as="image"&gt;</code>；对鼠标 Hover 或即将滑入视口的图片，在 JS 中 <code>new Image().src = ...</code> 提前下载。</li>
+</ul>
+<p><strong>5. 骨架屏与首屏体验优化</strong></p>
+<ul>
+<li><strong>原理</strong>：在 HTML 中内联一段与真实布局一致的 CSS 占位块，在 JS 下载和执行期间展示。</li>
+<li><strong>进阶</strong>：使用工具（如 <code>page-skeleton-webpack-plugin</code>）在构建时自动生成骨架屏；或使用 SVG 动画骨架屏提升视觉体验。结合 SSR 的 <code>fallback</code> 机制实现无缝切换。</li>
+</ul>
+<p><strong>6. 前端性能监控指标采集（Web Vitals）</strong></p>
+<ul>
+<li><strong>采集方案</strong>：使用官方 <code>web-vitals</code> 库。</li>
+<li><strong>核心指标</strong>：LCP（使用 <code>PerformanceObserver</code> 监听 <code>largest-contentful-paint</code>）、FID/INP（监听 <code>event</code> 处理耗时）、CLS（监听 <code>layout-shift</code>）。</li>
+<li><strong>上报</strong>：使用 <code>navigator.sendBeacon</code> 在页面卸载时异步上报，避免阻塞页面关闭。</li>
+</ul>
+<hr>
+<h2 id="模块二监控埋点与排查">模块二：监控、埋点与排查</h2>
+<p><strong>7. 线上偶发白屏，如何系统排查与防治？</strong></p>
+<ul>
+<li><strong>检测</strong>：1) 采样检测关键 DOM 节点（如 <code>#root</code> 下的子节点是否为空）；2) 使用 <code>MutationObserver</code> 监听 DOM 变化；3) 捕获 <code>window.onerror</code> 和 <code>unhandledrejection</code>。</li>
+<li><strong>排查</strong>：通过错误监控平台获取 StackTrace，结合 SourceMap 还原源码；查看用户操作轨迹（如使用 <code>rrweb</code> 录屏回放）；检查网络请求是否被 CORS 或 5xx 阻断。</li>
+<li><strong>防治</strong>：完善 ErrorBoundary、接口异常降级（Fallback UI）、核心链路增加重试机制。</li>
+</ul>
+<p><strong>8. 统计页面停留时长与元素曝光</strong></p>
+<ul>
+<li><strong>停留时长</strong>：在 <code>visibilitychange</code> 事件中记录时间差；结合 <code>mousemove/scroll/keydown</code> 判断用户是否真实活跃（剔除挂机）。</li>
+<li><strong>元素曝光</strong>：使用 <code>IntersectionObserver</code> 监听目标元素，当 <code>intersectionRatio &gt; 0</code> 且持续一定时间（如 500ms）时，标记为有效曝光并上报（需做防抖和去重）。</li>
+</ul>
+<p><strong>9. 前端埋点 / 监控 SDK 设计</strong></p>
+<ul>
+<li><strong>架构</strong>：分为数据采集层（无埋点/声明式/命令式）、数据处理层（清洗/聚合/队列）、上报层（<code>sendBeacon</code>/批量上报/重试机制）。</li>
+<li><strong>无埋点</strong>：通过代理原生事件（如重写 <code>addEventListener</code>）或全局监听，自动采集点击/曝光数据，结合 AST 在编译时注入组件 ID。</li>
+<li><strong>设计原则</strong>：非侵入式、高可用（SDK 报错不能影响业务）、支持 Tree-shaking、插件化扩展。</li>
+</ul>
+<p><strong>10. 前端错误监控与上报</strong></p>
+<ul>
+<li><strong>捕获</strong>：<code>window.onerror</code>（同步/资源加载）、<code>unhandledrejection</code>（Promise）、<code>ErrorBoundary</code>（React 渲染）、Vue <code>errorHandler</code>。</li>
+<li><strong>上下文</strong>：上报时附带用户 UA、路由、Redux/Vuex 状态快照、最后 N 次网络请求。</li>
+<li><strong>还原</strong>：构建时上传 SourceMap 到监控平台，上报时只传行列号，平台自动还原真实代码位置。</li>
+</ul>
+<hr>
+<h2 id="模块三网络通信与缓存">模块三：网络、通信与缓存</h2>
+<p><strong>11. 大文件上传（分片 / 断点续传 / 秒传）</strong></p>
+<ul>
+<li><strong>分片</strong>：使用 <code>File.slice()</code> 将文件切分为固定大小（如 5MB）的 Blob。</li>
+<li><strong>并发控制</strong>：使用并发限制器（如 <code>p-limit</code>）控制同时上传的分片数，避免占满浏览器连接池。</li>
+<li><strong>秒传</strong>：上传前使用 <code>SparkMD5</code>（建议在 Web Worker 中计算）计算文件 Hash，发给后端校验，若已存在则直接返回成功。</li>
+<li><strong>断点续传</strong>：后端记录已上传的分片 Index，前端请求后端获取已上传列表，跳过已上传分片继续传。</li>
+</ul>
+<p><strong>12. WebSocket 实时消息（断线重连 / 心跳 / 消息有序）</strong></p>
+<ul>
+<li><strong>心跳保活</strong>：前端定时发送 <code>Ping</code>，后端回复 <code>Pong</code>。若超时未收到 <code>Pong</code>，判定断线。</li>
+<li><strong>断线重连</strong>：采用<strong>指数退避算法</strong>（如 1s, 2s, 4s, 8s… 最大 30s）进行重连，避免雪崩。</li>
+<li><strong>消息有序/不丢</strong>：引入消息序列号（Seq）。前端发送带 Seq，后端按 Seq 排序处理；后端推送带 Seq，前端若发现 Seq 不连续，主动请求拉取缺失消息。</li>
+</ul>
+<p><strong>13. 多 Tab 页通信与数据同步</strong></p>
+<ul>
+<li><strong>方案</strong>：<code>BroadcastChannel</code>（同域 Tab 广播）、<code>localStorage</code> 监听（<code>storage</code> 事件）、<code>SharedWorker</code>（共享 Worker 线程）、<code>ServiceWorker</code> 消息控制。</li>
+<li><strong>场景</strong>：一处登录多处踢出、购物车数据同步、主题切换同步。</li>
+</ul>
+<p><strong>14. 前端缓存策略设计（接口缓存 + 数据持久化）</strong></p>
+<ul>
+<li><strong>接口缓存</strong>：HTTP 缓存（强缓存/协商缓存）；应用层缓存（使用 <code>axios</code> 拦截器 + <code>Map</code>/<code>localStorage</code> 实现接口级缓存，设置 TTL 过期时间）。</li>
+<li><strong>数据持久化</strong>：<code>localStorage</code>（&lt;5MB）、<code>IndexedDB</code>（大容量/结构化数据，配合 <code>idb</code> 库）、<code>Cookie</code>（需随请求发送的小数据）。</li>
+</ul>
+<p><strong>15. 并发请求控制与请求竞态（取消）</strong></p>
+<ul>
+<li><strong>并发限制</strong>：实现一个 <code>asyncPool</code>，维护一个执行队列，保证同时执行的 Promise 不超过 N 个。</li>
+<li><strong>竞态取消</strong>：使用 <code>AbortController</code>。在发起新请求前，调用 <code>controller.abort()</code> 取消上一个未完成的请求，防止旧数据覆盖新数据（如搜索框联想）。</li>
+</ul>
+<p><strong>16. 列表页与详情页数据预取与缓存</strong></p>
+<ul>
+<li><strong>预取</strong>：在列表页 Hover 列表项，或鼠标移向详情页按钮时，提前触发详情页接口请求（Prefetch）。</li>
+<li><strong>缓存</strong>：使用 React Query / SWR 等库，实现接口数据的内存缓存、后台静默刷新（Stale-While-Revalidate）、详情页返回列表页时瞬间恢复数据。</li>
+</ul>
+<hr>
+<h2 id="模块四架构工程化与基建">模块四：架构、工程化与基建</h2>
+<p><strong>17. 权限系统设计（菜单 + 按钮级）</strong></p>
+<ul>
+<li><strong>菜单级</strong>：后端返回权限树，前端动态生成路由表（<code>addRoute</code>），或前端根据权限标识过滤路由配置。</li>
+<li><strong>按钮级</strong>：1) 自定义指令（Vue）或高阶组件（React）包裹；2) 全局权限函数 <code>checkPermission('btn:add')</code> 控制 <code>v-if</code> 或 <code>disabled</code>。</li>
+<li><strong>安全兜底</strong>：前端只做展示拦截，核心接口后端必须做二次鉴权。</li>
+</ul>
+<p><strong>18. 微前端拆分与应用间通信</strong></p>
+<ul>
+<li><strong>方案选型</strong>：qiankun（基于 single-spa，JS 沙箱）、Module Federation（Webpack 5 原生，模块级共享）、Wujie（基于 iframe + WebComponent，隔离彻底）。</li>
+<li><strong>通信</strong>：全局状态管理（如 <code>initGlobalState</code>）、CustomEvent 自定义事件、URL 参数、SharedWorker。</li>
+<li><strong>隔离</strong>：JS 沙箱（Proxy 代理 window）、CSS 隔离（Shadow DOM、BEM 命名空间、<code>postcss</code> 加前缀）。</li>
+</ul>
+<p><strong>19. 设计一个可插拔的前端 SDK</strong></p>
+<ul>
+<li><strong>核心设计</strong>：1) 核心层（Core）保持极简；2) 插件机制（Plugin），通过 <code>use(plugin)</code> 注册，插件可访问核心上下文；3) 生命周期钩子（<code>beforeInit</code>, <code>afterInit</code>）。</li>
+<li><strong>工程化</strong>：支持 ESM/CJS/UMD 多格式输出，支持 Tree-shaking，提供完整的 TypeScript 类型推导。</li>
+</ul>
+<p><strong>20. 前端国际化 i18n 方案设计</strong></p>
+<ul>
+<li><strong>方案</strong>：使用 <code>react-i18next</code> 或 <code>vue-i18n</code>。语言包按模块拆分（JSON/TS）。</li>
+<li><strong>优化</strong>：1) 按需加载：路由级动态 <code>import()</code> 语言包；2) 编译时优化：使用 Babel 插件提取硬编码中文，生成语言包；3) 兜底策略：缺失翻译时 fallback 到默认语言或显示 Key。</li>
+</ul>
+<p><strong>21. 主题换肤与深色模式方案</strong></p>
+<ul>
+<li><strong>CSS 变量</strong>：在 <code>:root</code> 定义 CSS Variables，通过 JS 切换 <code>html</code> 标签的 <code>data-theme</code> 属性，触发变量值切换。</li>
+<li><strong>CSS-in-JS</strong>：使用 ThemeProvider 注入主题对象，组件内通过 <code>props.theme</code> 读取。</li>
+<li><strong>深色模式</strong>：优先使用 <code>@media (prefers-color-scheme: dark)</code> 跟随系统，提供手动切换开关覆盖系统设置，存入 <code>localStorage</code>。</li>
+</ul>
+<p><strong>22. 低代码 / 可视化搭建平台思路</strong></p>
+<ul>
+<li><strong>核心架构</strong>：1) 物料中心（组件库+描述协议 JSON Schema）；2) 画布引擎（渲染器+拖拽交互）；3) 设置面板（属性/事件/数据源配置）；4) 出码引擎（将 JSON 转换为 React/Vue 源码）。</li>
+<li><strong>协议设计</strong>：定义标准的组件描述协议（如阿里 lowcode-engine 协议），包含组件标识、属性、事件、生命周期、数据源。</li>
+</ul>
+<p><strong>23. 设计一个组件库</strong></p>
+<ul>
+<li><strong>架构</strong>：Monorepo 管理（pnpm workspace），按组件拆包。</li>
+<li><strong>规范</strong>：统一的 API 设计（Props 命名、受控/非受控）、主题定制（CSS 变量）、无障碍（a11y/ARIA 属性）。</li>
+<li><strong>工程</strong>：使用 Vite/Rollup 构建，生成 ESM/CJS/Types，提供完整的 Storybook 文档和单元测试。</li>
+</ul>
+<p><strong>24. 跨端方案选型（H5 / RN / Flutter / 小程序）</strong></p>
+<ul>
+<li><strong>H5</strong>：兼容性最好，性能一般，适合营销页、轻交互。</li>
+<li><strong>React Native</strong>：复用 React 生态，原生渲染，适合需要深度定制原生能力的 App。</li>
+<li><strong>Flutter</strong>：自绘引擎（Skia），UI 一致性极高，性能接近原生，适合从零构建高颜值 App。</li>
+<li><strong>小程序/Taro/uni-app</strong>：依托超级 App 流量，开发快，适合电商、O2O 等轻量级业务。</li>
+</ul>
+<p><strong>25. 前端灰度发布与 AB 测试 / 功能开关（Feature Flag）</strong></p>
+<ul>
+<li><strong>灰度</strong>：Nginx 层根据 Cookie/IP/用户 ID Hash 分流，指向不同版本的静态资源；或结合 Service Worker 动态拉取不同版本的 JS。</li>
+<li><strong>Feature Flag</strong>：接入配置中心（如 Apollo/LaunchDarkly），前端 SDK 启动时拉取开关配置，结合 React Context 或高阶组件控制代码块渲染。</li>
+</ul>
+<p><strong>26. 前端降级与容错</strong></p>
+<ul>
+<li><strong>降级</strong>：核心接口超时或报错时，展示兜底 UI（如默认数据、缓存数据）；非核心组件（如评论、推荐）加载失败时静默隐藏，不影响主流程。</li>
+<li><strong>容错</strong>：全局 ErrorBoundary 捕获渲染崩溃；接口层统一拦截 5xx 并提示；关键操作增加本地重试机制。</li>
+</ul>
+<hr>
+<h2 id="模块五复杂业务与交互">模块五：复杂业务与交互</h2>
+<p><strong>27. SSR 项目架构设计</strong></p>
+<ul>
+<li><strong>架构</strong>：Node.js (Express/Koa/NestJS) 作为 BFF 层，负责路由匹配、数据预取、调用 React <code>renderToString</code>。</li>
+<li><strong>优化</strong>：流式 SSR（<code>renderToPipeableStream</code>，React 18+）、结合 CDN 缓存 HTML、关键 CSS 内联、客户端 Hydration 按需加载。</li>
+</ul>
+<p><strong>28. SPA 路由与 SEO 问题</strong></p>
+<ul>
+<li><strong>问题</strong>：SPA 初始 HTML 为空，爬虫无法抓取内容。</li>
+<li><strong>解决</strong>：1) SSR/SSG（Next.js/Nuxt.js）；2) 预渲染（Prerender SPA Plugin），构建时生成静态 HTML；3) 针对 SEO 单独做一套传统 MPA 或使用 SSG 生成静态页面。</li>
+</ul>
+<p><strong>29. 富文本编辑器选型与 XSS 防护</strong></p>
+<ul>
+<li><strong>选型</strong>：Slate.js（高度可定制、React 友好）、Quill（成熟、生态好）、TinyMCE（传统、功能全）。</li>
+<li><strong>XSS 防护</strong>：1) 提交前/渲染前使用 <code>DOMPurify</code> 过滤恶意标签（如 <code>&lt;script&gt;</code>, <code>onerror</code>）；2) 渲染时使用 <code>dangerouslySetInnerHTML</code> 必须确保内容已清洗；3) 配置 CSP 限制内联脚本执行。</li>
+</ul>
+<p><strong>30. 前端安全防护整体方案</strong></p>
+<ul>
+<li><strong>XSS</strong>：输入过滤、输出转义、CSP、HttpOnly Cookie。</li>
+<li><strong>CSRF</strong>：SameSite Cookie 属性、Anti-CSRF Token、验证 Origin/Referer。</li>
+<li><strong>点击劫持</strong>：<code>X-Frame-Options: DENY</code> 或 CSP <code>frame-ancestors</code>。</li>
+<li><strong>敏感信息</strong>：不在前端硬编码密钥，Token 避免存入 localStorage（防 XSS 窃取），推荐 HttpOnly Cookie。</li>
+</ul>
+<p><strong>31. 防止重复提交</strong></p>
+<ul>
+<li><strong>前端</strong>：按钮点击后立即 <code>disabled</code> 或显示 Loading；使用 lodash <code>debounce</code>/<code>throttle</code>；Axios 拦截器中通过请求 URL+参数生成 Hash，拦截重复请求。</li>
+<li><strong>后端</strong>：接口幂等性设计（唯一索引、分布式锁、Token 机制），前端防重只是辅助。</li>
+</ul>
+<p><strong>32. 复杂表单设计（动态表单 / 联动 / 校验）</strong></p>
+<ul>
+<li><strong>方案</strong>：使用 React Hook Form 或 Formik。采用 JSON Schema 驱动表单渲染。</li>
+<li><strong>联动</strong>：通过 <code>watch</code> 监听字段变化，动态修改其他字段的 <code>options</code> 或 <code>rules</code>。</li>
+<li><strong>校验</strong>：支持同步校验、异步校验（如检查用户名是否重复，需防抖）、跨字段联动校验。</li>
+</ul>
+<p><strong>33. 大数据量表格（虚拟滚动 + 固定列 + 排序筛选）</strong></p>
+<ul>
+<li><strong>虚拟滚动</strong>：使用 <code>react-window</code> 或 <code>ag-grid</code>，只渲染可视行。</li>
+<li><strong>固定列</strong>：利用 CSS <code>position: sticky</code>，配合 <code>z-index</code> 和阴影效果。</li>
+<li><strong>排序/筛选</strong>：若数据量极大（&gt;1万），将排序/筛选逻辑移至 Web Worker 或后端处理，避免阻塞主线程。</li>
+</ul>
+<p><strong>34. 秒杀页面设计</strong></p>
+<ul>
+<li><strong>前端</strong>：倒计时使用本地时间校准（服务端时间 - 本地时间 = 差值）；按钮防抖、点击后置灰；静态资源全量 CDN 缓存；接口请求增加验证码或动态 Token 防刷。</li>
+<li><strong>体验</strong>：骨架屏、Loading 动画、库存不足时的友好提示。</li>
+</ul>
+<p><strong>35. 上传图片压缩与裁剪</strong></p>
+<ul>
+<li><strong>压缩</strong>：使用 <code>Canvas.drawImage</code> 重绘图片，通过 <code>canvas.toBlob</code> 调整 <code>quality</code> 参数压缩；或使用 <code>browser-image-compression</code> 库（底层基于 Canvas/OffscreenCanvas）。</li>
+<li><strong>裁剪</strong>：使用 <code>react-cropper</code>（基于 Cropper.js），获取裁剪区域的坐标和尺寸，在 Canvas 中截取并导出。</li>
+</ul>
+<hr>
+<h2 id="模块六补充遗漏的高频前沿架构题2024-2026-核心考点">模块六：补充遗漏的高频/前沿架构题（2024-2026 核心考点）</h2>
+<p><strong>36. Monorepo 架构设计与工程化落地</strong></p>
+<ul>
+<li><strong>选型</strong>：pnpm workspace + Turborepo/Nx。</li>
+<li><strong>优势</strong>：代码共享（提取公共组件/工具库）、统一依赖管理、原子化提交（保证多包版本一致性）。</li>
+<li><strong>痛点解决</strong>：使用 Turborepo 实现<strong>增量构建</strong>和<strong>远程缓存</strong>，解决 Monorepo 随着项目变大导致 CI/CD 极慢的问题；使用 <code>changesets</code> 管理多包版本发布。</li>
+</ul>
+<p><strong>37. 前端构建速度深度优化（Webpack/Vite）</strong></p>
+<ul>
+<li><strong>Webpack</strong>：1) 缩小搜索范围（<code>resolve.alias</code>, <code>include</code>）；2) 开启持久化缓存（<code>cache: { type: 'filesystem' }</code>）；3) 使用 <code>esbuild-loader</code> 替代 <code>babel-loader</code>；4) 多线程构建（<code>thread-loader</code>）。</li>
+<li><strong>Vite</strong>：利用 esbuild 进行预构建（依赖预打包）；开发环境基于原生 ESM，按需编译；生产环境使用 Rollup 打包。</li>
+</ul>
+<p><strong>38. BFF (Backend For Frontend) 架构设计</strong></p>
+<ul>
+<li><strong>定位</strong>：前端自己控制的 Node.js 中间层，用于<strong>接口聚合、数据裁剪、格式转换</strong>。</li>
+<li><strong>场景</strong>：移动端与 PC 端共用后端微服务时，BFF 负责将多个微服务接口聚合为一个，减少前端请求数（解决瀑布流）；处理后端接口返回的冗余字段，减少传输体积。</li>
+<li><strong>技术栈</strong>：NestJS / Midway / Express + GraphQL (可选)。</li>
+</ul>
+<p><strong>39. 全链路追踪：Trace ID 如何贯穿前后端？</strong></p>
+<ul>
+<li><strong>生成</strong>：前端在请求拦截器中生成唯一的 <code>Trace-Id</code>（或从 Cookie/全局状态获取），注入到 HTTP Header 中。</li>
+<li><strong>透传</strong>：Nginx 或 API 网关接收后，将其透传给后端微服务；后端服务间调用（RPC/HTTP）继续透传。</li>
+<li><strong>闭环</strong>：前端发生错误或接口超时，上报错误日志时携带 <code>Trace-Id</code>。排查时，通过 <code>Trace-Id</code> 在 SkyWalking/Jaeger 中还原完整调用链路。</li>
+</ul>
+<p><strong>40. 线上疑难杂症排查：内存泄漏与 CPU 飙高</strong></p>
+<ul>
+<li><strong>内存泄漏</strong>：使用 Chrome DevTools Memory 面板，拍摄 Heap Snapshot。对比操作前后的快照，查找 “Detached DOM tree”（分离的 DOM 节点）或被闭包/全局变量意外引用的大对象。常见原因：未清理的定时器、未取消的事件监听、闭包引用。</li>
+<li><strong>CPU 飙高</strong>：使用 Performance 面板录制（Record），查看 Main 线程的火焰图（Flame Chart），定位长任务（Long Tasks）或高频触发的函数（如未节流的 scroll/resize 事件、死循环）。</li>
+</ul>
+<p><strong>41. 前端接入大模型 (LLM)：SSE 流式输出与状态管理</strong></p>
+<ul>
+<li><strong>通信</strong>：使用 <code>fetch</code> API 配合 <code>ReadableStream</code> 处理 Server-Sent Events (SSE)。逐块读取 <code>TextDecoder</code> 解码的数据。</li>
+<li><strong>渲染优化</strong>：流式数据会导致 React 频繁重渲染。必须使用 <code>useTransition</code> 或 <code>useDeferredValue</code> 将打字机效果的渲染标记为低优先级，保证输入框等 UI 的响应性。</li>
+<li><strong>中断</strong>：使用 <code>AbortController</code> 实现“停止生成”功能。</li>
+</ul>
+<p><strong>42. 前端敏感数据 (Token/密钥) 安全存储与流转</strong></p>
+<ul>
+<li><strong>存储</strong>：绝对不要将敏感 Token 存入 <code>localStorage</code>（易受 XSS 攻击）。推荐存入 <strong>HttpOnly + Secure + SameSite=Strict 的 Cookie</strong> 中，由浏览器自动携带，JS 无法读取。</li>
+<li><strong>流转</strong>：Access Token 短效（如 2 小时），Refresh Token 长效且绑定设备指纹。前端实现无感刷新（拦截 401，使用 Refresh Token 换取新 Access Token，并重放失败请求）。</li>
+</ul>
+<p><strong>43. CSP (内容安全策略) 深度落地</strong></p>
+<ul>
+<li><strong>原理</strong>：通过 HTTP Header <code>Content-Security-Policy</code> 白名单控制浏览器可以加载和执行的资源。</li>
+<li><strong>痛点解决</strong>：内联脚本（<code>&lt;script&gt;</code>）和 <code>eval()</code> 默认被禁。解决方案：使用 <strong>Nonce</strong>（每次请求生成随机字符串，注入到 HTML 和 CSP Header 中）或 <strong>Hash</strong>（计算脚本内容的 SHA256 加入白名单）。</li>
+</ul>
+<p><strong>44. 拖拽排序 (DnD) 底层原理与性能优化</strong></p>
+<ul>
+<li><strong>原理</strong>：HTML5 原生 <code>Drag and Drop</code> API 存在诸多兼容性和交互缺陷。现代方案（如 <code>dnd-kit</code>, <code>react-beautiful-dnd</code>）通常基于 <code>Pointer Events</code>（鼠标/触摸统一）+ 绝对定位/<code>transform</code> 实现。</li>
+<li><strong>优化</strong>：1) 拖拽时克隆一个“幽灵节点”跟随鼠标，原节点占位；2) 使用 <code>transform</code> 代替 <code>top/left</code> 触发 GPU 加速；3) 列表项使用 <code>React.memo</code> 避免无关项重渲染；4) 虚拟列表结合拖拽（计算复杂，需精确映射虚拟索引与真实索引）。</li>
+</ul>
+<p><strong>45. Web Worker 与 WASM 深度应用场景</strong></p>
+<ul>
+<li><strong>Web Worker</strong>：适用于 CPU 密集型任务。如：大文件 MD5 计算、复杂数据排序/过滤、音视频帧处理、加密解密。注意：Worker 无法操作 DOM，通信有序列化开销。</li>
+<li><strong>WASM (WebAssembly)</strong>：适用于对性能要求极高的计算。如：视频/图像编解码（FFmpeg.wasm）、CAD/3D 模型解析、游戏引擎（Unity/Unreal 导出）、复杂的密码学运算。</li>
+</ul>
+<p><strong>46. 前端自动化测试体系设计</strong></p>
+<ul>
+<li><strong>分层</strong>：1) 单元测试（Jest/Vitest）：覆盖工具函数、Hooks、Redux Store；2) 组件测试（React Testing Library）：覆盖组件交互、渲染逻辑；3) E2E 测试（Playwright/Cypress）：覆盖核心业务链路（如登录、下单）。</li>
+<li><strong>原则</strong>：测试金字塔。底层单元测试最多，E2E 最少。优先保证核心链路的 E2E 稳定性，避免测试用例过于脆弱（不测实现细节，测用户行为）。</li>
+</ul>
+<hr>
+<p><em>文档结束。本指南涵盖了从底层原理、性能优化、复杂业务到前沿架构（BFF、RSC、LLM、Monorepo）的全方位考点，是高级前端面试的终极武器库。</em></p>
+</div><script type="module">function e(e){let t=e.getAttribute(`data-language`)?.trim();if(t)return t===`text`||t===`plaintext`||t===`txt`?`text`:t;let n=e.querySelector(`code`)?.className||e.className||``,r=/language-([a-z0-9_+-]+)/i.exec(n);return r?.[1]?r[1]:`code`}function t(t){if(t.closest(`[data-mac-window]`)||t.dataset.macEnhanced===`1`)return;t.dataset.macEnhanced=`1`;let n=document.createElement(`figure`);n.className=`mac-window`,n.setAttribute(`data-mac-window`,``);let r=document.createElement(`div`);r.className=`mac-titlebar`,r.innerHTML=`
+      <div class="mac-dots" aria-hidden="true">
+        <span class="dot red"></span>
+        <span class="dot yellow"></span>
+        <span class="dot green"></span>
+      </div>
+      <span class="mac-title"></span>
+      <button type="button" class="mac-copy" data-mac-copy aria-label="复制代码">复制</button>
+    `;let i=r.querySelector(`.mac-title`);i&&(i.textContent=e(t));let a=document.createElement(`div`);a.className=`mac-body`,t.parentNode?.insertBefore(n,t),a.appendChild(t),n.appendChild(r),n.appendChild(a)}async function n(e){if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(e);return}let t=document.createElement(`textarea`);t.value=e,t.style.position=`fixed`,t.style.opacity=`0`,document.body.appendChild(t),t.select(),document.execCommand(`copy`),t.remove()}function r(e=document){e.querySelectorAll(`[data-mac-copy]`).forEach(e=>{e.dataset.bound!==`1`&&(e.dataset.bound=`1`,e.addEventListener(`click`,async()=>{let t=e.closest(`[data-mac-window]`)?.querySelector(`pre`)?.textContent??``;try{await n(t);let r=e.textContent;e.textContent=`已复制`,e.classList.add(`is-copied`),window.setTimeout(()=>{e.textContent=r||`复制`,e.classList.remove(`is-copied`)},1600)}catch{e.textContent=`失败`,window.setTimeout(()=>{e.textContent=`复制`},1600)}}))})}function i(){document.querySelectorAll(`.prose pre`).forEach(t),r()}i(),document.addEventListener(`astro:page-load`,i);</script></article><nav class="pager wrap-narrow" aria-label="上下篇" data-astro-cid-tldeq5d5><p data-astro-cid-tldeq5d5>上一篇：<a href="/web/浏览器-网络/" data-astro-cid-tldeq5d5>浏览器&amp;网络</a></p><p data-astro-cid-tldeq5d5>下一篇：<a href="/web/vue/" data-astro-cid-tldeq5d5>vue</a></p></nav><section class="related" data-astro-cid-tldeq5d5><div class="wrap" data-astro-cid-tldeq5d5><h2 data-astro-cid-tldeq5d5>继续阅读</h2><ol class="related-grid" data-astro-cid-tldeq5d5><li data-astro-cid-tldeq5d5><a class="related-topic" href="/web/" data-astro-cid-tldeq5d5>前端</a><a class="related-title" href="/web/html/" data-astro-cid-tldeq5d5>HTML</a><p data-astro-cid-tldeq5d5>HTML</p></li><li data-astro-cid-tldeq5d5><a class="related-topic" href="/web/" data-astro-cid-tldeq5d5>前端</a><a class="related-title" href="/web/react/" data-astro-cid-tldeq5d5>react</a><p data-astro-cid-tldeq5d5>react</p></li><li data-astro-cid-tldeq5d5><a class="related-topic" href="/web/" data-astro-cid-tldeq5d5>前端</a><a class="related-title" href="/web/typescript/" data-astro-cid-tldeq5d5>typescript</a><p data-astro-cid-tldeq5d5>typescript</p></li></ol></div></section></main><footer class="site-footer" data-astro-cid-jo6i4kqk><div class="wrap bar" data-astro-cid-jo6i4kqk><a class="brand" href="/" data-astro-cid-jo6i4kqk>rty</a><div class="social" aria-label="社交链接" data-astro-cid-jo6i4kqk><a href="mailto:peonyfoals@gmail.com" aria-label="Email" data-astro-cid-jo6i4kqk><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" data-astro-cid-jo6i4kqk><path fill="currentColor" d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5L4 8V6l8 5 8-5v2z" data-astro-cid-jo6i4kqk></path></svg></a><a href="/rss.xml" aria-label="RSS" data-astro-cid-jo6i4kqk><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" data-astro-cid-jo6i4kqk><path fill="currentColor" d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20 5 20 4 19 4 17.82c0-1.2.98-2.18 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27zm0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93z" data-astro-cid-jo6i4kqk></path></svg></a><a href="/archive/" aria-label="归档" data-astro-cid-jo6i4kqk><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" data-astro-cid-jo6i4kqk><path fill="currentColor" d="M4 6h16v2H4zm0 5h16v2H4zm0 5h10v2H4z" data-astro-cid-jo6i4kqk></path></svg></a></div><p class="meta" data-astro-cid-jo6i4kqk>© 2026 peony</p></div></footer></body></html>

@@ -1,0 +1,455 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="vue"><meta name="author" content="peony"><meta name="generator" content="Astro v7.1.1"><meta name="theme-color" content="#ffffff"><link rel="canonical" href="https://langzyw.xyz/web/vue/"><link rel="alternate" type="application/rss+xml" title="rty" href="/rss.xml"><meta property="og:type" content="website"><meta property="og:site_name" content="rty"><meta property="og:title" content="vue · rty"><meta property="og:description" content="vue"><meta property="og:url" content="https://langzyw.xyz/web/vue/"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><title>vue · rty</title><link rel="stylesheet" href="/_astro/Footer.C9xAhOzk.css"><link rel="stylesheet" href="/_astro/_..B6QWlgH6.css"></head><body><header class="site-header" data-astro-cid-nen7h5rs><div class="wrap bar" data-astro-cid-nen7h5rs><div class="bar-flex" data-astro-cid-nen7h5rs><a class="brand" href="/" data-astro-cid-nen7h5rs>rty</a><nav class="nav" aria-label="主导航" data-astro-cid-nen7h5rs><a class="nav-link" href="/" data-astro-cid-nen7h5rs>首页</a><a class="nav-link active" href="/web/" aria-current="page" data-astro-cid-nen7h5rs>前端</a><a class="nav-link" href="/python/" data-astro-cid-nen7h5rs>python</a><a class="nav-link" href="/llm/" data-astro-cid-nen7h5rs>llm</a><a class="nav-link" href="/web3/" data-astro-cid-nen7h5rs>区块链</a><a class="nav-link" href="/about/" data-astro-cid-nen7h5rs>关于</a></nav></div><button class="search-btn" type="button" aria-label="搜索" data-search-open data-astro-cid-nen7h5rs><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" data-astro-cid-nen7h5rs><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="1.6" data-astro-cid-nen7h5rs></circle><path d="M16.5 16.5L21 21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" data-astro-cid-nen7h5rs></path></svg></button></div></header><dialog class="search-dialog" data-search-dialog data-astro-cid-nen7h5rs><form class="search-panel" method="dialog" data-astro-cid-nen7h5rs><label class="sr-only" for="site-search" data-astro-cid-nen7h5rs>搜索文章</label><input id="site-search" class="search-input" type="search" placeholder="搜索文章…" autocomplete="off" data-search-input data-astro-cid-nen7h5rs><button class="search-close" value="cancel" type="submit" aria-label="关闭" data-astro-cid-nen7h5rs>×</button></form><ul class="search-results" data-search-results data-astro-cid-nen7h5rs></ul></dialog><script>(function(){const searchIndexUrl = "/search-index.json";
+
+  const openBtn = document.querySelector("[data-search-open]");
+  const dialog = document.querySelector("[data-search-dialog]");
+  const input = document.querySelector("[data-search-input]");
+  const results = document.querySelector("[data-search-results]");
+
+  if (
+    openBtn &&
+    dialog instanceof HTMLDialogElement &&
+    input instanceof HTMLInputElement &&
+    results
+  ) {
+    let index = [];
+    let loaded = false;
+
+    async function ensureIndex() {
+      if (loaded) return;
+      const res = await fetch(searchIndexUrl);
+      index = await res.json();
+      loaded = true;
+    }
+
+    function render(q) {
+      const query = q.trim().toLowerCase();
+      if (!query) {
+        results.innerHTML = "";
+        return;
+      }
+      const hits = index
+        .filter((item) =>
+          `${item.title} ${item.description} ${item.topic}`
+            .toLowerCase()
+            .includes(query),
+        )
+        .slice(0, 8);
+      results.innerHTML = hits.length
+        ? hits
+            .map(
+              (item) =>
+                `<li><a href="${item.href}"><strong>${item.title}</strong><span>${item.description}</span></a></li>`,
+            )
+            .join("")
+        : `<li class="empty">没有匹配结果</li>`;
+    }
+
+    openBtn.addEventListener("click", async () => {
+      await ensureIndex();
+      dialog.showModal();
+      input.value = "";
+      results.innerHTML = "";
+      input.focus();
+    });
+
+    input.addEventListener("input", () => render(input.value));
+
+    dialog.addEventListener("click", (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+  }
+})();</script><main class="post-page" data-astro-cid-tldeq5d5><article data-astro-cid-tldeq5d5><header class="header wrap-narrow" data-astro-cid-tldeq5d5><a class="topic" href="/web/" data-astro-cid-tldeq5d5>前端</a><h1 data-astro-cid-tldeq5d5>vue</h1><p class="meta" data-astro-cid-tldeq5d5><time datetime="2026-07-17T00:00:00.000Z" data-astro-cid-tldeq5d5>2026年7月17日</time><span aria-hidden="true" data-astro-cid-tldeq5d5>·</span><span data-astro-cid-tldeq5d5>约 15 分钟</span></p><p class="tags" data-astro-cid-tldeq5d5><a href="/tags/vue/" data-astro-cid-tldeq5d5>vue</a><span data-astro-cid-tldeq5d5> · </span><a href="/tags/面试/" data-astro-cid-tldeq5d5>面试</a><span data-astro-cid-tldeq5d5> · </span><a href="/tags/前端/" data-astro-cid-tldeq5d5>前端</a></p></header><div class="hero-image wrap" data-astro-cid-tldeq5d5><img src="/images/covers/code-workspace.jpg" alt="" data-astro-cid-tldeq5d5></div><div class="prose wrap-narrow" data-astro-cid-tldeq5d5><h3 id="一-响应式原理-vue2-vs-vue3">一、 响应式原理 (Vue2 vs Vue3)</h3>
+<p><strong>1. Vue2 响应式原理 &amp; Object.defineProperty</strong></p>
+<ul>
+<li><strong>原理</strong>：通过 <code>Object.defineProperty</code> 劫持数据的 <code>getter</code> 和 <code>setter</code>。在 <code>getter</code> 中进行<strong>依赖收集</strong>（将 Watcher 存入 Dep），在 <code>setter</code> 中进行<strong>派发更新</strong>（通知 Dep 中的 Watcher 触发视图更新）。</li>
+</ul>
+<p><strong>2. Vue2 响应式缺陷 &amp; Vue.set / Vue.delete</strong></p>
+<ul>
+<li><strong>缺陷</strong>：无法检测对象属性的新增/删除；无法检测数组索引的变化和长度的修改。</li>
+<li><strong>解决</strong>：<code>Vue.set</code> 内部对对象调用 <code>defineProperty</code> 劫持新属性并触发更新；对数组则调用重写的 <code>splice</code> 方法。<code>Vue.delete</code> 同理，删除属性后触发更新。</li>
+</ul>
+<p><strong>3. Vue2 数组响应式 &amp; 方法重写</strong></p>
+<ul>
+<li><strong>原理</strong>：Vue 创建了一个继承自 <code>Array.prototype</code> 的新原型对象，重写了 7 个变更方法（<code>push/pop/shift/unshift/splice/sort/reverse</code>）。将数组的 <code>__proto__</code> 指向这个新原型。调用这些方法时，先执行原生逻辑，再手动触发依赖更新。</li>
+</ul>
+<p><strong>4. Vue3 为什么用 Proxy 替代 defineProperty？</strong></p>
+<ul>
+<li><strong>全面性</strong>：Proxy 可以拦截整个对象，原生支持属性新增/删除、数组索引和长度变化、Map/Set 等集合。</li>
+<li><strong>性能</strong>：Proxy 是<strong>懒代理</strong>（访问到深层属性时才代理），而 Vue2 在初始化时需要递归遍历所有属性，性能更好。</li>
+</ul>
+<p><strong>5. Vue3 中 Reflect 的作用</strong></p>
+<ul>
+<li><strong>保证 this 指向</strong>：<code>Reflect.get/set</code> 的第三个参数 <code>receiver</code> 能保证 <code>getter/setter</code> 中的 <code>this</code> 正确指向代理对象。</li>
+<li><strong>保证默认行为</strong>：返回布尔值，配合 Proxy 的布尔返回值要求，保证操作成功与否的正确反馈。</li>
+</ul>
+<p><strong>6. Vue3 effect、track、trigger 协作机制</strong></p>
+<ul>
+<li><code>effect</code>：创建响应式副作用函数，执行时将其赋值给全局 <code>activeEffect</code>。</li>
+<li><code>track</code>：在 <code>getter</code> 中触发，将当前的 <code>activeEffect</code> 收集到 <code>targetMap</code> (WeakMap) 中。</li>
+<li><code>trigger</code>：在 <code>setter</code> 中触发，从 <code>targetMap</code> 中找出相关依赖，执行对应的 <code>effect</code>。</li>
+</ul>
+<p><strong>7. ref 和 reactive 的区别与原理</strong></p>
+<ul>
+<li><code>ref</code>：用于基本类型（也可用于对象）。底层通过 <code>get value()</code> 和 <code>set value()</code> 实现劫持，值存在 <code>.value</code> 中。</li>
+<li><code>reactive</code>：用于对象。底层通过 <code>Proxy</code> 实现深度代理。</li>
+</ul>
+<p><strong>8. 各种 API 的作用</strong></p>
+<ul>
+<li><code>toRef</code>：为 <code>reactive</code> 对象的属性创建一个 ref，保持响应式连接。</li>
+<li><code>toRefs</code>：解构 <code>reactive</code> 对象时，将其所有属性转为 ref，保持响应式。</li>
+<li><code>shallowRef</code>：只劫持 <code>.value</code> 的赋值，不深度代理内部对象（适合大对象/第三方库实例）。</li>
+<li><code>shallowReactive</code>：只代理对象的第一层属性。</li>
+<li><code>readonly</code>：创建深度只读代理，拦截所有修改操作。</li>
+</ul>
+<p><strong>9. isRef、unref、customRef</strong></p>
+<ul>
+<li><code>isRef</code>：判断是否为 ref 对象。</li>
+<li><code>unref</code>：如果是 ref 返回 <code>.value</code>，否则返回本身（常用于模板或工具函数中）。</li>
+<li><code>customRef</code>：自定义 ref，提供 <code>get/set</code> 追踪依赖。<strong>典型场景</strong>：实现防抖/节流的输入框。</li>
+</ul>
+<hr>
+<h3 id="二-虚拟-dom-与-diff-算法">二、 虚拟 DOM 与 Diff 算法</h3>
+<p><strong>10. 虚拟 DOM 优缺点</strong></p>
+<ul>
+<li><strong>优点</strong>：保证性能下限（避免非法 DOM 操作）；实现跨平台；将手动 DOM 操作变为声明式。</li>
+<li><strong>缺点</strong>：无法做到极致优化（首次渲染有创建 VNode 的开销）；极端场景下性能不如原生 DOM 操作。</li>
+</ul>
+<p><strong>11. Vue2 diff 算法（双端比较）</strong></p>
+<ul>
+<li>对比新旧头节点、新旧尾节点、旧头新尾、旧尾新头。若 4 种都不匹配，则通过 <code>key</code> 创建旧节点的哈希表进行查找。</li>
+</ul>
+<p><strong>12. Vue3 快速 diff 优化</strong></p>
+<ul>
+<li><strong>预处理</strong>：先同步头尾相同的节点。</li>
+<li><strong>核心</strong>：中间剩余部分使用<strong>最长递增子序列</strong>算法。</li>
+</ul>
+<p><strong>13. 最长递增子序列的作用</strong></p>
+<ul>
+<li>找出无需移动的节点序列，其余节点只需根据该序列进行<strong>最小化移动</strong>，大幅减少 DOM 操作。</li>
+</ul>
+<p><strong>14. patchFlag、静态提升、Block Tree (编译期优化)</strong></p>
+<ul>
+<li><code>patchFlag</code>：编译时给动态节点打标记（如文本、class），diff 时只对比标记部分，跳过静态对比。</li>
+<li>静态提升：将静态节点/属性提取到外部变量，避免每次渲染重复创建。</li>
+<li>Block Tree：将带有 <code>patchFlag</code> 的节点收集为 Block，diff 时直接对比 Block 内的动态节点（<strong>扁平化 diff</strong>），跳过静态节点。</li>
+</ul>
+<hr>
+<h3 id="三-模板编译与-tree-shaking">三、 模板编译与 Tree-shaking</h3>
+<p><strong>15. 模板编译流程</strong></p>
+<ul>
+<li><strong>Parse</strong>：将模板字符串解析为 AST（抽象语法树）。</li>
+<li><strong>Transform</strong>：优化 AST，添加 <code>patchFlag</code>、静态提升等标记。</li>
+<li><strong>Generate</strong>：将 AST 转换为 <code>render</code> 函数字符串。</li>
+</ul>
+<p><strong>16. 为什么 Vue3 对 Tree-shaking 更友好？</strong></p>
+<ul>
+<li>Vue3 将全局 API 改为按需引入（如 <code>import { nextTick } from 'vue'</code>）。编译产物也会按需引入运行时 API，未使用的 API 会被打包工具（Webpack/Vite）自动剔除。</li>
+</ul>
+<hr>
+<h3 id="四-计算属性侦听器与生命周期">四、 计算属性、侦听器与生命周期</h3>
+<p><strong>17. computed vs watch &amp; 缓存原理</strong></p>
+<ul>
+<li><code>computed</code> 有缓存，依赖不变不重新计算，侧重<strong>派生状态</strong>；<code>watch</code> 无缓存，侧重<strong>副作用</strong>（如请求、操作 DOM）。</li>
+<li><strong>缓存原理</strong>：内部维护 <code>dirty</code> 标志位。依赖变化时置为 <code>true</code>，读取时若为 <code>true</code> 才重新求值并置为 <code>false</code>。</li>
+</ul>
+<p><strong>18. computed 的 setter</strong></p>
+<ul>
+<li>可以设置。当需要直接给计算属性赋值时使用（如双向绑定一个派生状态）。</li>
+</ul>
+<p><strong>19. watch 的 deep、immediate、flush</strong></p>
+<ul>
+<li><code>deep</code>：深度监听对象内部变化。</li>
+<li><code>immediate</code>：初始化时立即执行一次回调。</li>
+<li><code>flush</code>：控制回调执行时机（<code>pre</code> 更新前，<code>post</code> 更新后，<code>sync</code> 同步）。</li>
+</ul>
+<p><strong>20. watch vs watchEffect</strong></p>
+<ul>
+<li><code>watch</code>：需显式指定数据源，可获取新旧值，默认懒执行。</li>
+<li><code>watchEffect</code>：自动收集内部用到的响应式依赖，无法获取旧值，默认立即执行。</li>
+</ul>
+<p><strong>21. 生命周期对应 &amp; setup 执行时机</strong></p>
+<ul>
+<li><code>beforeCreate/created</code> -&gt; <code>setup</code>；<code>beforeMount</code> -&gt; <code>onBeforeMount</code>，以此类推。</li>
+<li><code>setup</code> 在 <code>beforeCreate</code> 之前执行，此时组件实例还未完全创建，<strong>没有 <code>this</code></strong>。</li>
+</ul>
+<hr>
+<h3 id="五-模板指令与内置组件">五、 模板指令与内置组件</h3>
+<p><strong>22. v-if vs v-show</strong></p>
+<ul>
+<li><code>v-if</code>：真正的条件渲染，销毁/创建 DOM。切换开销大，适用<strong>条件很少改变</strong>的场景。</li>
+<li><code>v-show</code>：仅切换 CSS <code>display</code>。初始渲染开销大，适用<strong>频繁切换</strong>的场景。</li>
+</ul>
+<p><strong>23. v-for 的 key</strong></p>
+<ul>
+<li>用于 Diff 算法识别 VNode 身份。不用 <code>index</code> 是因为当列表发生插入/删除/排序时，<code>index</code> 不变但内容变了，会导致<strong>错误复用</strong>或<strong>无效更新</strong>。</li>
+</ul>
+<p><strong>24. v-model 原理及 Vue2/3 差异</strong></p>
+<ul>
+<li><strong>原理</strong>：语法糖。Vue2 是 <code>:value</code> + <code>@input</code>。</li>
+<li><strong>差异</strong>：Vue3 改为 <code>:modelValue</code> + <code>@update:modelValue</code>，且<strong>支持在同一个组件上使用多个 v-model</strong>。</li>
+</ul>
+<p><strong>25. .sync 修饰符</strong></p>
+<ul>
+<li>Vue2 中用于 prop 双向绑定（<code>:title.sync</code> 等同于 <code>:title</code> + <code>@update:title</code>）。Vue3 移除，<strong>统一用 v-model 替代</strong>。</li>
+</ul>
+<p><strong>26. 事件修饰符</strong></p>
+<ul>
+<li><code>.stop</code> (阻止冒泡), <code>.prevent</code> (阻止默认), <code>.capture</code> (捕获阶段), <code>.self</code> (仅自身触发), <code>.once</code> (只触发一次), <code>.passive</code> (不阻止默认，提升滚动性能)。</li>
+</ul>
+<p><strong>27. 插槽原理</strong></p>
+<ul>
+<li>本质是<strong>函数</strong>。父组件传递插槽模板（函数），子组件在 render 中执行该函数。作用域插槽则是子组件执行函数时<strong>传入数据</strong>作为参数。</li>
+</ul>
+<p><strong>28. Fragment / 多根节点</strong></p>
+<ul>
+<li>Vue3 虚拟 DOM 支持 <code>Fragment</code> 类型，允许组件返回数组形式的 VNode，编译器和 Patch 算法直接处理多根节点。</li>
+</ul>
+<p><strong>29. nextTick 原理</strong></p>
+<ul>
+<li>利用微任务（Promise/MutationObserver）或宏任务将回调推迟到下次 DOM 更新循环之后。数据修改后，Watcher 异步更新 DOM，<code>nextTick</code> 保证在 DOM 更新完毕后执行。</li>
+</ul>
+<p><strong>30. keep-alive 原理</strong></p>
+<ul>
+<li>缓存组件实例（VNode），不销毁。通过 <code>include/exclude</code> 匹配。从缓存读取时触发 <code>activated</code>，被隐藏时触发 <code>deactivated</code>。</li>
+</ul>
+<p><strong>31. 动态组件 &amp; 异步组件</strong></p>
+<ul>
+<li><code>&lt;component :is="comp"&gt;</code> 动态切换。</li>
+<li>Vue3 异步组件用 <code>defineAsyncComponent</code>，支持配置 <code>loadingComponent</code>、<code>errorComponent</code>、<code>delay</code>、<code>timeout</code>。</li>
+</ul>
+<p><strong>32. Teleport &amp; Suspense</strong></p>
+<ul>
+<li><code>Teleport</code>：将组件内部 DOM 渲染到指定节点（如 <code>body</code>），解决模态框 <code>z-index</code> 和样式隔离问题。</li>
+<li><code>Suspense</code>：处理异步依赖（异步组件或 async setup），提供 <code>#default</code> 和 <code>#fallback</code> 插槽处理加载状态。</li>
+</ul>
+<hr>
+<h3 id="六-composition-api-与组件通信">六、 Composition API 与组件通信</h3>
+<p><strong>33. Composition API vs Options API</strong></p>
+<ul>
+<li>Options 按选项（data, methods）组织，逻辑分散；Composition 按<strong>逻辑功能</strong>组织，代码复用好，TS 支持极佳。</li>
+</ul>
+<p><strong>34. mixin vs Composables (组合式函数)</strong></p>
+<ul>
+<li><code>mixin</code> 有命名冲突、数据来源不清晰的问题。</li>
+<li><code>Composables</code> 利用函数返回响应式数据，来源清晰，无冲突，是 Vue3 推荐的复用方式。</li>
+</ul>
+<p><strong>35. <code>&lt;script setup&gt;</code> 优势</strong></p>
+<ul>
+<li>编译时语法糖。优势：更少样板代码；更好的 TS 推断；更好的运行时性能（无需创建 proxy 暴露变量）；顶层变量直接暴露给模板。</li>
+</ul>
+<p><strong>36. setup 参数</strong></p>
+<ul>
+<li><code>props</code>：响应式，只读。</li>
+<li><code>context</code>：包含 <code>attrs</code>, <code>slots</code>, <code>emit</code>, <code>expose</code>。非响应式，需解构使用。</li>
+</ul>
+<p><strong>37. 组件间通信方式</strong></p>
+<ul>
+<li>父子：<code>props/emit</code>, <code>$parent/$refs</code>。</li>
+<li>跨级：<code>provide/inject</code>。</li>
+<li>全局：<code>Vuex/Pinia</code>。</li>
+<li>兄弟/任意：<code>EventBus</code> (Vue3 需引入 mitt 等第三方库)。</li>
+<li>透传：<code>$attrs</code>。</li>
+</ul>
+<p><strong>38. provide / inject</strong></p>
+<ul>
+<li>祖先提供，后代注入。保持响应式需传入 <code>ref/reactive</code> 或 <code>computed</code>。注意解构会丢失响应式（需用 <code>toRefs</code>）。</li>
+</ul>
+<p><strong>39. $attrs 变化 &amp; emits 选项</strong></p>
+<ul>
+<li>Vue2 中 <code>$attrs</code> 包含未声明 prop，<code>$listeners</code> 包含事件。Vue3 <strong>合并到 <code>$attrs</code></strong>。</li>
+<li><code>emits</code> 选项用于声明组件触发的自定义事件，决定事件是作为原生监听器还是自定义事件（影响 <code>$attrs</code>）。</li>
+</ul>
+<p><strong>40. defineExpose</strong></p>
+<ul>
+<li>在 <code>&lt;script setup&gt;</code> 中显式暴露属性/方法给父组件（通过 ref 获取）。默认封闭是为了安全和减少代理开销。</li>
+</ul>
+<hr>
+<h3 id="七-状态管理-vuex--pinia">七、 状态管理 (Vuex &amp; Pinia)</h3>
+<p><strong>41. Vuex 核心概念</strong></p>
+<ul>
+<li><code>state</code> (状态), <code>getter</code> (计算属性), <code>mutation</code> (同步修改), <code>action</code> (异步操作), <code>module</code> (模块化)。</li>
+</ul>
+<p><strong>42. Vuex 严格模式 &amp; 命名空间</strong></p>
+<ul>
+<li>严格模式：禁止在 mutation 外修改 state（开发环境报错）。</li>
+<li>命名空间：<code>namespaced: true</code> 让 module 拥有独立的 <code>dispatch/commit</code> 命名空间，避免冲突。</li>
+</ul>
+<p><strong>43. Pinia 优势 &amp; 两种写法</strong></p>
+<ul>
+<li><strong>优势</strong>：无 mutations；TS 支持极好；无模块嵌套（扁平化）；体积更小；支持 SSR。</li>
+<li><strong>写法</strong>：Options Store（类似 Vuex）和 Setup Store（类似 setup 函数，返回 ref/computed，更灵活）。</li>
+</ul>
+<hr>
+<h3 id="八-vue-router">八、 Vue Router</h3>
+<p><strong>44. hash vs history 模式</strong></p>
+<ul>
+<li><code>hash</code>：带 <code>#</code>，不发给服务器，兼容性好。</li>
+<li><code>history</code>：基于 H5 API，URL 美观，需服务器配置 fallback 防 404。</li>
+</ul>
+<p><strong>45. 导航守卫及执行顺序</strong></p>
+<ul>
+<li>全局（<code>beforeEach</code>, <code>beforeResolve</code>, <code>afterEach</code>） -&gt; 路由独享（<code>beforeEnter</code>） -&gt; 组件内（<code>beforeRouteLeave</code>, <code>beforeRouteUpdate</code>, <code>beforeRouteEnter</code>）。</li>
+<li><strong>完整顺序</strong>：<code>beforeEach</code> -&gt; <code>beforeEnter</code> -&gt; <code>beforeRouteEnter</code> -&gt; <code>beforeResolve</code> -&gt; <code>afterEach</code>。</li>
+</ul>
+<p><strong>46. 动态路由/懒加载/meta/scrollBehavior</strong></p>
+<ul>
+<li>动态路由：<code>router.addRoute()</code>。</li>
+<li>懒加载：<code>() =&gt; import('@/views/xxx.vue')</code>。</li>
+<li><code>meta</code>：存路由元信息（如权限、页面标题）。</li>
+<li><code>scrollBehavior</code>：控制路由切换时的滚动位置。</li>
+</ul>
+<hr>
+<h3 id="九-性能优化与-ssr">九、 性能优化与 SSR</h3>
+<p><strong>47. 常见性能优化手段</strong></p>
+<ul>
+<li>路由/组件懒加载；合理使用 <code>v-if/v-show</code>；<code>v-for</code> 加 <code>key</code>；<code>keep-alive</code> 缓存；静态提升/<code>v-once</code>/<code>v-memo</code>；虚拟列表；防抖节流；图片懒加载；减少深层响应式（<code>shallowRef</code>）。</li>
+</ul>
+<p><strong>48. v-once vs v-memo</strong></p>
+<ul>
+<li><code>v-once</code>：渲染一次后变静态节点。</li>
+<li><code>v-memo</code>：缓存子树，依赖数组不变则跳过更新（常用于 <code>v-for</code> 内部优化）。</li>
+</ul>
+<p><strong>49. 虚拟列表原理</strong></p>
+<ul>
+<li>只渲染可视区域及上下缓冲区的 DOM，通过计算 <code>transform</code> 或 <code>padding</code> 撑开滚动条。解决长列表 DOM 过多导致的卡顿。</li>
+</ul>
+<p><strong>50. 避免模板调用方法</strong></p>
+<ul>
+<li>方法每次渲染都会执行，无缓存。<code>computed</code> 有缓存，依赖不变不执行，性能更好。</li>
+</ul>
+<p><strong>51. SSR &amp; Nuxt &amp; Hydration</strong></p>
+<ul>
+<li><strong>SSR</strong>：服务端渲染 HTML，解决首屏慢和 SEO 问题。代价是服务器压力大、开发受限（无 window/document）。Nuxt 是 Vue 的 SSR 框架。</li>
+<li><strong>Hydration (注水)</strong>：客户端 JS 加载后，接管服务端渲染的静态 HTML，为其绑定事件和响应式。</li>
+<li><strong>Mismatch</strong>：服务端和客户端渲染的 DOM 结构不一致（通常因时间、随机数、浏览器特有 API 导致）。</li>
+</ul>
+<hr>
+<h3 id="十-其他核心概念">十、 其他核心概念</h3>
+<p><strong>52. Vue2 升 Vue3 破坏性变更</strong></p>
+<ul>
+<li>移除过滤器、<code>.sync</code>、<code>$on/$off/$once</code> (EventBus)。</li>
+<li>全局 API 改为实例属性（<code>Vue.config</code> -&gt; <code>app.config</code>）。</li>
+<li>过渡类名更改（<code>v-enter</code> -&gt; <code>v-enter-from</code>）。</li>
+<li><code>v-model</code> 更改，移除 <code>$children</code>。</li>
+</ul>
+<p><strong>53. 自定义指令生命周期差异</strong></p>
+<ul>
+<li>Vue2：<code>bind, inserted, update, componentUpdated, unbind</code>。</li>
+<li>Vue3：与组件生命周期对齐（<code>created, beforeMount, mounted, beforeUpdate, updated, beforeUnmount, unmounted</code>）。</li>
+</ul>
+<p><strong>54. 过滤器移除与替代</strong></p>
+<ul>
+<li>Vue3 移除过滤器，因为可以用 <code>methods</code> 或 <code>computed</code> 替代，减少框架体积和概念。</li>
+</ul>
+<p><strong>55. 单向数据流 &amp; 修改 props</strong></p>
+<ul>
+<li>数据从父到子流动，便于追踪数据流向，防止子组件意外修改父组件状态导致数据流混乱。<code>props</code> 是只读的。</li>
+</ul>
+<p><strong>56. data 为什么必须是函数？</strong></p>
+<ul>
+<li>组件可能被复用多次。如果是对象，所有实例会共享同一个数据引用。函数每次返回新对象，保证<strong>实例数据独立</strong>。</li>
+</ul>
+<p><strong>57. <code>defineModel</code> (Vue 3.4+ 稳定) 解决了什么痛点？</strong></p>
+<ul>
+<li><strong>痛点</strong>：以前在组件中实现 <code>v-model</code> 需要手动定义 <code>props</code> (modelValue) 和 <code>emits</code> (update:modelValue)，并在 <code>watch</code> 或 <code>computed</code> 中处理双向绑定，代码冗余。</li>
+<li><strong>解决</strong>：<code>defineModel</code> 是一个宏，直接返回一个可写的 ref。它自动处理了 prop 的接收和 emit 的触发，让组件内的 <code>v-model</code> 用起来就像本地的 <code>ref</code> 一样简单。</li>
+</ul>
+<p><strong>58. <code>effectScope</code> 的作用是什么？（解决组合式函数内存泄漏）</strong></p>
+<ul>
+<li><strong>场景</strong>：在组合式函数（Composables）中创建了大量的 <code>watchEffect</code> 或 <code>computed</code>，当组件卸载时，如果忘记手动停止（<code>stop</code>），会导致<strong>内存泄漏</strong>。</li>
+<li><strong>作用</strong>：<code>effectScope</code> 可以创建一个作用域，捕获其中创建的所有响应式 effect。当组件卸载时，只需调用 <code>scope.stop()</code>，即可<strong>批量清理</strong>该作用域内的所有 effect，无需逐个停止。</li>
+</ul>
+<p><strong>59. <code>toRaw</code> 和 <code>markRaw</code> 的区别与原理？</strong></p>
+<ul>
+<li><code>toRaw</code>：返回 <code>reactive</code> 或 <code>readonly</code> 代理的<strong>原始对象</strong>。用于读取数据时避免触发依赖收集（性能优化），或传递给不需要响应式的第三方库。</li>
+<li><code>markRaw</code>：标记一个对象，使其<strong>永远不会被代理</strong>。即使把它放进 <code>reactive</code> 对象中，它依然是普通对象。适用于大型第三方库实例（如 ECharts 实例、Three.js 对象）或静态数据。</li>
+</ul>
+<p><strong>60. Vue3 是如何支持 Map / Set 等集合类型的响应式的？</strong></p>
+<ul>
+<li>Vue3 重写了 Proxy 的 <code>get/set/has/deleteProperty</code> 等拦截器（Collection handlers）。</li>
+<li>当调用 <code>map.get(key)</code> 时，拦截器会进行<strong>依赖收集</strong>；当调用 <code>map.set(key, val)</code> 时，拦截器会进行<strong>派发更新</strong>。底层通过重写集合原型链上的方法来实现。</li>
+</ul>
+<p><strong>61. Vue2 的 <code>nextTick</code> 降级策略是什么？</strong></p>
+<ul>
+<li>Vue2 的 <code>nextTick</code> 优先使用<strong>微任务</strong>，降级使用<strong>宏任务</strong>。</li>
+<li><strong>顺序</strong>：<code>Promise</code> (微) -&gt; <code>MutationObserver</code> (微，模拟微任务) -&gt; <code>setImmediate</code> (宏，IE独有) -&gt; <code>setTimeout</code> (宏，最终兜底)。</li>
+<li><em>面试追问</em>：为什么优先微任务？因为微任务在当前宏任务执行完毕后、下一次渲染前执行，能更快拿到更新后的 DOM。</li>
+</ul>
+<p><strong>62. Vue2 的异步更新队列机制是怎样的？为什么要异步？</strong></p>
+<ul>
+<li><strong>机制</strong>：数据变化时，Vue 不会立即更新 DOM，而是将对应的 Watcher 推入一个<strong>队列（Queue）</strong>。如果同一个 Watcher 被多次触发，只会被推入一次（去重）。然后在下一个事件循环（<code>nextTick</code>）中，清空队列并执行更新。</li>
+<li><strong>为什么异步</strong>：避免同步更新带来的<strong>性能损耗</strong>。如果数据连续变化多次，同步更新会导致 DOM 重绘/重排多次；异步队列可以将多次数据变化合并为一次 DOM 更新。</li>
+</ul>
+<p><strong>63. Vue2 中的 Watcher 有哪几种？</strong></p>
+<ul>
+<li><strong>Render Watcher</strong>：渲染 Watcher，每个组件实例对应一个，负责将 VNode 渲染为真实 DOM。</li>
+<li><strong>User Watcher</strong>：用户 Watcher，即我们手写的 <code>watch</code> 选项或 <code>$watch</code>。</li>
+<li><strong>Computed Watcher</strong>：计算属性 Watcher，带有 <code>lazy</code> 属性，只有依赖变化时才重新计算。</li>
+<li><em>执行优先级</em>：User Watcher &gt; Render Watcher (保证数据先更新，视图再更新)。</li>
+</ul>
+<p><strong>64. Vue2 中 <code>v-for</code> 的 <code>key</code> 如果传了 <code>undefined</code> 会怎样？</strong></p>
+<ul>
+<li>如果 <code>key</code> 为 <code>undefined</code>，Vue 会启用 <strong>inlinedClone（内联克隆）</strong> 机制。</li>
+<li>它会尝试复用相同标签的旧节点，但会检查其内部状态（如 <code>v-if</code> 条件、组件状态）。如果状态不匹配，则不复用。这会导致性能下降和潜在的渲染错误，所以<strong>必须提供唯一的 key</strong>。</li>
+</ul>
+<p><strong>65. Vue3 的依赖收集底层数据结构是怎样的？</strong></p>
+<ul>
+<li>采用三层嵌套结构：<code>targetMap</code> (WeakMap) -&gt; <code>depsMap</code> (Map) -&gt; <code>dep</code> (Set)。</li>
+<li><strong>第一层 <code>targetMap</code></strong>：Key 是<strong>原始对象 (target)</strong>，Value 是 <code>depsMap</code>。使用 WeakMap 是为了<strong>防止内存泄漏</strong>（当对象被垃圾回收时，WeakMap 的引用也会自动清除）。</li>
+<li><strong>第二层 <code>depsMap</code></strong>：Key 是<strong>属性名 (key)</strong>，Value 是 <code>dep</code>。</li>
+<li><strong>第三层 <code>dep</code></strong>：是一个 <strong>Set</strong> 结构，存储了所有依赖该属性的 <strong>effect 函数</strong>。使用 Set 是为了<strong>自动去重</strong>。</li>
+</ul>
+<p><strong>66. Vue3 的 <code>trigger</code> 在触发更新时，对不同操作 (ADD/SET/DELETE) 有什么区别？</strong></p>
+<ul>
+<li>Vue3 内部定义了 <code>TriggerOpTypes</code> (ADD, SET, DELETE, CLEAR)。</li>
+<li><strong>SET (修改)</strong>：只触发当前 key 对应的 <code>dep</code> 中的 effect。</li>
+<li><strong>ADD (新增)</strong>：除了触发当前 key 的 effect，还会触发 <code>ITERATE_KEY</code>（用于触发 <code>for...in</code> 或 <code>Object.keys</code> 的依赖）。</li>
+<li><strong>DELETE (删除)</strong>：同 ADD，也会触发 <code>ITERATE_KEY</code>。</li>
+<li><strong>CLEAR (清空 Map/Set)</strong>：触发该集合所有的依赖。</li>
+</ul>
+<p><strong>67. 为什么 Vite 在开发环境下比 Webpack 快那么多？</strong></p>
+<ul>
+<li><strong>Webpack</strong>：Bundle-based。开发时也要把整个项目打包成 Bundle，项目越大越慢。</li>
+<li><strong>Vite</strong>：Native ESM-based。
+<ol>
+<li><strong>开发服务器</strong>：利用浏览器原生支持 ES Module 的特性，<strong>不打包</strong>，按需编译。只有浏览器请求到的文件才会被编译（基于 ESBuild，速度极快）。</li>
+<li><strong>HMR (热更新)</strong>：无论项目多大，HMR 的速度只与<strong>发生改变的模块</strong>有关，而不是整个项目。</li>
+</ol>
+</li>
+</ul>
+<p><strong>68. Vue3 在 Vite 中的 HMR (热更新) 是如何做到精准更新的？</strong></p>
+<ul>
+<li>Vite 的 Vue 插件 (<code>@vitejs/plugin-vue</code>) 在编译 SFC 时，会为每个组件注入 HMR 代码。</li>
+<li>当组件文件改变时，Vite 只发送该组件的更新请求。浏览器接收到新模块后，通过 Vue 提供的 <code>__VUE_HMR_RUNTIME__.rerender</code> (模板改变) 或 <code>reload</code> (逻辑改变) 方法，<strong>精准替换</strong>对应的组件实例，而不需要刷新整个页面。</li>
+</ul>
+<p><strong>69. 为什么 Vue3 移除了 <code>$on / $off / $once</code> (EventBus)？</strong></p>
+<ul>
+<li><strong>原因</strong>：EventBus 会导致组件间的数据流向变得<strong>不可追踪</strong>，违背了 Vue 单向数据流的设计理念，且容易导致内存泄漏（忘记 <code>$off</code>）。</li>
+<li><strong>替代</strong>：官方推荐使用第三方的轻量级库（如 <code>mitt</code> 或 <code>tiny-emitter</code>），将事件总线从 Vue 核心中解耦，减小核心包体积。</li>
+</ul>
+<p><strong>70. Vue 的 <code>v-html</code> 原理是什么？如何防御 XSS？</strong></p>
+<ul>
+<li><strong>原理</strong>：底层通过设置 DOM 元素的 <code>innerHTML</code> 属性来渲染 HTML 字符串。</li>
+<li><strong>XSS 风险</strong>：如果 <code>v-html</code> 的内容包含用户输入，恶意用户可注入 <code>&lt;script&gt;</code> 或 <code>onerror</code> 等恶意代码。</li>
+<li><strong>防御</strong>：
+<ol>
+<li>永远不要将用户输入直接传给 <code>v-html</code>。</li>
+<li>如果必须渲染用户输入的富文本，必须在服务端或客户端使用 DOMPurify 等库进行<strong>HTML 清洗 (Sanitize)</strong>。</li>
+</ol>
+</li>
+</ul>
+<p><strong>71. Vue3 的 <code>Suspense</code> 到底是怎么收集异步依赖的？</strong></p>
+<ul>
+<li>当 <code>Suspense</code> 渲染其默认插槽时，会遍历其子组件。</li>
+<li>如果子组件是异步组件（<code>defineAsyncComponent</code>），或者子组件的 <code>setup</code> 是 <code>async</code> 的（返回 Promise），<code>Suspense</code> 会收集这些 Promise。</li>
+<li>只有当<strong>所有</strong>收集到的异步依赖都 <code>resolve</code> 后，<code>Suspense</code> 才会将 fallback 插槽替换为 default 插槽的内容。</li>
+</ul>
+</div><script type="module">function e(e){let t=e.getAttribute(`data-language`)?.trim();if(t)return t===`text`||t===`plaintext`||t===`txt`?`text`:t;let n=e.querySelector(`code`)?.className||e.className||``,r=/language-([a-z0-9_+-]+)/i.exec(n);return r?.[1]?r[1]:`code`}function t(t){if(t.closest(`[data-mac-window]`)||t.dataset.macEnhanced===`1`)return;t.dataset.macEnhanced=`1`;let n=document.createElement(`figure`);n.className=`mac-window`,n.setAttribute(`data-mac-window`,``);let r=document.createElement(`div`);r.className=`mac-titlebar`,r.innerHTML=`
+      <div class="mac-dots" aria-hidden="true">
+        <span class="dot red"></span>
+        <span class="dot yellow"></span>
+        <span class="dot green"></span>
+      </div>
+      <span class="mac-title"></span>
+      <button type="button" class="mac-copy" data-mac-copy aria-label="复制代码">复制</button>
+    `;let i=r.querySelector(`.mac-title`);i&&(i.textContent=e(t));let a=document.createElement(`div`);a.className=`mac-body`,t.parentNode?.insertBefore(n,t),a.appendChild(t),n.appendChild(r),n.appendChild(a)}async function n(e){if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(e);return}let t=document.createElement(`textarea`);t.value=e,t.style.position=`fixed`,t.style.opacity=`0`,document.body.appendChild(t),t.select(),document.execCommand(`copy`),t.remove()}function r(e=document){e.querySelectorAll(`[data-mac-copy]`).forEach(e=>{e.dataset.bound!==`1`&&(e.dataset.bound=`1`,e.addEventListener(`click`,async()=>{let t=e.closest(`[data-mac-window]`)?.querySelector(`pre`)?.textContent??``;try{await n(t);let r=e.textContent;e.textContent=`已复制`,e.classList.add(`is-copied`),window.setTimeout(()=>{e.textContent=r||`复制`,e.classList.remove(`is-copied`)},1600)}catch{e.textContent=`失败`,window.setTimeout(()=>{e.textContent=`复制`},1600)}}))})}function i(){document.querySelectorAll(`.prose pre`).forEach(t),r()}i(),document.addEventListener(`astro:page-load`,i);</script></article><nav class="pager wrap-narrow" aria-label="上下篇" data-astro-cid-tldeq5d5><p data-astro-cid-tldeq5d5>上一篇：<a href="/web/场景设计/" data-astro-cid-tldeq5d5>场景设计</a></p><p data-astro-cid-tldeq5d5>下一篇：<a href="/web/typescript/" data-astro-cid-tldeq5d5>typescript</a></p></nav><section class="related" data-astro-cid-tldeq5d5><div class="wrap" data-astro-cid-tldeq5d5><h2 data-astro-cid-tldeq5d5>继续阅读</h2><ol class="related-grid" data-astro-cid-tldeq5d5><li data-astro-cid-tldeq5d5><a class="related-topic" href="/web/" data-astro-cid-tldeq5d5>前端</a><a class="related-title" href="/web/html/" data-astro-cid-tldeq5d5>HTML</a><p data-astro-cid-tldeq5d5>HTML</p></li><li data-astro-cid-tldeq5d5><a class="related-topic" href="/web/" data-astro-cid-tldeq5d5>前端</a><a class="related-title" href="/web/react/" data-astro-cid-tldeq5d5>react</a><p data-astro-cid-tldeq5d5>react</p></li><li data-astro-cid-tldeq5d5><a class="related-topic" href="/web/" data-astro-cid-tldeq5d5>前端</a><a class="related-title" href="/web/typescript/" data-astro-cid-tldeq5d5>typescript</a><p data-astro-cid-tldeq5d5>typescript</p></li></ol></div></section></main><footer class="site-footer" data-astro-cid-jo6i4kqk><div class="wrap bar" data-astro-cid-jo6i4kqk><a class="brand" href="/" data-astro-cid-jo6i4kqk>rty</a><div class="social" aria-label="社交链接" data-astro-cid-jo6i4kqk><a href="mailto:peonyfoals@gmail.com" aria-label="Email" data-astro-cid-jo6i4kqk><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" data-astro-cid-jo6i4kqk><path fill="currentColor" d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5L4 8V6l8 5 8-5v2z" data-astro-cid-jo6i4kqk></path></svg></a><a href="/rss.xml" aria-label="RSS" data-astro-cid-jo6i4kqk><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" data-astro-cid-jo6i4kqk><path fill="currentColor" d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20 5 20 4 19 4 17.82c0-1.2.98-2.18 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27zm0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93z" data-astro-cid-jo6i4kqk></path></svg></a><a href="/archive/" aria-label="归档" data-astro-cid-jo6i4kqk><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" data-astro-cid-jo6i4kqk><path fill="currentColor" d="M4 6h16v2H4zm0 5h16v2H4zm0 5h10v2H4z" data-astro-cid-jo6i4kqk></path></svg></a></div><p class="meta" data-astro-cid-jo6i4kqk>© 2026 peony</p></div></footer></body></html>

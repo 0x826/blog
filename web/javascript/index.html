@@ -1,0 +1,983 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="javaScript"><meta name="author" content="peony"><meta name="generator" content="Astro v7.1.1"><meta name="theme-color" content="#ffffff"><link rel="canonical" href="https://langzyw.xyz/web/javascript/"><link rel="alternate" type="application/rss+xml" title="rty" href="/rss.xml"><meta property="og:type" content="website"><meta property="og:site_name" content="rty"><meta property="og:title" content="javaScript · rty"><meta property="og:description" content="javaScript"><meta property="og:url" content="https://langzyw.xyz/web/javascript/"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><title>javaScript · rty</title><link rel="stylesheet" href="/_astro/Footer.C9xAhOzk.css"><link rel="stylesheet" href="/_astro/_..B6QWlgH6.css"></head><body><header class="site-header" data-astro-cid-nen7h5rs><div class="wrap bar" data-astro-cid-nen7h5rs><div class="bar-flex" data-astro-cid-nen7h5rs><a class="brand" href="/" data-astro-cid-nen7h5rs>rty</a><nav class="nav" aria-label="主导航" data-astro-cid-nen7h5rs><a class="nav-link" href="/" data-astro-cid-nen7h5rs>首页</a><a class="nav-link active" href="/web/" aria-current="page" data-astro-cid-nen7h5rs>前端</a><a class="nav-link" href="/python/" data-astro-cid-nen7h5rs>python</a><a class="nav-link" href="/llm/" data-astro-cid-nen7h5rs>llm</a><a class="nav-link" href="/web3/" data-astro-cid-nen7h5rs>区块链</a><a class="nav-link" href="/about/" data-astro-cid-nen7h5rs>关于</a></nav></div><button class="search-btn" type="button" aria-label="搜索" data-search-open data-astro-cid-nen7h5rs><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" data-astro-cid-nen7h5rs><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="1.6" data-astro-cid-nen7h5rs></circle><path d="M16.5 16.5L21 21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" data-astro-cid-nen7h5rs></path></svg></button></div></header><dialog class="search-dialog" data-search-dialog data-astro-cid-nen7h5rs><form class="search-panel" method="dialog" data-astro-cid-nen7h5rs><label class="sr-only" for="site-search" data-astro-cid-nen7h5rs>搜索文章</label><input id="site-search" class="search-input" type="search" placeholder="搜索文章…" autocomplete="off" data-search-input data-astro-cid-nen7h5rs><button class="search-close" value="cancel" type="submit" aria-label="关闭" data-astro-cid-nen7h5rs>×</button></form><ul class="search-results" data-search-results data-astro-cid-nen7h5rs></ul></dialog><script>(function(){const searchIndexUrl = "/search-index.json";
+
+  const openBtn = document.querySelector("[data-search-open]");
+  const dialog = document.querySelector("[data-search-dialog]");
+  const input = document.querySelector("[data-search-input]");
+  const results = document.querySelector("[data-search-results]");
+
+  if (
+    openBtn &&
+    dialog instanceof HTMLDialogElement &&
+    input instanceof HTMLInputElement &&
+    results
+  ) {
+    let index = [];
+    let loaded = false;
+
+    async function ensureIndex() {
+      if (loaded) return;
+      const res = await fetch(searchIndexUrl);
+      index = await res.json();
+      loaded = true;
+    }
+
+    function render(q) {
+      const query = q.trim().toLowerCase();
+      if (!query) {
+        results.innerHTML = "";
+        return;
+      }
+      const hits = index
+        .filter((item) =>
+          `${item.title} ${item.description} ${item.topic}`
+            .toLowerCase()
+            .includes(query),
+        )
+        .slice(0, 8);
+      results.innerHTML = hits.length
+        ? hits
+            .map(
+              (item) =>
+                `<li><a href="${item.href}"><strong>${item.title}</strong><span>${item.description}</span></a></li>`,
+            )
+            .join("")
+        : `<li class="empty">没有匹配结果</li>`;
+    }
+
+    openBtn.addEventListener("click", async () => {
+      await ensureIndex();
+      dialog.showModal();
+      input.value = "";
+      results.innerHTML = "";
+      input.focus();
+    });
+
+    input.addEventListener("input", () => render(input.value));
+
+    dialog.addEventListener("click", (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+  }
+})();</script><main class="post-page" data-astro-cid-tldeq5d5><article data-astro-cid-tldeq5d5><header class="header wrap-narrow" data-astro-cid-tldeq5d5><a class="topic" href="/web/" data-astro-cid-tldeq5d5>前端</a><h1 data-astro-cid-tldeq5d5>javaScript</h1><p class="meta" data-astro-cid-tldeq5d5><time datetime="2026-07-17T00:00:00.000Z" data-astro-cid-tldeq5d5>2026年7月17日</time><span aria-hidden="true" data-astro-cid-tldeq5d5>·</span><span data-astro-cid-tldeq5d5>约 2 小时</span></p><p class="tags" data-astro-cid-tldeq5d5><a href="/tags/javascript/" data-astro-cid-tldeq5d5>javascript</a><span data-astro-cid-tldeq5d5> · </span><a href="/tags/面试/" data-astro-cid-tldeq5d5>面试</a></p></header><div class="hero-image wrap" data-astro-cid-tldeq5d5><img src="/images/covers/code-dark.jpg" alt="" data-astro-cid-tldeq5d5></div><div class="prose wrap-narrow" data-astro-cid-tldeq5d5><h3 id="javascript-有哪些数据类型如何在内存中区分它们">JavaScript 有哪些数据类型？如何在内存中区分它们？</h3>
+<ul>
+<li><strong>基础数据类型</strong>：<code>number</code>、<code>boolean</code>、<code>string</code>、<code>null</code>、<code>undefined</code>、<code>bigint</code>、<code>symbol</code></li>
+<li><strong>复杂数据类型</strong>：<code>object</code>、<code>map</code>、<code>set</code>、<code>array</code>、<code>date</code>、<code>RegExp</code>、<code>function</code> 等</li>
+</ul>
+<p><strong>内存区分</strong>：</p>
+<ul>
+<li><strong>基本数据类型</strong>：存在<strong>栈（Stack）</strong> 中，按值访问，大小固定，系统自动分配和释放。</li>
+<li><strong>复杂数据类型</strong>：实体存在<strong>堆（Heap）</strong> 中，大小不固定；其在栈中仅存储指向堆内存的<strong>引用地址（指针）</strong>。</li>
+</ul>
+<hr>
+<h3 id="如何准确判断一个变量的类型各方法的优劣是什么">如何准确判断一个变量的类型？各方法的优劣是什么？</h3>
+<h4 id="1-typeof">1. <code>typeof</code></h4>
+<ul>
+<li><strong>原理</strong>：根据底层二进制标签判断。</li>
+<li><strong>能判断</strong>：所有基本数据类型（返回 <code>'number'</code>, <code>'string'</code>, <code>'boolean'</code>, <code>'undefined'</code>, <code>'symbol'</code>, <code>'bigint'</code>）以及函数（返回 <code>'function'</code>）。</li>
+<li><strong>不能判断</strong>：
+<ul>
+<li><code>null</code>：由于历史设计缺陷，底层二进制前三位为 0，<code>null</code> 全为 0，被误判为 <code>'object'</code>。</li>
+<li>除函数外的所有对象类型（Array, Date, RegExp 等）均返回 <code>'object'</code>，无法细分。</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-instanceof">2. <code>instanceof</code></h4>
+<ul>
+<li><strong>原理</strong>：根据原型链（<code>__proto__</code>）查找构造函数的 <code>prototype</code> 是否在对象的原型链上。</li>
+<li><strong>能判断</strong>：所有引用数据类型。</li>
+<li><strong>不能判断</strong>：基本数据类型（除非用 <code>new Number(1)</code> 包装）；且存在跨 iframe 失效的问题。</li>
+</ul>
+<h4 id="3-objectprototypetostringcall-最准确推荐">3. <code>Object.prototype.toString.call()</code> （<strong>最准确推荐</strong>）</h4>
+<ul>
+<li><strong>原理</strong>：每个对象内部都有一个 <code>[[Class]]</code> 属性，该方法能准确返回其内部类型。</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#79B8FF">Object</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">.toString.</span><span style="color:#B392F0">call</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">123</span><span style="color:#E1E4E8">)           </span><span style="color:#6A737D">// "[object Number]"</span></span>
+<span class="line"><span style="color:#79B8FF">Object</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">.toString.</span><span style="color:#B392F0">call</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">null</span><span style="color:#E1E4E8">)          </span><span style="color:#6A737D">// "[object Null]"</span></span>
+<span class="line"><span style="color:#79B8FF">Object</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">.toString.</span><span style="color:#B392F0">call</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">undefined</span><span style="color:#E1E4E8">)     </span><span style="color:#6A737D">// "[object Undefined]"</span></span>
+<span class="line"><span style="color:#79B8FF">Object</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">.toString.</span><span style="color:#B392F0">call</span><span style="color:#E1E4E8">([</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">])        </span><span style="color:#6A737D">// "[object Array]"</span></span>
+<span class="line"><span style="color:#79B8FF">Object</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">.toString.</span><span style="color:#B392F0">call</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">new</span><span style="color:#B392F0"> Date</span><span style="color:#E1E4E8">())    </span><span style="color:#6A737D">// "[object Date]"</span></span></code></pre>
+<h4 id="4-其他专用方法">4. 其他专用方法</h4>
+<ul>
+<li><code>Array.isArray(value)</code>：判断数组的最安全方法（跨 iframe 有效）。</li>
+<li><code>Number.isNaN(value)</code>：严格判断是否为 <code>NaN</code>（不会像全局 <code>isNaN</code> 那样发生隐式转换）。</li>
+<li><code>Object.is(a, b)</code>：判断两个值是否绝对相等（修复了 <code>===</code> 中 <code>+0 === -0</code> 为 true，以及 <code>NaN === NaN</code> 为 false 的缺陷）。</li>
+</ul>
+<hr>
+<h3 id="-的隐式转换规则是什么请说出完整流程"><code>==</code> 的隐式转换规则是什么？请说出完整流程。</h3>
+<h4 id="1-类型相同same-type">1. 类型相同（Same Type）</h4>
+<ul>
+<li><code>NaN</code>：<code>NaN</code> 不等于任何值（包括自身）。</li>
+<li><code>+0</code> 和 <code>-0</code>：相等。</li>
+<li>对象引用：引用地址一致则相同。</li>
+<li>字符串/数字：内容一致则相同。</li>
+</ul>
+<h4 id="2-null-和-undefined-的专属规则">2. <code>null</code> 和 <code>undefined</code> 的“专属规则”</h4>
+<ul>
+<li>如果一侧为 <code>null</code>，另一侧为 <code>undefined</code>，返回 <code>true</code>。</li>
+<li>如果一侧为 <code>null</code> 或 <code>undefined</code>，另一侧是其他任何类型，返回 <code>false</code>。</li>
+</ul>
+<h4 id="3-类型不同时的转换规则">3. 类型不同时的转换规则</h4>
+<ul>
+<li><strong>Number 与 String</strong>：将 String 转为 Number（调用 <code>ToNumber</code>），再比较。
+<ul>
+<li><code>1 == '1'</code> ➔ <code>1 == 1</code> ➔ <code>true</code></li>
+<li><code>1 == 'ab'</code> ➔ <code>1 == NaN</code> ➔ <code>false</code></li>
+</ul>
+</li>
+<li><strong>Boolean 与任何类型</strong>：只要有一方是 Boolean，永远先将 Boolean 转为 Number（<code>true</code>➔1, <code>false</code>➔0），再进行比较。
+<ul>
+<li><code>true == 1</code> ➔ <code>1 == 1</code> ➔ <code>true</code></li>
+<li><code>false == '0'</code> ➔ <code>0 == '0'</code> ➔ <code>true</code></li>
+<li><code>true == 'true'</code> ➔ <code>1 == NaN</code> ➔ <code>false</code></li>
+</ul>
+</li>
+<li><strong>Object 与 基础类型</strong>：Object 优先调用 <code>valueOf()</code>，若返回非原始值，则调用 <code>toString()</code> 转为原始值，然后再按上述规则比较。</li>
+</ul>
+<h4 id="4-经典变态面试题解析">4. 经典“变态”面试题解析</h4>
+<ul>
+<li><strong><code>[] == ![]</code> 为什么是 true？</strong>
+<ol>
+<li>右边 <code>![]</code>：<code>[]</code> 转为布尔值是 <code>true</code>，<code>!true</code> 是 <code>false</code>。式子变成 <code>[] == false</code>。</li>
+<li>Boolean 转 Number：<code>false</code> 转为 <code>0</code>。式子变成 <code>[] == 0</code>。</li>
+<li>Object 转原始值：<code>[]</code> 调用 <code>toString()</code> 变成 <code>""</code>（空字符串）。式子变成 <code>"" == 0</code>。</li>
+<li>String 转 Number：<code>""</code> 转为 <code>0</code>。式子变成 <code>0 == 0</code>。结果：<code>true</code>。</li>
+</ol>
+</li>
+<li><strong><code>0 == ''</code> 为什么是 true？</strong>
+空字符串 <code>''</code> 通过 <code>ToNumber</code> 转换为 <code>0</code>，<code>0 == 0</code> 为 <code>true</code>。</li>
+<li><strong><code>'\n\n\n' == 0</code> 为什么是 true？</strong>
+仅包含空白符的字符串通过 <code>ToNumber</code> 转换时，会被解析为 <code>0</code>，<code>0 == 0</code> 为 <code>true</code>。</li>
+</ul>
+<hr>
+<h3 id="实现一个完整的深拷贝处理循环引用特殊类型">实现一个完整的深拷贝（处理循环引用、特殊类型）</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> target</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">  // 基本类型</span></span>
+<span class="line"><span style="color:#E1E4E8">  num: </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, str: </span><span style="color:#9ECBFF">'hello'</span><span style="color:#E1E4E8">, bool: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">, nul: </span><span style="color:#79B8FF">null</span><span style="color:#E1E4E8">, undef: </span><span style="color:#79B8FF">undefined</span><span style="color:#E1E4E8">, sym: </span><span style="color:#B392F0">Symbol</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'symbol'</span><span style="color:#E1E4E8">), </span></span>
+<span class="line"><span style="color:#6A737D">  // 特殊内置对象</span></span>
+<span class="line"><span style="color:#E1E4E8">  date: </span><span style="color:#F97583">new</span><span style="color:#B392F0"> Date</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'2023-01-01'</span><span style="color:#E1E4E8">), reg:</span><span style="color:#9ECBFF"> /</span><span style="color:#DBEDFF">test</span><span style="color:#9ECBFF">/</span><span style="color:#F97583">gi</span><span style="color:#E1E4E8">, map: </span><span style="color:#F97583">new</span><span style="color:#B392F0"> Map</span><span style="color:#E1E4E8">([[</span><span style="color:#9ECBFF">'mapKey'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'mapValue'</span><span style="color:#E1E4E8">]]), set: </span><span style="color:#F97583">new</span><span style="color:#B392F0"> Set</span><span style="color:#E1E4E8">([</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">]),</span></span>
+<span class="line"><span style="color:#6A737D">  // 复杂结构</span></span>
+<span class="line"><span style="color:#E1E4E8">  arr: [</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">, { inner: </span><span style="color:#9ECBFF">'array'</span><span style="color:#E1E4E8"> }], obj: { name: </span><span style="color:#9ECBFF">'target'</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#6A737D">  // 无法被 JSON 拷贝的类型</span></span>
+<span class="line"><span style="color:#B392F0">  func</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">function</span><span style="color:#E1E4E8">() { </span><span style="color:#F97583">return</span><span style="color:#9ECBFF"> 'I am a function'</span><span style="color:#E1E4E8">; },</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span></code></pre>
+<h4 id="1-使用-jsonparsejsonstringify">1. 使用 <code>JSON.parse(JSON.stringify())</code></h4>
+<ul>
+<li><strong>缺点</strong>：函数会丢失；<code>Date</code> 会变成字符串；<code>RegExp</code>、<code>Map</code>、<code>Set</code> 会变成空对象 <code>{}</code>；遇到循环引用会直接报错。</li>
+</ul>
+<h4 id="2-手写完整递归深拷贝">2. 手写完整递归深拷贝</h4>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> deepClone</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">target</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">hash</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> WeakMap</span><span style="color:#E1E4E8">()) {</span></span>
+<span class="line"><span style="color:#6A737D">  // 1. 处理 null 或 非对象/函数</span></span>
+<span class="line"><span style="color:#F97583">  if</span><span style="color:#E1E4E8"> (target </span><span style="color:#F97583">===</span><span style="color:#79B8FF"> null</span><span style="color:#F97583"> ||</span><span style="color:#F97583"> typeof</span><span style="color:#E1E4E8"> target </span><span style="color:#F97583">!==</span><span style="color:#9ECBFF"> 'object'</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> target;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">  // 2. 处理特殊内置对象</span></span>
+<span class="line"><span style="color:#F97583">  if</span><span style="color:#E1E4E8"> (target </span><span style="color:#F97583">instanceof</span><span style="color:#B392F0"> Date</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">return</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Date</span><span style="color:#E1E4E8">(target);</span></span>
+<span class="line"><span style="color:#F97583">  if</span><span style="color:#E1E4E8"> (target </span><span style="color:#F97583">instanceof</span><span style="color:#B392F0"> RegExp</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">return</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> RegExp</span><span style="color:#E1E4E8">(target.source, target.flags);</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span></span>
+<span class="line"><span style="color:#6A737D">  // 3. 处理循环引用</span></span>
+<span class="line"><span style="color:#F97583">  if</span><span style="color:#E1E4E8"> (hash.</span><span style="color:#B392F0">has</span><span style="color:#E1E4E8">(target)) </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> hash.</span><span style="color:#B392F0">get</span><span style="color:#E1E4E8">(target);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">  // 4. 初始化结果容器 (保持原型链)</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> cloneTarget</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#E1E4E8"> target.</span><span style="color:#B392F0">constructor</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">  hash.</span><span style="color:#B392F0">set</span><span style="color:#E1E4E8">(target, cloneTarget);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">  // 5. 处理 Map</span></span>
+<span class="line"><span style="color:#F97583">  if</span><span style="color:#E1E4E8"> (target </span><span style="color:#F97583">instanceof</span><span style="color:#B392F0"> Map</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    target.</span><span style="color:#B392F0">forEach</span><span style="color:#E1E4E8">((</span><span style="color:#FFAB70">value</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">key</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">      cloneTarget.</span><span style="color:#B392F0">set</span><span style="color:#E1E4E8">(key, </span><span style="color:#B392F0">deepClone</span><span style="color:#E1E4E8">(value, hash));</span></span>
+<span class="line"><span style="color:#E1E4E8">    });</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> cloneTarget;</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">  // 6. 处理 Set</span></span>
+<span class="line"><span style="color:#F97583">  if</span><span style="color:#E1E4E8"> (target </span><span style="color:#F97583">instanceof</span><span style="color:#B392F0"> Set</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    target.</span><span style="color:#B392F0">forEach</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">value</span><span style="color:#F97583"> =&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">      cloneTarget.</span><span style="color:#B392F0">add</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">deepClone</span><span style="color:#E1E4E8">(value, hash));</span></span>
+<span class="line"><span style="color:#E1E4E8">    });</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> cloneTarget;</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">  // 7. 递归遍历普通对象和数组</span></span>
+<span class="line"><span style="color:#F97583">  for</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">const</span><span style="color:#79B8FF"> key</span><span style="color:#F97583"> in</span><span style="color:#E1E4E8"> target) {</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">Object</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">.hasOwnProperty.</span><span style="color:#B392F0">call</span><span style="color:#E1E4E8">(target, key)) {</span></span>
+<span class="line"><span style="color:#E1E4E8">      cloneTarget[key] </span><span style="color:#F97583">=</span><span style="color:#B392F0"> deepClone</span><span style="color:#E1E4E8">(target[key], hash);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span></span>
+<span class="line"><span style="color:#6A737D">  // 8. 拷贝 Symbol 属性 (Object.keys 无法获取)</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> symKeys</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> Object.</span><span style="color:#B392F0">getOwnPropertySymbols</span><span style="color:#E1E4E8">(target);</span></span>
+<span class="line"><span style="color:#E1E4E8">  symKeys.</span><span style="color:#B392F0">forEach</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">symKey</span><span style="color:#F97583"> =&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    cloneTarget[symKey] </span><span style="color:#F97583">=</span><span style="color:#B392F0"> deepClone</span><span style="color:#E1E4E8">(target[symKey], hash);</span></span>
+<span class="line"><span style="color:#E1E4E8">  });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> cloneTarget;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<hr>
+<h3 id="解释栈内存与堆内存以及它们与-gc-的关系">解释栈内存与堆内存，以及它们与 GC 的关系。</h3>
+<h4 id="栈-stack">栈 (Stack)</h4>
+<p>“后进先出”的数据结构，内存是连续分配的，由操作系统自动分配和释放，存取速度快。</p>
+<h4 id="堆-heap">堆 (Heap)</h4>
+<p>树状/图状的内存结构，内存是不连续分配的，大小不固定，需要垃圾回收机制（GC）来管理。</p>
+<h4 id="内存分配过程示例">内存分配过程示例</h4>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> test</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">  let</span><span style="color:#E1E4E8"> a </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 10</span><span style="color:#E1E4E8">;             </span><span style="color:#6A737D">// 基本类型</span></span>
+<span class="line"><span style="color:#F97583">  let</span><span style="color:#E1E4E8"> obj </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> { name: </span><span style="color:#9ECBFF">'JS'</span><span style="color:#E1E4E8"> }; </span><span style="color:#6A737D">// 引用类型</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#B392F0">test</span><span style="color:#E1E4E8">();</span></span></code></pre>
+<p><strong>分配过程</strong>：</p>
+<ol>
+<li>调用 <code>test()</code>，在<strong>栈</strong>中压入一个执行上下文（栈帧）。</li>
+<li><code>let a = 10</code>：在栈中开辟空间，直接存入值 <code>10</code>。</li>
+<li><code>let obj = ...</code>：在<strong>堆</strong>中开辟一块空间，存入实体 <code>{ name: 'JS' }</code>（假设地址为 <code>0x1122</code>）；同时在<strong>栈</strong>中开辟空间存入变量 <code>obj</code>，其值为指针 <code>0x1122</code>。</li>
+<li><code>test()</code> 执行完毕，栈帧弹出。栈中的 <code>a</code> 和 <code>obj</code>（指针）瞬间销毁。</li>
+<li>此时，堆中的 <code>{ name: 'JS' }</code> 失去了栈中指针的引用，变成了“孤儿”，等待 GC 回收。</li>
+</ol>
+<h4 id="gc-垃圾回收机制">GC (垃圾回收机制)</h4>
+<ul>
+<li><strong>引用计数法</strong>：记录对象被引用的次数，为 0 则回收。<strong>缺点</strong>：无法解决循环引用导致的内存泄漏，现代 JS 引擎已弃用。</li>
+<li><strong>标记清除法</strong>：从“根对象”（如 <code>window</code>）出发，遍历标记所有可达对象为“存活”，未标记的即为垃圾并清除。<strong>缺点</strong>：会产生内存碎片。</li>
+<li><strong>V8 垃圾回收（分代回收）</strong>：
+<ul>
+<li><strong>新生代 (Scavenge 算法)</strong>：空间小，存活时间短。采用“复制算法”，将存活对象从 From 空间复制到 To 空间，然后清空 From 空间，两者角色互换。</li>
+<li><strong>老生代</strong>：空间大，存活时间长。采用“标记-清除” + “标记-整理”（将存活对象向内存一端移动，消除碎片）。</li>
+<li><strong>增量标记</strong>：将标记过程拆分为小步骤，与 JS 主线程交替执行，减少 STW (Stop-The-World) 停顿时间。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="闭包的本质是什么请讲清它的原理与典型应用">闭包的本质是什么？请讲清它的原理与典型应用。</h3>
+<p><strong>本质</strong>：函数与其词法环境的组合。内部函数能够访问并记住其外部函数作用域中的变量，即使外部函数已经执行完毕。</p>
+<h4 id="闭包的作用">闭包的作用：</h4>
+<ol>
+<li><strong>数据私有化</strong>：模拟私有变量，避免全局污染。</li>
+<li><strong>防抖节流</strong>：利用闭包保存定时器 ID 或状态。</li>
+<li><strong>函数柯里化</strong>：保存部分参数，返回新函数。</li>
+</ol>
+<h4 id="闭包的缺点">闭包的缺点：</h4>
+<p>闭包本身不会导致内存泄漏，但<strong>使用不当</strong>（如将包含大对象的闭包赋值给全局变量且不再使用）会导致变量无法被 GC 回收。解决方法：不需要时手动将引用置为 <code>null</code>。</p>
+<hr>
+<h3 id="for-循环中用-var-注册回调输出全是同一个值为什么如何修复">for 循环中用 var 注册回调，输出全是同一个值，为什么？如何修复？</h3>
+<p><strong>原因</strong>：<code>var</code> 没有块级作用域（<code>{}</code> 对 <code>var</code> 无效），且 <code>setTimeout</code> 是异步的。当回调执行时，循环早已结束，共享的变量 <code>i</code> 已经变成了 3。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">for</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">var</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">; i </span><span style="color:#F97583">&lt;</span><span style="color:#79B8FF"> 3</span><span style="color:#E1E4E8">; i</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#B392F0">    setTimeout</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">function</span><span style="color:#E1E4E8">() { console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(i); }, </span><span style="color:#79B8FF">1000</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#6A737D">// 实际输出：3, 3, 3</span></span></code></pre>
+<h4 id="修复方案">修复方案：</h4>
+<ol>
+<li><strong>使用 <code>let</code></strong>（推荐）：<code>let</code> 具有块级作用域，每次循环都会创建一个新的词法环境绑定当前的 <code>i</code>。</li>
+<li><strong>IIFE 使用闭包</strong>：每次循环创建一个新作用域，将当前的 <code>i</code> 作为参数传入并固定。
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">for</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">var</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">; i </span><span style="color:#F97583">&lt;</span><span style="color:#79B8FF"> 3</span><span style="color:#E1E4E8">; i</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    ((</span><span style="color:#FFAB70">j</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> { </span><span style="color:#B392F0">setTimeout</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">function</span><span style="color:#E1E4E8">() { console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(j); }, </span><span style="color:#79B8FF">1000</span><span style="color:#E1E4E8">); })(i);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+</li>
+<li><strong>setTimeout 传参数</strong>：利用 API 特性传递参数。
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">for</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">var</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">; i </span><span style="color:#F97583">&lt;</span><span style="color:#79B8FF"> 3</span><span style="color:#E1E4E8">; i</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#B392F0">    setTimeout</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">function</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">j</span><span style="color:#E1E4E8">) { console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(j); }, </span><span style="color:#79B8FF">1000</span><span style="color:#E1E4E8">, i);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+</li>
+</ol>
+<hr>
+<h3 id="什么是作用域和作用域链js-用的是哪种作用域">什么是作用域和作用域链？JS 用的是哪种作用域？</h3>
+<h4 id="作用域">作用域</h4>
+<ul>
+<li><strong>全局作用域</strong></li>
+<li><strong>函数作用域</strong>（局部作用域）</li>
+<li><strong>块级作用域</strong>（ES6 <code>let</code>/<code>const</code> 引入）</li>
+</ul>
+<p><strong>作用域链</strong>：JS 引擎查找变量的规则和路径。当前作用域中先查找，没找到会向上级作用域查找，一直找到全局作用域，没找到就抛出 <code>ReferenceError</code> 错误。</p>
+<h4 id="词法作用域">词法作用域</h4>
+<p>JS 使用的是<strong>词法作用域</strong>（静态作用域），即变量的作用域在<strong>代码书写（词法分析）时</strong>就已确定，而非运行时决定。</p>
+<hr>
+<h3 id="变量提升是什么letconst-的暂时性死区tdz如何理解">变量提升是什么？let/const 的暂时性死区（TDZ）如何理解？</h3>
+<h4 id="变量提升">变量提升</h4>
+<p>使用 <code>var</code> 定义的变量和 <code>function</code> 声明的函数，其声明部分会被提升到当前作用域顶部（<code>var</code> 初始化为 <code>undefined</code>）。</p>
+<h4 id="暂时性死区-tdz">暂时性死区 (TDZ)</h4>
+<p><code>let</code> 和 <code>const</code> 也存在提升（进入 TDZ），但在代码执行到声明语句之前，访问该变量会抛出 <code>ReferenceError</code>。这保证了变量必须先声明后使用。</p>
+<hr>
+<h3 id="this-的指向规则有哪些请按优先级讲解">this 的指向规则有哪些？请按优先级讲解。</h3>
+<p>在严格模式下 <code>this</code> 指向 <code>undefined</code>，非严格模式下，<code>this</code> 指向的是函数执行时的“上下文环境”。优先级从高到低：</p>
+<ol>
+<li><strong><code>new</code> 绑定</strong>：构造函数调用，<code>this</code> 指向新创建的实例对象。</li>
+<li><strong>显式绑定</strong>：<code>call</code>、<code>apply</code>、<code>bind</code>，<code>this</code> 指向传入的第一个参数。</li>
+<li><strong>隐式绑定</strong>：作为对象方法调用（<code>obj.fn()</code>），<code>this</code> 指向调用该方法的对象 <code>obj</code>。</li>
+<li><strong>默认绑定</strong>：独立函数调用。严格模式下为 <code>undefined</code>，非严格模式下为全局对象（浏览器 <code>window</code>，Node <code>global</code>）。</li>
+<li><strong>箭头函数</strong>：<strong>没有自己的 <code>this</code></strong>，其 <code>this</code> 继承自外层（定义时）的词法作用域，且不能被 <code>call/apply/new</code> 改变。</li>
+</ol>
+<h4 id="手写-new">手写 <code>new</code></h4>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> myNew</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">Constructor</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">...</span><span style="color:#FFAB70">args</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">  // 1. 创建空对象，并将其原型指向构造函数的 prototype</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> obj</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> Object.</span><span style="color:#B392F0">create</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">Constructor</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#6A737D">  // 2. 改变 this 指向并执行构造函数</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> result</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> Constructor.</span><span style="color:#B392F0">apply</span><span style="color:#E1E4E8">(obj, args);</span></span>
+<span class="line"><span style="color:#6A737D">  // 3. 如果构造函数返回了非 null 的对象，则返回该对象；否则返回新创建的 obj</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> (result </span><span style="color:#F97583">!==</span><span style="color:#79B8FF"> null</span><span style="color:#F97583"> &amp;&amp;</span><span style="color:#F97583"> typeof</span><span style="color:#E1E4E8"> result </span><span style="color:#F97583">===</span><span style="color:#9ECBFF"> 'object'</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">?</span><span style="color:#E1E4E8"> result </span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> obj;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h4 id="手写实现-callapplybind">手写实现 call、apply、bind</h4>
+<ul>
+<li><strong>call</strong>：立刻执行；参数逐个传递。
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#79B8FF">Function</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">myCall</span><span style="color:#F97583"> =</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">context</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">...</span><span style="color:#FFAB70">args</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    context </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> (context </span><span style="color:#F97583">===</span><span style="color:#79B8FF"> null</span><span style="color:#F97583"> ||</span><span style="color:#E1E4E8"> context </span><span style="color:#F97583">===</span><span style="color:#79B8FF"> undefined</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">?</span><span style="color:#E1E4E8"> globalThis </span><span style="color:#F97583">:</span><span style="color:#B392F0"> Object</span><span style="color:#E1E4E8">(context);</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> fnKey</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> Symbol</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'fn'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    context[fnKey] </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> this</span><span style="color:#E1E4E8">; </span><span style="color:#6A737D">// this 指向调用 myCall 的原函数</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> result</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> context[fnKey](</span><span style="color:#F97583">...</span><span style="color:#E1E4E8">args);</span></span>
+<span class="line"><span style="color:#F97583">    delete</span><span style="color:#E1E4E8"> context[fnKey];</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> result;</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span></code></pre>
+</li>
+<li><strong>apply</strong>：立刻执行；参数数组传递。
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#79B8FF">Function</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">myApply</span><span style="color:#F97583"> =</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">context</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">argsArray</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    context </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> (context </span><span style="color:#F97583">===</span><span style="color:#79B8FF"> null</span><span style="color:#F97583"> ||</span><span style="color:#E1E4E8"> context </span><span style="color:#F97583">===</span><span style="color:#79B8FF"> undefined</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">?</span><span style="color:#E1E4E8"> globalThis </span><span style="color:#F97583">:</span><span style="color:#B392F0"> Object</span><span style="color:#E1E4E8">(context);</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> fnKey</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> Symbol</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'fn'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    context[fnKey] </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> this</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> args</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> Array.</span><span style="color:#B392F0">isArray</span><span style="color:#E1E4E8">(argsArray) </span><span style="color:#F97583">?</span><span style="color:#E1E4E8"> argsArray </span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> [];</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> result</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> context[fnKey](</span><span style="color:#F97583">...</span><span style="color:#E1E4E8">args);</span></span>
+<span class="line"><span style="color:#F97583">    delete</span><span style="color:#E1E4E8"> context[fnKey];</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> result;</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span></code></pre>
+</li>
+<li><strong>bind</strong>：返回一个改变 <code>this</code> 的新函数；参数逐个传递。
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#79B8FF">Function</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">myBind</span><span style="color:#F97583"> =</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">context</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">...</span><span style="color:#FFAB70">bindArgs</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> self</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> this</span><span style="color:#E1E4E8">; </span><span style="color:#6A737D">// 保存原函数引用</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#B392F0"> boundFn</span><span style="color:#F97583"> =</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">...</span><span style="color:#FFAB70">callArgs</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        const</span><span style="color:#79B8FF"> finalArgs</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> [</span><span style="color:#F97583">...</span><span style="color:#E1E4E8">bindArgs, </span><span style="color:#F97583">...</span><span style="color:#E1E4E8">callArgs];</span></span>
+<span class="line"><span style="color:#6A737D">        // 核心难点：如果被 new 调用，this 应该指向 new 创建的实例</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">this</span><span style="color:#F97583"> instanceof</span><span style="color:#B392F0"> boundFn</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">            return</span><span style="color:#E1E4E8"> self.</span><span style="color:#B392F0">apply</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">, finalArgs);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> self.</span><span style="color:#B392F0">apply</span><span style="color:#E1E4E8">(context, finalArgs);</span></span>
+<span class="line"><span style="color:#E1E4E8">    };</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">self</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#79B8FF">        boundFn</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> Object.</span><span style="color:#B392F0">create</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">self</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> boundFn;</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span></code></pre>
+</li>
+</ul>
+<hr>
+<h3 id="什么是原型原型链请描述查找过程">什么是原型、原型链？请描述查找过程。</h3>
+<table>
+<thead>
+<tr>
+<th>角色</th>
+<th>说明</th>
+<th>存在位置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>prototype</code></td>
+<td>构造函数的属性，指向一个对象（原型对象）</td>
+<td>仅函数对象拥有</td>
+</tr>
+<tr>
+<td><code>__proto__</code></td>
+<td>实例对象的属性，指向创建它的构造函数的 <code>prototype</code></td>
+<td>所有对象拥有</td>
+</tr>
+<tr>
+<td><code>constructor</code></td>
+<td>原型对象的属性，指回构造函数本身</td>
+<td>原型对象上</td>
+</tr>
+</tbody>
+</table>
+<p><strong>查找过程</strong>：当访问 <code>obj.prop</code> 时，先查找 <code>obj</code> 自身；若无，通过 <code>obj.__proto__</code> 查找其构造函数的 <code>prototype</code>；若仍无，继续通过 <code>prototype.__proto__</code> 向上查找（如 <code>Object.prototype</code>）；最终到达 <code>Object.prototype.__proto__</code> (即 <code>null</code>)，若仍未找到，返回 <code>undefined</code>。</p>
+<hr>
+<h3 id="js-实现继承有哪些方式为什么寄生组合继承最优">JS 实现继承有哪些方式？为什么寄生组合继承最优？</h3>
+<h4 id="1-原型链继承">1. 原型链继承</h4>
+<p><code>Child.prototype = new Parent();</code></p>
+<ul>
+<li><strong>致命缺点</strong>：父类中的引用类型属性会被所有子类实例共享；无法向父类构造函数传参。</li>
+</ul>
+<h4 id="2-构造函数继承">2. 构造函数继承</h4>
+<p><code>Parent.call(this, name);</code></p>
+<ul>
+<li><strong>致命缺点</strong>：所有方法都在构造函数中定义，方法无法复用；且父类原型上的方法，子类访问不到。</li>
+</ul>
+<h4 id="3-组合继承">3. 组合继承</h4>
+<p>结合了上述两者，但<strong>调用了两次父类构造函数</strong>（一次 <code>call</code>，一次 <code>new</code>），导致子类原型上存在一份多余的父类实例属性，浪费内存。</p>
+<h4 id="4-寄生组合式继承最优解">4. 寄生组合式继承（最优解）</h4>
+<p><strong>为什么最优</strong>：只调用一次父类构造函数，避免了组合继承的属性冗余，且保持了原型链的完整和方法的复用。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> Parent</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">name</span><span style="color:#E1E4E8">) { </span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.name </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> name; </span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.colors </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> [</span><span style="color:#9ECBFF">'red'</span><span style="color:#E1E4E8">]; }</span></span>
+<span class="line"><span style="color:#79B8FF">Parent</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">sayName</span><span style="color:#F97583"> =</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8">() { console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.name); };</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> Child</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">name</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">age</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">  Parent.</span><span style="color:#B392F0">call</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">, name); </span><span style="color:#6A737D">// 1. 借用构造函数：继承实例属性 (只调用一次)</span></span>
+<span class="line"><span style="color:#79B8FF">  this</span><span style="color:#E1E4E8">.age </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> age;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#6A737D">// 2. 寄生式继承原型：继承原型方法，且不执行 Parent 构造函数</span></span>
+<span class="line"><span style="color:#79B8FF">Child</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> Object.</span><span style="color:#B392F0">create</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">Parent</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#6A737D">// 3. 修正 constructor 指向</span></span>
+<span class="line"><span style="color:#79B8FF">Child</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">constructor</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> Child;</span></span></code></pre>
+<hr>
+<h3 id="symbol-有什么用有哪些内置well-knownsymbol">Symbol 有什么用？有哪些内置（well-known）Symbol？</h3>
+<ul>
+<li><strong>作用</strong>：创建独一无二的值。常用于作为对象属性名，避免属性名冲突；实现对象的私有属性。</li>
+<li><strong>内置 Symbol</strong>：<code>Symbol.iterator</code> (定义迭代行为), <code>Symbol.toStringTag</code> (定制 <code>Object.prototype.toString</code> 输出), <code>Symbol.hasInstance</code> (自定义 <code>instanceof</code> 行为)。</li>
+</ul>
+<hr>
+<h3 id="bigint-解决了什么问题使用时有哪些坑">BigInt 解决了什么问题？使用时有哪些坑？</h3>
+<ul>
+<li><strong>解决问题</strong>：突破 Number 类型的安全整数范围 (<code>-(2^53 - 1)</code> 到 <code>2^53 - 1</code>)，用于高精度计算。</li>
+<li><strong>使用陷阱</strong>：
+<ol>
+<li><strong>不能与 Number 混合运算</strong>：<code>1n + 1</code> 会报 <code>TypeError</code>，必须 <code>1n + 1n</code>。</li>
+<li><strong>相等性陷阱</strong>：<code>1n == 1</code> 为 <code>true</code>，但 <code>1n === 1</code> 为 <code>false</code>。</li>
+<li><strong>不支持小数</strong>：<code>BigInt(1.5)</code> 报错。除法直接截断小数 (<code>10n / 3n</code> 结果为 <code>3n</code>)。</li>
+<li><strong>JSON 序列化直接报错</strong>：<code>JSON.stringify({ a: 1n })</code> 会报错，需自定义 <code>replacer</code> 转为字符串。</li>
+<li><strong>Math 对象不支持</strong>：<code>Math.max(1n, 2n)</code> 报错，需自行实现比较逻辑。</li>
+<li><strong>位运算的差异</strong>：BigInt 的位运算没有 32 位限制，而 Number 受限于 32 位。</li>
+</ol>
+</li>
+</ul>
+<hr>
+<h3 id="严格模式-use-strict-带来哪些行为变化">严格模式 <code>'use strict'</code> 带来哪些行为变化？</h3>
+<ul>
+<li><code>this</code> 指向：全局执行上下文中，<code>this</code> 为 <code>undefined</code>（非严格模式为 <code>window</code>）。</li>
+<li>禁止使用未声明的变量。</li>
+<li>禁止删除不可删除的属性（如 <code>delete Object.prototype</code> 会报错）。</li>
+<li>函数参数名不能重复。</li>
+</ul>
+<hr>
+<h3 id="js-内存泄漏的常见原因有哪些如何排查">JS 内存泄漏的常见原因有哪些？如何排查？</h3>
+<p><strong>内存泄漏</strong>：不再需要的对象，因依然存在“引用”，导致垃圾回收器无法识别它们为“垃圾”，从而无法回收。</p>
+<ol>
+<li><strong>被遗忘的定时器与事件监听器</strong>：<code>setInterval</code> 未 <code>clear</code>，或全局事件监听器未 <code>removeEventListener</code>。</li>
+<li><strong>脱离 DOM 的引用（DOM 泄漏）</strong>：JS 中保留了已被 <code>remove</code> 的 DOM 节点的引用。</li>
+<li><strong>闭包使用不当</strong>：闭包内引用了大对象，且该闭包被长期持有（如挂载在 <code>window</code> 上）。</li>
+<li><strong>意外的全局变量</strong>：未使用 <code>var/let/const</code> 声明的变量会自动挂载到全局对象上，永不回收。</li>
+</ol>
+<ul>
+<li><strong>排查工具</strong>：Chrome DevTools 的 <strong>Memory</strong> 面板，使用 Heap Snapshot (堆快照) 对比，或 Allocation timeline 查找分离的 DOM 节点或持续增长的对象。</li>
+</ul>
+<hr>
+<h3 id="解释执行上下文与词法环境">解释执行上下文与词法环境。</h3>
+<ul>
+<li><strong>执行上下文 (Execution Context)</strong>：JS 引擎为每段代码分配的“运行工作台”，包含变量环境、词法环境、<code>this</code> 绑定。</li>
+<li><strong>词法环境 (Lexical Environment)</strong>：工作台上的“变量抽屉”和“查找地图”。由环境记录（存储变量）和对外部词法环境的引用（形成作用域链）组成。引擎通过不断压栈、出栈执行上下文，并沿着词法环境的外部引用查找变量，完成了 JavaScript 代码的动态执行。</li>
+</ul>
+<hr>
+<h3 id="01--02--03为什么如何正确比较浮点数">0.1 + 0.2 !== 0.3，为什么？如何正确比较浮点数？</h3>
+<p><strong>原因</strong>：0.1 和 0.2 在转二进制时是无限循环小数，受限于 IEEE 754 双精度 52 位尾数长度被截断，导致精度丢失。
+<strong>正确比较方法</strong>：</p>
+<ol>
+<li><strong>误差范围比较（推荐）</strong>：<code>Math.abs(0.1 + 0.2 - 0.3) &lt; Number.EPSILON</code></li>
+<li><strong>放大缩小法</strong>：<code>(0.1 * 10 + 0.2 * 10) / 10 === 0.3</code>（适用于小数位数固定的场景）</li>
+<li><strong>转为整数计算</strong>：使用 <code>toFixed</code> 或 <code>toPrecision</code>（注意它们返回字符串，需用 <code>Number()</code> 转回）。</li>
+<li><strong>第三方库</strong>：在金融/高精度场景使用 <code>Decimal.js</code> 或 <code>big.js</code>。</li>
+</ol>
+<hr>
+<h3 id="描述浏览器的事件循环event-loop及代码输出顺序">描述浏览器的事件循环（Event Loop）及代码输出顺序</h3>
+<p>JavaScript 是单线程的。</p>
+<ul>
+<li><strong>调用栈 (Call Stack)</strong>：“厨师的工作台”。同步代码排队执行，后进先出（LIFO）。</li>
+<li><strong>宏任务队列 (Macrotask Queue)</strong>：“普通订单区”。存放 <code>setTimeout</code>、<code>setInterval</code>、DOM 事件回调。每次 Event Loop 只会取出<strong>一个</strong>任务执行。</li>
+<li><strong>微任务队列 (Microtask Queue)</strong>：“VIP 加急订单区”。存放 <code>Promise.then/catch/finally</code>、<code>MutationObserver</code>、<code>queueMicrotask</code>。<strong>规则</strong>：在当前宏任务执行完毕后，必须立刻清空所有微任务，才能进入下一个宏任务或进行 DOM 渲染。</li>
+</ul>
+<p><strong>经典输出顺序题</strong>：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'1'</span><span style="color:#E1E4E8">); </span><span style="color:#6A737D">// 同步</span></span>
+<span class="line"><span style="color:#B392F0">setTimeout</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'2'</span><span style="color:#E1E4E8">), </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">); </span><span style="color:#6A737D">// 宏任务</span></span>
+<span class="line"><span style="color:#79B8FF">Promise</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">resolve</span><span style="color:#E1E4E8">().</span><span style="color:#B392F0">then</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'3'</span><span style="color:#E1E4E8">)); </span><span style="color:#6A737D">// 微任务</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'4'</span><span style="color:#E1E4E8">); </span><span style="color:#6A737D">// 同步</span></span>
+<span class="line"><span style="color:#6A737D">// 输出顺序: 1 -&gt; 4 -&gt; 3 -&gt; 2</span></span></code></pre>
+<hr>
+<h3 id="nodejs-的事件循环有哪些阶段与浏览器有何不同">Node.js 的事件循环有哪些阶段？与浏览器有何不同？</h3>
+<ul>
+<li><strong>Node.js 阶段</strong>：<code>timers</code> (setTimeout/setInterval) ➔ <code>pending callbacks</code> ➔ <code>idle/prepare</code> ➔ <code>poll</code> (轮询 I/O) ➔ <code>check</code> (setImmediate) ➔ <code>close callbacks</code>。</li>
+<li><strong>核心区别</strong>：
+<ol>
+<li>浏览器只有宏任务和微任务两个队列；Node.js 的宏任务被细分为多个阶段。</li>
+<li>Node.js 中 <code>process.nextTick</code> 的优先级<strong>高于</strong> Promise 微任务，且在<strong>每个阶段切换时</strong>都会优先清空 nextTick 队列。</li>
+<li>浏览器中 <code>setTimeout(fn, 0)</code> 和 <code>setImmediate</code> 表现类似；但在 Node.js 的 I/O 循环中，<code>setImmediate</code> 总是优先于 <code>setTimeout</code> 执行。</li>
+</ol>
+</li>
+</ul>
+<hr>
+<h3 id="asyncawait-的本质是什么它如何与事件循环配合">async/await 的本质是什么？它如何与事件循环配合？</h3>
+<ul>
+<li><strong>本质</strong>：Generator 函数 + 自动执行器（基于 Promise 封装的语法糖）。</li>
+<li><strong>配合机制</strong>：遇到 <code>await</code> 时，async 函数会<strong>暂停执行</strong>，将 <code>await</code> 右侧的 Promise 决议后的后续代码，作为一个<strong>微任务</strong>推入微任务队列，并让出主线程。当主线程同步代码执行完毕并清空当前微任务队列时，才会恢复执行。</li>
+</ul>
+<h3 id="如何用-asyncawait-写出并发而非串行的代码">如何用 async/await 写出并发而非串行的代码？</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#6A737D">// ❌ 串行（总耗时 = A耗时 + B耗时）</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> resA</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#B392F0"> fetchA</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> resB</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#B392F0"> fetchB</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// ✅ 并发 1：Promise.all（推荐）</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">resA</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">resB</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#F97583"> await</span><span style="color:#79B8FF"> Promise</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">all</span><span style="color:#E1E4E8">([</span><span style="color:#B392F0">fetchA</span><span style="color:#E1E4E8">(), </span><span style="color:#B392F0">fetchB</span><span style="color:#E1E4E8">()]);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// ✅ 并发 2：先触发，后 await（适用于需要单独处理错误）</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> promiseA</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> fetchA</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> promiseB</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> fetchB</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> resA</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#E1E4E8"> promiseA;</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> resB</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#E1E4E8"> promiseB;</span></span></code></pre>
+<h3 id="asyncawait-的错误处理有哪些方式与陷阱">async/await 的错误处理有哪些方式与陷阱？</h3>
+<ul>
+<li><strong>方式</strong>：<code>try...catch</code> 块；或在 Promise 后链式调用 <code>.catch()</code>。</li>
+<li><strong>陷阱</strong>：如果忘记写 <code>await</code>，函数会立即返回一个 Promise。若该 Promise 被 reject，外层的 <code>try...catch</code> <strong>无法捕获</strong>，会导致 <code>UnhandledPromiseRejection</code>。</li>
+</ul>
+<hr>
+<h3 id="generator-与-iterator-是什么有何应用">Generator 与 Iterator 是什么？有何应用？</h3>
+<ul>
+<li><strong>Iterator (迭代器)</strong>：一种接口，为不同数据结构提供统一的访问机制。调用 <code>next()</code> 返回 <code>{ value: any, done: boolean }</code>。</li>
+<li><strong>Generator (生成器)</strong>：<code>function*</code> 声明的函数，执行后返回一个 Iterator 对象。通过 <code>yield</code> 关键字可以暂停和恢复函数执行。</li>
+<li><strong>应用</strong>：自定义遍历逻辑、实现异步流程控制（如 <code>redux-saga</code> 的核心原理）、协程。</li>
+</ul>
+<hr>
+<h3 id="queuemicrotasksettimeoutrequestanimationframe-有何区别">queueMicrotask、setTimeout、requestAnimationFrame 有何区别？</h3>
+<table>
+<thead>
+<tr>
+<th>API</th>
+<th>类型</th>
+<th>执行时机</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>queueMicrotask</code></td>
+<td>微任务</td>
+<td>当前同步代码执行完毕后，<strong>立即</strong>执行</td>
+<td>需要极高优先级、在 DOM 渲染前完成的状态更新</td>
+</tr>
+<tr>
+<td><code>requestAnimationFrame</code></td>
+<td>宏任务(特殊)</td>
+<td>下一次浏览器<strong>重绘之前</strong> (通常 60Hz, ~16.6ms)</td>
+<td>流畅的动画、高频视觉更新</td>
+</tr>
+<tr>
+<td><code>setTimeout</code></td>
+<td>宏任务</td>
+<td>至少延迟指定毫秒后，放入宏任务队列等待执行</td>
+<td>延迟执行、防抖节流、给主线程喘息机会</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="手写防抖debounce和节流throttle">手写防抖（debounce）和节流（throttle）</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#6A737D">// 防抖：连续触发，只在最后一次触发后延迟执行（如搜索框输入）</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> debounce</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">fn</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">delay</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  let</span><span style="color:#E1E4E8"> timer </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> null</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">...</span><span style="color:#FFAB70">args</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (timer) </span><span style="color:#B392F0">clearTimeout</span><span style="color:#E1E4E8">(timer);</span></span>
+<span class="line"><span style="color:#E1E4E8">    timer </span><span style="color:#F97583">=</span><span style="color:#B392F0"> setTimeout</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> fn.</span><span style="color:#B392F0">apply</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">, args), delay);</span></span>
+<span class="line"><span style="color:#E1E4E8">  };</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 节流：连续触发，每隔固定时间执行一次（如滚动监听、按钮防连点）</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> throttle</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">fn</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">delay</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  let</span><span style="color:#E1E4E8"> lastTime </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">...</span><span style="color:#FFAB70">args</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> now</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> Date.</span><span style="color:#B392F0">now</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (now </span><span style="color:#F97583">-</span><span style="color:#E1E4E8"> lastTime </span><span style="color:#F97583">&gt;=</span><span style="color:#E1E4E8"> delay) {</span></span>
+<span class="line"><span style="color:#E1E4E8">      fn.</span><span style="color:#B392F0">apply</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">, args);</span></span>
+<span class="line"><span style="color:#E1E4E8">      lastTime </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> now;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  };</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<hr>
+<h3 id="什么是柯里化请手写一个通用柯里化函数">什么是柯里化？请手写一个通用柯里化函数。</h3>
+<p><strong>概念</strong>：把接受多个参数的函数，变换成接受一个单一参数的函数，并返回接受余下参数的新函数。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> curry</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">fn</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#F97583"> function</span><span style="color:#B392F0"> curried</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">...</span><span style="color:#FFAB70">args</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">    // 如果传入的参数个数 &gt;= 原函数需要的参数个数，直接执行</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (args.</span><span style="color:#79B8FF">length</span><span style="color:#F97583"> &gt;=</span><span style="color:#E1E4E8"> fn.</span><span style="color:#79B8FF">length</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">      return</span><span style="color:#E1E4E8"> fn.</span><span style="color:#B392F0">apply</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">, args);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#6A737D">    // 否则，返回一个新函数，继续收集参数</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">...</span><span style="color:#FFAB70">args2</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">      return</span><span style="color:#E1E4E8"> curried.</span><span style="color:#B392F0">apply</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">, args.</span><span style="color:#B392F0">concat</span><span style="color:#E1E4E8">(args2));</span></span>
+<span class="line"><span style="color:#E1E4E8">    };</span></span>
+<span class="line"><span style="color:#E1E4E8">  };</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<hr>
+<h3 id="实现函数组合-compose-与-pipe">实现函数组合 compose 与 pipe</h3>
+<ul>
+<li><strong>compose</strong>：右到左执行 <code>f(g(x))</code>。</li>
+<li><strong>pipe</strong>：左到右执行 <code>g(f(x))</code>。</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#B392F0"> compose</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">...</span><span style="color:#FFAB70">fns</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">initialValue</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> fns.</span><span style="color:#B392F0">reduceRight</span><span style="color:#E1E4E8">((</span><span style="color:#FFAB70">acc</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">fn</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#B392F0"> fn</span><span style="color:#E1E4E8">(acc), initialValue);</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#B392F0"> pipe</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">...</span><span style="color:#FFAB70">fns</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">initialValue</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> fns.</span><span style="color:#B392F0">reduce</span><span style="color:#E1E4E8">((</span><span style="color:#FFAB70">acc</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">fn</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#B392F0"> fn</span><span style="color:#E1E4E8">(acc), initialValue);</span></span></code></pre>
+<hr>
+<h3 id="数组去重有哪些方法各自的局限是什么">数组去重有哪些方法？各自的局限是什么？</h3>
+<ol>
+<li><code>[...new Set(arr)]</code>：最简洁。<strong>局限</strong>：无法区分 <code>{}</code> 和 <code>{}</code>（引用不同），但能正确去重 <code>NaN</code>。</li>
+<li><code>filter + indexOf</code>：<code>arr.filter((item, index) =&gt; arr.indexOf(item) === index)</code>。<strong>局限</strong>：无法去重 <code>NaN</code>（因为 <code>indexOf(NaN)</code> 永远是 -1）。</li>
+<li><code>Map</code>：遍历数组，以元素为 key 存入 Map。<strong>最优解</strong>，可处理所有类型（包括 <code>NaN</code> 和对象引用去重）。</li>
+</ol>
+<hr>
+<h3 id="如何扁平化数组请给出多种实现">如何扁平化数组？请给出多种实现。</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> arr</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, [</span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">, [</span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">4</span><span style="color:#E1E4E8">]]];</span></span>
+<span class="line"><span style="color:#6A737D">// 1. 原生方法 (ES10)</span></span>
+<span class="line"><span style="color:#E1E4E8">arr.</span><span style="color:#B392F0">flat</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">Infinity</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 2. 递归 + reduce</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> flatArray</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">arr</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> arr.</span><span style="color:#B392F0">reduce</span><span style="color:#E1E4E8">((</span><span style="color:#FFAB70">acc</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">val</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> </span></span>
+<span class="line"><span style="color:#E1E4E8">    Array.</span><span style="color:#B392F0">isArray</span><span style="color:#E1E4E8">(val) </span><span style="color:#F97583">?</span><span style="color:#E1E4E8"> acc.</span><span style="color:#B392F0">concat</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">flatArray</span><span style="color:#E1E4E8">(val)) </span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> acc.</span><span style="color:#B392F0">concat</span><span style="color:#E1E4E8">(val), []);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 3. 栈 (Stack) 迭代实现 (避免递归调用栈溢出)</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> flatWithStack</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">arr</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> stack</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> [</span><span style="color:#F97583">...</span><span style="color:#E1E4E8">arr];</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> res</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> [];</span></span>
+<span class="line"><span style="color:#F97583">  while</span><span style="color:#E1E4E8"> (stack.</span><span style="color:#79B8FF">length</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> next</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> stack.</span><span style="color:#B392F0">pop</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (Array.</span><span style="color:#B392F0">isArray</span><span style="color:#E1E4E8">(next)) stack.</span><span style="color:#B392F0">push</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">...</span><span style="color:#E1E4E8">next);</span></span>
+<span class="line"><span style="color:#F97583">    else</span><span style="color:#E1E4E8"> res.</span><span style="color:#B392F0">push</span><span style="color:#E1E4E8">(next);</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> res.</span><span style="color:#B392F0">reverse</span><span style="color:#E1E4E8">(); </span><span style="color:#6A737D">// 因为 pop 是后进先出，需反转</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<hr>
+<h3 id="如何实现真正随机的数组乱序洗牌">如何实现真正随机的数组乱序（洗牌）？</h3>
+<p><strong>Fisher-Yates 洗牌算法</strong>（唯一保证数学上真正随机且 O(n) 的方法）：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> shuffle</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">arr</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  for</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">let</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> arr.</span><span style="color:#79B8FF">length</span><span style="color:#F97583"> -</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">; i </span><span style="color:#F97583">&gt;</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">; i</span><span style="color:#F97583">--</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> j</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> Math.</span><span style="color:#B392F0">floor</span><span style="color:#E1E4E8">(Math.</span><span style="color:#B392F0">random</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> (i </span><span style="color:#F97583">+</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">)); </span><span style="color:#6A737D">// 随机索引 0 到 i</span></span>
+<span class="line"><span style="color:#E1E4E8">    [arr[i], arr[j]] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> [arr[j], arr[i]]; </span><span style="color:#6A737D">// 交换</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> arr;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#6A737D">// ⚠️ 避免使用 arr.sort(() =&gt; Math.random() - 0.5)，不同浏览器引擎排序算法不同，会导致概率分布不均。</span></span></code></pre>
+<hr>
+<h3 id="数组的常用方法中哪些会改变原数组">数组的常用方法中，哪些会改变原数组？</h3>
+<ul>
+<li><strong>会改变 (Mutating)</strong>：<code>push</code>, <code>pop</code>, <code>shift</code>, <code>unshift</code>, <code>splice</code>, <code>sort</code>, <code>reverse</code>, <code>fill</code>, <code>copyWithin</code>。</li>
+<li><strong>不改变 (Non-mutating)</strong>：<code>map</code>, <code>filter</code>, <code>reduce</code>, <code>slice</code>, <code>concat</code>, <code>join</code>, <code>find</code>, <code>includes</code>, 以及 ES2023 的 <code>toSorted</code>, <code>toReversed</code>, <code>toSpliced</code>。</li>
+</ul>
+<hr>
+<h3 id="字符串有哪些常用方法模板字符串有什么高级用法">字符串有哪些常用方法？模板字符串有什么高级用法？</h3>
+<ul>
+<li><strong>常用方法</strong>：<code>slice</code>, <code>substring</code>, <code>split</code>, <code>replace</code>/<code>replaceAll</code>, <code>trim</code>, <code>includes</code>, <code>startsWith</code>, <code>endsWith</code>, <code>padStart</code>/<code>padEnd</code>。</li>
+<li><strong>模板字符串高级用法</strong>：
+<ol>
+<li>支持多行字符串。</li>
+<li>变量插值：<code>`Hello ${name}`</code>。</li>
+<li><strong>标签模板 (Tagged Templates)</strong>：<code>function tag(strings, ...values) {}</code>，可用于过滤 XSS、国际化 (i18n) 或 SQL 参数化查询（如 <code>sql</code>raw<code>...</code> ``）。</li>
+</ol>
+</li>
+</ul>
+<hr>
+<h3 id="正则表达式有哪些常见用法请举几个工程中的例子">正则表达式有哪些常见用法？请举几个工程中的例子。</h3>
+<ul>
+<li><strong>表单验证</strong>：<code>/^\d{11}$/</code> (手机号)，<code>/^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/</code> (邮箱)。</li>
+<li><strong>字符串提取/替换</strong>：<code>'2023-10-01'.replace(/(\d{4})-(\d{2})-(\d{2})/, '$1年$2月$3日')</code>。</li>
+<li><strong>修饰符</strong>：<code>g</code> (全局), <code>i</code> (忽略大小写), <code>m</code> (多行), <code>s</code> (dotAll, 让 <code>.</code> 匹配换行符)。</li>
+</ul>
+<hr>
+<h3 id="jsonstringify-和-jsonparse-有哪些容易忽视的细节">JSON.stringify 和 JSON.parse 有哪些容易忽视的细节？</h3>
+<ul>
+<li><strong>stringify 的“坑”</strong>：
+<ol>
+<li>忽略 <code>undefined</code>、<code>Function</code>、<code>Symbol</code>（在对象中直接消失，在数组中变为 <code>null</code>）。</li>
+<li><code>NaN</code>、<code>Infinity</code> 会被转为 <code>null</code>。</li>
+<li><code>Date</code> 对象会被转为 ISO 格式字符串。</li>
+<li>包含循环引用的对象会直接抛出 <code>TypeError</code>。</li>
+</ol>
+</li>
+<li><strong>parse 的“救赎”</strong>：可传入 <code>reviver</code> 函数，用于在解析时恢复 <code>Date</code> 等特殊类型：
+<code>JSON.parse(str, (key, value) =&gt; key === 'date' ? new Date(value) : value)</code></li>
+</ul>
+<hr>
+<h3 id="js-的错误处理机制是怎样的如何自定义错误">JS 的错误处理机制是怎样的？如何自定义错误？</h3>
+<ul>
+<li><strong>机制</strong>：同步错误用 <code>try...catch</code>；异步错误（Promise）必须用 <code>.catch()</code> 或 <code>try...catch</code> 包裹 <code>await</code>；全局未捕获错误监听 <code>window.onerror</code> 和 <code>window.addEventListener('unhandledrejection', ...)</code>。</li>
+<li><strong>自定义错误</strong>：</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> ValidationError</span><span style="color:#F97583"> extends</span><span style="color:#B392F0"> Error</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  constructor</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">message</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#79B8FF">    super</span><span style="color:#E1E4E8">(message); </span><span style="color:#6A737D">// 必须调用 super</span></span>
+<span class="line"><span style="color:#79B8FF">    this</span><span style="color:#E1E4E8">.name </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> 'ValidationError'</span><span style="color:#E1E4E8">; </span><span style="color:#6A737D">// 保持正确的错误名称</span></span>
+<span class="line"><span style="color:#6A737D">    // V8 引擎修复堆栈跟踪的需要</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (Error.captureStackTrace) {</span></span>
+<span class="line"><span style="color:#E1E4E8">      Error.</span><span style="color:#B392F0">captureStackTrace</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">, ValidationError);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<hr>
+<h3 id="什么是函数式编程它有哪些核心概念">什么是函数式编程？它有哪些核心概念？</h3>
+<ul>
+<li><strong>核心概念</strong>：
+<ol>
+<li><strong>纯函数 (Pure Function)</strong>：相同输入永远得到相同输出，且无副作用（不修改外部状态）。</li>
+<li><strong>不可变数据 (Immutability)</strong>：数据一旦创建不可修改，修改操作返回新副本。</li>
+<li><strong>函数是一等公民</strong>：函数可作为参数传递、作为返回值、赋值给变量。</li>
+<li><strong>声明式编程</strong>：关注“做什么”而非“怎么做”（如用 <code>map</code> 替代 <code>for</code>）。</li>
+</ol>
+</li>
+</ul>
+<hr>
+<h3 id="什么是不可变数据在-js-中如何实现">什么是不可变数据？在 JS 中如何实现？</h3>
+<ul>
+<li><strong>概念</strong>：状态不能被直接修改，任何变更都会生成一个新的对象/数组。</li>
+<li><strong>实现</strong>：
+<ol>
+<li>浅层：<code>Object.freeze()</code>，或扩展运算符 <code>{ ...obj, newProp: 1 }</code>。</li>
+<li>深层（生产环境推荐）：使用 <code>Immer</code> (基于 Proxy，支持草稿修改并生成新树) 或 <code>Immutable.js</code> (持久化数据结构)。</li>
+</ol>
+</li>
+</ul>
+<hr>
+<h3 id="什么是尾调用优化tcojs-支持吗">什么是尾调用优化（TCO）？JS 支持吗？</h3>
+<ul>
+<li><strong>概念</strong>：如果函数的最后一步是调用另一个函数（<code>return fn()</code>），引擎可以复用当前的调用栈帧，而不是创建新的，从而防止栈溢出 (Stack Overflow)。</li>
+<li><strong>JS 支持情况</strong>：ES6 规范中<strong>有</strong>定义，但实际仅 <strong>Safari (JavaScriptCore)</strong> 在严格模式下实现了它。V8 (Chrome/Node.js) 因尾调用会破坏调用栈追踪（影响调试和 Error.stack），至今<strong>未实现</strong>。</li>
+</ul>
+<hr>
+<h2 id="es6-核心特性">ES6+ 核心特性</h2>
+<h3 id="letconstvar-的区别有哪些">let、const、var 的区别有哪些？</h3>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th><code>var</code></th>
+<th><code>let</code></th>
+<th><code>const</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>作用域</td>
+<td>函数作用域 / 全局</td>
+<td><strong>块级作用域</strong> <code>{}</code></td>
+<td><strong>块级作用域</strong> <code>{}</code></td>
+</tr>
+<tr>
+<td>变量提升</td>
+<td>是 (初始化为 undefined)</td>
+<td>否 (存在暂时性死区 TDZ)</td>
+<td>否 (存在暂时性死区 TDZ)</td>
+</tr>
+<tr>
+<td>重复声明</td>
+<td>允许</td>
+<td>不允许</td>
+<td>不允许</td>
+</tr>
+<tr>
+<td>初始化</td>
+<td>可选</td>
+<td>可选</td>
+<td><strong>必须</strong></td>
+</tr>
+<tr>
+<td>值可变性</td>
+<td>可变</td>
+<td>可变</td>
+<td><strong>基本类型不可变，引用类型地址不可变</strong></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="解构赋值有哪些用法和注意点">解构赋值有哪些用法和注意点？</h3>
+<ul>
+<li><strong>用法</strong>：数组按位置解构 <code>[a, b] = [1, 2]</code>；对象按属性名解构 <code>{ name, age } = obj</code>。</li>
+<li><strong>注意点</strong>：
+<ol>
+<li>默认值仅在严格等于 <code>undefined</code> 时触发：<code>let { a = 1 } = { a: null }</code> (a 为 null)。</li>
+<li>重命名：<code>const { name: userName } = obj</code> (将 obj.name 赋值给 userName)。</li>
+<li>嵌套解构：<code>const { user: { name } } = data</code>。</li>
+</ol>
+</li>
+</ul>
+<hr>
+<h3 id="扩展运算符与-rest-参数的区别是什么">扩展运算符与 rest 参数的区别是什么？</h3>
+<ul>
+<li><strong>扩展运算符 (Spread)</strong>：在函数调用或数组/对象字面量中，<strong>展开</strong> iterable 或对象。如 <code>[...arr]</code>, <code>{ ...obj }</code>。</li>
+<li><strong>Rest 参数 (Rest)</strong>：在函数参数列表或解构赋值中，<strong>收集</strong>剩余的元素到一个数组中。如 <code>function fn(a, ...args) {}</code> 或 <code>const { a, ...rest } = obj</code>。</li>
+</ul>
+<hr>
+<h3 id="可选链--与空值合并--解决了什么问题">可选链 <code>?.</code> 与空值合并 <code>??</code> 解决了什么问题？</h3>
+<ul>
+<li><code>?.</code>：安全访问深层嵌套属性。若左侧为 <code>null</code> 或 <code>undefined</code>，则短路返回 <code>undefined</code>，避免 <code>Cannot read properties of undefined</code> 报错。</li>
+<li><code>??</code>：仅当左侧为 <code>null</code> 或 <code>undefined</code> 时，才返回右侧的默认值。解决了 <code>||</code> 会错误拦截 <code>0</code>、<code>''</code>、<code>false</code> 等合法 falsy 值的问题。</li>
+</ul>
+<hr>
+<h3 id="map-与普通对象-object-有什么区别">Map 与普通对象 Object 有什么区别？</h3>
+<ol>
+<li><strong>键的类型</strong>：Map 的键可以是<strong>任意类型</strong>（包括对象、函数）；Object 的键只能是 String 或 Symbol。</li>
+<li><strong>顺序</strong>：Map 严格保持<strong>键值对的插入顺序</strong>；Object 的键顺序规则复杂（数字键优先，然后按插入顺序）。</li>
+<li><strong>大小获取</strong>：Map 有 <code>size</code> 属性；Object 需用 <code>Object.keys().length</code>。</li>
+<li><strong>迭代</strong>：Map 原生可迭代 (<code>for...of</code>)，Object 需借助 <code>Object.keys/values/entries</code>。</li>
+</ol>
+<hr>
+<h3 id="weakmapweakset-有什么特殊之处">WeakMap、WeakSet 有什么特殊之处？</h3>
+<ul>
+<li><strong>限制</strong>：键（WeakMap）或值（WeakSet）<strong>必须是对象</strong>，不能是基本类型。</li>
+<li><strong>弱引用</strong>：不会阻止垃圾回收。如果对象的其他引用都被清除，WeakMap/WeakSet 中的记录会自动消失。</li>
+<li><strong>不可迭代</strong>：没有 <code>size</code> 属性，无法 <code>forEach</code> 或 <code>for...of</code>。</li>
+<li><strong>应用场景</strong>：存储 DOM 节点的私有元数据、缓存，避免内存泄漏。</li>
+</ul>
+<hr>
+<h3 id="proxy-能做什么常见拦截器trap有哪些">Proxy 能做什么？常见拦截器（trap）有哪些？</h3>
+<ul>
+<li><strong>作用</strong>：在目标对象之前架设一层“拦截”，对外界的访问进行过滤和改写（Vue 3 响应式原理的核心）。</li>
+<li><strong>常见 trap</strong>：<code>get</code> (读取), <code>set</code> (赋值), <code>has</code> (<code>in</code> 操作符), <code>deleteProperty</code> (<code>delete</code>), <code>apply</code> (函数调用), <code>construct</code> (<code>new</code> 调用)。</li>
+</ul>
+<hr>
+<h3 id="reflect-为什么存在和-proxy-是什么关系">Reflect 为什么存在？和 Proxy 是什么关系？</h3>
+<ul>
+<li><strong>存在原因</strong>：
+<ol>
+<li>将 Object 上一些明显属于语言内部的方法（如 <code>Object.defineProperty</code>）放到 <code>Reflect</code> 对象上，使语言特性更内聚。</li>
+<li>修改某些 Object 方法的返回结果，让其变得更合理（如 <code>Reflect.defineProperty</code> 成功返回 <code>true</code>，失败返回 <code>false</code>，而不是抛错）。</li>
+</ol>
+</li>
+<li><strong>与 Proxy 的关系</strong>：<code>Reflect</code> 提供了与 <code>Proxy</code> traps <strong>一一对应</strong>的静态方法。在 Proxy 拦截器中，通常使用 <code>Reflect</code> 来执行默认行为，确保不破坏对象原有的语义（如正确传递 <code>receiver</code>）。</li>
+</ul>
+<hr>
+<h3 id="commonjs-与-es-module-有哪些核心区别">CommonJS 与 ES Module 有哪些核心区别？</h3>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>CommonJS (CJS)</th>
+<th>ES Module (ESM)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>加载时机</td>
+<td><strong>运行时</strong>动态加载</td>
+<td><strong>编译时</strong>静态分析</td>
+</tr>
+<tr>
+<td>输出内容</td>
+<td>值的<strong>拷贝</strong>（修改不影响原模块）</td>
+<td>值的<strong>引用</strong>（实时同步）</td>
+</tr>
+<tr>
+<td>语法</td>
+<td><code>require</code> / <code>module.exports</code></td>
+<td><code>import</code> / <code>export</code></td>
+</tr>
+<tr>
+<td>顶层 this</td>
+<td>指向 <code>module.exports</code></td>
+<td><code>undefined</code></td>
+</tr>
+<tr>
+<td>异步支持</td>
+<td>不支持</td>
+<td>支持 Top-level await</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="esm-与-cjs-的循环依赖分别如何表现">ESM 与 CJS 的循环依赖分别如何表现？</h3>
+<ul>
+<li><strong>CJS</strong>：因为是值的拷贝，循环依赖时，如果模块 A 还没执行完就去 require 模块 B，A 拿到的是 B 的<strong>未初始化完的空对象 <code>{}</code></strong>。</li>
+<li><strong>ESM</strong>：因为是值的引用，循环依赖时，只要不在模块初始化阶段（顶层）就去读取未赋值的变量，后续代码执行后，能<strong>实时获取到更新后的值</strong>。</li>
+</ul>
+<hr>
+<h3 id="es6-class-与构造函数有哪些差异私有字段如何实现">ES6 Class 与构造函数有哪些差异？私有字段如何实现？</h3>
+<ul>
+<li><strong>差异</strong>：
+<ol>
+<li>Class 必须使用 <code>new</code> 调用，否则会报错；构造函数可以直接调用。</li>
+<li>Class 内部默认启用严格模式。</li>
+<li>Class 的方法默认<strong>不可枚举</strong>。</li>
+<li>Class 不存在变量提升。</li>
+</ol>
+</li>
+<li><strong>私有字段</strong>：ES2022 引入了 <code>#</code> 前缀。<code>class A { #privateField = 1; }</code>，只能在类内部访问，外部访问会报语法错误。</li>
+</ul>
+<hr>
+<h3 id="装饰器decorator是什么现状如何">装饰器（Decorator）是什么？现状如何？</h3>
+<ul>
+<li><strong>概念</strong>：一种特殊的函数，用于在不修改原代码的情况下，动态地为类、方法、属性或参数添加元数据或包装逻辑（类似 Python 的 <code>@decorator</code>）。</li>
+<li><strong>现状</strong>：TC39 提案已进入 <strong>Stage 3</strong>。目前需借助 Babel 或 TypeScript 使用。在 NestJS、Angular、MobX 等框架中被广泛使用。</li>
+</ul>
+<hr>
+<h3 id="模板字符串相比普通字符串有什么优势">模板字符串相比普通字符串有什么优势？</h3>
+<ol>
+<li>支持多行字符串，无需使用 <code>\n</code> 拼接。</li>
+<li>支持变量和表达式插值：<code>`Hello ${name}`</code>。</li>
+<li>支持标签模板 (Tagged Templates)，可实现自定义解析逻辑（如防 XSS、i18n）。</li>
+</ol>
+<hr>
+<h3 id="forofforinforeach-有什么区别">for…of、for…in、forEach 有什么区别？</h3>
+<ul>
+<li><code>for...in</code>：遍历对象<strong>所有可枚举属性</strong>（包括原型链上的）。遍历数组时顺序可能错乱，且会包含额外添加的属性，<strong>不推荐用于数组</strong>。</li>
+<li><code>for...of</code>：遍历<strong>可迭代对象</strong>（Array, Map, Set, String, arguments）的<strong>值</strong>。支持 <code>break</code>、<code>continue</code> 和 <code>return</code>，支持 <code>await</code>。</li>
+<li><code>forEach</code>：数组内置方法。无法使用 <code>break</code>/<code>continue</code>（只能用 <code>return</code> 跳过当前循环），且<strong>不支持</strong> <code>await</code>（会导致并发执行而非串行等待）。</li>
+</ul>
+<hr>
+<h3 id="如何让一个普通对象变成可迭代对象">如何让一个普通对象变成可迭代对象？</h3>
+<p>为对象添加 <code>[Symbol.iterator]</code> 方法，该方法必须返回一个包含 <code>next()</code> 函数的迭代器对象。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> obj</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> { a: </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, b: </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8"> };</span></span>
+<span class="line"><span style="color:#E1E4E8">obj[Symbol.iterator] </span><span style="color:#F97583">=</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> keys</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> Object.</span><span style="color:#B392F0">keys</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">  let</span><span style="color:#E1E4E8"> index </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">    next</span><span style="color:#E1E4E8">: () </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">      if</span><span style="color:#E1E4E8"> (index </span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8"> keys.</span><span style="color:#79B8FF">length</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> { value: </span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">[keys[index</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">]], done: </span><span style="color:#79B8FF">false</span><span style="color:#E1E4E8"> };</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"><span style="color:#F97583">      return</span><span style="color:#E1E4E8"> { value: </span><span style="color:#79B8FF">undefined</span><span style="color:#E1E4E8">, done: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8"> };</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  };</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">([</span><span style="color:#F97583">...</span><span style="color:#E1E4E8">obj]); </span><span style="color:#6A737D">// [1, 2]</span></span></code></pre>
+<hr>
+<h3 id="es2020-至-es2023-有哪些值得关注的新特性">ES2020 至 ES2023 有哪些值得关注的新特性？</h3>
+<ul>
+<li><strong>ES2020</strong>：可选链 <code>?.</code>，空值合并 <code>??</code>，<code>BigInt</code>，<code>Promise.allSettled</code>，<code>globalThis</code>，动态 <code>import()</code>。</li>
+<li><strong>ES2021</strong>：<code>String.prototype.replaceAll</code>，<code>Promise.any</code>，逻辑赋值运算符 (<code>??=</code>, <code>&amp;&amp;=</code>, <code>||=</code>)。</li>
+<li><strong>ES2022</strong>：类私有字段 <code>#</code>，类的静态块 <code>static {}</code>，<code>Object.hasOwn</code> (替代 <code>hasOwnProperty</code>)，<code>Array.prototype.at()</code> (支持负数索引)。</li>
+<li><strong>ES2023</strong>：不可变数组方法 <code>toSorted()</code>, <code>toReversed()</code>, <code>toSpliced()</code>, <code>with()</code>；以及 <code>findLast()</code>, <code>findLastIndex()</code>。</li>
+</ul>
+<hr>
+<h3 id="objectfreezesealpreventextensions-有何区别">Object.freeze、seal、preventExtensions 有何区别？</h3>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>添加新属性</th>
+<th>删除现有属性</th>
+<th>修改现有属性值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>preventExtensions</code></td>
+<td>❌ 禁止</td>
+<td>✅ 允许</td>
+<td>✅ 允许</td>
+</tr>
+<tr>
+<td><code>seal</code> (密封)</td>
+<td>❌ 禁止</td>
+<td>❌ 禁止</td>
+<td>✅ 允许</td>
+</tr>
+<tr>
+<td><code>freeze</code> (冻结)</td>
+<td>❌ 禁止</td>
+<td>❌ 禁止</td>
+<td>❌ 禁止 (浅冻结)</td>
+</tr>
+<tr>
+<td><em>注：<code>freeze</code> 是浅层的，若属性值是对象，需递归冻结才能实现深度不可变。</em></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="顶层-awaittop-level-await解决了什么问题要注意什么">顶层 await（top-level await）解决了什么问题？要注意什么？</h3>
+<ul>
+<li><strong>解决问题</strong>：允许在 ES 模块的顶层直接使用 <code>await</code>，无需将其包裹在 <code>async</code> 函数中。极大简化了模块初始化时的异步依赖加载（如动态加载配置、数据库连接）。</li>
+<li><strong>注意事项</strong>：包含顶层 <code>await</code> 的模块及其<strong>所有依赖该模块的父模块</strong>，在初始化时都会被阻塞，直到 Promise 决议。若使用不当，可能导致整个应用启动死锁或性能下降。</li>
+</ul>
+</div><script type="module">function e(e){let t=e.getAttribute(`data-language`)?.trim();if(t)return t===`text`||t===`plaintext`||t===`txt`?`text`:t;let n=e.querySelector(`code`)?.className||e.className||``,r=/language-([a-z0-9_+-]+)/i.exec(n);return r?.[1]?r[1]:`code`}function t(t){if(t.closest(`[data-mac-window]`)||t.dataset.macEnhanced===`1`)return;t.dataset.macEnhanced=`1`;let n=document.createElement(`figure`);n.className=`mac-window`,n.setAttribute(`data-mac-window`,``);let r=document.createElement(`div`);r.className=`mac-titlebar`,r.innerHTML=`
+      <div class="mac-dots" aria-hidden="true">
+        <span class="dot red"></span>
+        <span class="dot yellow"></span>
+        <span class="dot green"></span>
+      </div>
+      <span class="mac-title"></span>
+      <button type="button" class="mac-copy" data-mac-copy aria-label="复制代码">复制</button>
+    `;let i=r.querySelector(`.mac-title`);i&&(i.textContent=e(t));let a=document.createElement(`div`);a.className=`mac-body`,t.parentNode?.insertBefore(n,t),a.appendChild(t),n.appendChild(r),n.appendChild(a)}async function n(e){if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(e);return}let t=document.createElement(`textarea`);t.value=e,t.style.position=`fixed`,t.style.opacity=`0`,document.body.appendChild(t),t.select(),document.execCommand(`copy`),t.remove()}function r(e=document){e.querySelectorAll(`[data-mac-copy]`).forEach(e=>{e.dataset.bound!==`1`&&(e.dataset.bound=`1`,e.addEventListener(`click`,async()=>{let t=e.closest(`[data-mac-window]`)?.querySelector(`pre`)?.textContent??``;try{await n(t);let r=e.textContent;e.textContent=`已复制`,e.classList.add(`is-copied`),window.setTimeout(()=>{e.textContent=r||`复制`,e.classList.remove(`is-copied`)},1600)}catch{e.textContent=`失败`,window.setTimeout(()=>{e.textContent=`复制`},1600)}}))})}function i(){document.querySelectorAll(`.prose pre`).forEach(t),r()}i(),document.addEventListener(`astro:page-load`,i);</script></article><nav class="pager wrap-narrow" aria-label="上下篇" data-astro-cid-tldeq5d5><p data-astro-cid-tldeq5d5>上一篇：<a href="/web/react/" data-astro-cid-tldeq5d5>react</a></p><p data-astro-cid-tldeq5d5>下一篇：<a href="/web/html/" data-astro-cid-tldeq5d5>HTML</a></p></nav><section class="related" data-astro-cid-tldeq5d5><div class="wrap" data-astro-cid-tldeq5d5><h2 data-astro-cid-tldeq5d5>继续阅读</h2><ol class="related-grid" data-astro-cid-tldeq5d5><li data-astro-cid-tldeq5d5><a class="related-topic" href="/web/" data-astro-cid-tldeq5d5>前端</a><a class="related-title" href="/web/python/" data-astro-cid-tldeq5d5>Python</a><p data-astro-cid-tldeq5d5>Python 面试基础（待完善）</p></li><li data-astro-cid-tldeq5d5><a class="related-topic" href="/web/" data-astro-cid-tldeq5d5>前端</a><a class="related-title" href="/web/html/" data-astro-cid-tldeq5d5>HTML</a><p data-astro-cid-tldeq5d5>HTML</p></li><li data-astro-cid-tldeq5d5><a class="related-topic" href="/web/" data-astro-cid-tldeq5d5>前端</a><a class="related-title" href="/web/react/" data-astro-cid-tldeq5d5>react</a><p data-astro-cid-tldeq5d5>react</p></li></ol></div></section></main><footer class="site-footer" data-astro-cid-jo6i4kqk><div class="wrap bar" data-astro-cid-jo6i4kqk><a class="brand" href="/" data-astro-cid-jo6i4kqk>rty</a><div class="social" aria-label="社交链接" data-astro-cid-jo6i4kqk><a href="mailto:peonyfoals@gmail.com" aria-label="Email" data-astro-cid-jo6i4kqk><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" data-astro-cid-jo6i4kqk><path fill="currentColor" d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5L4 8V6l8 5 8-5v2z" data-astro-cid-jo6i4kqk></path></svg></a><a href="/rss.xml" aria-label="RSS" data-astro-cid-jo6i4kqk><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" data-astro-cid-jo6i4kqk><path fill="currentColor" d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20 5 20 4 19 4 17.82c0-1.2.98-2.18 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27zm0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93z" data-astro-cid-jo6i4kqk></path></svg></a><a href="/archive/" aria-label="归档" data-astro-cid-jo6i4kqk><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" data-astro-cid-jo6i4kqk><path fill="currentColor" d="M4 6h16v2H4zm0 5h16v2H4zm0 5h10v2H4z" data-astro-cid-jo6i4kqk></path></svg></a></div><p class="meta" data-astro-cid-jo6i4kqk>© 2026 peony</p></div></footer></body></html>

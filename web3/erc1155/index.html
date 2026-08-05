@@ -1,0 +1,541 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="ERC1155"><meta name="author" content="peony"><meta name="generator" content="Astro v7.1.1"><meta name="theme-color" content="#ffffff"><link rel="canonical" href="https://langzyw.xyz/web3/erc1155/"><link rel="alternate" type="application/rss+xml" title="rty" href="/rss.xml"><meta property="og:type" content="website"><meta property="og:site_name" content="rty"><meta property="og:title" content="ERC1155 · rty"><meta property="og:description" content="ERC1155"><meta property="og:url" content="https://langzyw.xyz/web3/erc1155/"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><title>ERC1155 · rty</title><link rel="stylesheet" href="/_astro/Footer.C9xAhOzk.css"><link rel="stylesheet" href="/_astro/_..B6QWlgH6.css"></head><body><header class="site-header" data-astro-cid-nen7h5rs><div class="wrap bar" data-astro-cid-nen7h5rs><div class="bar-flex" data-astro-cid-nen7h5rs><a class="brand" href="/" data-astro-cid-nen7h5rs>rty</a><nav class="nav" aria-label="主导航" data-astro-cid-nen7h5rs><a class="nav-link" href="/" data-astro-cid-nen7h5rs>首页</a><a class="nav-link" href="/web/" data-astro-cid-nen7h5rs>前端</a><a class="nav-link" href="/python/" data-astro-cid-nen7h5rs>python</a><a class="nav-link" href="/llm/" data-astro-cid-nen7h5rs>llm</a><a class="nav-link active" href="/web3/" aria-current="page" data-astro-cid-nen7h5rs>区块链</a><a class="nav-link" href="/about/" data-astro-cid-nen7h5rs>关于</a></nav></div><button class="search-btn" type="button" aria-label="搜索" data-search-open data-astro-cid-nen7h5rs><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" data-astro-cid-nen7h5rs><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="1.6" data-astro-cid-nen7h5rs></circle><path d="M16.5 16.5L21 21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" data-astro-cid-nen7h5rs></path></svg></button></div></header><dialog class="search-dialog" data-search-dialog data-astro-cid-nen7h5rs><form class="search-panel" method="dialog" data-astro-cid-nen7h5rs><label class="sr-only" for="site-search" data-astro-cid-nen7h5rs>搜索文章</label><input id="site-search" class="search-input" type="search" placeholder="搜索文章…" autocomplete="off" data-search-input data-astro-cid-nen7h5rs><button class="search-close" value="cancel" type="submit" aria-label="关闭" data-astro-cid-nen7h5rs>×</button></form><ul class="search-results" data-search-results data-astro-cid-nen7h5rs></ul></dialog><script>(function(){const searchIndexUrl = "/search-index.json";
+
+  const openBtn = document.querySelector("[data-search-open]");
+  const dialog = document.querySelector("[data-search-dialog]");
+  const input = document.querySelector("[data-search-input]");
+  const results = document.querySelector("[data-search-results]");
+
+  if (
+    openBtn &&
+    dialog instanceof HTMLDialogElement &&
+    input instanceof HTMLInputElement &&
+    results
+  ) {
+    let index = [];
+    let loaded = false;
+
+    async function ensureIndex() {
+      if (loaded) return;
+      const res = await fetch(searchIndexUrl);
+      index = await res.json();
+      loaded = true;
+    }
+
+    function render(q) {
+      const query = q.trim().toLowerCase();
+      if (!query) {
+        results.innerHTML = "";
+        return;
+      }
+      const hits = index
+        .filter((item) =>
+          `${item.title} ${item.description} ${item.topic}`
+            .toLowerCase()
+            .includes(query),
+        )
+        .slice(0, 8);
+      results.innerHTML = hits.length
+        ? hits
+            .map(
+              (item) =>
+                `<li><a href="${item.href}"><strong>${item.title}</strong><span>${item.description}</span></a></li>`,
+            )
+            .join("")
+        : `<li class="empty">没有匹配结果</li>`;
+    }
+
+    openBtn.addEventListener("click", async () => {
+      await ensureIndex();
+      dialog.showModal();
+      input.value = "";
+      results.innerHTML = "";
+      input.focus();
+    });
+
+    input.addEventListener("input", () => render(input.value));
+
+    dialog.addEventListener("click", (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+  }
+})();</script><main class="post-page" data-astro-cid-tldeq5d5><article data-astro-cid-tldeq5d5><header class="header wrap-narrow" data-astro-cid-tldeq5d5><a class="topic" href="/web3/" data-astro-cid-tldeq5d5>区块链</a><h1 data-astro-cid-tldeq5d5>ERC1155</h1><p class="meta" data-astro-cid-tldeq5d5><time datetime="2026-07-18T00:00:00.000Z" data-astro-cid-tldeq5d5>2026年7月18日</time><span aria-hidden="true" data-astro-cid-tldeq5d5>·</span><span data-astro-cid-tldeq5d5>约 3 小时</span></p><p class="tags" data-astro-cid-tldeq5d5><a href="/tags/区块链/" data-astro-cid-tldeq5d5>区块链</a><span data-astro-cid-tldeq5d5> · </span><a href="/tags/智能合约/" data-astro-cid-tldeq5d5>智能合约</a></p></header><div class="hero-image wrap" data-astro-cid-tldeq5d5><img src="/images/covers/web3-cubes.jpg" alt="" data-astro-cid-tldeq5d5></div><div class="prose wrap-narrow" data-astro-cid-tldeq5d5><h3 id="erc1155">ERC1155</h3>
+<p>多代币标准：同一合约可含同质与非同质 id</p>
+<p>核心：<code>balanceOf</code> / <code>balanceOfBatch</code>、<code>safeTransferFrom</code> / <code>safeBatchTransferFrom</code>、<code>setApprovalForAll</code>、<code>uri(id)</code>；向合约转账需实现 <code>IERC1155Receiver</code>。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="solidity"><code><span class="line"><span style="color:#6A737D">// SPDX-License-Identifier: MIT</span></span>
+<span class="line"><span style="color:#6A737D">// OpenZeppelin Contracts (last updated v5.0.0) (token/ERC1155/ERC1155.sol)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">pragma</span><span style="color:#85E89D"> solidity</span><span style="color:#79B8FF"> ^0.8.20</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> {</span><span style="color:#B392F0">IERC1155</span><span style="color:#E1E4E8">} </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "./IERC1155.sol"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> {</span><span style="color:#B392F0">IERC1155Receiver</span><span style="color:#E1E4E8">} </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "./IERC1155Receiver.sol"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> {</span><span style="color:#B392F0">IERC1155MetadataURI</span><span style="color:#E1E4E8">} </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "./extensions/IERC1155MetadataURI.sol"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> {</span><span style="color:#B392F0">Context</span><span style="color:#E1E4E8">} </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "../../utils/Context.sol"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> {</span><span style="color:#B392F0">IERC165</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">ERC165</span><span style="color:#E1E4E8">} </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "../../utils/introspection/ERC165.sol"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> {</span><span style="color:#B392F0">Arrays</span><span style="color:#E1E4E8">} </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "../../utils/Arrays.sol"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> {</span><span style="color:#B392F0">IERC1155Errors</span><span style="color:#E1E4E8">} </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "../../interfaces/draft-IERC6093.sol"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Implementation of the basic standard multi-token.</span></span>
+<span class="line"><span style="color:#6A737D"> * See https://eips.ethereum.org/EIPS/eip-1155</span></span>
+<span class="line"><span style="color:#6A737D"> * Originally based on code by Enjin: https://github.com/enjin/erc-1155</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#F97583">abstract</span><span style="color:#F97583"> contract</span><span style="color:#B392F0"> ERC1155</span><span style="color:#F97583"> is</span><span style="color:#B392F0"> Context</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">ERC165</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">IERC1155</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">IERC1155MetadataURI</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">IERC1155Errors</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    using</span><span style="color:#B392F0"> Arrays</span><span style="color:#F97583"> for</span><span style="color:#B392F0"> uint256</span><span style="color:#E1E4E8">[];</span></span>
+<span class="line"><span style="color:#F97583">    using</span><span style="color:#B392F0"> Arrays</span><span style="color:#F97583"> for</span><span style="color:#B392F0"> address</span><span style="color:#E1E4E8">[];</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    mapping</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8"> id </span><span style="color:#F97583">=&gt;</span><span style="color:#F97583"> mapping</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8"> account </span><span style="color:#F97583">=&gt;</span><span style="color:#79B8FF"> uint256</span><span style="color:#E1E4E8">)) </span><span style="color:#F97583">private</span><span style="color:#E1E4E8"> _balances;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    mapping</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8"> account </span><span style="color:#F97583">=&gt;</span><span style="color:#F97583"> mapping</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8"> operator </span><span style="color:#F97583">=&gt;</span><span style="color:#79B8FF"> bool</span><span style="color:#E1E4E8">)) </span><span style="color:#F97583">private</span><span style="color:#E1E4E8"> _operatorApprovals;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    // Used as the URI for all token types by relying on ID substitution, e.g. https://token-cdn-domain/{id}.json</span></span>
+<span class="line"><span style="color:#79B8FF">    string</span><span style="color:#F97583"> private</span><span style="color:#E1E4E8"> _uri;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> See {_setURI}.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    constructor</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">string</span><span style="color:#F97583"> memory</span><span style="color:#FFAB70"> uri_</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#B392F0">        _setURI</span><span style="color:#E1E4E8">(uri_);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> See {IERC165-supportsInterface}.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> supportsInterface</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">bytes4</span><span style="color:#FFAB70"> interfaceId</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">public</span><span style="color:#F97583"> view</span><span style="color:#F97583"> virtual</span><span style="color:#F97583"> override</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">ERC165</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">IERC165</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">bool</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span></span>
+<span class="line"><span style="color:#E1E4E8">            interfaceId </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> type</span><span style="color:#E1E4E8">(IERC1155).interfaceId </span><span style="color:#F97583">||</span></span>
+<span class="line"><span style="color:#E1E4E8">            interfaceId </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> type</span><span style="color:#E1E4E8">(IERC1155MetadataURI).interfaceId </span><span style="color:#F97583">||</span></span>
+<span class="line"><span style="color:#79B8FF">            super</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">supportsInterface</span><span style="color:#E1E4E8">(interfaceId);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> See {IERC1155MetadataURI-uri}.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * This implementation returns the same URI for *all* token types. It relies</span></span>
+<span class="line"><span style="color:#6A737D">     * on the token type ID substitution mechanism</span></span>
+<span class="line"><span style="color:#6A737D">     * https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP].</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Clients calling this function must replace the `\{id\}` substring with the</span></span>
+<span class="line"><span style="color:#6A737D">     * actual token type ID.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> uri</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">uint256</span><span style="color:#6A737D"> /* id */</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">public</span><span style="color:#F97583"> view</span><span style="color:#F97583"> virtual</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">string</span><span style="color:#F97583"> memory</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> _uri;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> See {IERC1155-balanceOf}.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> balanceOf</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> account</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> id</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">public</span><span style="color:#F97583"> view</span><span style="color:#F97583"> virtual</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> _balances[id][account];</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> See {IERC1155-balanceOfBatch}.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Requirements:</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * - `accounts` and `ids` must have the same length.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> balanceOfBatch</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#79B8FF">        address</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">memory</span><span style="color:#FFAB70"> accounts</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">memory</span><span style="color:#FFAB70"> ids</span></span>
+<span class="line"><span style="color:#E1E4E8">    ) </span><span style="color:#F97583">public</span><span style="color:#F97583"> view</span><span style="color:#F97583"> virtual</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">memory</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (accounts.length </span><span style="color:#F97583">!=</span><span style="color:#E1E4E8"> ids.length) {</span></span>
+<span class="line"><span style="color:#F97583">            revert</span><span style="color:#B392F0"> ERC1155InvalidArrayLength</span><span style="color:#E1E4E8">(ids.length, accounts.length);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">memory</span><span style="color:#E1E4E8"> batchBalances </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#79B8FF"> uint256</span><span style="color:#E1E4E8">[](</span><span style="color:#FFAB70">accounts</span><span style="color:#E1E4E8">.</span><span style="color:#FFAB70">length</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">        for</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">; i </span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8"> accounts.length; </span><span style="color:#F97583">++</span><span style="color:#E1E4E8">i) {</span></span>
+<span class="line"><span style="color:#E1E4E8">            batchBalances[i] </span><span style="color:#F97583">=</span><span style="color:#B392F0"> balanceOf</span><span style="color:#E1E4E8">(accounts.</span><span style="color:#B392F0">unsafeMemoryAccess</span><span style="color:#E1E4E8">(i), ids.</span><span style="color:#B392F0">unsafeMemoryAccess</span><span style="color:#E1E4E8">(i));</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> batchBalances;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> See {IERC1155-setApprovalForAll}.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> setApprovalForAll</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> operator</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">bool</span><span style="color:#FFAB70"> approved</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">public</span><span style="color:#F97583"> virtual</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">        _setApprovalForAll</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">_msgSender</span><span style="color:#E1E4E8">(), operator, approved);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> See {IERC1155-isApprovedForAll}.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> isApprovedForAll</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> account</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> operator</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">public</span><span style="color:#F97583"> view</span><span style="color:#F97583"> virtual</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">bool</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> _operatorApprovals[account][operator];</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> See {IERC1155-safeTransferFrom}.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> safeTransferFrom</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> from</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> to</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> id</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> value</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">bytes</span><span style="color:#F97583"> memory</span><span style="color:#FFAB70"> data</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">public</span><span style="color:#F97583"> virtual</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">        address</span><span style="color:#E1E4E8"> sender </span><span style="color:#F97583">=</span><span style="color:#B392F0"> _msgSender</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (from </span><span style="color:#F97583">!=</span><span style="color:#E1E4E8"> sender </span><span style="color:#F97583">&amp;&amp;</span><span style="color:#F97583"> !</span><span style="color:#B392F0">isApprovedForAll</span><span style="color:#E1E4E8">(from, sender)) {</span></span>
+<span class="line"><span style="color:#F97583">            revert</span><span style="color:#B392F0"> ERC1155MissingApprovalForAll</span><span style="color:#E1E4E8">(sender, from);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#B392F0">        _safeTransferFrom</span><span style="color:#E1E4E8">(from, to, id, value, data);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> See {IERC1155-safeBatchTransferFrom}.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> safeBatchTransferFrom</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#79B8FF">        address</span><span style="color:#FFAB70"> from</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        address</span><span style="color:#FFAB70"> to</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">memory</span><span style="color:#FFAB70"> ids</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">memory</span><span style="color:#FFAB70"> values</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes</span><span style="color:#F97583"> memory</span><span style="color:#FFAB70"> data</span></span>
+<span class="line"><span style="color:#E1E4E8">    ) </span><span style="color:#F97583">public</span><span style="color:#F97583"> virtual</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">        address</span><span style="color:#E1E4E8"> sender </span><span style="color:#F97583">=</span><span style="color:#B392F0"> _msgSender</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (from </span><span style="color:#F97583">!=</span><span style="color:#E1E4E8"> sender </span><span style="color:#F97583">&amp;&amp;</span><span style="color:#F97583"> !</span><span style="color:#B392F0">isApprovedForAll</span><span style="color:#E1E4E8">(from, sender)) {</span></span>
+<span class="line"><span style="color:#F97583">            revert</span><span style="color:#B392F0"> ERC1155MissingApprovalForAll</span><span style="color:#E1E4E8">(sender, from);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#B392F0">        _safeBatchTransferFrom</span><span style="color:#E1E4E8">(from, to, ids, values, data);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Transfers a `value` amount of tokens of type `id` from `from` to `to`. Will mint (or burn) if `from`</span></span>
+<span class="line"><span style="color:#6A737D">     * (or `to`) is the zero address.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Emits a {TransferSingle} event if the arrays contain one element, and {TransferBatch} otherwise.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Requirements:</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * - If `to` refers to a smart contract, it must implement either {IERC1155Receiver-onERC1155Received}</span></span>
+<span class="line"><span style="color:#6A737D">     *   or {IERC1155Receiver-onERC1155BatchReceived} and return the acceptance magic value.</span></span>
+<span class="line"><span style="color:#6A737D">     * - `ids` and `values` must have the same length.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">NOTE</span><span style="color:#6A737D">: The ERC-1155 acceptance check is not performed in this function. See {_updateWithAcceptanceCheck} instead.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> _update</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> from</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> to</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">memory</span><span style="color:#FFAB70"> ids</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">memory</span><span style="color:#FFAB70"> values</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">internal</span><span style="color:#F97583"> virtual</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (ids.length </span><span style="color:#F97583">!=</span><span style="color:#E1E4E8"> values.length) {</span></span>
+<span class="line"><span style="color:#F97583">            revert</span><span style="color:#B392F0"> ERC1155InvalidArrayLength</span><span style="color:#E1E4E8">(ids.length, values.length);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF">        address</span><span style="color:#E1E4E8"> operator </span><span style="color:#F97583">=</span><span style="color:#B392F0"> _msgSender</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">        for</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">; i </span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8"> ids.length; </span><span style="color:#F97583">++</span><span style="color:#E1E4E8">i) {</span></span>
+<span class="line"><span style="color:#79B8FF">            uint256</span><span style="color:#E1E4E8"> id </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> ids.</span><span style="color:#B392F0">unsafeMemoryAccess</span><span style="color:#E1E4E8">(i);</span></span>
+<span class="line"><span style="color:#79B8FF">            uint256</span><span style="color:#E1E4E8"> value </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> values.</span><span style="color:#B392F0">unsafeMemoryAccess</span><span style="color:#E1E4E8">(i);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">            if</span><span style="color:#E1E4E8"> (from </span><span style="color:#F97583">!=</span><span style="color:#79B8FF"> address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">)) {</span></span>
+<span class="line"><span style="color:#79B8FF">                uint256</span><span style="color:#E1E4E8"> fromBalance </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> _balances[id][from];</span></span>
+<span class="line"><span style="color:#F97583">                if</span><span style="color:#E1E4E8"> (fromBalance </span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8"> value) {</span></span>
+<span class="line"><span style="color:#F97583">                    revert</span><span style="color:#B392F0"> ERC1155InsufficientBalance</span><span style="color:#E1E4E8">(from, fromBalance, value, id);</span></span>
+<span class="line"><span style="color:#E1E4E8">                }</span></span>
+<span class="line"><span style="color:#F97583">                unchecked</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">                    // Overflow not possible: value &lt;= fromBalance</span></span>
+<span class="line"><span style="color:#E1E4E8">                    _balances[id][from] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> fromBalance </span><span style="color:#F97583">-</span><span style="color:#E1E4E8"> value;</span></span>
+<span class="line"><span style="color:#E1E4E8">                }</span></span>
+<span class="line"><span style="color:#E1E4E8">            }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">            if</span><span style="color:#E1E4E8"> (to </span><span style="color:#F97583">!=</span><span style="color:#79B8FF"> address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">)) {</span></span>
+<span class="line"><span style="color:#E1E4E8">                _balances[id][to] </span><span style="color:#F97583">+=</span><span style="color:#E1E4E8"> value;</span></span>
+<span class="line"><span style="color:#E1E4E8">            }</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (ids.length </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#79B8FF">            uint256</span><span style="color:#E1E4E8"> id </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> ids.</span><span style="color:#B392F0">unsafeMemoryAccess</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#79B8FF">            uint256</span><span style="color:#E1E4E8"> value </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> values.</span><span style="color:#B392F0">unsafeMemoryAccess</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">            emit</span><span style="color:#B392F0"> TransferSingle</span><span style="color:#E1E4E8">(operator, from, to, id, value);</span></span>
+<span class="line"><span style="color:#E1E4E8">        } </span><span style="color:#F97583">else</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">            emit</span><span style="color:#B392F0"> TransferBatch</span><span style="color:#E1E4E8">(operator, from, to, ids, values);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Version of {_update} that performs the token acceptance check by calling</span></span>
+<span class="line"><span style="color:#6A737D">     * {IERC1155Receiver-onERC1155Received} or {IERC1155Receiver-onERC1155BatchReceived} on the receiver address if it</span></span>
+<span class="line"><span style="color:#6A737D">     * contains code (eg. is a smart contract at the moment of execution).</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * IMPORTANT: Overriding this function is discouraged because it poses a reentrancy risk from the receiver. So any</span></span>
+<span class="line"><span style="color:#6A737D">     * update to the contract state after this function would break the check-effect-interaction pattern. Consider</span></span>
+<span class="line"><span style="color:#6A737D">     * overriding {_update} instead.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> _updateWithAcceptanceCheck</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#79B8FF">        address</span><span style="color:#FFAB70"> from</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        address</span><span style="color:#FFAB70"> to</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">memory</span><span style="color:#FFAB70"> ids</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">memory</span><span style="color:#FFAB70"> values</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes</span><span style="color:#F97583"> memory</span><span style="color:#FFAB70"> data</span></span>
+<span class="line"><span style="color:#E1E4E8">    ) </span><span style="color:#F97583">internal</span><span style="color:#F97583"> virtual</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">        _update</span><span style="color:#E1E4E8">(from, to, ids, values);</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (to </span><span style="color:#F97583">!=</span><span style="color:#79B8FF"> address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">)) {</span></span>
+<span class="line"><span style="color:#79B8FF">            address</span><span style="color:#E1E4E8"> operator </span><span style="color:#F97583">=</span><span style="color:#B392F0"> _msgSender</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#F97583">            if</span><span style="color:#E1E4E8"> (ids.length </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#79B8FF">                uint256</span><span style="color:#E1E4E8"> id </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> ids.</span><span style="color:#B392F0">unsafeMemoryAccess</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#79B8FF">                uint256</span><span style="color:#E1E4E8"> value </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> values.</span><span style="color:#B392F0">unsafeMemoryAccess</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#B392F0">                _doSafeTransferAcceptanceCheck</span><span style="color:#E1E4E8">(operator, from, to, id, value, data);</span></span>
+<span class="line"><span style="color:#E1E4E8">            } </span><span style="color:#F97583">else</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">                _doSafeBatchTransferAcceptanceCheck</span><span style="color:#E1E4E8">(operator, from, to, ids, values, data);</span></span>
+<span class="line"><span style="color:#E1E4E8">            }</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Transfers a `value` tokens of token type `id` from `from` to `to`.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Emits a {TransferSingle} event.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Requirements:</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * - `to` cannot be the zero address.</span></span>
+<span class="line"><span style="color:#6A737D">     * - `from` must have a balance of tokens of type `id` of at least `value` amount.</span></span>
+<span class="line"><span style="color:#6A737D">     * - If `to` refers to a smart contract, it must implement {IERC1155Receiver-onERC1155Received} and return the</span></span>
+<span class="line"><span style="color:#6A737D">     * acceptance magic value.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> _safeTransferFrom</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> from</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> to</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> id</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> value</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">bytes</span><span style="color:#F97583"> memory</span><span style="color:#FFAB70"> data</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">internal</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (to </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">)) {</span></span>
+<span class="line"><span style="color:#F97583">            revert</span><span style="color:#B392F0"> ERC1155InvalidReceiver</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">));</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (from </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">)) {</span></span>
+<span class="line"><span style="color:#F97583">            revert</span><span style="color:#B392F0"> ERC1155InvalidSender</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">));</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">        (</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">memory</span><span style="color:#E1E4E8"> ids, </span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">memory</span><span style="color:#E1E4E8"> values) </span><span style="color:#F97583">=</span><span style="color:#B392F0"> _asSingletonArrays</span><span style="color:#E1E4E8">(id, value);</span></span>
+<span class="line"><span style="color:#B392F0">        _updateWithAcceptanceCheck</span><span style="color:#E1E4E8">(from, to, ids, values, data);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> xref:ROOT:erc1155.adoc#batch-operations[Batched] version of {_safeTransferFrom}.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Emits a {TransferBatch} event.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Requirements:</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * - If `to` refers to a smart contract, it must implement {IERC1155Receiver-onERC1155BatchReceived} and return the</span></span>
+<span class="line"><span style="color:#6A737D">     * acceptance magic value.</span></span>
+<span class="line"><span style="color:#6A737D">     * - `ids` and `values` must have the same length.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> _safeBatchTransferFrom</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#79B8FF">        address</span><span style="color:#FFAB70"> from</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        address</span><span style="color:#FFAB70"> to</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">memory</span><span style="color:#FFAB70"> ids</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">memory</span><span style="color:#FFAB70"> values</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes</span><span style="color:#F97583"> memory</span><span style="color:#FFAB70"> data</span></span>
+<span class="line"><span style="color:#E1E4E8">    ) </span><span style="color:#F97583">internal</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (to </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">)) {</span></span>
+<span class="line"><span style="color:#F97583">            revert</span><span style="color:#B392F0"> ERC1155InvalidReceiver</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">));</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (from </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">)) {</span></span>
+<span class="line"><span style="color:#F97583">            revert</span><span style="color:#B392F0"> ERC1155InvalidSender</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">));</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#B392F0">        _updateWithAcceptanceCheck</span><span style="color:#E1E4E8">(from, to, ids, values, data);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Sets a new URI for all token types, by relying on the token type ID</span></span>
+<span class="line"><span style="color:#6A737D">     * substitution mechanism</span></span>
+<span class="line"><span style="color:#6A737D">     * https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP].</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * By this mechanism, any occurrence of the `\{id\}` substring in either the</span></span>
+<span class="line"><span style="color:#6A737D">     * URI or any of the values in the JSON file at said URI will be replaced by</span></span>
+<span class="line"><span style="color:#6A737D">     * clients with the token type ID.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * For example, the `https://token-cdn-domain/\{id\}.json` URI would be</span></span>
+<span class="line"><span style="color:#6A737D">     * interpreted by clients as</span></span>
+<span class="line"><span style="color:#6A737D">     * `https://token-cdn-domain/000000000000000000000000000000000000000000000000000000000004cce0.json`</span></span>
+<span class="line"><span style="color:#6A737D">     * for token type ID 0x4cce0.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * See {uri}.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Because these URIs cannot be meaningfully represented by the {URI} event,</span></span>
+<span class="line"><span style="color:#6A737D">     * this function emits no events.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> _setURI</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">string</span><span style="color:#F97583"> memory</span><span style="color:#FFAB70"> newuri</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">internal</span><span style="color:#F97583"> virtual</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">        _uri </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> newuri;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Creates a `value` amount of tokens of type `id`, and assigns them to `to`.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Emits a {TransferSingle} event.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Requirements:</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * - `to` cannot be the zero address.</span></span>
+<span class="line"><span style="color:#6A737D">     * - If `to` refers to a smart contract, it must implement {IERC1155Receiver-onERC1155Received} and return the</span></span>
+<span class="line"><span style="color:#6A737D">     * acceptance magic value.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> _mint</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> to</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> id</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> value</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">bytes</span><span style="color:#F97583"> memory</span><span style="color:#FFAB70"> data</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">internal</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (to </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">)) {</span></span>
+<span class="line"><span style="color:#F97583">            revert</span><span style="color:#B392F0"> ERC1155InvalidReceiver</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">));</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">        (</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">memory</span><span style="color:#E1E4E8"> ids, </span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">memory</span><span style="color:#E1E4E8"> values) </span><span style="color:#F97583">=</span><span style="color:#B392F0"> _asSingletonArrays</span><span style="color:#E1E4E8">(id, value);</span></span>
+<span class="line"><span style="color:#B392F0">        _updateWithAcceptanceCheck</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">), to, ids, values, data);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> xref:ROOT:erc1155.adoc#batch-operations[Batched] version of {_mint}.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Emits a {TransferBatch} event.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Requirements:</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * - `ids` and `values` must have the same length.</span></span>
+<span class="line"><span style="color:#6A737D">     * - `to` cannot be the zero address.</span></span>
+<span class="line"><span style="color:#6A737D">     * - If `to` refers to a smart contract, it must implement {IERC1155Receiver-onERC1155BatchReceived} and return the</span></span>
+<span class="line"><span style="color:#6A737D">     * acceptance magic value.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> _mintBatch</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> to</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">memory</span><span style="color:#FFAB70"> ids</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">memory</span><span style="color:#FFAB70"> values</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">bytes</span><span style="color:#F97583"> memory</span><span style="color:#FFAB70"> data</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">internal</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (to </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">)) {</span></span>
+<span class="line"><span style="color:#F97583">            revert</span><span style="color:#B392F0"> ERC1155InvalidReceiver</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">));</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#B392F0">        _updateWithAcceptanceCheck</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">), to, ids, values, data);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Destroys a `value` amount of tokens of type `id` from `from`</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Emits a {TransferSingle} event.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Requirements:</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * - `from` cannot be the zero address.</span></span>
+<span class="line"><span style="color:#6A737D">     * - `from` must have at least `value` amount of tokens of type `id`.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> _burn</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> from</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> id</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#FFAB70"> value</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">internal</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (from </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">)) {</span></span>
+<span class="line"><span style="color:#F97583">            revert</span><span style="color:#B392F0"> ERC1155InvalidSender</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">));</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">        (</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">memory</span><span style="color:#E1E4E8"> ids, </span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">memory</span><span style="color:#E1E4E8"> values) </span><span style="color:#F97583">=</span><span style="color:#B392F0"> _asSingletonArrays</span><span style="color:#E1E4E8">(id, value);</span></span>
+<span class="line"><span style="color:#B392F0">        _updateWithAcceptanceCheck</span><span style="color:#E1E4E8">(from, </span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">), ids, values, </span><span style="color:#9ECBFF">""</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> xref:ROOT:erc1155.adoc#batch-operations[Batched] version of {_burn}.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Emits a {TransferBatch} event.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Requirements:</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * - `from` cannot be the zero address.</span></span>
+<span class="line"><span style="color:#6A737D">     * - `from` must have at least `value` amount of tokens of type `id`.</span></span>
+<span class="line"><span style="color:#6A737D">     * - `ids` and `values` must have the same length.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> _burnBatch</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> from</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">memory</span><span style="color:#FFAB70"> ids</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">memory</span><span style="color:#FFAB70"> values</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">internal</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (from </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">)) {</span></span>
+<span class="line"><span style="color:#F97583">            revert</span><span style="color:#B392F0"> ERC1155InvalidSender</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">));</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#B392F0">        _updateWithAcceptanceCheck</span><span style="color:#E1E4E8">(from, </span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">), ids, values, </span><span style="color:#9ECBFF">""</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Approve `operator` to operate on all of `owner` tokens</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Emits an {ApprovalForAll} event.</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * Requirements:</span></span>
+<span class="line"><span style="color:#6A737D">     *</span></span>
+<span class="line"><span style="color:#6A737D">     * - `operator` cannot be the zero address.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> _setApprovalForAll</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> owner</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">address</span><span style="color:#FFAB70"> operator</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">bool</span><span style="color:#FFAB70"> approved</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">internal</span><span style="color:#F97583"> virtual</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (operator </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">)) {</span></span>
+<span class="line"><span style="color:#F97583">            revert</span><span style="color:#B392F0"> ERC1155InvalidOperator</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">address</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">));</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">        _operatorApprovals[owner][operator] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> approved;</span></span>
+<span class="line"><span style="color:#F97583">        emit</span><span style="color:#B392F0"> ApprovalForAll</span><span style="color:#E1E4E8">(owner, operator, approved);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Performs an acceptance check by calling {IERC1155-onERC1155Received} on the `to` address</span></span>
+<span class="line"><span style="color:#6A737D">     * if it contains code at the moment of execution.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> _doSafeTransferAcceptanceCheck</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#79B8FF">        address</span><span style="color:#FFAB70"> operator</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        address</span><span style="color:#FFAB70"> from</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        address</span><span style="color:#FFAB70"> to</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#FFAB70"> id</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#FFAB70"> value</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes</span><span style="color:#F97583"> memory</span><span style="color:#FFAB70"> data</span></span>
+<span class="line"><span style="color:#E1E4E8">    ) </span><span style="color:#F97583">private</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (to.code.length </span><span style="color:#F97583">&gt;</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">            try</span><span style="color:#B392F0"> IERC1155Receiver</span><span style="color:#E1E4E8">(to).</span><span style="color:#B392F0">onERC1155Received</span><span style="color:#E1E4E8">(operator, from, id, value, data) </span><span style="color:#F97583">returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">bytes4</span><span style="color:#FFAB70"> response</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">                if</span><span style="color:#E1E4E8"> (response </span><span style="color:#F97583">!=</span><span style="color:#E1E4E8"> IERC1155Receiver.onERC1155Received.selector) {</span></span>
+<span class="line"><span style="color:#6A737D">                    // Tokens rejected</span></span>
+<span class="line"><span style="color:#F97583">                    revert</span><span style="color:#B392F0"> ERC1155InvalidReceiver</span><span style="color:#E1E4E8">(to);</span></span>
+<span class="line"><span style="color:#E1E4E8">                }</span></span>
+<span class="line"><span style="color:#E1E4E8">            } </span><span style="color:#F97583">catch</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">bytes</span><span style="color:#F97583"> memory</span><span style="color:#E1E4E8"> reason) {</span></span>
+<span class="line"><span style="color:#F97583">                if</span><span style="color:#E1E4E8"> (reason.length </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">                    // non-ERC1155Receiver implementer</span></span>
+<span class="line"><span style="color:#F97583">                    revert</span><span style="color:#B392F0"> ERC1155InvalidReceiver</span><span style="color:#E1E4E8">(to);</span></span>
+<span class="line"><span style="color:#E1E4E8">                } </span><span style="color:#F97583">else</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">                    /// @solidity memory-safe-assembly</span></span>
+<span class="line"><span style="color:#F97583">                    assembly</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">                        revert</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">add</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">32</span><span style="color:#E1E4E8">, reason), </span><span style="color:#B392F0">mload</span><span style="color:#E1E4E8">(reason))</span></span>
+<span class="line"><span style="color:#E1E4E8">                    }</span></span>
+<span class="line"><span style="color:#E1E4E8">                }</span></span>
+<span class="line"><span style="color:#E1E4E8">            }</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Performs a batch acceptance check by calling {IERC1155-onERC1155BatchReceived} on the `to` address</span></span>
+<span class="line"><span style="color:#6A737D">     * if it contains code at the moment of execution.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> _doSafeBatchTransferAcceptanceCheck</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#79B8FF">        address</span><span style="color:#FFAB70"> operator</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        address</span><span style="color:#FFAB70"> from</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        address</span><span style="color:#FFAB70"> to</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">memory</span><span style="color:#FFAB70"> ids</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">memory</span><span style="color:#FFAB70"> values</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        bytes</span><span style="color:#F97583"> memory</span><span style="color:#FFAB70"> data</span></span>
+<span class="line"><span style="color:#E1E4E8">    ) </span><span style="color:#F97583">private</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (to.code.length </span><span style="color:#F97583">&gt;</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">            try</span><span style="color:#B392F0"> IERC1155Receiver</span><span style="color:#E1E4E8">(to).</span><span style="color:#B392F0">onERC1155BatchReceived</span><span style="color:#E1E4E8">(operator, from, ids, values, data) </span><span style="color:#F97583">returns</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#79B8FF">                bytes4</span><span style="color:#FFAB70"> response</span></span>
+<span class="line"><span style="color:#E1E4E8">            ) {</span></span>
+<span class="line"><span style="color:#F97583">                if</span><span style="color:#E1E4E8"> (response </span><span style="color:#F97583">!=</span><span style="color:#E1E4E8"> IERC1155Receiver.onERC1155BatchReceived.selector) {</span></span>
+<span class="line"><span style="color:#6A737D">                    // Tokens rejected</span></span>
+<span class="line"><span style="color:#F97583">                    revert</span><span style="color:#B392F0"> ERC1155InvalidReceiver</span><span style="color:#E1E4E8">(to);</span></span>
+<span class="line"><span style="color:#E1E4E8">                }</span></span>
+<span class="line"><span style="color:#E1E4E8">            } </span><span style="color:#F97583">catch</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">bytes</span><span style="color:#F97583"> memory</span><span style="color:#E1E4E8"> reason) {</span></span>
+<span class="line"><span style="color:#F97583">                if</span><span style="color:#E1E4E8"> (reason.length </span><span style="color:#F97583">==</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">                    // non-ERC1155Receiver implementer</span></span>
+<span class="line"><span style="color:#F97583">                    revert</span><span style="color:#B392F0"> ERC1155InvalidReceiver</span><span style="color:#E1E4E8">(to);</span></span>
+<span class="line"><span style="color:#E1E4E8">                } </span><span style="color:#F97583">else</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">                    /// @solidity memory-safe-assembly</span></span>
+<span class="line"><span style="color:#F97583">                    assembly</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">                        revert</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">add</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">32</span><span style="color:#E1E4E8">, reason), </span><span style="color:#B392F0">mload</span><span style="color:#E1E4E8">(reason))</span></span>
+<span class="line"><span style="color:#E1E4E8">                    }</span></span>
+<span class="line"><span style="color:#E1E4E8">                }</span></span>
+<span class="line"><span style="color:#E1E4E8">            }</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@dev</span><span style="color:#6A737D"> Creates an array in memory with only one value for each of the elements provided.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> _asSingletonArrays</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#FFAB70"> element1</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">        uint256</span><span style="color:#FFAB70"> element2</span></span>
+<span class="line"><span style="color:#E1E4E8">    ) </span><span style="color:#F97583">private</span><span style="color:#F97583"> pure</span><span style="color:#F97583"> returns</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">memory</span><span style="color:#FFAB70"> array1</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">uint256</span><span style="color:#E1E4E8">[] </span><span style="color:#F97583">memory</span><span style="color:#FFAB70"> array2</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">        /// @solidity memory-safe-assembly</span></span>
+<span class="line"><span style="color:#F97583">        assembly</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">            // Load the free memory pointer</span></span>
+<span class="line"><span style="color:#E1E4E8">            array1 </span><span style="color:#F97583">:=</span><span style="color:#B392F0"> mload</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0x40</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#6A737D">            // Set array length to 1</span></span>
+<span class="line"><span style="color:#B392F0">            mstore</span><span style="color:#E1E4E8">(array1, </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#6A737D">            // Store the single element at the next word after the length (where content starts)</span></span>
+<span class="line"><span style="color:#B392F0">            mstore</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">add</span><span style="color:#E1E4E8">(array1, </span><span style="color:#79B8FF">0x20</span><span style="color:#E1E4E8">), element1)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">            // Repeat for next array locating it right after the first array</span></span>
+<span class="line"><span style="color:#E1E4E8">            array2 </span><span style="color:#F97583">:=</span><span style="color:#B392F0"> add</span><span style="color:#E1E4E8">(array1, </span><span style="color:#79B8FF">0x40</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#B392F0">            mstore</span><span style="color:#E1E4E8">(array2, </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#B392F0">            mstore</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">add</span><span style="color:#E1E4E8">(array2, </span><span style="color:#79B8FF">0x20</span><span style="color:#E1E4E8">), element2)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">            // Update the free memory pointer by pointing after the second array</span></span>
+<span class="line"><span style="color:#B392F0">            mstore</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0x40</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">add</span><span style="color:#E1E4E8">(array2, </span><span style="color:#79B8FF">0x40</span><span style="color:#E1E4E8">))</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>依赖：<code>IERC1155</code>、<code>IERC1155Receiver</code>、<code>IERC1155MetadataURI</code>、<code>Context</code>、<code>ERC165</code>、<code>Arrays</code>、<code>IERC165</code> 等（见 OZ 同目录）。</p>
+</div><script type="module">function e(e){let t=e.getAttribute(`data-language`)?.trim();if(t)return t===`text`||t===`plaintext`||t===`txt`?`text`:t;let n=e.querySelector(`code`)?.className||e.className||``,r=/language-([a-z0-9_+-]+)/i.exec(n);return r?.[1]?r[1]:`code`}function t(t){if(t.closest(`[data-mac-window]`)||t.dataset.macEnhanced===`1`)return;t.dataset.macEnhanced=`1`;let n=document.createElement(`figure`);n.className=`mac-window`,n.setAttribute(`data-mac-window`,``);let r=document.createElement(`div`);r.className=`mac-titlebar`,r.innerHTML=`
+      <div class="mac-dots" aria-hidden="true">
+        <span class="dot red"></span>
+        <span class="dot yellow"></span>
+        <span class="dot green"></span>
+      </div>
+      <span class="mac-title"></span>
+      <button type="button" class="mac-copy" data-mac-copy aria-label="复制代码">复制</button>
+    `;let i=r.querySelector(`.mac-title`);i&&(i.textContent=e(t));let a=document.createElement(`div`);a.className=`mac-body`,t.parentNode?.insertBefore(n,t),a.appendChild(t),n.appendChild(r),n.appendChild(a)}async function n(e){if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(e);return}let t=document.createElement(`textarea`);t.value=e,t.style.position=`fixed`,t.style.opacity=`0`,document.body.appendChild(t),t.select(),document.execCommand(`copy`),t.remove()}function r(e=document){e.querySelectorAll(`[data-mac-copy]`).forEach(e=>{e.dataset.bound!==`1`&&(e.dataset.bound=`1`,e.addEventListener(`click`,async()=>{let t=e.closest(`[data-mac-window]`)?.querySelector(`pre`)?.textContent??``;try{await n(t);let r=e.textContent;e.textContent=`已复制`,e.classList.add(`is-copied`),window.setTimeout(()=>{e.textContent=r||`复制`,e.classList.remove(`is-copied`)},1600)}catch{e.textContent=`失败`,window.setTimeout(()=>{e.textContent=`复制`},1600)}}))})}function i(){document.querySelectorAll(`.prose pre`).forEach(t),r()}i(),document.addEventListener(`astro:page-load`,i);</script></article><nav class="pager wrap-narrow" aria-label="上下篇" data-astro-cid-tldeq5d5><p data-astro-cid-tldeq5d5>上一篇：<a href="/web3/erc20/" data-astro-cid-tldeq5d5>ERC20</a></p><p data-astro-cid-tldeq5d5>下一篇：<a href="/web3/dutch-auction/" data-astro-cid-tldeq5d5>荷兰拍卖</a></p></nav><section class="related" data-astro-cid-tldeq5d5><div class="wrap" data-astro-cid-tldeq5d5><h2 data-astro-cid-tldeq5d5>继续阅读</h2><ol class="related-grid" data-astro-cid-tldeq5d5><li data-astro-cid-tldeq5d5><a class="related-topic" href="/web3/" data-astro-cid-tldeq5d5>区块链</a><a class="related-title" href="/web3/airdrop/" data-astro-cid-tldeq5d5>空投</a><p data-astro-cid-tldeq5d5>空投</p></li><li data-astro-cid-tldeq5d5><a class="related-topic" href="/web3/" data-astro-cid-tldeq5d5>区块链</a><a class="related-title" href="/web3/cross-chain-bridge/" data-astro-cid-tldeq5d5>跨链桥</a><p data-astro-cid-tldeq5d5>跨链桥</p></li><li data-astro-cid-tldeq5d5><a class="related-topic" href="/web3/" data-astro-cid-tldeq5d5>区块链</a><a class="related-title" href="/web3/ddos/" data-astro-cid-tldeq5d5>DDOS攻击</a><p data-astro-cid-tldeq5d5>DDOS攻击</p></li></ol></div></section></main><footer class="site-footer" data-astro-cid-jo6i4kqk><div class="wrap bar" data-astro-cid-jo6i4kqk><a class="brand" href="/" data-astro-cid-jo6i4kqk>rty</a><div class="social" aria-label="社交链接" data-astro-cid-jo6i4kqk><a href="mailto:peonyfoals@gmail.com" aria-label="Email" data-astro-cid-jo6i4kqk><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" data-astro-cid-jo6i4kqk><path fill="currentColor" d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5L4 8V6l8 5 8-5v2z" data-astro-cid-jo6i4kqk></path></svg></a><a href="/rss.xml" aria-label="RSS" data-astro-cid-jo6i4kqk><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" data-astro-cid-jo6i4kqk><path fill="currentColor" d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20 5 20 4 19 4 17.82c0-1.2.98-2.18 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27zm0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93z" data-astro-cid-jo6i4kqk></path></svg></a><a href="/archive/" aria-label="归档" data-astro-cid-jo6i4kqk><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" data-astro-cid-jo6i4kqk><path fill="currentColor" d="M4 6h16v2H4zm0 5h16v2H4zm0 5h10v2H4z" data-astro-cid-jo6i4kqk></path></svg></a></div><p class="meta" data-astro-cid-jo6i4kqk>© 2026 peony</p></div></footer></body></html>
